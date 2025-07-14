@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>타자 비행 게임</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 1rem;
+        }
+
+        .nav-menu li {
+            position: relative;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 0.5rem 0.8rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .nav-menu a:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .dropdown-arrow {
+            font-size: 0.7rem;
+            transition: transform 0.3s ease;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            padding: 0.5rem 0;
+            min-width: 220px;
+            max-height: 400px;
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1001;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-menu li:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .nav-menu li:hover .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 0.7rem 1rem;
+            color: #333;
+            border-radius: 0;
+            font-weight: 400;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-menu a:hover {
+            background: #f8f9fa;
+            color: #667eea;
+            transform: none;
+            padding-left: 1.2rem;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: linear-gradient(180deg, #4A90E2 0%, #87CEEB 50%, #98FB98 100%);
+            overflow: hidden;
+            height: 100vh;
+            padding-top: 80px;
+        }
+
+        #gameContainer {
+            position: relative;
+            width: 100vw;
+            height: calc(100vh - 80px);
+            overflow: hidden;
+        }
+
+        #gameCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: linear-gradient(180deg, rgba(74, 144, 226, 0.3) 0%, rgba(135, 206, 235, 0.2) 100%);
+        }
+
+        #plane {
+            position: absolute;
+            left: 100px;
+            top: 50%;
+            transform: translateY(-50%) rotate(0deg);
+            width: 70px;
+            height: 50px;
+            background: linear-gradient(45deg, #FF6B6B, #FF8C94);
+            border-radius: 50% 20% 20% 50% / 60% 60% 40% 40%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: top 0.3s ease, transform 0.2s ease;
+            z-index: 10;
+        }
+
+        #plane::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            width: 40px;
+            height: 20px;
+            background: linear-gradient(45deg, #FF4757, #FF6B6B);
+            border-radius: 50%;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #plane::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: -20px;
+            width: 25px;
+            height: 15px;
+            background: linear-gradient(45deg, #FF4757, #FF6B6B);
+            border-radius: 0 50% 50% 0;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .obstacle {
+            position: absolute;
+            background: linear-gradient(135deg, #B0C4DE 0%, #FFD700 50%, #C0C0C0 100%);
+            border-radius: 20px 10px 10px 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            z-index: 5;
+        }
+
+        .cloud {
+            position: absolute;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.4), rgba(240, 240, 240, 0.3));
+            border-radius: 50px;
+            opacity: 0.6;
+            z-index: 1;
+        }
+
+        #ui {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 20;
+            color: #FFFFFF;
+            font-weight: 700;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        #level, #timer {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        #wordDisplay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 25;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            padding: 40px 50px;
+            text-align: center;
+            border-radius: 20px;
+            color: #FFFFFF;
+            min-width: 500px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        #instruction {
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: #FFD700;
+        }
+
+        #currentWordUp, #currentWordDown {
+            font-size: 42px;
+            letter-spacing: 4px;
+            margin: 20px 0;
+            font-weight: 900;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        #wordDisplay:not(.game-active) #currentWordUp,
+        #wordDisplay:not(.game-active) #currentWordDown {
+            font-size: 28px;
+        }
+
+        #currentWordUp {
+            color: #40C4FF;
+            background: rgba(64, 196, 255, 0.3);
+        }
+
+        #currentWordDown {
+            color: #FFCA28;
+            background: rgba(255, 202, 40, 0.3);
+        }
+
+        #userInput {
+            font-size: 24px;
+            padding: 15px 20px;
+            border: 3px solid #FF6B6B;
+            border-radius: 15px;
+            text-align: center;
+            outline: none;
+            width: 350px;
+            background: rgba(0, 0, 0, 0.5);
+            color: #FFFFFF;
+            display: none;
+            font-family: 'Noto Sans KR', sans-serif;
+            margin-top: 20px;
+        }
+
+        #startBtn {
+            font-size: 24px;
+            padding: 14px 35px;
+            border: none;
+            background: linear-gradient(45deg, #FF0000, #FF4D4D);
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px auto 0;
+            display: block;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-weight: 700;
+        }
+
+        #startBtn:hover {
+            transform: scale(1.05) translateY(-2px);
+            background: linear-gradient(45deg, #CC0000, #FF3333);
+        }
+
+        #gameOver {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 30;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 80px; /* 40px → 80px로 2배 */
+            border-radius: 20px;
+            text-align: center;
+            display: none;
+            color: white;
+            min-width: 700px; /* 350px → 700px로 2배 */
+            min-height: 400px; /* 높이도 2배로 */
+        }
+
+        #gameOver h2 {
+            color: #FF6B6B;
+            font-size: 80px; /* 40px → 80px로 2배 */
+            margin-bottom: 40px; /* 20px → 40px로 2배 */
+        }
+
+        #restartBtn, #nextStageBtn {
+            background: linear-gradient(45deg, #FF6B6B, #FF8C94);
+            color: white;
+            border: none;
+            padding: 36px 70px; /* 18px 35px → 36px 70px로 2배 */
+            font-size: 44px; /* 22px → 44px로 2배 */
+            border-radius: 15px;
+            cursor: pointer;
+            margin: 20px; /* 10px → 20px로 2배 */
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .explosion {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, #FFD700 20%, #FF4500 60%, transparent);
+            border-radius: 50%;
+            animation: explode 0.6s ease-out;
+            z-index: 15;
+        }
+
+        @keyframes explode {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+
+        .success-effect {
+            position: absolute;
+            color: #4CAF50;
+            font-size: 32px;
+            font-weight: 900;
+            animation: floatUp 1.2s ease-out forwards;
+            z-index: 20;
+        }
+
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            50% { transform: translateY(-30px) scale(1.2); }
+            100% { opacity: 0; transform: translateY(-60px) scale(0.8); }
+        }
+
+        #wordDisplay.game-active {
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px 30px;
+            min-width: 400px;
+        }
+
+        #wordDisplay.game-active #instruction {
+            display: none;
+        }
+
+        #wordDisplay.game-active #currentWordUp,
+        #wordDisplay.game-active #currentWordDown {
+            font-size: 28px;
+            margin: 10px 0;
+            padding: 10px;
+        }
+
+        #wordDisplay.game-active #userInput {
+            font-size: 20px;
+            width: 300px;
+            padding: 12px 15px;
+            margin-top: 15px;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="../index.html" class="logo">⌨️ FingerRun</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">소개</a></li>
+                <li>
+                    <a href="practice.html">
+                        한글 타자연습
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="practice.html">자음 연습</a>
+                        <a href="practice.html">모음 연습</a>
+                        <a href="practice.html">단어 연습</a>
+                        <a href="practice.html">문장 연습</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="../English/practice.html">
+                        영어 타자연습
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="../English/practice.html">알파벳 연습</a>
+                        <a href="../English/practice.html">영어 단어 연습</a>
+                        <a href="../English/practice.html">영어 문장 연습</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="game-mole.html">
+                        타자게임
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="game-mole.html">두더지 잡기 (한글)</a>
+                        <a href="../English/game-mole.html">두더지 잡기 (영어)</a>
+                        <a href="game-plane.html">비행기 조종 (한글)</a>
+                        <a href="../English/game-plane.html">비행기 조종 (영어)</a>
+                        <a href="game-delivery.html">택배 분류 (한글)</a>
+                        <a href="../English/game-delivery.html">택배 분류 (영어)</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="../Certificate/word-processor.html">
+                        자격증
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="../Certificate/word-processor.html">워드프로세서</a>
+                    </div>
+                </li>
+                <li><a href="../contact.html">문의하기</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="1200" height="800"></canvas>
+        <div id="plane"></div>
+        
+        <div id="ui">
+            <div id="level">레벨: 1</div>
+            <div id="timer">시간: 60</div>
+        </div>
+
+        <div id="wordDisplay">
+            <div id="instruction">타이핑으로 비행기를 조종하세요!</div>
+            <div id="currentWordUp">↑ 비행기가 위로 갑니다.</div>
+            <div id="currentWordDown">↓ 비행기가 아래로 갑니다.</div>
+            <input type="text" id="userInput" placeholder="단어를 입력하세요">
+            <button id="startBtn">시작하기</button>
+        </div>
+
+        <div id="gameOver">
+            <h2 id="gameOverTitle">게임 오버!</h2>
+            <button id="restartBtn">다시 시작</button>
+            <button id="nextStageBtn" style="display: none;">다음 단계</button>
+        </div>
+    </div>
+
+    <script>
+        class TypingFlightGame {
+            constructor() {
+                this.canvas = document.getElementById('gameCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.plane = document.getElementById('plane');
+                this.wordDisplay = document.getElementById('wordDisplay');
+                this.currentWordUpEl = document.getElementById('currentWordUp');
+                this.currentWordDownEl = document.getElementById('currentWordDown');
+                this.userInput = document.getElementById('userInput');
+                this.startBtn = document.getElementById('startBtn');
+                this.levelEl = document.getElementById('level');
+                this.timerEl = document.getElementById('timer');
+                this.gameOverEl = document.getElementById('gameOver');
+                this.gameOverTitle = document.getElementById('gameOverTitle');
+                this.restartBtn = document.getElementById('restartBtn');
+                this.nextStageBtn = document.getElementById('nextStageBtn');
+
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight - 80;
+                
+                this.isComposing = false;
+                this.usedWords = [];
+                
+                this.init();
+                this.setupEventListeners();
+            }
+
+            init() {
+                this.level = 1;
+                this.maxLevel = 10;
+                this.gameRunning = false;
+                this.planeY = this.canvas.height / 2;
+                this.fallSpeed = 8; // 4 → 8로 기존대로 복구
+                this.obstacles = [];
+                this.clouds = [];
+                this.currentWordUp = '';
+                this.currentWordDown = '';
+                this.userTyped = '';
+                this.gameSpeed = 2.0; // 1.0 → 2.0으로 2배 증가 (비행기 진행속도 2배!)
+                this.obstacleSpawnRate = 0.015;
+                this.lastObstacleTime = 0;
+                this.timer = 60;
+                this.startTime = 0;
+                this.lastFrameTime = 0;
+                this.planeTilt = 0;
+                this.moveDistance = 60;
+                this.currentMoves = 0;
+                this.requiredMoves = 5;
+                this.usedWords = [];
+
+                this.easyWords = [
+                    "공기놀", "친구사", "주식시", "은행이", "국회선", "축구공", "꿈을펴", "작가꿈", "이야기", "세종대",
+                    "가족모임", "은행이자", "선거투표", "수영대회", "희망찬", "노력최고", "소설배경", "안중근", "유관순",
+                    "공기놀이", "친구사이", "주식시장", "저축계좌", "국회의원", "정책토론", "축구공기놀이", "꿈을펼쳐라", "희망찬내일"
+                ].filter(word => word && typeof word === 'string' && word.length >= 2);
+
+                this.difficultWords = [
+                    "사회복", "경제성", "공동체", "헌법개", "외교정", "마라톤", "도전정", "소설창", "이순신", "김구선",
+                    "공동체의", "헌법개정", "국제협력", "체조기술", "자기계발", "문학비평", "서사구조", "김구선생", "간디리더",
+                    "사회복지", "문화다양성", "경제성장률", "인플레이션", "재정정책", "외교정책", "마라톤기록", "스포츠과학", "성공마인드", "소설창작", "이순신장군"
+                ].filter(word => word && typeof word === 'string' && word.length >= 2);
+
+                this.generateNewWords();
+                this.createClouds();
+                this.startBtn.style.display = 'block';
+                this.userInput.style.display = 'none';
+                this.nextStageBtn.style.display = 'none';
+                this.wordDisplay.classList.remove('game-active');
+                this.plane.style.top = `${this.planeY}px`;
+                this.updateUI();
+            }
+
+            setupEventListeners() {
+                this.startBtn.addEventListener('click', () => {
+                    this.startGame();
+                });
+
+                this.restartBtn.addEventListener('click', () => {
+                    this.restart();
+                });
+
+                this.nextStageBtn.addEventListener('click', () => {
+                    this.nextStage();
+                });
+
+                this.userInput.addEventListener('input', (e) => {
+                    if (!this.isComposing) {
+                        this.handleInput(e.target.value);
+                    }
+                });
+
+                this.userInput.addEventListener('keydown', (e) => {
+                    if (e.key === ' ' || e.key === 'Enter') {
+                        e.preventDefault();
+                        if (!this.isComposing) {
+                            this.checkWord();
+                        }
+                    }
+                });
+
+                this.userInput.addEventListener('compositionstart', () => {
+                    this.isComposing = true;
+                });
+
+                this.userInput.addEventListener('compositionend', (e) => {
+                    this.isComposing = false;
+                    this.handleInput(e.target.value);
+                });
+            }
+
+            startGame() {
+                this.gameRunning = true;
+                this.usedWords = [];
+                
+                this.planeY = this.canvas.height / 2;
+                this.plane.style.top = `${this.planeY}px`;
+                this.plane.style.transform = 'translateY(-50%) rotate(0deg)';
+                
+                this.startBtn.style.display = 'none';
+                this.userInput.style.display = 'block';
+                this.userInput.value = '';
+                this.userTyped = '';
+                this.wordDisplay.classList.add('game-active');
+                this.userInput.focus();
+                
+                this.startTime = Date.now();
+                this.lastFrameTime = Date.now();
+                this.currentMoves = 0;
+                this.requiredMoves = 5;
+                
+                this.generateNewWords();
+                this.updateUI();
+                this.gameLoop();
+            }
+
+            generateNewWords() {
+                if (!this.gameRunning) {
+                    this.currentWordUpEl.textContent = '↑ 비행기가 위로 갑니다.';
+                    this.currentWordDownEl.textContent = '↓ 비행기가 아래로 갑니다.';
+                    this.currentWordUp = '';
+                    this.currentWordDown = '';
+                } else {
+                    let difficultWordChance = 0;
+                    if (this.level <= 3) {
+                        difficultWordChance = 0;
+                    } else if (this.level <= 6) {
+                        difficultWordChance = 0.3;
+                    } else if (this.level <= 8) {
+                        difficultWordChance = 0.6;
+                    } else {
+                        difficultWordChance = 0.8;
+                    }
+
+                    const words = difficultWordChance === 0 ? this.easyWords : 
+                                 (Math.random() < difficultWordChance ? this.difficultWords : this.easyWords);
+                    
+                    const availableWords = [...words].filter(word => word.length >= 2 && !this.usedWords.includes(word));
+                    
+                    if (availableWords.length < 2) {
+                        this.usedWords = [];
+                        availableWords.push(...words.filter(word => word.length >= 2));
+                    }
+
+                    this.currentWordUp = availableWords.splice(Math.floor(Math.random() * availableWords.length), 1)[0];
+                    this.currentWordDown = availableWords.splice(Math.floor(Math.random() * availableWords.length), 1)[0];
+                    
+                    this.usedWords.push(this.currentWordUp, this.currentWordDown);
+                    
+                    this.currentWordUpEl.textContent = `↑ ${this.currentWordUp}`;
+                    this.currentWordDownEl.textContent = `↓ ${this.currentWordDown}`;
+                }
+
+                this.userTyped = '';
+                this.userInput.value = '';
+                this.userInput.style.borderColor = '#FF6B6B';
+                this.userInput.style.background = 'rgba(0, 0, 0, 0.5)';
+                
+                if (this.gameRunning) {
+                    this.userInput.focus();
+                }
+            }
+
+            handleInput(value) {
+                if (this.isComposing) return;
+                
+                this.userTyped = value;
+                
+                if (this.currentWordUp.startsWith(this.userTyped) || this.currentWordDown.startsWith(this.userTyped)) {
+                    this.userInput.style.borderColor = '#4CAF50';
+                    this.userInput.style.background = 'rgba(76, 175, 80, 0.1)';
+                } else {
+                    this.userInput.style.borderColor = '#FF6B6B';
+                    this.userInput.style.background = 'rgba(255, 107, 107, 0.1)';
+                }
+            }
+
+            checkWord() {
+                if (this.userTyped.trim() === '') return;
+
+                if (this.userTyped === this.currentWordUp) {
+                    this.wordSuccess(true);
+                } else if (this.userTyped === this.currentWordDown) {
+                    this.wordSuccess(false);
+                } else {
+                    this.userInput.style.animation = 'shake 0.3s ease';
+                    setTimeout(() => this.userInput.style.animation = '', 300);
+                    this.userTyped = '';
+                    this.userInput.value = '';
+                    this.userInput.style.borderColor = '#FF6B6B';
+                    this.userInput.style.background = 'rgba(0, 0, 0, 0.5)';
+                    this.userInput.focus();
+                }
+            }
+
+            wordSuccess(up) {
+                this.currentMoves += 1;
+                this.movePlane(up);
+                this.showSuccessEffect();
+                this.generateNewWords();
+                this.updateUI();
+            }
+
+            wordFail() {
+                this.gameOver(false);
+            }
+
+            movePlane(up) {
+                const moveDistance = 200; // 비행기 이동거리
+                if (up) {
+                    this.planeY = Math.max(0, this.planeY - moveDistance);
+                    this.planeTilt = -10;
+                } else {
+                    this.planeY = Math.min(this.canvas.height, this.planeY + moveDistance);
+                    this.planeTilt = 10;
+                }
+
+                // 화면 끝에 정확히 닿으면 게임오버
+                if (this.planeY <= 0 || this.planeY >= this.canvas.height) {
+                    this.showExplosion();
+                    this.wordFail();
+                    return;
+                }
+
+                this.plane.style.top = `${this.planeY}px`;
+                this.plane.style.transform = `translateY(-50%) rotate(${this.planeTilt}deg)`;
+
+                setTimeout(() => {
+                    this.planeTilt = 0;
+                    this.plane.style.transform = `translateY(-50%) rotate(${this.planeTilt}deg)`;
+                }, 200);
+            }
+
+            showSuccessEffect() {
+                const effect = document.createElement('div');
+                effect.className = 'success-effect';
+                effect.textContent = '성공!';
+                effect.style.left = '200px';
+                effect.style.top = `${this.planeY}px`;
+                document.getElementById('gameContainer').appendChild(effect);
+
+                setTimeout(() => {
+                    effect.remove();
+                }, 1200);
+            }
+
+            createClouds() {
+                for (let i = 0; i < 5; i++) {
+                    this.clouds.push({
+                        x: Math.random() * this.canvas.width,
+                        y: Math.random() * this.canvas.height,
+                        size: 40 + Math.random() * 50,
+                        speed: 0.5 + Math.random() * 1.5
+                    });
+                }
+            }
+
+            spawnObstacle() {
+                const fixedSpawnInterval = Math.max(7000, 10000 - (this.level * 150)); // 레벨 증가시 생성 간격 감소 (더 완만하게)
+                const baseWidth = 80; 
+                
+                // 레벨에 따라 장애물 간격 감소하지만 최소 800px는 보장 (비행기 통과 가능 수준)
+                const minGap = Math.max(800, 1200 - (this.level - 1) * 50); // 레벨당 50px씩만 감소, 최소 800px
+                const maxHeight = this.canvas.height - minGap;
+
+                if (Date.now() - this.lastObstacleTime > fixedSpawnInterval) {
+                    const singleObstacleChance = Math.min(0.15, 0.05 + (this.level - 1) * 0.01); // 최대 15%까지만
+                    const type = Math.random() < singleObstacleChance ? (Math.random() < 0.5 ? 'top' : 'bottom') : 'pair';
+
+                    if (type === 'top') {
+                        const height = 60 + Math.random() * (maxHeight - Math.max(300, 500 - this.level * 20));
+                        this.obstacles.push({
+                            x: this.canvas.width,
+                            y: 0,
+                            width: baseWidth,
+                            height: height,
+                            speed: this.gameSpeed * 1.0
+                        });
+                    } else if (type === 'bottom') {
+                        const height = 60 + Math.random() * (maxHeight - Math.max(300, 500 - this.level * 20));
+                        this.obstacles.push({
+                            x: this.canvas.width,
+                            y: this.canvas.height - height,
+                            width: baseWidth,
+                            height: height,
+                            speed: this.gameSpeed * 1.0
+                        });
+                    } else {
+                        // 레벨에 따라 통과 간격 감소하지만 최소 800px는 보장 (충분히 통과 가능)
+                        const fixedGapSize = Math.max(800, 1200 - (this.level - 1) * 50); // 레벨당 50px씩만 감소, 최소 800px
+                        const maxGapPosition = this.canvas.height - fixedGapSize - 200;
+                        const gapPosition = 200 + Math.random() * Math.max(200, maxGapPosition - 200);
+
+                        this.obstacles.push({
+                            x: this.canvas.width,
+                            y: 0,
+                            width: baseWidth,
+                            height: gapPosition,
+                            speed: this.gameSpeed * 1.0
+                        });
+
+                        this.obstacles.push({
+                            x: this.canvas.width,
+                            y: gapPosition + fixedGapSize,
+                            width: baseWidth,
+                            height: this.canvas.height - (gapPosition + fixedGapSize),
+                            speed: this.gameSpeed * 1.0
+                        });
+                    }
+
+                    this.lastObstacleTime = Date.now();
+                }
+            }
+
+            updateObstacles() {
+                for (let i = this.obstacles.length - 1; i >= 0; i--) {
+                    const obstacle = this.obstacles[i];
+                    obstacle.x -= obstacle.speed;
+
+                    if (this.checkCollision(obstacle)) {
+                        this.showExplosion();
+                        this.wordFail();
+                        return;
+                    }
+
+                    if (obstacle.x + obstacle.width < 0) {
+                        this.obstacles.splice(i, 1);
+                    }
+                }
+            }
+
+            checkCollision(obstacle) {
+                const planeRect = {
+                    x: 100 + 5, // 여백 5px 추가 (더 관대하게)
+                    y: this.planeY - 20, // 비행기 중심에서 위아래 20px
+                    width: 60, // 70 → 60으로 줄임 (더 관대한 충돌)
+                    height: 40 // 50 → 40으로 줄임 (더 관대한 충돌)
+                };
+
+                // 정확한 충돌 검사 - 1픽셀이라도 겹치면 충돌
+                const collision = planeRect.x < obstacle.x + obstacle.width &&
+                                 planeRect.x + planeRect.width > obstacle.x &&
+                                 planeRect.y < obstacle.y + obstacle.height &&
+                                 planeRect.y + planeRect.height > obstacle.y;
+
+                return collision;
+            }
+
+            showExplosion() {
+                const explosion = document.createElement('div');
+                explosion.className = 'explosion';
+                explosion.style.left = '100px';
+                explosion.style.top = `${this.planeY}px`;
+                document.getElementById('gameContainer').appendChild(explosion);
+
+                setTimeout(() => {
+                    explosion.remove();
+                }, 600);
+            }
+
+            updateClouds() {
+                this.clouds.forEach(cloud => {
+                    cloud.x -= cloud.speed;
+                    if (cloud.x + cloud.size < 0) {
+                        cloud.x = this.canvas.width + cloud.size;
+                        cloud.y = Math.random() * this.canvas.height;
+                    }
+                });
+            }
+
+            draw() {
+                const gradient = this.ctx.createLinearGradient(0, 0, 0, this.canvas.height);
+                gradient.addColorStop(0, 'rgba(74, 144, 226, 0.3)');
+                gradient.addColorStop(1, 'rgba(135, 206, 235, 0.2)');
+                this.ctx.fillStyle = gradient;
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+                this.ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                this.clouds.forEach(cloud => {
+                    this.ctx.beginPath();
+                    this.ctx.arc(cloud.x, cloud.y, cloud.size, 0, Math.PI * 2);
+                    this.ctx.arc(cloud.x + cloud.size * 0.5, cloud.y - cloud.size * 0.3, cloud.size * 0.6, 0, Math.PI * 2);
+                    this.ctx.arc(cloud.x - cloud.size * 0.5, cloud.y + cloud.size * 0.3, cloud.size * 0.7, 0, Math.PI * 2);
+                    this.ctx.fill();
+                });
+
+                this.ctx.fillStyle = '#34495e';
+                this.ctx.strokeStyle = '#2c3e50';
+                this.ctx.lineWidth = 3;
+                this.obstacles.forEach(obstacle => {
+                    this.ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+                    this.ctx.strokeRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+                });
+            }
+
+            updateUI() {
+                this.levelEl.textContent = `레벨: ${this.level}`;
+                this.timerEl.textContent = `시간: ${Math.ceil(this.timer)}`;
+            }
+
+            gameOver(success) {
+                this.gameRunning = false;
+                this.wordDisplay.style.display = 'none';
+                this.wordDisplay.classList.remove('game-active');
+
+                if (success) {
+                    this.gameOverTitle.textContent = 'Complete!';
+                    this.restartBtn.style.display = 'inline-block';
+                    this.nextStageBtn.style.display = this.level < this.maxLevel ? 'inline-block' : 'none';
+                } else {
+                    this.gameOverTitle.textContent = '게임 오버!';
+                    this.restartBtn.style.display = 'inline-block';
+                    this.nextStageBtn.style.display = 'none';
+                }
+
+                this.gameOverEl.style.display = 'block';
+            }
+
+            nextStage() {
+                if (this.level < this.maxLevel) {
+                    this.level++;
+                    this.gameSpeed = 2.0 + (this.level - 1) * 0.1; // 레벨당 속도 더 완만하게 증가 (0.2 → 0.1)
+                    this.fallSpeed = 8 + (this.level - 1) * 0.3; // 레벨당 추락속도 더 완만하게 증가 (0.5 → 0.3)
+                    this.obstacleSpawnRate = 0.015 + this.level * 0.005;
+                    this.moveDistance = 200; // 비행기 이동거리 유지
+                    this.usedWords = [];
+                }
+
+                this.gameOverEl.style.display = 'none';
+                this.wordDisplay.style.display = 'block';
+                this.obstacles = [];
+                this.clouds = [];
+                this.createClouds();
+
+                this.planeY = this.canvas.height / 2;
+                this.plane.style.top = `${this.planeY}px`;
+                this.plane.style.transform = 'translateY(-50%) rotate(0deg)';
+
+                this.generateNewWords();
+                this.timer = 60;
+                this.requiredMoves = 5;
+                this.updateUI();
+                this.startGame();
+            }
+
+            restart() {
+                this.gameOverEl.style.display = 'none';
+                this.wordDisplay.style.display = 'block';
+                this.obstacles = [];
+                this.clouds = [];
+                this.level = 1;
+                this.gameSpeed = 1.5;
+                this.fallSpeed = 8;
+                this.obstacleSpawnRate = 0.015;
+                this.moveDistance = 60;
+                this.requiredMoves = 5;
+                this.usedWords = [];
+
+                this.planeY = this.canvas.height / 2;
+                this.plane.style.top = `${this.planeY}px`;
+                this.plane.style.transform = 'translateY(-50%) rotate(0deg)';
+
+                this.init();
+            }
+
+            gameLoop() {
+                if (!this.gameRunning) return;
+
+                const currentTime = Date.now();
+                const deltaTime = (currentTime - this.lastFrameTime) / 1000;
+                this.lastFrameTime = currentTime;
+
+                const elapsedTime = (currentTime - this.startTime) / 1000;
+                this.timer = Math.max(0, 60 - elapsedTime);
+
+                this.updateUI();
+
+                if (this.timer <= 0) {
+                    if (this.currentMoves >= this.requiredMoves) {
+                        this.gameOver(true);
+                    } else {
+                        this.wordFail();
+                    }
+                    return;
+                }
+
+                this.planeY += this.fallSpeed * deltaTime;
+
+                if (this.planeY <= 25 || this.planeY >= this.canvas.height - 25) {
+                    this.showExplosion();
+                    this.wordFail();
+                    return;
+                }
+
+                this.planeY = Math.max(25, Math.min(this.canvas.height - 25, this.planeY));
+                this.plane.style.top = `${this.planeY}px`;
+
+                this.spawnObstacle();
+                this.updateObstacles();
+                this.updateClouds();
+                this.draw();
+
+                requestAnimationFrame(() => this.gameLoop());
+            }
+        }
+
+        window.addEventListener('load', () => {
+            new TypingFlightGame();
+        });
+
+        window.addEventListener('resize', () => {
+            const canvas = document.getElementById('gameCanvas');
+            if (canvas) {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight - 80;
+            }
+        });
+
+        // 네비게이션 스크롤 효과
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                nav.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+
+        // 부드러운 스크롤링
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href && href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

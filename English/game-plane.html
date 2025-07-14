@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Flight Typing Game</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        nav { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 1rem 0; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1); }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 2rem; }
+        .logo { font-size: 1.8rem; font-weight: bold; color: #667eea; text-decoration: none; }
+        .nav-menu { display: flex; list-style: none; gap: 1.5rem; flex-wrap: nowrap; white-space: nowrap; }
+        .nav-menu li { position: relative; }
+        .nav-menu a { text-decoration: none; color: #333; font-weight: 500; padding: 0.5rem 0.8rem; border-radius: 25px; transition: all 0.3s ease; font-size: 0.9rem; display: flex; align-items: center; gap: 0.3rem; }
+        .nav-menu a:hover { background: #667eea; color: white; transform: translateY(-2px); }
+        .dropdown-arrow { font-size: 0.7rem; transition: transform 0.3s ease; }
+        .dropdown-menu { position: absolute; top: 100%; left: 0; background: white; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); border-radius: 10px; padding: 0.5rem 0; min-width: 180px; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s ease; z-index: 1001; border: 1px solid rgba(0, 0, 0, 0.1); }
+        .nav-menu li:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+        .nav-menu li:hover .dropdown-arrow { transform: rotate(180deg); }
+        .dropdown-menu a { display: block; padding: 0.7rem 1rem; color: #333; border-radius: 0; font-weight: 400; transition: all 0.2s ease; }
+        .dropdown-menu a:hover { background: #f8f9fa; color: #667eea; transform: none; padding-left: 1.2rem; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(180deg, #4A90E2 0%, #87CEEB 50%, #98FB98 100%); overflow: hidden; height: 100vh; padding-top: 80px; }
+        #gameContainer { position: relative; width: 100vw; height: calc(100vh - 80px); overflow: hidden; }
+        #gameCanvas { position: absolute; top: 0; left: 0; background: linear-gradient(180deg, rgba(74, 144, 226, 0.3) 0%, rgba(135, 206, 235, 0.2) 100%); }
+        #plane { position: absolute; left: 100px; top: 50%; transform: translateY(-50%) rotate(0deg); width: 70px; height: 50px; background: linear-gradient(45deg, #FF6B6B, #FF8C94); border-radius: 50% 20% 20% 50% / 60% 60% 40% 40%; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); transition: top 0.3s ease, transform 0.2s ease; z-index: 10; }
+        #plane::before { content: ''; position: absolute; top: -15px; left: 20px; width: 40px; height: 20px; background: linear-gradient(45deg, #FF4757, #FF6B6B); border-radius: 50%; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2); }
+        #plane::after { content: ''; position: absolute; top: 20px; right: -20px; width: 25px; height: 15px; background: linear-gradient(45deg, #FF4757, #FF6B6B); border-radius: 0 50% 50% 0; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2); }
+        .obstacle { position: absolute; background: linear-gradient(135deg, #B0C4DE 0%, #FFD700 50%, #C0C0C0 100%), repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0px, rgba(255, 255, 255, 0.1) 5px, transparent 5px, transparent 10px); border-radius: 20px 10px 10px 20px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), inset 0 2px 5px rgba(255, 255, 255, 0.3), inset 0 -2px 5px rgba(0, 0, 0, 0.2); z-index: 5; animation: obstacleAppear 0.7s ease-in-out; }
+        @keyframes obstacleAppear { 0% { opacity: 0; transform: scale(0.9); } 50% { opacity: 0.7; transform: scale(1.1); } 100% { opacity: 1; transform: scale(1); } }
+        .cloud { position: absolute; background: linear-gradient(180deg, rgba(255, 255, 255, 0.4), rgba(240, 240, 240, 0.3)); border-radius: 50px; opacity: 0.6; z-index: 1; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); }
+        .cloud::before { content: ''; position: absolute; top: -10px; left: 20px; width: 50%; height: 50%; background: inherit; border-radius: 50%; }
+        .cloud::after { content: ''; position: absolute; top: 10px; left: 40%; width: 60%; height: 60%; background: inherit; border-radius: 50%; }
+        #ui { position: absolute; top: 20px; left: 20px; z-index: 20; color: #FFFFFF; font-weight: 700; background: rgba(0, 0, 0, 0.8); padding: 20px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4); border: 2px solid rgba(255, 255, 255, 0.2); }
+        #level, #timer { font-size: 22px; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); }
+        #wordDisplay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 25; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(15px); padding: 40px 50px; text-align: center; border-radius: 20px; color: #FFFFFF; min-width: 500px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5); border: 3px solid rgba(255, 255, 255, 0.2); display: block; visibility: visible; }
+        #instruction { font-size: 28px; margin-bottom: 30px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); color: #FFD700; font-weight: 600; }
+        #currentWordUp, #currentWordDown { font-size: 32px; letter-spacing: 2px; margin: 20px 0; font-weight: 900; text-shadow: 0 3px 6px rgba(0, 0, 0, 0.8), 0 0 10px rgba(255, 255, 255, 0.3); padding: 15px; border-radius: 15px; white-space: nowrap; display: block; opacity: 1; visibility: visible; }
+        #wordDisplay:not(.game-active) #currentWordUp, #wordDisplay:not(.game-active) #currentWordDown { font-size: 32px; display: block; opacity: 1; visibility: visible; font-weight: 900; text-shadow: 0 4px 8px rgba(0, 0, 0, 0.8), 0 0 15px rgba(255, 255, 255, 0.4); }
+        #currentWordUp { color: #FFFFFF; background: rgba(64, 196, 255, 0.6); border: 4px solid rgba(64, 196, 255, 0.9); text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(64, 196, 255, 0.5); }
+        #currentWordDown { color: #FFFFFF; background: rgba(255, 202, 40, 0.6); border: 4px solid rgba(255, 202, 40, 0.9); text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(255, 202, 40, 0.5); }
+        #userInput { font-size: 24px; padding: 15px 20px; border: 3px solid #FF6B6B; border-radius: 15px; text-align: center; outline: none; width: 350px; background: rgba(0, 0, 0, 0.5); color: #FFFFFF; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); display: none; font-family: 'Inter', sans-serif; margin-top: 20px; font-weight: 500; }
+        #userInput::placeholder { color: rgba(255, 255, 255, 0.7); }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+        #startBtn { font-size: 24px; padding: 14px 35px; border: none; background: linear-gradient(45deg, #FF0000, #FF4D4D); color: white; border-radius: 20px; cursor: pointer; transition: all 0.3s ease; margin: 20px auto 0; display: block; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(255, 255, 255, 0.4), inset 0 -2px 4px rgba(0, 0, 0, 0.3); font-family: 'Inter', sans-serif; font-weight: 700; border: 3px solid rgba(255, 255, 255, 0.2); }
+        #startBtn:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.4), inset 0 -2px 4px rgba(0, 0, 0, 0.3); background: linear-gradient(45deg, #CC0000, #FF3333); }
+        #gameOver { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 30; background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(10px); padding: 40px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); display: none; border: 2px solid rgba(255, 255, 255, 0.2); min-width: 350px; }
+        #gameOver h2 { color: #FF6B6B; font-size: 40px; margin-bottom: 20px; font-weight: 800; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); }
+        #restartBtn, #nextStageBtn, #exitBtn { background: linear-gradient(45deg, #FF6B6B, #FF8C94); color: white; border: none; padding: 18px 35px; font-size: 22px; border-radius: 15px; cursor: pointer; margin: 10px; transition: all 0.3s ease; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); font-family: 'Inter', sans-serif; font-weight: 600; border: 2px solid rgba(255, 255, 255, 0.2); }
+        #exitBtn { background: linear-gradient(45deg, #6C757D, #ADB5BD); }
+        #restartBtn:hover, #nextStageBtn:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4); background: linear-gradient(45deg, #FF4757, #FF6B6B); }
+        #exitBtn:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4); background: linear-gradient(45deg, #495057, #6C757D); }
+        .explosion { position: absolute; width: 120px; height: 120px; background: radial-gradient(circle, #FFD700 20%, #FF4500 60%, transparent); border-radius: 50%; animation: explode 0.6s ease-out; z-index: 15; }
+        @keyframes explode { 0% { transform: scale(0); opacity: 1; } 100% { transform: scale(2.5); opacity: 0; } }
+        .success-effect { position: absolute; color: #4CAF50; font-size: 32px; font-weight: 800; animation: floatUp 1.2s ease-out forwards; z-index: 20; text-shadow: 0 3px 6px rgba(0, 0, 0, 0.5); }
+        @keyframes floatUp { 0% { opacity: 1; transform: translateY(0) scale(1); } 50% { transform: translateY(-30px) scale(1.2); } 100% { opacity: 0; transform: translateY(-60px) scale(0.8); } }
+        #wordDisplay.game-active { top: 30px; left: 50%; transform: translateX(-50%); background: rgba(0, 0, 0, 0.7); padding: 20px 30px; min-width: 400px; border-radius: 15px; }
+        #wordDisplay.game-active #instruction { display: none; }
+        #wordDisplay.game-active #currentWordUp, #wordDisplay.game-active #currentWordDown { font-size: 24px; margin: 10px 0; padding: 10px; }
+        #wordDisplay.game-active #userInput { font-size: 20px; width: 300px; padding: 12px 15px; margin-top: 15px; }
+        @media (max-width: 768px) {
+            .nav-menu { flex-wrap: wrap; gap: 0.5rem; }
+            .nav-menu a { padding: 0.4rem 0.6rem; font-size: 0.8rem; }
+            .dropdown-menu { min-width: 150px; font-size: 0.8rem; }
+            .dropdown-menu a { padding: 0.5rem 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="../index.html" class="logo">⌨️ FingerRun</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">소개</a></li>
+                <li>
+                    <a href="../Korean/practice.html">
+                        한글 타자연습
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="../Korean/practice.html" onclick="switchKoreanMode('consonant')">자음 연습</a>
+                        <a href="../Korean/practice.html" onclick="switchKoreanMode('vowel')">모음 연습</a>
+                        <a href="../Korean/practice.html" onclick="switchKoreanMode('word')">단어 연습</a>
+                        <a href="../Korean/practice.html" onclick="switchKoreanMode('sentence')">문장 연습</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="./practice.html">
+                        영어 타자연습
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="./practice.html" onclick="switchEnglishMode('alphabet')">알파벳 연습</a>
+                        <a href="./practice.html" onclick="switchEnglishMode('word')">영어 단어 연습</a>
+                        <a href="./practice.html" onclick="switchEnglishMode('sentence')">영어 문장 연습</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="../Korean/game-mole.html">
+                        타자게임
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="../Korean/game-mole.html" onclick="playKoreanMoleGame()">두더지 잡기 (한글)</a>
+                        <a href="./game-mole.html" onclick="playEnglishMoleGame()">두더지 잡기 (영어)</a>
+                        <a href="../Korean/game-plane.html" onclick="playKoreanPlaneGame()">비행기 조종 (한글)</a>
+                        <a href="./game-plane.html" onclick="playEnglishPlaneGame()">비행기 조종 (영어)</a>
+                        <a href="../Korean/game-delivery.html" onclick="playKoreanDeliveryGame()">택배 분류 (한글)</a>
+                        <a href="./game-delivery.html" onclick="playEnglishDeliveryGame()">택배 분류 (영어)</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="../Certificate/word-processor.html">
+                        자격증
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="../Certificate/word-processor.html">워드프로세서</a>
+                    </div>
+                </li>
+                <li><a href="../contact.html">문의하기</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="1200" height="800"></canvas>
+        <div id="plane"></div>
+        <div id="ui">
+            <div id="level">Level: 1</div>
+            <div id="timer">Time: 60</div>
+        </div>
+        <div id="wordDisplay">
+            <div id="instruction">Type words to control the plane!</div>
+            <div id="currentWordUp"></div>
+            <div id="currentWordDown"></div>
+            <input type="text" id="userInput" placeholder="Type the word here">
+            <button id="startBtn">Start Game</button>
+        </div>
+        <div id="gameOver">
+            <h2 id="gameOverTitle">Game Over!</h2>
+            <button id="restartBtn">Restart</button>
+            <button id="nextStageBtn" style="display: none;">Next Level</button>
+            <button id="exitBtn">Exit</button>
+        </div>
+    </div>
+    <script>
+        class EnglishFlightTypingGame {
+            constructor() {
+                this.canvas = document.getElementById('gameCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.plane = document.getElementById('plane');
+                this.wordDisplay = document.getElementById('wordDisplay');
+                this.currentWordUpEl = document.getElementById('currentWordUp');
+                this.currentWordDownEl = document.getElementById('currentWordDown');
+                this.userInput = document.getElementById('userInput');
+                this.startBtn = document.getElementById('startBtn');
+                this.levelEl = document.getElementById('level');
+                this.timerEl = document.getElementById('timer');
+                this.gameOverEl = document.getElementById('gameOver');
+                this.gameOverTitle = document.getElementById('gameOverTitle');
+                this.restartBtn = document.getElementById('restartBtn');
+                this.nextStageBtn = document.getElementById('nextStageBtn');
+                this.exitBtn = document.getElementById('exitBtn');
+                if (!this.canvas) console.error('gameCanvas not found');
+                if (!this.plane) console.error('plane not found');
+                if (!this.wordDisplay) console.error('wordDisplay not found');
+                if (!this.currentWordUpEl) console.error('currentWordUp not found');
+                if (!this.currentWordDownEl) console.error('currentWordDown not found');
+                if (!this.userInput) console.error('userInput not found');
+                if (!this.startBtn) console.error('startBtn not found');
+                if (!this.levelEl) console.error('level not found');
+                if (!this.timerEl) console.error('timer not found');
+                if (!this.gameOverEl) console.error('gameOver not found');
+                if (!this.restartBtn) console.error('restartBtn not found');
+                if (!this.nextStageBtn) console.error('nextStageBtn not found');
+                if (!this.exitBtn) console.error('exitBtn not found');
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight - 80;
+                this.usedWords = [];
+                this.handleInputBound = null;
+                this.planeY = (window.innerHeight - 80) / 2;
+                this.plane.style.top = '50%';
+                this.plane.style.transform = 'translateY(-50%) rotate(0deg)';
+                this.init();
+                this.setupEventListeners();
+            }
+            init() {
+                this.level = 1;
+                this.maxLevel = 10;
+                this.gameRunning = false;
+                this.planeY = this.canvas.height / 2;
+                this.fallSpeed = 0.75 + (this.level - 1) * 0.075;
+                this.obstacles = [];
+                this.clouds = [];
+                this.currentWordUp = '';
+                this.currentWordDown = '';
+                this.userTyped = '';
+                this.gameSpeed = (0.8 + (this.level - 1) * 0.2) * 1.6875;
+                this.obstacleSpawnRate = this.level <= 3 ? 0.015 : 0.025;
+                this.lastObstacleTime = 0;
+                this.timer = 60;
+                this.startTime = 0;
+                this.lastFrameTime = 0;
+                this.planeTilt = 0;
+                this.moveDistance = 120;
+                this.currentMoves = 0;
+                this.requiredMoves = Math.min(2 + this.level, 10);
+                this.usedWords = [];
+                this.easyWords = [
+                    'go', 'no', 'up', 'me', 'we', 'be', 'he', 'my', 'by', 'so', 'to', 'do', 'it', 'or', 'an', 'at', 'on', 'in', 'is', 'as',
+                    'cat', 'dog', 'run', 'big', 'fun', 'sun', 'car', 'hat', 'bat', 'bag', 'cup', 'pen', 'box', 'toy', 'map', 'egg', 'red', 'top', 'hot',
+                    'leg', 'arm', 'eye', 'ear', 'ice', 'fox', 'owl', 'bee', 'web', 'gem', 'key'
+                ];
+                this.mediumWords = [
+                    'house', 'water', 'happy', 'music', 'paper', 'phone', 'table', 'chair', 'green', 'white', 'black', 'money', 'light', 'sound', 'world',
+                    'think', 'learn', 'write', 'clean', 'beach', 'ocean', 'smile', 'heart', 'brain', 'sweet', 'fresh', 'quick', 'smart', 'dance', 'laugh',
+                    'dream', 'magic', 'plant', 'train', 'plane', 'cloud', 'storm', 'space', 'earth', 'peace', 'brave', 'strong', 'trust', 'pride', 'grace',
+                    'power', 'skill', 'craft', 'spring', 'summer', 'winter', 'autumn'
+                ];
+                this.hardWords = [
+                    'beautiful', 'important', 'computer', 'keyboard', 'language', 'surprise', 'together', 'mountain', 'remember', 'breakfast', 'birthday',
+                    'question', 'children', 'vacation', 'elephant', 'sandwich', 'hospital', 'business', 'problem', 'picture', 'service', 'parking', 'weather',
+                    'library', 'history', 'science', 'culture', 'freedom', 'journey', 'adventure', 'discover', 'treasure', 'mystery', 'courage', 'wisdom',
+                    'fantastic', 'building', 'teaching', 'learning', 'shopping', 'cooking', 'reading', 'writing', 'working', 'playing', 'singing', 'dancing',
+                    'running', 'jumping', 'swimming'
+                ];
+                this.expertWords = [
+                    'education', 'technology', 'psychology', 'philosophy', 'restaurant', 'government', 'environment', 'opportunity', 'organization',
+                    'relationship', 'championship', 'photography', 'university', 'development', 'responsibility', 'communication', 'construction',
+                    'information', 'international', 'entertainment', 'transportation', 'neighborhood', 'understanding', 'appreciation', 'comfortable',
+                    'temperature', 'democratic', 'scientific', 'mathematical', 'historical', 'geographical', 'biographical', 'technological', 'psychological',
+                    'philosophical', 'economical', 'political', 'cultural', 'educational', 'professional', 'traditional', 'exceptional', 'operational',
+                    'constitutional', 'administrative'
+                ];
+                this.masterWords = [
+                    'extraordinary', 'pronunciation', 'massachusetts', 'incomprehensible', 'responsibilities', 'characteristics', 'acknowledgment',
+                    'embarrassment', 'pharmaceutical', 'entrepreneurship', 'architecture', 'archaeological', 'chronological', 'electromagnetic',
+                    'meteorological', 'cardiovascular', 'gastrointestinal', 'ophthalmologist', 'neuropsychology', 'biotechnology', 'nanotechnology',
+                    'cryptocurrency', 'biochemistry', 'astrophysics', 'engineering', 'thermodynamics', 'electromagnetism', 'telecommunications',
+                    'environmental', 'constitutional', 'administrative', 'representative', 'organizational', 'transformational', 'multidisciplinary',
+                    'interdisciplinary', 'anthropological', 'dermatological', 'endocrinological', 'gastroenterological'
+                ];
+                this.wordDisplay.style.display = 'block';
+                this.wordDisplay.style.visibility = 'visible';
+                this.currentWordUpEl.style.display = 'block';
+                this.currentWordUpEl.style.visibility = 'visible';
+                this.currentWordDownEl.style.display = 'block';
+                this.currentWordDownEl.style.visibility = 'visible';
+                this.generateNewWords();
+                this.createClouds();
+                this.startBtn.style.display = 'block';
+                this.userInput.style.display = 'none';
+                this.nextStageBtn.style.display = 'none';
+                this.wordDisplay.classList.remove('game-active');
+                this.updateUI();
+                console.log(`Level ${this.level} Settings:`, {
+                    requiredMoves: this.requiredMoves,
+                    fallSpeed: this.fallSpeed,
+                    gameSpeed: this.gameSpeed,
+                    spawnInterval: Math.max(2000, 6000 - (this.level - 1) * 300),
+                    gapSize: Math.max(600, 900 - (this.level - 1) * 30),
+                    wordCategory: this.level <= 2 ? 'Easy (2-3 chars)' : this.level <= 4 ? 'Medium (4-6 chars)' : this.level <= 6 ? 'Hard (6-8 chars)' : this.level <= 8 ? 'Expert (8-12 chars)' : 'Master (12+ chars)'
+                });
+            }
+            setLevelGoals() {
+                this.requiredMoves = Math.min(2 + this.level, 10);
+                this.currentMoves = 0;
+            }
+            setupEventListeners() {
+                if (this.handleInputBound) {
+                    this.userInput.removeEventListener('input', this.handleInputBound);
+                }
+                if (this.handleKeydownBound) {
+                    this.userInput.removeEventListener('keydown', this.handleKeydownBound);
+                }
+                this.handleInputBound = (e) => {
+                    this.userTyped = e.target.value.toLowerCase();
+                    this.handleInput();
+                };
+                this.handleKeydownBound = (e) => {
+                    if (e.key === ' ' || e.key === 'Enter') {
+                        e.preventDefault();
+                        this.checkWord();
+                    }
+                };
+                this.userInput.addEventListener('input', this.handleInputBound);
+                this.userInput.addEventListener('keydown', this.handleKeydownBound);
+                this.startBtn.addEventListener('click', () => {
+                    this.startGame();
+                });
+                this.restartBtn.addEventListener('click', () => {
+                    this.restart();
+                });
+                this.nextStageBtn.addEventListener('click', () => {
+                    this.nextStage();
+                });
+                this.exitBtn.addEventListener('click', () => {
+                    this.exitGame();
+                });
+            }
+            startGame() {
+                this.gameRunning = true;
+                this.usedWords = [];
+                this.startBtn.style.display = 'none';
+                this.userInput.style.display = 'block';
+                this.userInput.value = '';
+                this.userTyped = '';
+                this.wordDisplay.classList.add('game-active');
+                this.planeY = (window.innerHeight - 80) / 2;
+                this.plane.style.top = this.planeY + 'px';
+                this.plane.style.transform = 'translateY(-50%) rotate(0deg)';
+                this.userInput.focus();
+                this.startTime = Date.now();
+                this.lastFrameTime = Date.now();
+                this.currentMoves = 0;
+                this.setLevelGoals();
+                this.generateNewWords();
+                this.updateUI();
+                setTimeout(() => {
+                    if (this.gameRunning) {
+                        this.gameLoop();
+                    }
+                }, 100);
+            }
+            generateNewWords() {
+                if (!this.gameRunning) {
+                    this.currentWordUpEl.innerHTML = '<strong style="font-size: 40px;">⬆️</strong> <span style="font-weight: 400;">Plane goes UP</span>';
+                    this.currentWordDownEl.innerHTML = '<strong style="font-size: 40px;">⬇️</strong> <span style="font-weight: 400;">Plane goes DOWN</span>';
+                    this.currentWordUp = '';
+                    this.currentWordDown = '';
+                    this.currentWordUpEl.style.display = 'block';
+                    this.currentWordUpEl.style.visibility = 'visible';
+                    this.currentWordDownEl.style.display = 'block';
+                    this.currentWordDownEl.style.visibility = 'visible';
+                } else {
+                    let words;
+                    if (this.level <= 2) {
+                        words = this.easyWords;
+                    } else if (this.level <= 4) {
+                        words = this.mediumWords;
+                    } else if (this.level <= 6) {
+                        words = this.hardWords;
+                    } else if (this.level <= 8) {
+                        words = this.expertWords;
+                    } else {
+                        words = this.masterWords;
+                    }
+                    const availableWords = words.filter(word => !this.usedWords.includes(word));
+                    if (availableWords.length < 2) {
+                        console.warn(`Level ${this.level}: Not enough unique words, resetting usedWords. Used: ${this.usedWords.length}/${words.length}`);
+                        this.usedWords = [];
+                        availableWords.length = 0;
+                        availableWords.push(...words);
+                    }
+                    const shuffled = [...availableWords].sort(() => Math.random() - 0.5);
+                    this.currentWordUp = shuffled[0];
+                    this.currentWordDown = shuffled[1];
+                    this.usedWords.push(this.currentWordUp, this.currentWordDown);
+                    this.currentWordUpEl.textContent = `↑ ${this.currentWordUp}`;
+                    this.currentWordDownEl.textContent = `↓ ${this.currentWordDown}`;
+                    this.currentWordUpEl.style.display = 'block';
+                    this.currentWordUpEl.style.visibility = 'visible';
+                    this.currentWordDownEl.style.display = 'block';
+                    this.currentWordDownEl.style.visibility = 'visible';
+                    console.log(`Level ${this.level} Words:`, {
+                        up: this.currentWordUp,
+                        down: this.currentWordDown,
+                        upLength: this.currentWordUp.length,
+                        downLength: this.currentWordDown.length,
+                        usedCount: this.usedWords.length,
+                        totalWords: words.length
+                    });
+                }
+                this.userTyped = '';
+                this.userInput.value = '';
+                this.userInput.style.borderColor = '#FF6B6B';
+                this.userInput.style.background = 'rgba(0, 0, 0, 0.5)';
+                this.userInput.focus();
+            }
+            handleInput() {
+                if (this.currentWordUp.toLowerCase().startsWith(this.userTyped) || this.currentWordDown.toLowerCase().startsWith(this.userTyped)) {
+                    this.userInput.style.borderColor = '#4CAF50';
+                    this.userInput.style.background = 'rgba(76, 175, 80, 0.1)';
+                } else {
+                    this.userInput.style.borderColor = '#FF6B6B';
+                    this.userInput.style.background = 'rgba(255, 107, 107, 0.1)';
+                }
+            }
+            checkWord() {
+                if (this.userTyped.trim() === '') return;
+                console.log('Check Word:', { input: this.userTyped, up: this.currentWordUp, down: this.currentWordDown });
+                if (this.userTyped === this.currentWordUp.toLowerCase()) {
+                    this.wordSuccess(true);
+                } else if (this.userTyped === this.currentWordDown.toLowerCase()) {
+                    this.wordSuccess(false);
+                } else {
+                    this.userInput.style.animation = 'shake 0.3s ease';
+                    setTimeout(() => this.userInput.style.animation = '', 300);
+                    this.userTyped = '';
+                    this.userInput.value = '';
+                    this.userInput.style.borderColor = '#FF6B6B';
+                    this.userInput.style.background = 'rgba(0, 0, 0, 0.5)';
+                    this.userInput.focus();
+                }
+            }
+            wordSuccess(up) {
+                this.currentMoves += 1;
+                this.movePlane(up);
+                this.showSuccessEffect(up);
+                this.generateNewWords();
+                this.updateUI();
+            }
+            wordFail() {
+                this.gameOver(false);
+            }
+            movePlane(up) {
+                const moveDistance = 120;
+                const planeHeight = 50;
+                if (up) {
+                    this.planeY = Math.max(planeHeight / 2, this.planeY - moveDistance);
+                    this.planeTilt = -10;
+                } else {
+                    this.planeY = Math.min(this.canvas.height - (planeHeight / 2), this.planeY + moveDistance);
+                    this.planeTilt = 10;
+                }
+                const planeTop = this.planeY - (planeHeight / 2);
+                const planeBottom = this.planeY + (planeHeight / 2);
+                if (planeTop <= 0 || planeBottom >= this.canvas.height) {
+                    this.showExplosion();
+                    this.wordFail();
+                    return;
+                }
+                this.plane.style.top = `${this.planeY}px`;
+                this.plane.style.transform = `translateY(-50%) rotate(${this.planeTilt}deg)`;
+                setTimeout(() => {
+                    this.planeTilt = 0;
+                    this.plane.style.transform = `translateY(-50%) rotate(${this.planeTilt}deg)`;
+                }, 200);
+            }
+            showSuccessEffect(up) {
+                const effect = document.createElement('div');
+                effect.className = 'success-effect';
+                const direction = up ? 'UP' : 'DOWN';
+                effect.textContent = direction;
+                effect.style.left = '200px';
+                effect.style.top = `${this.planeY}px`;
+                if (up) {
+                    effect.style.color = '#40C4FF';
+                } else {
+                    effect.style.color = '#FFCA28';
+                }
+                document.getElementById('gameContainer').appendChild(effect);
+                setTimeout(() => {
+                    effect.remove();
+                }, 1200);
+            }
+            createClouds() {
+                for (let i = 0; i < 5; i++) {
+                    this.clouds.push({
+                        x: Math.random() * this.canvas.width,
+                        y: Math.random() * this.canvas.height,
+                        size: 40 + Math.random() * 50,
+                        speed: 0.5 + Math.random() * 1.5
+                    });
+                }
+            }
+            spawnObstacle() {
+                const spawnInterval = Math.max(2000, 6000 - (this.level - 1) * 300);
+                const baseWidth = 150;
+                if (Date.now() - this.lastObstacleTime > spawnInterval) {
+                    const singleObstacleChance = Math.max(0.1, 0.7 - (this.level - 1) * 0.06);
+                    const type = Math.random() < singleObstacleChance ? (Math.random() < 0.5 ? 'top' : 'bottom') : 'pair';
+                    if (type === 'top') {
+                        const maxHeight = this.canvas.height * 0.6;
+                        const height = 80 + Math.random() * (maxHeight - 80);
+                        const obstacle = document.createElement('div');
+                        obstacle.className = 'obstacle';
+                        obstacle.style.left = this.canvas.width + 'px';
+                        obstacle.style.top = '0px';
+                        obstacle.style.width = baseWidth + 'px';
+                        obstacle.style.height = height + 'px';
+                        document.getElementById('gameContainer').appendChild(obstacle);
+                        this.obstacles.push({
+                            element: obstacle,
+                            x: this.canvas.width,
+                            y: 0,
+                            width: baseWidth,
+                            height: height,
+                            speed: this.gameSpeed
+                        });
+                    } else if (type === 'bottom') {
+                        const maxHeight = this.canvas.height * 0.6;
+                        const height = 80 + Math.random() * (maxHeight - 80);
+                        const obstacle = document.createElement('div');
+                        obstacle.className = 'obstacle';
+                        obstacle.style.left = this.canvas.width + 'px';
+                        obstacle.style.top = (this.canvas.height - height) + 'px';
+                        obstacle.style.width = baseWidth + 'px';
+                        obstacle.style.height = height + 'px';
+                        document.getElementById('gameContainer').appendChild(obstacle);
+                        this.obstacles.push({
+                            element: obstacle,
+                            x: this.canvas.width,
+                            y: this.canvas.height - height,
+                            width: baseWidth,
+                            height: height,
+                            speed: this.gameSpeed
+                        });
+                    } else {
+                        const gapSize = Math.max(600, 900 - (this.level - 1) * 30);
+                        const maxGapPosition = this.canvas.height - gapSize - 80;
+                        const minGapPosition = 80;
+                        const gapPosition = minGapPosition + Math.random() * (maxGapPosition - minGapPosition);
+                        const obstacleTop = document.createElement('div');
+                        obstacleTop.className = 'obstacle';
+                        obstacleTop.style.left = this.canvas.width + 'px';
+                        obstacleTop.style.top = '0px';
+                        obstacleTop.style.width = baseWidth + 'px';
+                        obstacleTop.style.height = gapPosition + 'px';
+                        document.getElementById('gameContainer').appendChild(obstacleTop);
+                        const obstacleBottom = document.createElement('div');
+                        obstacleBottom.className = 'obstacle';
+                        obstacleBottom.style.left = this.canvas.width + 'px';
+                        obstacleBottom.style.top = (gapPosition + gapSize) + 'px';
+                        obstacleBottom.style.width = baseWidth + 'px';
+                        obstacleBottom.style.height = (this.canvas.height - (gapPosition + gapSize)) + 'px';
+                        document.getElementById('gameContainer').appendChild(obstacleBottom);
+                        this.obstacles.push({
+                            element: obstacleTop,
+                            x: this.canvas.width,
+                            y: 0,
+                            width: baseWidth,
+                            height: gapPosition,
+                            speed: this.gameSpeed
+                        });
+                        this.obstacles.push({
+                            element: obstacleBottom,
+                            x: this.canvas.width,
+                            y: gapPosition + gapSize,
+                            width: baseWidth,
+                            height: this.canvas.height - (gapPosition + gapSize),
+                            speed: this.gameSpeed
+                        });
+                    }
+                    this.lastObstacleTime = Date.now();
+                }
+            }
+            updateObstacles() {
+                for (let i = this.obstacles.length - 1; i >= 0; i--) {
+                    const obstacle = this.obstacles[i];
+                    obstacle.x -= obstacle.speed;
+                    obstacle.element.style.left = obstacle.x + 'px';
+                    if (this.checkCollision(obstacle)) {
+                        this.showExplosion();
+                        this.wordFail();
+                        return;
+                    }
+                    if (obstacle.x + obstacle.width < 0) {
+                        obstacle.element.remove();
+                        this.obstacles.splice(i, 1);
+                    }
+                }
+            }
+            checkCollision(obstacle) {
+                if (!this.gameRunning || Date.now() - this.startTime < 500) {
+                    return false;
+                }
+                const planeRect = {
+                    x: 100 + 5,
+                    y: this.planeY - 20,
+                    width: 60,
+                    height: 40
+                };
+                const obstacleRect = {
+                    x: obstacle.x,
+                    y: obstacle.y,
+                    width: obstacle.width,
+                    height: obstacle.height
+                };
+                const collision = planeRect.x < obstacleRect.x + obstacleRect.width &&
+                    planeRect.x + planeRect.width > obstacleRect.x &&
+                    planeRect.y < obstacleRect.y + obstacleRect.height &&
+                    planeRect.y + planeRect.height > obstacleRect.y;
+                return collision;
+            }
+            showExplosion() {
+                const explosion = document.createElement('div');
+                explosion.className = 'explosion';
+                explosion.style.left = '100px';
+                explosion.style.top = `${this.planeY}px`;
+                document.getElementById('gameContainer').appendChild(explosion);
+                setTimeout(() => {
+                    explosion.remove();
+                }, 600);
+            }
+            updateClouds() {
+                this.clouds.forEach(cloud => {
+                    cloud.x -= cloud.speed;
+                    if (cloud.x + cloud.size < 0) {
+                        cloud.x = this.canvas.width + cloud.size;
+                        cloud.y = Math.random() * this.canvas.height;
+                    }
+                });
+            }
+            draw() {
+                const gradient = this.ctx.createLinearGradient(0, 0, 0, this.canvas.height);
+                gradient.addColorStop(0, 'rgba(74, 144, 226, 0.3)');
+                gradient.addColorStop(1, 'rgba(135, 206, 235, 0.2)');
+                this.ctx.fillStyle = gradient;
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                this.ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                this.clouds.forEach(cloud => {
+                    this.ctx.beginPath();
+                    this.ctx.arc(cloud.x, cloud.y, cloud.size, 0, Math.PI * 2);
+                    this.ctx.arc(cloud.x + cloud.size * 0.5, cloud.y - cloud.size * 0.3, cloud.size * 0.6, 0, Math.PI * 2);
+                    this.ctx.arc(cloud.x - cloud.size * 0.5, cloud.y + cloud.size * 0.3, cloud.size * 0.7, 0, Math.PI * 2);
+                    this.ctx.fill();
+                });
+            }
+            updateUI() {
+                this.levelEl.textContent = `Level: ${this.level}`;
+                this.timerEl.textContent = `Time: ${Math.ceil(this.timer)}`;
+            }
+            gameOver(success) {
+                this.gameRunning = false;
+                this.wordDisplay.style.display = 'none';
+                this.wordDisplay.classList.remove('game-active');
+                if (success) {
+                    this.gameOverTitle.textContent = 'Level Complete!';
+                    this.gameOverTitle.style.color = '#4CAF50';
+                    this.restartBtn.style.display = 'inline-block';
+                    this.nextStageBtn.style.display = this.level < this.maxLevel ? 'inline-block' : 'none';
+                } else {
+                    this.gameOverTitle.textContent = 'Game Over!';
+                    this.gameOverTitle.style.color = '#FF6B6B';
+                    this.restartBtn.style.display = 'inline-block';
+                    this.nextStageBtn.style.display = 'none';
+                }
+                this.gameOverEl.style.display = 'block';
+            }
+            nextStage() {
+                if (this.level < this.maxLevel) {
+                    this.level++;
+                    this.gameSpeed = (0.8 + (this.level - 1) * 0.2) * 1.6875;
+                    this.fallSpeed = 0.75 + (this.level - 1) * 0.075;
+                    this.obstacleSpawnRate = 0.015 + this.level * 0.005;
+                    this.moveDistance = 120;
+                    this.usedWords = [];
+                }
+                this.gameOverEl.style.display = 'none';
+                this.wordDisplay.style.display = 'block';
+                this.obstacles.forEach(obstacle => obstacle.element.remove());
+                this.obstacles = [];
+                this.clouds = [];
+                this.createClouds();
+                this.planeY = (window.innerHeight - 80) / 2;
+                this.plane.style.top = '50%';
+                this.plane.style.transform = 'translateY(-50%) rotate(0deg)';
+                this.generateNewWords();
+                this.timer = 60;
+                this.setLevelGoals();
+                this.updateUI();
+                this.startGame();
+            }
+            restart() {
+                this.gameOverEl.style.display = 'none';
+                this.wordDisplay.style.display = 'block';
+                this.obstacles.forEach(obstacle => obstacle.element.remove());
+                this.obstacles = [];
+                this.clouds = [];
+                this.level = 1;
+                this.gameSpeed = 0.8 * 1.6875;
+                this.fallSpeed = 0.75;
+                this.obstacleSpawnRate = 0.015;
+                this.moveDistance = 120;
+                this.requiredMoves = 2 + this.level;
+                this.usedWords = [];
+                this.planeY = (window.innerHeight - 80) / 2;
+                this.plane.style.top = '50%';
+                this.plane.style.transform = 'translateY(-50%) rotate(0deg)';
+                this.init();
+            }
+            exitGame() {
+                this.gameRunning = false;
+                this.gameOverEl.style.display = 'none';
+                this.wordDisplay.style.display = 'block';
+                this.wordDisplay.classList.remove('game-active');
+                this.obstacles.forEach(obstacle => obstacle.element.remove());
+                this.obstacles = [];
+                this.clouds = [];
+                this.level = 1;
+                this.usedWords = [];
+                this.planeY = (window.innerHeight - 80) / 2;
+                this.plane.style.top = '50%';
+                this.plane.style.transform = 'translateY(-50%) rotate(0deg)';
+                this.startBtn.style.display = 'block';
+                this.userInput.style.display = 'none';
+                this.generateNewWords();
+                this.updateUI();
+            }
+            gameLoop() {
+                if (!this.gameRunning) return;
+                const currentTime = Date.now();
+                const deltaTime = (currentTime - this.lastFrameTime) / 1000;
+                this.lastFrameTime = currentTime;
+                const elapsedTime = (currentTime - this.startTime) / 1000;
+                this.timer = Math.max(0, 60 - elapsedTime);
+                this.updateUI();
+                if (this.timer <= 0) {
+                    if (this.currentMoves >= this.requiredMoves) {
+                        this.gameOver(true);
+                    } else {
+                        this.wordFail();
+                    }
+                    return;
+                }
+                this.planeY += this.fallSpeed * deltaTime * 30;
+                const planeHeight = 50;
+                const planeTop = this.planeY - (planeHeight / 2);
+                const planeBottom = this.planeY + (planeHeight / 2);
+                if (currentTime - this.startTime > 1000) {
+                    if (planeTop <= 0) {
+                        this.showExplosion();
+                        this.wordFail();
+                        return;
+                    } else if (planeBottom >= this.canvas.height) {
+                        this.showExplosion();
+                        this.wordFail();
+                        return;
+                    }
+                } else {
+                    if (planeTop < 0) {
+                        this.planeY = planeHeight / 2;
+                    } else if (planeBottom > this.canvas.height) {
+                        this.planeY = this.canvas.height - (planeHeight / 2);
+                    }
+                }
+                this.plane.style.top = this.planeY + 'px';
+                this.spawnObstacle();
+                this.updateObstacles();
+                this.updateClouds();
+                this.draw();
+                requestAnimationFrame(() => this.gameLoop());
+            }
+        }
+        function switchKoreanMode(mode) {
+            const modeNames = { 'consonant': '자음', 'vowel': '모음', 'word': '단어', 'sentence': '문장' };
+            alert(`한글 ${modeNames[mode]}연습을 시작합니다!\n\n한글 타자연습 페이지로 이동합니다.`);
+        }
+        function switchEnglishMode(mode) {
+            const modeNames = { 'alphabet': '알파벳', 'word': '단어', 'sentence': '문장' };
+            alert(`영어 ${modeNames[mode]}연습을 시작합니다!\n\n영어 타자연습 페이지로 이동합니다.`);
+        }
+        function playKoreanMoleGame() {
+            alert('한글 두더지 잡기 게임을 시작합니다! 🐹\n\n실제 구현에서는 한글 게임 페이지로 이동합니다.');
+        }
+        function playEnglishMoleGame() {
+            alert('영어 두더지 잡기 게임을 시작합니다! 🎯\n\n실제 구현에서는 영어 게임 페이지로 이동합니다.');
+        }
+        function playKoreanPlaneGame() {
+            alert('한글 비행기 조종 게임을 시작합니다! ✈️\n\n실제 구현에서는 한글 비행기 게임 페이지로 이동합니다.');
+        }
+        function playEnglishPlaneGame() {
+            alert('영어 비행기 조종 게임을 시작합니다! 🛩️\n\n실제 구현에서는 영어 비행기 게임 페이지로 이동합니다.');
+        }
+        function playKoreanDeliveryGame() {
+            alert('한글 택배 분류 게임을 시작합니다! 📦\n\n실제 구현에서는 한글 택배 게임 페이지로 이동합니다.');
+        }
+        function playEnglishDeliveryGame() {
+            alert('영어 택배 분류 게임을 시작합니다! 📮\n\n실제 구현에서는 영어 택배 게임 페이지로 이동합니다.');
+        }
+        window.addEventListener('load', () => {
+            new EnglishFlightTypingGame();
+        });
+        window.addEventListener('resize', () => {
+            const canvas = document.getElementById('gameCanvas');
+            if (canvas) {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight - 80;
+            }
+        });
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                nav.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+    </script>
+</body>
+</html>
