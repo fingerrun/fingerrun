@@ -3,7 +3,7 @@
 <head> 
     <meta charset="UTF-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-<title>핑거런 | 압도적인 디자인과 성능의 타자연습을 경험해보세요.</title>
+    <title>핑거런 | 압도적인 디자인과 성능의 타자연습을 경험해보세요.</title>
     
     <!-- SEO 메타태그 -->
     <meta name="description" content="핑거런 타자연습 사이트 문의하기 페이지. 고객지원, 기술 문의, 제안사항">
@@ -391,6 +391,12 @@
             background: #1d4ed8; 
         } 
         
+        .submit-btn:disabled { 
+            background: #e5e8eb; 
+            color: #8b95a1; 
+            cursor: not-allowed; 
+        } 
+        
         .footer-space { 
             height: 80px; 
         } 
@@ -453,7 +459,32 @@
         
         .success-modal-btn:hover { 
             background: #1d4ed8; 
+        }
+
+        /* Loading state */
+        .loading { 
+            position: relative; 
+            color: transparent; 
         } 
+        
+        .loading::after { 
+            content: ''; 
+            position: absolute; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            width: 20px; 
+            height: 20px; 
+            border: 2px solid #ffffff; 
+            border-top: 2px solid transparent; 
+            border-radius: 50%; 
+            animation: spin 1s linear infinite; 
+        } 
+        
+        @keyframes spin { 
+            0% { transform: translate(-50%, -50%) rotate(0deg); } 
+            100% { transform: translate(-50%, -50%) rotate(360deg); } 
+        }
         
         @media (max-width: 768px) { 
             .nav-container { 
@@ -538,17 +569,17 @@
             <div class="section"> 
                 <h2 class="section-title">문의 유형</h2> 
                 <div class="inquiry-types"> 
-                    <div class="inquiry-type" onclick="selectInquiryType(this, 'bug')"> 
+                    <div class="inquiry-type" data-type="bug"> 
                         <div class="inquiry-type-title">버그 및 신고</div> 
                         <div class="inquiry-type-desc">서비스 오류, 버그, 부적절한 콘텐츠 신고</div> 
                         <div class="radio-indicator"></div> 
                     </div> 
-                    <div class="inquiry-type" onclick="selectInquiryType(this, 'partnership')"> 
+                    <div class="inquiry-type" data-type="partnership"> 
                         <div class="inquiry-type-title">제휴 문의</div> 
                         <div class="inquiry-type-desc">비즈니스 제휴, 광고, 협업 관련 문의</div> 
                         <div class="radio-indicator"></div> 
                     </div> 
-                    <div class="inquiry-type" onclick="selectInquiryType(this, 'other')"> 
+                    <div class="inquiry-type" data-type="other"> 
                         <div class="inquiry-type-title">기타 문의</div> 
                         <div class="inquiry-type-desc">서비스 이용, 기능 제안, 기타 궁금한 사항</div> 
                         <div class="radio-indicator"></div> 
@@ -579,7 +610,7 @@
             <div class="agreement-section"> 
                 <div class="agreement-header"> 
                     <label class="checkbox"> 
-                        <input type="checkbox" id="agreement" onchange="toggleSubmitButton()"> 
+                        <input type="checkbox" id="agreement"> 
                         <div class="checkbox-indicator"></div> 
                     </label> 
                     <div class="agreement-title">개인정보 수집 및 이용에 동의합니다 (필수)</div> 
@@ -604,7 +635,7 @@
                 </div> 
             </div> 
 
-            <button class="submit-btn" id="submitBtn" onclick="submitInquiry()"> 
+            <button class="submit-btn" id="submitBtn"> 
                 문의하기 
             </button> 
 
@@ -622,127 +653,226 @@
                 더 압도적인 서비스를 제공하는 핑거런이 되겠습니다.<br><br> 
                 빠른 시일내로 답변드리도록 하겠습니다. 
             </div> 
-            <button class="success-modal-btn" onclick="closeSuccessModal()">확인</button> 
+            <button class="success-modal-btn" id="modalCloseBtn">확인</button> 
         </div> 
     </div> 
 
-    <script> 
-        let selectedInquiryType = null; 
+    <!-- 폼 제출 방식으로 변경 -->
+    <script>
+        // 전역 변수
+        let selectedInquiryType = null;
 
-        function selectInquiryType(element, type) { 
-            // 모든 inquiry-type에서 selected 클래스 제거 
-            document.querySelectorAll('.inquiry-type').forEach(item => { 
-                item.classList.remove('selected'); 
-            }); 
-            
-            // 선택된 요소에 selected 클래스 추가 
-            element.classList.add('selected'); 
-            selectedInquiryType = type; 
-            
-            toggleSubmitButton(); 
-        } 
+        // DOM이 로드된 후 실행
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeForm();
+        });
 
-        function toggleSubmitButton() { 
-            const email = document.getElementById('email').value.trim(); 
-            const subject = document.getElementById('subject').value.trim(); 
-            const content = document.getElementById('content').value.trim(); 
-            const agreement = document.getElementById('agreement').checked; 
-            const submitBtn = document.getElementById('submitBtn'); 
-            const emailError = document.getElementById('emailError'); 
+        function initializeForm() {
+            // 문의 유형 클릭 이벤트
+            const inquiryTypes = document.querySelectorAll('.inquiry-type');
+            inquiryTypes.forEach(function(element) {
+                element.addEventListener('click', function() {
+                    handleInquiryTypeSelection(this);
+                });
+            });
 
-            // 이메일 유효성 검사 및 에러 메시지 표시 
-            if (email && !isValidEmail(email)) { 
-                emailError.style.display = 'inline'; 
-            } else { 
-                emailError.style.display = 'none'; 
-            } 
+            // 입력 필드 이벤트
+            document.getElementById('email').addEventListener('input', validateForm);
+            document.getElementById('subject').addEventListener('input', validateForm);
+            document.getElementById('content').addEventListener('input', validateForm);
+            document.getElementById('agreement').addEventListener('change', validateForm);
 
+            // 제출 버튼 이벤트
+            document.getElementById('submitBtn').addEventListener('click', handleSubmit);
+
+            // 모달 닫기 이벤트
+            document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+
+            // 초기 상태 설정
+            validateForm();
+        }
+
+        function handleInquiryTypeSelection(element) {
+            // 모든 선택 해제
+            document.querySelectorAll('.inquiry-type').forEach(function(item) {
+                item.classList.remove('selected');
+            });
+
+            // 선택된 요소 활성화
+            element.classList.add('selected');
+            selectedInquiryType = element.getAttribute('data-type');
+
+            // 폼 유효성 검사
+            validateForm();
+        }
+
+        function validateForm() {
+            const email = document.getElementById('email').value.trim();
+            const subject = document.getElementById('subject').value.trim();
+            const content = document.getElementById('content').value.trim();
+            const agreement = document.getElementById('agreement').checked;
+            const submitBtn = document.getElementById('submitBtn');
+            const emailError = document.getElementById('emailError');
+
+            // 이메일 유효성 검사
+            if (email && !isValidEmail(email)) {
+                emailError.style.display = 'inline';
+            } else {
+                emailError.style.display = 'none';
+            }
+
+            // 전체 폼 유효성 검사
             const isValid = selectedInquiryType && 
                            email && 
                            subject && 
                            content && 
                            agreement && 
-                           isValidEmail(email); 
+                           isValidEmail(email);
 
-            if (isValid) { 
-                submitBtn.classList.add('active'); 
-                submitBtn.disabled = false; 
-                submitBtn.style.pointerEvents = 'auto'; 
-                submitBtn.style.cursor = 'pointer'; 
-            } else { 
-                submitBtn.classList.remove('active'); 
-                submitBtn.disabled = true; 
-                submitBtn.style.pointerEvents = 'none'; 
-                submitBtn.style.cursor = 'not-allowed'; 
-            } 
-        } 
+            if (isValid) {
+                submitBtn.classList.add('active');
+                submitBtn.disabled = false;
+            } else {
+                submitBtn.classList.remove('active');
+                submitBtn.disabled = true;
+            }
+        }
 
-        function isValidEmail(email) { 
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
-            return emailRegex.test(email); 
-        } 
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
 
-        function submitInquiry() { 
-            const submitBtn = document.getElementById('submitBtn'); 
+        function handleSubmit() {
+            const submitBtn = document.getElementById('submitBtn');
 
-            // 모든 조건 재확인 
-            const email = document.getElementById('email').value.trim(); 
-            const subject = document.getElementById('subject').value.trim(); 
-            const content = document.getElementById('content').value.trim(); 
-            const agreement = document.getElementById('agreement').checked; 
+            // 최종 유효성 검사
+            if (!validateSubmission()) {
+                return;
+            }
 
-            const isValid = selectedInquiryType && 
-                           email && 
-                           subject && 
-                           content && 
-                           agreement && 
-                           isValidEmail(email); 
+            // 로딩 상태로 변경
+            submitBtn.disabled = true;
+            submitBtn.classList.add('loading');
+            submitBtn.textContent = '전송 중...';
 
-            if (!isValid) { 
-                return; 
-            } 
+            // 이메일 전송 처리
+            sendEmail();
+        }
 
-            const inquiryData = { 
-                type: selectedInquiryType, 
-                email: document.getElementById('email').value, 
-                subject: document.getElementById('subject').value, 
-                content: document.getElementById('content').value 
-            }; 
+        function validateSubmission() {
+            const email = document.getElementById('email').value.trim();
+            const subject = document.getElementById('subject').value.trim();
+            const content = document.getElementById('content').value.trim();
+            const agreement = document.getElementById('agreement').checked;
 
-            // 실제 서비스에서는 서버로 데이터를 전송 
+            return selectedInquiryType && 
+                   email && 
+                   subject && 
+                   content && 
+                   agreement && 
+                   isValidEmail(email);
+        }
+
+        function sendEmail() {
+            const email = document.getElementById('email').value.trim();
+            const subject = document.getElementById('subject').value.trim();
+            const content = document.getElementById('content').value.trim();
+
+            // 문의 유형별 한글 이름
+            const typeNames = {
+                'bug': '버그 및 신고',
+                'partnership': '제휴 문의',
+                'other': '기타 문의'
+            };
+
+            // 이메일 내용 구성
+            const emailSubject = `핑거런 문의: ${typeNames[selectedInquiryType]} - ${subject}`;
+            const emailBody = `핑거런 웹사이트에서 새로운 문의가 접수되었습니다.
+
+문의 유형: ${typeNames[selectedInquiryType]}
+보낸 사람 이메일: ${email}
+제목: ${subject}
+
+문의 내용:
+${content}
+
+답변은 ${email}로 보내주세요.`;
+
+            // 방법 1: mailto 링크 (기본 방법)
+            const mailtoLink = `mailto:fingerrun@naver.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
             
-            // 성공 모달 표시 
-            document.getElementById('successModal').style.display = 'flex'; 
+            try {
+                // 메일 클라이언트 실행 시도
+                const result = window.open(mailtoLink);
+                
+                // 작은 지연 후 성공 처리
+                setTimeout(() => {
+                    showSuccessModal();
+                    resetForm();
+                    resetSubmitButton();
+                }, 500);
+                
+            } catch (error) {
+                // 실패 시 클립보드 복사 방식
+                showCopyModal(emailSubject, emailBody);
+                resetSubmitButton();
+            }
+        }
+
+        // 클립보드 복사 모달 표시
+        function showCopyModal(subject, body) {
+            const modalContent = `
+                <div style="text-align: left; font-size: 14px; line-height: 1.5;">
+                    <p><strong>메일 클라이언트를 실행할 수 없습니다.</strong></p>
+                    <p>아래 내용을 복사해서 fingerrun@naver.com으로 직접 메일을 보내주세요:</p>
+                    <hr style="margin: 15px 0;">
+                    <p><strong>받는 사람:</strong> fingerrun@naver.com</p>
+                    <p><strong>제목:</strong> ${subject}</p>
+                    <br>
+                    <p><strong>내용:</strong></p>
+                    <div style="background: #f5f5f5; padding: 10px; border-radius: 5px; white-space: pre-line; max-height: 200px; overflow-y: auto;">${body}</div>
+                </div>
+            `;
             
-            // 폼 초기화 
-            resetForm(); 
-        } 
+            document.querySelector('.success-modal-icon').textContent = '📧';
+            document.querySelector('.success-modal-title').textContent = '메일 정보 복사';
+            document.querySelector('.success-modal-message').innerHTML = modalContent;
+            document.getElementById('successModal').style.display = 'flex';
+        }
 
-        function resetForm() { 
-            document.querySelectorAll('.inquiry-type').forEach(item => { 
-                item.classList.remove('selected'); 
-            }); 
-            document.getElementById('email').value = ''; 
-            document.getElementById('subject').value = ''; 
-            document.getElementById('content').value = ''; 
-            document.getElementById('agreement').checked = false; 
-            selectedInquiryType = null; 
-            toggleSubmitButton(); 
-        } 
+        function showSuccessModal() {
+            document.getElementById('successModal').style.display = 'flex';
+        }
 
-        function closeSuccessModal() { 
-            document.getElementById('successModal').style.display = 'none'; 
-        } 
+        function closeModal() {
+            document.getElementById('successModal').style.display = 'none';
+        }
 
-        // 입력 필드에 이벤트 리스너 추가 
-        document.addEventListener('DOMContentLoaded', function() { 
-            document.getElementById('email').addEventListener('input', toggleSubmitButton); 
-            document.getElementById('subject').addEventListener('input', toggleSubmitButton); 
-            document.getElementById('content').addEventListener('input', toggleSubmitButton); 
-            
-            // 초기 상태 설정 
-            toggleSubmitButton(); 
-        }); 
-    </script> 
-</body> 
-</html>
+        function resetForm() {
+            // 문의 유형 선택 해제
+            document.querySelectorAll('.inquiry-type').forEach(function(item) {
+                item.classList.remove('selected');
+            });
+
+            // 입력 필드 초기화
+            document.getElementById('email').value = '';
+            document.getElementById('subject').value = '';
+            document.getElementById('content').value = '';
+            document.getElementById('agreement').checked = false;
+
+            // 전역 변수 초기화
+            selectedInquiryType = null;
+
+            // 폼 유효성 재검사
+            validateForm();
+        }
+
+        function resetSubmitButton() {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('loading');
+            submitBtn.textContent = '문의하기';
+        }
+    </script>
+                '
