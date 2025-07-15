@@ -1,84 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- 메인 페이지 -->
   <url>
     <loc>https://fingerrun.com/</loc>
-    <lastmod>2025-07-14</lastmod>
+    <lastmod>2025-07-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-  
-  <!-- 자격증 페이지 -->
-  <url>
-    <loc>https://fingerrun.com/Certificate/word-processor.html</loc>
-    <lastmod>2025-07-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
-  <!-- 영어 게임 페이지들 -->
-  <url>
-    <loc>https://fingerrun.com/English/practice.html</loc>
-    <lastmod>2025-07-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <url>
-    <loc>https://fingerrun.com/English/game-delivery.html</loc>
-    <lastmod>2025-07-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
-    <loc>https://fingerrun.com/English/game-mole.html</loc>
-    <lastmod>2025-07-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
-    <loc>https://fingerrun.com/English/game-plane.html</loc>
-    <lastmod>2025-07-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <!-- 한국어 게임 페이지들 -->
   <url>
     <loc>https://fingerrun.com/Korean/practice.html</loc>
-    <lastmod>2025-07-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <lastmod>2025-07-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
-  
   <url>
-    <loc>https://fingerrun.com/Korean/game-delivery.html</loc>
-    <lastmod>2025-07-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://fingerrun.com/English/practice.html</loc>
+    <lastmod>2025-07-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
-  
   <url>
     <loc>https://fingerrun.com/Korean/game-mole.html</loc>
-    <lastmod>2025-07-14</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2025-07-15</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
-  
+  <url>
+    <loc>https://fingerrun.com/English/game-mole.html</loc>
+    <lastmod>2025-07-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
   <url>
     <loc>https://fingerrun.com/Korean/game-plane.html</loc>
-    <lastmod>2025-07-14</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2025-07-15</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
-  
-  <!-- 연락처 페이지 -->
+  <url>
+    <loc>https://fingerrun.com/English/game-plane.html</loc>
+    <lastmod>2025-07-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://fingerrun.com/Korean/game-delivery.html</loc>
+    <lastmod>2025-07-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://fingerrun.com/English/game-delivery.html</loc>
+    <lastmod>2025-07-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://fingerrun.com/Certificate/word-processor.html</loc>
+    <lastmod>2025-07-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
   <url>
     <loc>https://fingerrun.com/contact.html</loc>
-    <lastmod>2025-07-14</lastmod>
-    <changefreq>yearly</changefreq>
+    <lastmod>2025-07-15</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
 </urlset>
