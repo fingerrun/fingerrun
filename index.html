@@ -22,6 +22,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   gtag('config', 'G-7QSEYCFK83');
 </script>
 
+<!-- 알림 차단 스크립트 -->
+<script>
+// 모든 알림 요청 차단
+if ('Notification' in window) {
+    Notification.requestPermission = function() {
+        return Promise.resolve('denied');
+    };
+}
+</script>
+
 <meta name="naver-site-verification" content="9b1a5da708f6729d4b69fab5b2d7e182d75492a3" />
 
 <!-- SEO 메타태그 -->
@@ -1075,6 +1085,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 nav.style.background = 'rgba(255, 255, 255, 0.95)'; 
             } 
         }); 
-    </script> 
+
+        // 한글 모드 전환 함수
+        function switchKoreanMode(mode) {
+            localStorage.setItem('koreanMode', mode);
+            window.location.href = './Korean/practice.html';
+        }
+
+        // 영어 모드 전환 함수  
+        function switchEnglishMode(mode) {
+            localStorage.setItem('englishMode', mode);
+            window.location.href = './English/practice.html';
+        }
+    </script>     
 </body> 
 </html>
