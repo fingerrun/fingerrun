@@ -533,10 +533,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         <span class="dropdown-arrow">▼</span> 
                     </a> 
                     <div class="dropdown-menu"> 
-                        <a href="./Korean/practice.html">타자연습</a> 
-                        <a href="./Korean/game-plane.html">비행기 조종</a> 
-                        <a href="./Korean/game-mole.html">두더지 잡기</a> 
-                        <a href="./Korean/game-delivery.html">택배 분류</a> 
+                        <a href="./Korean/practice.html" onclick="switchKoreanMode('consonant')">자음연습</a>
+                        <a href="./Korean/practice.html" onclick="switchKoreanMode('vowel')">모음연습</a>
+                        <a href="./Korean/practice.html" onclick="switchKoreanMode('word')">단어연습</a>
+                        <a href="./Korean/practice.html" onclick="switchKoreanMode('sentence')">문장연습</a>
                     </div> 
                 </li> 
                 <li> 
@@ -545,10 +545,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         <span class="dropdown-arrow">▼</span> 
                     </a> 
                     <div class="dropdown-menu"> 
-                        <a href="./English/practice.html">타자연습</a> 
-                        <a href="./English/game-plane.html">비행기 조종</a> 
-                        <a href="./English/game-mole.html">두더지 잡기</a> 
-                        <a href="./English/game-delivery.html">택배 분류</a> 
+                        <a href="./English/practice.html" onclick="switchEnglishMode('alphabet')">알파벳연습</a>
+                        <a href="./English/practice.html" onclick="switchEnglishMode('word')">단어연습</a>
+                        <a href="./English/practice.html" onclick="switchEnglishMode('sentence')">문장연습</a>
                     </div> 
                 </li> 
                 <li> 
@@ -672,7 +671,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </div> 
     </div> 
 
-    <!-- 폼 제출 방식으로 변경 -->
     <script>
         // 전역 변수
         let selectedInquiryType = null;
@@ -789,66 +787,51 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                    isValidEmail(email);
         }
 
-function sendEmail() {
-    const email = document.getElementById('email').value.trim();
-    const subject = document.getElementById('subject').value.trim();
-    const content = document.getElementById('content').value.trim();
+        function sendEmail() {
+            const email = document.getElementById('email').value.trim();
+            const subject = document.getElementById('subject').value.trim();
+            const content = document.getElementById('content').value.trim();
 
-    // 문의 유형별 한글 이름
-    const typeNames = {
-        'bug': '버그 및 신고',
-        'partnership': '제휴 문의',
-        'other': '기타 문의'
-    };
+            // 문의 유형별 한글 이름
+            const typeNames = {
+                'bug': '버그 및 신고',
+                'partnership': '제휴 문의',
+                'other': '기타 문의'
+            };
 
-    // EmailJS로 전송할 데이터
-    const templateParams = {
-        inquiry_type: typeNames[selectedInquiryType],
-        user_email: email,
-        subject: subject,
-        message: content,
-        to_email: 'fingerrun@naver.com'
-    };
+            // EmailJS로 전송할 데이터
+            const templateParams = {
+                inquiry_type: typeNames[selectedInquiryType],
+                user_email: email,
+                subject: subject,
+                message: content,
+                to_email: 'fingerrun@naver.com'
+            };
 
-    // EmailJS로 이메일 전송
-    emailjs.send('service_iql5wuc', 'template_iam8too', templateParams)
-        .then(function(response) {
-            console.log('SUCCESS!', response.status, response.text);
-            showSuccessModal();
-            resetForm();
-            resetSubmitButton();
-        }, function(error) {
-            console.log('FAILED...', error);
-            alert('메일 전송에 실패했습니다. 다시 시도해주세요.');
-            resetSubmitButton();
-        });
-}
-showCopyModal 함수는 그대로 두세요 - sendEmail 함수만 교체하면 됩니다! 🎯
+            // EmailJS로 이메일 전송
+            emailjs.send('service_iql5wuc', 'template_iam8too', templateParams)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    showSuccessModal();
+                    resetForm();
+                    resetSubmitButton();
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    alert('메일 전송에 실패했습니다. 다시 시도해주세요.');
+                    resetSubmitButton();
+                });
+        }
 
+        // 한글 모드 전환 함수
+        function switchKoreanMode(mode) {
+            localStorage.setItem('koreanMode', mode);
+            window.location.href = './Korean/practice.html';
+        }
 
-
-
-
-
-        // 클립보드 복사 모달 표시
-        function showCopyModal(subject, body) {
-            const modalContent = `
-                <div style="text-align: left; font-size: 14px; line-height: 1.5;">
-                    <p><strong>메일 클라이언트를 실행할 수 없습니다.</strong></p>
-                    <p>아래 내용을 복사해서 fingerrun@naver.com으로 직접 메일을 보내주세요:</p>
-                    <hr style="margin: 15px 0;">
-                    <p><strong>받는 사람:</strong> fingerrun@naver.com</p>
-                    <p><strong>제목:</strong> ${subject}</p>
-                    <br>
-                    <p><strong>내용:</strong></p>
-                    <div style="background: #f5f5f5; padding: 10px; border-radius: 5px; white-space: pre-line; max-height: 200px; overflow-y: auto;">${body}</div>
-                </div>
-            `;
-            
-            document.querySelector('.success-modal-icon').textContent = '📧';
-            document.querySelector('.success-modal-title').textContent = '메일 정보 복사';
-            document.querySelector('.success-modal-message').innerHTML = modalContent;
-            document.getElementById('successModal').style.display = 'flex';
+        // 영어 모드 전환 함수  
+        function switchEnglishMode(mode) {
+            localStorage.setItem('englishMode', mode);
+            window.location.href = './English/practice.html';
         }
 
         function showSuccessModal() {
@@ -885,4 +868,5 @@ showCopyModal 함수는 그대로 두세요 - sendEmail 함수만 교체하면 �
             submitBtn.textContent = '문의하기';
         }
     </script>
-                '
+</body> 
+</html>
