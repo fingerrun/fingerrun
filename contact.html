@@ -8,7 +8,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-T9HC454Z');</script>
 <!-- End Google Tag Manager -->
-    <meta charset="UTF-8"> 
+
+<!-- EmailJS SDK -->
+<script src="https://cdn.emailjs.com/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+    emailjs.init('TUoZMuki4Kwv9-aUK');
+</script>
+
+<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <title>핑거런 | 압도적인 디자인과 성능의 타자연습을 경험해보세요.</title>
     <link rel="icon" type="image/svg+xml" href="images/finger-run-logo.svg">
@@ -782,51 +789,46 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                    isValidEmail(email);
         }
 
-        function sendEmail() {
-            const email = document.getElementById('email').value.trim();
-            const subject = document.getElementById('subject').value.trim();
-            const content = document.getElementById('content').value.trim();
+function sendEmail() {
+    const email = document.getElementById('email').value.trim();
+    const subject = document.getElementById('subject').value.trim();
+    const content = document.getElementById('content').value.trim();
 
-            // 문의 유형별 한글 이름
-            const typeNames = {
-                'bug': '버그 및 신고',
-                'partnership': '제휴 문의',
-                'other': '기타 문의'
-            };
+    // 문의 유형별 한글 이름
+    const typeNames = {
+        'bug': '버그 및 신고',
+        'partnership': '제휴 문의',
+        'other': '기타 문의'
+    };
 
-            // 이메일 내용 구성
-            const emailSubject = `핑거런 문의: ${typeNames[selectedInquiryType]} - ${subject}`;
-            const emailBody = `핑거런 웹사이트에서 새로운 문의가 접수되었습니다.
+    // EmailJS로 전송할 데이터
+    const templateParams = {
+        inquiry_type: typeNames[selectedInquiryType],
+        user_email: email,
+        subject: subject,
+        message: content,
+        to_email: 'fingerrun@naver.com'
+    };
 
-문의 유형: ${typeNames[selectedInquiryType]}
-보낸 사람 이메일: ${email}
-제목: ${subject}
+    // EmailJS로 이메일 전송
+    emailjs.send('service_iql5wuc', 'template_iam8too', templateParams)
+        .then(function(response) {
+            console.log('SUCCESS!', response.status, response.text);
+            showSuccessModal();
+            resetForm();
+            resetSubmitButton();
+        }, function(error) {
+            console.log('FAILED...', error);
+            alert('메일 전송에 실패했습니다. 다시 시도해주세요.');
+            resetSubmitButton();
+        });
+}
+showCopyModal 함수는 그대로 두세요 - sendEmail 함수만 교체하면 됩니다! 🎯
 
-문의 내용:
-${content}
 
-답변은 ${email}로 보내주세요.`;
 
-            // 방법 1: mailto 링크 (기본 방법)
-            const mailtoLink = `mailto:fingerrun@naver.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-            
-            try {
-                // 메일 클라이언트 실행 시도
-                const result = window.open(mailtoLink);
-                
-                // 작은 지연 후 성공 처리
-                setTimeout(() => {
-                    showSuccessModal();
-                    resetForm();
-                    resetSubmitButton();
-                }, 500);
-                
-            } catch (error) {
-                // 실패 시 클립보드 복사 방식
-                showCopyModal(emailSubject, emailBody);
-                resetSubmitButton();
-            }
-        }
+
+
 
         // 클립보드 복사 모달 표시
         function showCopyModal(subject, body) {
