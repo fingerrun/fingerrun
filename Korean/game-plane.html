@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>핑거런 | 압도적인 디자인과 성능의 타자연습을 경험해보세요.</title>
-<link rel="icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
+    <title>핑거런 | 압도적인 디자인과 성능의 타자연습을 경험해보세요.</title>
+    <link rel="icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
     
     <!-- SEO 메타태그 -->
     <meta name="description" content="한글 단어를 타이핑해서 비행기를 조종하며 장애물을 피하는 스릴 넘치는 타자게임. 실시간 비행 액션과 한글타자연습을 동시에!">
@@ -197,22 +197,6 @@
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
         }
 
-        .obstacle {
-            position: absolute;
-            background: linear-gradient(135deg, #B0C4DE 0%, #FFD700 50%, #C0C0C0 100%);
-            border-radius: 20px 10px 10px 20px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-            z-index: 5;
-        }
-
-        .cloud {
-            position: absolute;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.4), rgba(240, 240, 240, 0.3));
-            border-radius: 50px;
-            opacity: 0.6;
-            z-index: 1;
-        }
-
         #ui {
             position: absolute;
             top: 20px;
@@ -319,31 +303,48 @@
             transform: translate(-50%, -50%);
             z-index: 30;
             background: rgba(0, 0, 0, 0.9);
-            padding: 80px; /* 40px → 80px로 2배 */
+            padding: 40px;
             border-radius: 20px;
             text-align: center;
             display: none;
             color: white;
-            min-width: 700px; /* 350px → 700px로 2배 */
-            min-height: 400px; /* 높이도 2배로 */
+            min-width: 350px;
+            min-height: 200px;
         }
 
         #gameOver h2 {
-            color: #FF6B6B;
-            font-size: 80px; /* 40px → 80px로 2배 */
-            margin-bottom: 40px; /* 20px → 40px로 2배 */
+            color: #4CAF50;
+            font-size: 40px;
+            margin-bottom: 20px;
         }
 
-        #restartBtn, #nextStageBtn {
+        .button-row {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: nowrap;
+        }
+
+        #exitBtn, #restartBtn, #nextStageBtn {
             background: linear-gradient(45deg, #FF6B6B, #FF8C94);
             color: white;
             border: none;
-            padding: 36px 70px; /* 18px 35px → 36px 70px로 2배 */
-            font-size: 44px; /* 22px → 44px로 2배 */
+            padding: 18px 35px;
+            font-size: 22px;
             border-radius: 15px;
             cursor: pointer;
-            margin: 20px; /* 10px → 20px로 2배 */
             font-family: 'Noto Sans KR', sans-serif;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        #exitBtn {
+            background: linear-gradient(45deg, #FFC107, #FFD54F);
+        }
+
+        #nextStageBtn {
+            background: linear-gradient(45deg, #28A745, #20C997);
         }
 
         .explosion {
@@ -414,56 +415,56 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <a href="../index.html" class="logo">⌨️ FingerRun</a>
+            <a href="#" class="logo">⌨️ FingerRun</a>
             <ul class="nav-menu">
-                <li><a href="../index.html">소개</a></li>
+                <li><a href="#">소개</a></li>
                 <li>
-                    <a href="practice.html">
+                    <a href="#">
                         한글 타자연습
                         <span class="dropdown-arrow">▼</span>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="practice.html">자음 연습</a>
-                        <a href="practice.html">모음 연습</a>
-                        <a href="practice.html">단어 연습</a>
-                        <a href="practice.html">문장 연습</a>
+                        <a href="#">자음 연습</a>
+                        <a href="#">모음 연습</a>
+                        <a href="#">단어 연습</a>
+                        <a href="#">문장 연습</a>
                     </div>
                 </li>
                 <li>
-                    <a href="../English/practice.html">
+                    <a href="#">
                         영어 타자연습
                         <span class="dropdown-arrow">▼</span>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="../English/practice.html">알파벳 연습</a>
-                        <a href="../English/practice.html">영어 단어 연습</a>
-                        <a href="../English/practice.html">영어 문장 연습</a>
+                        <a href="#">알파벳 연습</a>
+                        <a href="#">영어 단어 연습</a>
+                        <a href="#">영어 문장 연습</a>
                     </div>
                 </li>
                 <li>
-                    <a href="game-mole.html">
+                    <a href="#">
                         타자게임
                         <span class="dropdown-arrow">▼</span>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="game-mole.html">두더지 잡기 (한글)</a>
-                        <a href="../English/game-mole.html">두더지 잡기 (영어)</a>
-                        <a href="game-plane.html">비행기 조종 (한글)</a>
-                        <a href="../English/game-plane.html">비행기 조종 (영어)</a>
-                        <a href="game-delivery.html">택배 분류 (한글)</a>
-                        <a href="../English/game-delivery.html">택배 분류 (영어)</a>
+                        <a href="#">두더지 잡기 (한글)</a>
+                        <a href="#">두더지 잡기 (영어)</a>
+                        <a href="#">비행기 조종 (한글)</a>
+                        <a href="#">비행기 조종 (영어)</a>
+                        <a href="#">택배 분류 (한글)</a>
+                        <a href="#">택배 분류 (영어)</a>
                     </div>
                 </li>
                 <li>
-                    <a href="../Certificate/word-processor.html">
+                    <a href="#">
                         자격증
                         <span class="dropdown-arrow">▼</span>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="../Certificate/word-processor.html">워드프로세서</a>
+                        <a href="#">워드프로세서</a>
                     </div>
                 </li>
-                <li><a href="../contact.html">문의하기</a></li>
+                <li><a href="#">문의하기</a></li>
             </ul>
         </div>
     </nav>
@@ -487,8 +488,11 @@
 
         <div id="gameOver">
             <h2 id="gameOverTitle">게임 오버!</h2>
-            <button id="restartBtn">다시 시작</button>
-            <button id="nextStageBtn" style="display: none;">다음 단계</button>
+            <div class="button-row">
+                <button id="exitBtn" style="display: none;">나가기</button>
+                <button id="restartBtn">다시 시작</button>
+                <button id="nextStageBtn" style="display: none;">다음 단계</button>
+            </div>
         </div>
     </div>
 
@@ -507,6 +511,7 @@
                 this.timerEl = document.getElementById('timer');
                 this.gameOverEl = document.getElementById('gameOver');
                 this.gameOverTitle = document.getElementById('gameOverTitle');
+                this.exitBtn = document.getElementById('exitBtn');
                 this.restartBtn = document.getElementById('restartBtn');
                 this.nextStageBtn = document.getElementById('nextStageBtn');
 
@@ -514,7 +519,6 @@
                 this.canvas.height = window.innerHeight - 80;
                 
                 this.isComposing = false;
-                this.usedWords = [];
                 
                 this.init();
                 this.setupEventListeners();
@@ -525,35 +529,42 @@
                 this.maxLevel = 10;
                 this.gameRunning = false;
                 this.planeY = this.canvas.height / 2;
-                this.fallSpeed = 8; // 4 → 8로 기존대로 복구
+                this.fallSpeed = 8;
                 this.obstacles = [];
                 this.clouds = [];
                 this.currentWordUp = '';
                 this.currentWordDown = '';
                 this.userTyped = '';
-                this.gameSpeed = 2.0; // 1.0 → 2.0으로 2배 증가 (비행기 진행속도 2배!)
-                this.obstacleSpawnRate = 0.015;
+                this.gameSpeed = 2.0;
                 this.lastObstacleTime = 0;
                 this.timer = 60;
                 this.startTime = 0;
                 this.lastFrameTime = 0;
                 this.planeTilt = 0;
-                this.moveDistance = 60;
-                this.currentMoves = 0;
-                this.requiredMoves = 5;
                 this.usedWords = [];
 
-                this.easyWords = [
-                    "공기놀", "친구사", "주식시", "은행이", "국회선", "축구공", "꿈을펴", "작가꿈", "이야기", "세종대",
-                    "가족모임", "은행이자", "선거투표", "수영대회", "희망찬", "노력최고", "소설배경", "안중근", "유관순",
-                    "공기놀이", "친구사이", "주식시장", "저축계좌", "국회의원", "정책토론", "축구공기놀이", "꿈을펼쳐라", "희망찬내일"
-                ].filter(word => word && typeof word === 'string' && word.length >= 2);
+                // 장애물 패턴 관리 - 위아래를 중간에 끼워넣는 패턴
+                this.obstaclePatterns = ['top', 'both', 'bottom', 'both']; // 위 → 위아래 → 아래 → 위아래 반복
+                this.currentPatternIndex = 0;
+                this.passageHistory = [];
 
-                this.difficultWords = [
-                    "사회복", "경제성", "공동체", "헌법개", "외교정", "마라톤", "도전정", "소설창", "이순신", "김구선",
-                    "공동체의", "헌법개정", "국제협력", "체조기술", "자기계발", "문학비평", "서사구조", "김구선생", "간디리더",
-                    "사회복지", "문화다양성", "경제성장률", "인플레이션", "재정정책", "외교정책", "마라톤기록", "스포츠과학", "성공마인드", "소설창작", "이순신장군"
-                ].filter(word => word && typeof word === 'string' && word.length >= 2);
+                this.level1_3Words = [
+                    "힘", "볼", "봄", "잎", "꽃", "달", "별", "해", "물", "불", "산", "길", "집", "문", "창", "책", "붓", "칼", "밥", "빵",
+                    "꿈", "희망", "사랑", "믿음", "친구", "가족", "엄마", "아빠", "할머니", "할아버지", "형님", "누나", "동생", "선생님",
+                    "학교", "교실", "운동장", "도서관", "병원", "약국", "마트", "시장", "공원", "놀이터", "바다", "강", "호수", "숲", "들판",
+                    "의사", "간호사", "교사", "경찰", "소방관", "요리사", "운전사", "농부", "어부", "화가", "가수", "배우", "작가", "기자"
+                ];
+
+                this.level4_6Words = [
+                    "과학자", "프로그래머", "디자이너", "건축가", "변호사", "회계사", "약사", "수의사", "치과의사", "심리학자",
+                    "자동차", "비행기", "기차", "지하철", "버스", "택시", "오토바이", "자전거", "배", "우주선",
+                    "컴퓨터", "스마트폰", "태블릿", "노트북", "프린터", "카메라", "텔레비전", "냉장고", "전자레인지", "세탁기"
+                ];
+
+                this.level7_10Words = [
+                    "프로그래밍", "데이터베이스", "인공지능", "머신러닝", "블록체인", "사이버보안", "클라우드컴퓨팅", "빅데이터", "가상현실", "증강현실",
+                    "바이오테크놀로지", "나노기술", "신재생에너지", "태양광발전", "풍력발전", "수소연료전지", "전기자동차", "자율주행차", "드론기술", "로봇공학"
+                ];
 
                 this.generateNewWords();
                 this.createClouds();
@@ -568,6 +579,10 @@
             setupEventListeners() {
                 this.startBtn.addEventListener('click', () => {
                     this.startGame();
+                });
+
+                this.exitBtn.addEventListener('click', () => {
+                    alert('소개 페이지로 이동합니다!');
                 });
 
                 this.restartBtn.addEventListener('click', () => {
@@ -606,6 +621,8 @@
             startGame() {
                 this.gameRunning = true;
                 this.usedWords = [];
+                this.passageHistory = [];
+                this.currentPatternIndex = 0;
                 
                 this.planeY = this.canvas.height / 2;
                 this.plane.style.top = `${this.planeY}px`;
@@ -620,8 +637,6 @@
                 
                 this.startTime = Date.now();
                 this.lastFrameTime = Date.now();
-                this.currentMoves = 0;
-                this.requiredMoves = 5;
                 
                 this.generateNewWords();
                 this.updateUI();
@@ -635,25 +650,20 @@
                     this.currentWordUp = '';
                     this.currentWordDown = '';
                 } else {
-                    let difficultWordChance = 0;
+                    let words;
                     if (this.level <= 3) {
-                        difficultWordChance = 0;
+                        words = this.level1_3Words;
                     } else if (this.level <= 6) {
-                        difficultWordChance = 0.3;
-                    } else if (this.level <= 8) {
-                        difficultWordChance = 0.6;
+                        words = this.level4_6Words;
                     } else {
-                        difficultWordChance = 0.8;
+                        words = this.level7_10Words;
                     }
-
-                    const words = difficultWordChance === 0 ? this.easyWords : 
-                                 (Math.random() < difficultWordChance ? this.difficultWords : this.easyWords);
                     
-                    const availableWords = [...words].filter(word => word.length >= 2 && !this.usedWords.includes(word));
+                    const availableWords = [...words].filter(word => word && word.length >= 1 && !this.usedWords.includes(word));
                     
                     if (availableWords.length < 2) {
                         this.usedWords = [];
-                        availableWords.push(...words.filter(word => word.length >= 2));
+                        availableWords.push(...words.filter(word => word && word.length >= 1));
                     }
 
                     this.currentWordUp = availableWords.splice(Math.floor(Math.random() * availableWords.length), 1)[0];
@@ -708,7 +718,6 @@
             }
 
             wordSuccess(up) {
-                this.currentMoves += 1;
                 this.movePlane(up);
                 this.showSuccessEffect();
                 this.generateNewWords();
@@ -720,7 +729,7 @@
             }
 
             movePlane(up) {
-                const moveDistance = 200; // 비행기 이동거리
+                const moveDistance = 120;
                 if (up) {
                     this.planeY = Math.max(0, this.planeY - moveDistance);
                     this.planeTilt = -10;
@@ -729,7 +738,6 @@
                     this.planeTilt = 10;
                 }
 
-                // 화면 끝에 정확히 닿으면 게임오버
                 if (this.planeY <= 0 || this.planeY >= this.canvas.height) {
                     this.showExplosion();
                     this.wordFail();
@@ -769,74 +777,183 @@
                 }
             }
 
+            // 다양한 패턴의 장애물 생성 (50-80% 막기 적용)
             spawnObstacle() {
-                const fixedSpawnInterval = Math.max(7000, 10000 - (this.level * 150)); // 레벨 증가시 생성 간격 감소 (더 완만하게)
-                const baseWidth = 80; 
+                const spawnInterval = Math.max(3000, 4500 - (this.level * 150)); // 간격을 더 넓힘
                 
-                // 레벨에 따라 장애물 간격 감소하지만 최소 800px는 보장 (비행기 통과 가능 수준)
-                const minGap = Math.max(800, 1200 - (this.level - 1) * 50); // 레벨당 50px씩만 감소, 최소 800px
-                const maxHeight = this.canvas.height - minGap;
-
-                if (Date.now() - this.lastObstacleTime > fixedSpawnInterval) {
-                    const singleObstacleChance = Math.min(0.15, 0.05 + (this.level - 1) * 0.01); // 최대 15%까지만
-                    const type = Math.random() < singleObstacleChance ? (Math.random() < 0.5 ? 'top' : 'bottom') : 'pair';
-
-                    if (type === 'top') {
-                        const height = 60 + Math.random() * (maxHeight - Math.max(300, 500 - this.level * 20));
-                        this.obstacles.push({
-                            x: this.canvas.width,
-                            y: 0,
-                            width: baseWidth,
-                            height: height,
-                            speed: this.gameSpeed * 1.0
-                        });
-                    } else if (type === 'bottom') {
-                        const height = 60 + Math.random() * (maxHeight - Math.max(300, 500 - this.level * 20));
-                        this.obstacles.push({
-                            x: this.canvas.width,
-                            y: this.canvas.height - height,
-                            width: baseWidth,
-                            height: height,
-                            speed: this.gameSpeed * 1.0
-                        });
+                if (Date.now() - this.lastObstacleTime > spawnInterval) {
+                    const obstacleWidth = 80;
+                    
+                    // 패턴 순환 (both -> top -> bottom -> both...)
+                    const pattern = this.obstaclePatterns[this.currentPatternIndex];
+                    this.currentPatternIndex = (this.currentPatternIndex + 1) % this.obstaclePatterns.length;
+                    
+                    if (this.passageHistory.length === 0) {
+                        // 첫 번째 장애물: 넉넉한 간격으로 시작
+                        this.createFirstObstacle(pattern, obstacleWidth);
                     } else {
-                        // 레벨에 따라 통과 간격 감소하지만 최소 800px는 보장 (충분히 통과 가능)
-                        const fixedGapSize = Math.max(800, 1200 - (this.level - 1) * 50); // 레벨당 50px씩만 감소, 최소 800px
-                        const maxGapPosition = this.canvas.height - fixedGapSize - 200;
-                        const gapPosition = 200 + Math.random() * Math.max(200, maxGapPosition - 200);
-
-                        this.obstacles.push({
-                            x: this.canvas.width,
-                            y: 0,
-                            width: baseWidth,
-                            height: gapPosition,
-                            speed: this.gameSpeed * 1.0
-                        });
-
-                        this.obstacles.push({
-                            x: this.canvas.width,
-                            y: gapPosition + fixedGapSize,
-                            width: baseWidth,
-                            height: this.canvas.height - (gapPosition + fixedGapSize),
-                            speed: this.gameSpeed * 1.0
-                        });
+                        // 이전 통과 지점의 50-80%를 막는 장애물 생성
+                        this.createStrategicObstacle(pattern, obstacleWidth);
                     }
-
+                    
                     this.lastObstacleTime = Date.now();
                 }
             }
 
+            createFirstObstacle(pattern, obstacleWidth) {
+                const screenHeight = this.canvas.height;
+                const safeGapSize = 350; // 첫 번째는 넉넉하게
+                const gapCenter = screenHeight / 2;
+                
+                this.createObstacleByPattern(pattern, obstacleWidth, gapCenter, safeGapSize);
+                
+                // 첫 번째 통과 지점 기록
+                this.passageHistory.push({
+                    gapCenter: gapCenter,
+                    gapSize: safeGapSize,
+                    pattern: pattern,
+                    time: Date.now()
+                });
+            }
+
+            createStrategicObstacle(pattern, obstacleWidth) {
+                const lastPassage = this.passageHistory[this.passageHistory.length - 1];
+                const prevGapCenter = lastPassage.gapCenter;
+                const prevGapSize = lastPassage.gapSize;
+                
+                // 50-80% 막기 비율 결정
+                const blockRatio = 0.5 + Math.random() * 0.3; // 0.5 ~ 0.8
+                
+                // 새로운 gap 크기 계산 (20-50% 남김)
+                let newGapSize = prevGapSize * (1 - blockRatio);
+                const minGapSize = 200; // 최소 gap 크기 보장
+                newGapSize = Math.max(minGapSize, newGapSize);
+                
+                // 이전 gap 범위 내에서 새로운 gap 중심 위치 결정
+                const prevGapTop = prevGapCenter - prevGapSize / 2;
+                const prevGapBottom = prevGapCenter + prevGapSize / 2;
+                
+                // 새로운 gap이 들어갈 수 있는 범위 계산
+                const maxNewGapTop = prevGapBottom - newGapSize;
+                const minNewGapTop = prevGapTop;
+                
+                let newGapCenter;
+                if (maxNewGapTop <= minNewGapTop) {
+                    // 공간이 부족하면 이전 gap과 유사하게
+                    newGapCenter = prevGapCenter;
+                    newGapSize = Math.min(prevGapSize, minGapSize * 1.2);
+                } else {
+                    const newGapTop = minNewGapTop + Math.random() * (maxNewGapTop - minNewGapTop);
+                    newGapCenter = newGapTop + newGapSize / 2;
+                }
+                
+                // 화면 경계 보정
+                newGapCenter = Math.max(newGapSize / 2 + 80, 
+                                       Math.min(this.canvas.height - newGapSize / 2 - 80, newGapCenter));
+                
+                this.createObstacleByPattern(pattern, obstacleWidth, newGapCenter, newGapSize);
+                
+                // 통과 지점 기록
+                this.passageHistory.push({
+                    gapCenter: newGapCenter,
+                    gapSize: newGapSize,
+                    pattern: pattern,
+                    time: Date.now()
+                });
+                
+                // 최근 3개만 유지
+                if (this.passageHistory.length > 3) {
+                    this.passageHistory.shift();
+                }
+            }
+
+            createObstacleByPattern(pattern, obstacleWidth, gapCenter, gapSize) {
+                const obstacleId = Date.now() + Math.random();
+                const gapTop = gapCenter - gapSize / 2;
+                const gapBottom = gapCenter + gapSize / 2;
+                
+                if (pattern === 'both') {
+                    // 위아래 둘 다
+                    if (gapTop > 60) {
+                        this.obstacles.push({
+                            id: obstacleId,
+                            x: this.canvas.width,
+                            y: 0,
+                            width: obstacleWidth,
+                            height: gapTop,
+                            speed: this.gameSpeed,
+                            gapCenter: gapCenter,
+                            gapSize: gapSize,
+                            pattern: pattern,
+                            passed: false
+                        });
+                    }
+                    
+                    if (gapBottom < this.canvas.height - 60) {
+                        this.obstacles.push({
+                            id: obstacleId,
+                            x: this.canvas.width,
+                            y: gapBottom,
+                            width: obstacleWidth,
+                            height: this.canvas.height - gapBottom,
+                            speed: this.gameSpeed,
+                            gapCenter: gapCenter,
+                            gapSize: gapSize,
+                            pattern: pattern,
+                            passed: false
+                        });
+                    }
+                    
+                } else if (pattern === 'top') {
+                    // 위쪽만
+                    const topHeight = Math.max(150, gapCenter + gapSize / 4); // 위쪽 장애물 크기
+                    this.obstacles.push({
+                        id: obstacleId,
+                        x: this.canvas.width,
+                        y: 0,
+                        width: obstacleWidth,
+                        height: topHeight,
+                        speed: this.gameSpeed,
+                        gapCenter: topHeight + (this.canvas.height - topHeight) / 2,
+                        gapSize: this.canvas.height - topHeight,
+                        pattern: pattern,
+                        passed: false
+                    });
+                    
+                } else if (pattern === 'bottom') {
+                    // 아래쪽만
+                    const bottomHeight = Math.max(150, gapCenter + gapSize / 4); // 아래쪽 장애물 크기
+                    const startY = this.canvas.height - bottomHeight;
+                    this.obstacles.push({
+                        id: obstacleId,
+                        x: this.canvas.width,
+                        y: startY,
+                        width: obstacleWidth,
+                        height: bottomHeight,
+                        speed: this.gameSpeed,
+                        gapCenter: startY / 2,
+                        gapSize: startY,
+                        pattern: pattern,
+                        passed: false
+                    });
+                }
+            }
+
             updateObstacles() {
+                const planeX = 100;
+                
                 for (let i = this.obstacles.length - 1; i >= 0; i--) {
                     const obstacle = this.obstacles[i];
                     obstacle.x -= obstacle.speed;
 
+                    // 충돌 검사
                     if (this.checkCollision(obstacle)) {
                         this.showExplosion();
                         this.wordFail();
                         return;
                     }
 
+                    // 화면을 벗어난 장애물 제거
                     if (obstacle.x + obstacle.width < 0) {
                         this.obstacles.splice(i, 1);
                     }
@@ -845,13 +962,12 @@
 
             checkCollision(obstacle) {
                 const planeRect = {
-                    x: 100 + 5, // 여백 5px 추가 (더 관대하게)
-                    y: this.planeY - 20, // 비행기 중심에서 위아래 20px
-                    width: 60, // 70 → 60으로 줄임 (더 관대한 충돌)
-                    height: 40 // 50 → 40으로 줄임 (더 관대한 충돌)
+                    x: 100 + 5,
+                    y: this.planeY - 20,
+                    width: 60,
+                    height: 40
                 };
 
-                // 정확한 충돌 검사 - 1픽셀이라도 겹치면 충돌
                 const collision = planeRect.x < obstacle.x + obstacle.width &&
                                  planeRect.x + planeRect.width > obstacle.x &&
                                  planeRect.y < obstacle.y + obstacle.height &&
@@ -883,12 +999,14 @@
             }
 
             draw() {
+                // 배경 그라디언트
                 const gradient = this.ctx.createLinearGradient(0, 0, 0, this.canvas.height);
                 gradient.addColorStop(0, 'rgba(74, 144, 226, 0.3)');
                 gradient.addColorStop(1, 'rgba(135, 206, 235, 0.2)');
                 this.ctx.fillStyle = gradient;
                 this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
+                // 구름 그리기
                 this.ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
                 this.clouds.forEach(cloud => {
                     this.ctx.beginPath();
@@ -898,6 +1016,7 @@
                     this.ctx.fill();
                 });
 
+                // 장애물 그리기
                 this.ctx.fillStyle = '#34495e';
                 this.ctx.strokeStyle = '#2c3e50';
                 this.ctx.lineWidth = 3;
@@ -918,11 +1037,15 @@
                 this.wordDisplay.classList.remove('game-active');
 
                 if (success) {
-                    this.gameOverTitle.textContent = 'Complete!';
-                    this.restartBtn.style.display = 'inline-block';
+                    this.gameOverTitle.textContent = '🎉 COMPLETE! 🎉';
+                    this.gameOverTitle.style.color = '#4CAF50';
+                    this.exitBtn.style.display = 'inline-block';
+                    this.restartBtn.style.display = 'none';
                     this.nextStageBtn.style.display = this.level < this.maxLevel ? 'inline-block' : 'none';
                 } else {
-                    this.gameOverTitle.textContent = '게임 오버!';
+                    this.gameOverTitle.textContent = 'GAME OVER';
+                    this.gameOverTitle.style.color = '#FF6B6B';
+                    this.exitBtn.style.display = 'inline-block';
                     this.restartBtn.style.display = 'inline-block';
                     this.nextStageBtn.style.display = 'none';
                 }
@@ -933,10 +1056,8 @@
             nextStage() {
                 if (this.level < this.maxLevel) {
                     this.level++;
-                    this.gameSpeed = 2.0 + (this.level - 1) * 0.1; // 레벨당 속도 더 완만하게 증가 (0.2 → 0.1)
-                    this.fallSpeed = 8 + (this.level - 1) * 0.3; // 레벨당 추락속도 더 완만하게 증가 (0.5 → 0.3)
-                    this.obstacleSpawnRate = 0.015 + this.level * 0.005;
-                    this.moveDistance = 200; // 비행기 이동거리 유지
+                    this.gameSpeed = 2.0 + (this.level - 1) * 0.15;
+                    this.fallSpeed = 8 + (this.level - 1) * 0.4;
                     this.usedWords = [];
                 }
 
@@ -944,6 +1065,8 @@
                 this.wordDisplay.style.display = 'block';
                 this.obstacles = [];
                 this.clouds = [];
+                this.passageHistory = [];
+                this.currentPatternIndex = 0;
                 this.createClouds();
 
                 this.planeY = this.canvas.height / 2;
@@ -952,7 +1075,6 @@
 
                 this.generateNewWords();
                 this.timer = 60;
-                this.requiredMoves = 5;
                 this.updateUI();
                 this.startGame();
             }
@@ -963,17 +1085,23 @@
                 this.obstacles = [];
                 this.clouds = [];
                 this.level = 1;
-                this.gameSpeed = 1.5;
+                this.gameSpeed = 2.0;
                 this.fallSpeed = 8;
-                this.obstacleSpawnRate = 0.015;
-                this.moveDistance = 60;
-                this.requiredMoves = 5;
                 this.usedWords = [];
+                this.passageHistory = [];
+                this.currentPatternIndex = 0;
 
                 this.planeY = this.canvas.height / 2;
                 this.plane.style.top = `${this.planeY}px`;
                 this.plane.style.transform = 'translateY(-50%) rotate(0deg)';
 
+                // UI 초기화
+                this.gameRunning = false;
+                this.wordDisplay.classList.remove('game-active');
+                this.startBtn.style.display = 'block';
+                this.userInput.style.display = 'none';
+                this.nextStageBtn.style.display = 'none';
+                
                 this.init();
             }
 
@@ -989,17 +1117,16 @@
 
                 this.updateUI();
 
+                // 60초 생존하면 성공!
                 if (this.timer <= 0) {
-                    if (this.currentMoves >= this.requiredMoves) {
-                        this.gameOver(true);
-                    } else {
-                        this.wordFail();
-                    }
+                    this.gameOver(true);
                     return;
                 }
 
+                // 비행기 자연 낙하
                 this.planeY += this.fallSpeed * deltaTime;
 
+                // 화면 경계 검사
                 if (this.planeY <= 25 || this.planeY >= this.canvas.height - 25) {
                     this.showExplosion();
                     this.wordFail();
@@ -1028,33 +1155,6 @@
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight - 80;
             }
-        });
-
-        // 네비게이션 스크롤 효과
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('nav');
-            if (window.scrollY > 100) {
-                nav.style.background = 'rgba(255, 255, 255, 0.98)';
-            } else {
-                nav.style.background = 'rgba(255, 255, 255, 0.95)';
-            }
-        });
-
-        // 부드러운 스크롤링
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                const href = this.getAttribute('href');
-                if (href && href !== '#') {
-                    e.preventDefault();
-                    const target = document.querySelector(href);
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                }
-            });
         });
     </script>
 </body>
