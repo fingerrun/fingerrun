@@ -939,16 +939,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 this.currentText = '';
                 this.currentPosition = 0;
                 this.startTime = null;
-                this.totalJaso = 0;
-                this.correctJaso = 0;
                 this.currentJamoSequence = [];
                 this.currentJamoPosition = 0;
                 this.currentProblem = 0;
                 this.totalProblems = 10;
                 this.usedWords = [];
                 this.usedSentences = [];
-                this.sessionSpeeds = [];
-                this.sessionAccuracies = [];
 
                 // 한글 자모 매핑
                 this.koreanKeyMap = {
@@ -972,19 +968,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 this.keyboardMap['ㅃ'] = 'q';
                 this.keyboardMap['ㅆ'] = 't';
                 this.keyboardMap['ㅉ'] = 'w';
-                this.keyboardMap['ㅒ'] = 'o'; // ㅐ 키만
-                this.keyboardMap['ㅖ'] = 'p'; // ㅔ 키만
-                this.keyboardMap[' '] = ' '; // 스페이스바
+                this.keyboardMap['ㅒ'] = 'o';
+                this.keyboardMap['ㅖ'] = 'p';
+                this.keyboardMap[' '] = ' ';
 
                 // 복합모음 매핑 (동시에 두 키 강조용)
                 this.complexVowelMap = {
-                    'ㅘ': ['h', 'k'], // ㅗ + ㅏ
-                    'ㅙ': ['h', 'o'], // ㅗ + ㅐ
-                    'ㅚ': ['h', 'l'], // ㅗ + ㅣ
-                    'ㅝ': ['n', 'j'], // ㅜ + ㅓ
-                    'ㅞ': ['n', 'p'], // ㅜ + ㅔ
-                    'ㅟ': ['n', 'l'], // ㅜ + ㅣ
-                    'ㅢ': ['m', 'l']  // ㅡ + ㅣ
+                    'ㅘ': ['h', 'k'], 'ㅙ': ['h', 'o'], 'ㅚ': ['h', 'l'],
+                    'ㅝ': ['n', 'j'], 'ㅞ': ['n', 'p'], 'ㅟ': ['n', 'l'], 'ㅢ': ['m', 'l']
                 };
 
                 this.practiceData = {
@@ -1100,7 +1091,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
                 const typingInput = document.getElementById('typingInput');
                 
-                // input 이벤트로 텍스트 변화 감지
                 typingInput.addEventListener('input', (e) => {
                     try {
                         this.handleInput(e.target.value);
@@ -1110,7 +1100,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     }
                 });
 
-                // 엔터/스페이스로 다음 문제
                 typingInput.addEventListener('keydown', (e) => {
                     if ((e.key === ' ' || e.key === 'Enter') && this.currentPosition >= this.currentText.length) {
                         e.preventDefault();
@@ -1154,7 +1143,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     const mediumWords = this.practiceData.word.medium.filter(word => !this.usedWords.includes(word));
                     const hardWords = this.practiceData.word.hard.filter(word => !this.usedWords.includes(word));
                     
-                    // 사용 가능한 단어가 없으면 초기화
                     if (easyWords.length === 0 && mediumWords.length === 0 && hardWords.length === 0) {
                         this.usedWords = [];
                     }
@@ -1167,7 +1155,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     const mediumWord = availableMedium[Math.floor(Math.random() * availableMedium.length)];
                     const hardWord = availableHard[Math.floor(Math.random() * availableHard.length)];
                     
-                    // 사용된 단어 기록
                     this.usedWords.push(easyWord, mediumWord, hardWord);
                     
                     const words = [easyWord, mediumWord, hardWord];
@@ -1180,7 +1167,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 } else {
                     const availableSentences = data.filter(sentence => !this.usedSentences.includes(sentence));
                     
-                    // 사용 가능한 문장이 없으면 초기화
                     if (availableSentences.length === 0) {
                         this.usedSentences = [];
                         availableSentences.push(...data);
@@ -1189,21 +1175,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     const randomIndex = Math.floor(Math.random() * availableSentences.length);
                     this.currentText = availableSentences[randomIndex];
                     
-                    // 사용된 문장 기록
                     this.usedSentences.push(this.currentText);
                 }
 
                 this.currentPosition = 0;
                 this.startTime = null;
-                this.correctJaso = 0;
-                this.totalJaso = 0;
                 this.currentJamoSequence = [];
                 this.currentJamoPosition = 0;
 
-                // 텍스트의 전체 자모 시퀀스 생성
                 this.generateJamoSequence();
-
-                // 초기 키보드 강조
                 this.updateKeyboardHighlight();
 
                 const textDisplay = document.getElementById('textDisplay');
@@ -1214,7 +1194,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 }
             }
 
-            // 텍스트 전체를 자모 단위로 분해하여 시퀀스 생성
             generateJamoSequence() {
                 this.currentJamoSequence = [];
                 for (let i = 0; i < this.currentText.length; i++) {
@@ -1295,38 +1274,24 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 }
             }
 
-            // 한글 문자를 자모로 분해하는 함수 (복합모음 올바른 순서로 분해)
             decomposeHangul(char) {
                 const code = char.charCodeAt(0);
                 
-                // 개별 자모인 경우
                 if ((code >= 0x3131 && code <= 0x314E) || (code >= 0x314F && code <= 0x3163)) {
-                    // 복합모음 개별 자모 분해 (타자 입력 순서대로)
                     switch (char) {
-                        case 'ㅘ': // ㅗ + ㅏ
-                            return ['ㅗ', 'ㅏ'];
-                        case 'ㅙ': // ㅗ + ㅐ
-                            return ['ㅗ', 'ㅐ'];
-                        case 'ㅚ': // ㅗ + ㅣ
-                            return ['ㅗ', 'ㅣ'];
-                        case 'ㅝ': // ㅜ + ㅓ
-                            return ['ㅜ', 'ㅓ'];
-                        case 'ㅞ': // ㅜ + ㅔ
-                            return ['ㅜ', 'ㅔ'];
-                        case 'ㅟ': // ㅜ + ㅣ
-                            return ['ㅜ', 'ㅣ'];
-                        case 'ㅢ': // ㅡ + ㅣ
-                            return ['ㅡ', 'ㅣ'];
-                        case 'ㅒ': // ㅐ + ㅣ
-                            return ['ㅐ', 'ㅣ'];
-                        case 'ㅖ': // ㅔ + ㅣ
-                            return ['ㅔ', 'ㅣ'];
-                        default:
-                            return [char];
+                        case 'ㅘ': return ['ㅗ', 'ㅏ'];
+                        case 'ㅙ': return ['ㅗ', 'ㅐ'];
+                        case 'ㅚ': return ['ㅗ', 'ㅣ'];
+                        case 'ㅝ': return ['ㅜ', 'ㅓ'];
+                        case 'ㅞ': return ['ㅜ', 'ㅔ'];
+                        case 'ㅟ': return ['ㅜ', 'ㅣ'];
+                        case 'ㅢ': return ['ㅡ', 'ㅣ'];
+                        case 'ㅒ': return ['ㅐ', 'ㅣ'];
+                        case 'ㅖ': return ['ㅔ', 'ㅣ'];
+                        default: return [char];
                     }
                 }
 
-                // 완성된 한글인지 확인 (가-힣)
                 if (code >= 0xAC00 && code <= 0xD7A3) {
                     const baseCode = code - 0xAC00;
                     const choIndex = Math.floor(baseCode / 588);
@@ -1339,58 +1304,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
                     const result = [];
 
-                    // 초성 추가
                     if (choSeong[choIndex]) {
                         result.push(choSeong[choIndex]);
                     }
 
-                    // 중성 추가 - 복합모음을 타자 순서로 분해
                     const jung = jungSeong[jungIndex];
                     if (jung) {
                         switch (jung) {
-                            case 'ㅘ': // ㅗ + ㅏ
-                                result.push('ㅗ');
-                                result.push('ㅏ');
-                                break;
-                            case 'ㅙ': // ㅗ + ㅐ
-                                result.push('ㅗ');
-                                result.push('ㅐ');
-                                break;
-                            case 'ㅚ': // ㅗ + ㅣ
-                                result.push('ㅗ');
-                                result.push('ㅣ');
-                                break;
-                            case 'ㅝ': // ㅜ + ㅓ
-                                result.push('ㅜ');
-                                result.push('ㅓ');
-                                break;
-                            case 'ㅞ': // ㅜ + ㅔ
-                                result.push('ㅜ');
-                                result.push('ㅔ');
-                                break;
-                            case 'ㅟ': // ㅜ + ㅣ
-                                result.push('ㅜ');
-                                result.push('ㅣ');
-                                break;
-                            case 'ㅢ': // ㅡ + ㅣ
-                                result.push('ㅡ');
-                                result.push('ㅣ');
-                                break;
-                            case 'ㅒ': // ㅐ + ㅣ
-                                result.push('ㅐ');
-                                result.push('ㅣ');
-                                break;
-                            case 'ㅖ': // ㅔ + ㅣ
-                                result.push('ㅔ');
-                                result.push('ㅣ');
-                                break;
-                            default:
-                                result.push(jung);
-                                break;
+                            case 'ㅘ': result.push('ㅗ'); result.push('ㅏ'); break;
+                            case 'ㅙ': result.push('ㅗ'); result.push('ㅐ'); break;
+                            case 'ㅚ': result.push('ㅗ'); result.push('ㅣ'); break;
+                            case 'ㅝ': result.push('ㅜ'); result.push('ㅓ'); break;
+                            case 'ㅞ': result.push('ㅜ'); result.push('ㅔ'); break;
+                            case 'ㅟ': result.push('ㅜ'); result.push('ㅣ'); break;
+                            case 'ㅢ': result.push('ㅡ'); result.push('ㅣ'); break;
+                            case 'ㅒ': result.push('ㅐ'); result.push('ㅣ'); break;
+                            case 'ㅖ': result.push('ㅔ'); result.push('ㅣ'); break;
+                            default: result.push(jung); break;
                         }
                     }
 
-                    // 종성 추가
                     if (jongSeong[jongIndex]) {
                         result.push(jongSeong[jongIndex]);
                     }
@@ -1402,14 +1335,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             }
 
             updateKeyboardHighlight() {
-                // 모든 키 강조 제거
                 document.querySelectorAll('.key').forEach(key => {
                     key.classList.remove('active');
                 });
 
-                // 단어/문장 모드에서는 자모 시퀀스 기반 강조
                 if (this.currentMode === 'word' || this.currentMode === 'sentence') {
-                    // 입력값 기반으로 자모 위치 계산
                     const inputValue = document.getElementById('typingInput').value;
                     let inputJamoCount = 0;
 
@@ -1430,15 +1360,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     if (inputJamoCount < this.currentJamoSequence.length) {
                         const currentJamo = this.currentJamoSequence[inputJamoCount];
 
-                        // 스페이스바 처리
                         if (currentJamo === ' ') {
                             const targetKey = document.querySelector(`[data-key=" "]`);
                             if (targetKey) {
                                 targetKey.classList.add('active');
                             }
-                        }
-                        // 복합모음인 경우 두 키 모두 강조 (ㅒ, ㅖ 제외)
-                        else if (this.complexVowelMap[currentJamo]) {
+                        } else if (this.complexVowelMap[currentJamo]) {
                             const keys = this.complexVowelMap[currentJamo];
                             keys.forEach(keyName => {
                                 const targetKey = document.querySelector(`[data-key="${keyName}"]`);
@@ -1447,7 +1374,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                                 }
                             });
                         } else {
-                            // 일반 자모인 경우 단일 키 강조 (ㅒ는 ㅐ키만, ㅖ는 ㅔ키만)
                             const keyName = this.keyboardMap[currentJamo];
                             if (keyName) {
                                 const targetKey = document.querySelector(`[data-key="${keyName}"]`);
@@ -1458,19 +1384,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         }
                     }
                 } else {
-                    // 자음/모음 모드
                     if (this.currentPosition < this.currentText.length) {
                         const currentChar = this.currentText[this.currentPosition];
 
-                        // 스페이스바 처리
                         if (currentChar === ' ') {
                             const targetKey = document.querySelector(`[data-key=" "]`);
                             if (targetKey) {
                                 targetKey.classList.add('active');
                             }
-                        }
-                        // 복합모음인 경우 두 키 모두 강조 (ㅒ, ㅖ 제외)
-                        else if (this.complexVowelMap[currentChar]) {
+                        } else if (this.complexVowelMap[currentChar]) {
                             const keys = this.complexVowelMap[currentChar];
                             keys.forEach(keyName => {
                                 const targetKey = document.querySelector(`[data-key="${keyName}"]`);
@@ -1479,7 +1401,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                                 }
                             });
                         } else {
-                            // 일반 자모인 경우 단일 키 강조 (ㅒ는 ㅐ키만, ㅖ는 ㅔ키만)
                             const keyName = this.keyboardMap[currentChar];
                             if (keyName) {
                                 const targetKey = document.querySelector(`[data-key="${keyName}"]`);
@@ -1512,8 +1433,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
                     if (this.currentMode === 'sentence') {
                         const chars = document.querySelectorAll('.char');
-                        this.correctJaso = 0;
-                        this.totalJaso = this.countJaso(inputValue);
 
                         for (let i = 0; i < this.currentText.length; i++) {
                             const char = chars[i];
@@ -1528,7 +1447,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                             if (i < inputValue.length) {
                                 if (inputValue[i] === this.currentText[i]) {
                                     char.style.color = '#000000';
-                                    this.correctJaso += this.countJaso(this.currentText[i]);
                                 } else {
                                     char.style.color = '#ff4444';
                                 }
@@ -1540,8 +1458,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         }
                     } else {
                         const chars = document.querySelectorAll('.char');
-                        this.correctJaso = 0;
-                        this.totalJaso = this.countJaso(inputValue);
 
                         for (let i = 0; i < this.currentText.length; i++) {
                             const char = chars[i];
@@ -1549,7 +1465,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                             if (i < inputValue.length) {
                                 if (inputValue[i] === this.currentText[i]) {
                                     char.className = 'char correct';
-                                    this.correctJaso += this.countJaso(this.currentText[i]);
                                 } else {
                                     char.className = 'char incorrect';
                                 }
@@ -1577,12 +1492,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
             updateStats() {
                 try {
-                    const accuracy = this.totalJaso > 0 ? Math.round((this.correctJaso / this.totalJaso) * 100) : 100;
+                    // 현재 문제에 대해서만 정확도 계산 (누적 X)
+                    const currentTextJasoCount = this.countJaso(this.currentText);
+                    let currentCorrectJaso = 0;
+                    
+                    const inputValue = document.getElementById('typingInput').value;
+                    
+                    // 현재 입력된 내용에서 정확한 부분만 계산
+                    for (let i = 0; i < Math.min(inputValue.length, this.currentText.length); i++) {
+                        if (inputValue[i] === this.currentText[i]) {
+                            currentCorrectJaso += this.countJaso(this.currentText[i]);
+                        }
+                    }
+                    
+                    const accuracy = currentTextJasoCount > 0 ? Math.round((currentCorrectJaso / currentTextJasoCount) * 100) : 100;
                     document.getElementById('accuracy').textContent = `${accuracy}%`;
 
                     if (this.startTime) {
                         const elapsed = (Date.now() - this.startTime) / 1000;
-                        const cpm = elapsed > 0 ? Math.round((this.totalJaso / elapsed) * 60) : 0;
+                        const currentInputJasoCount = this.countJaso(inputValue);
+                        const cpm = elapsed > 0 ? Math.round((currentInputJasoCount / elapsed) * 60) : 0;
                         document.getElementById('speed').textContent = cpm;
                     } else {
                         document.getElementById('speed').textContent = '0';
@@ -1594,16 +1523,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             }
 
             showNextButton() {
-                try {
-                    const accuracy = this.totalJaso > 0 ? Math.round((this.correctJaso / this.totalJaso) * 100) : 100;
-                    const elapsed = this.startTime ? (Date.now() - this.startTime) / 1000 : 0;
-                    const cpm = elapsed > 0 ? Math.round((this.totalJaso / elapsed) * 60) : 0;
-
-                    this.sessionSpeeds.push(cpm);
-                    this.sessionAccuracies.push(accuracy);
-                } catch (error) {
-                    // 오류 시 기본 상태 유지
-                }
+                // 다음 문제로 넘어가는 처리만
             }
 
             nextProblem() {
@@ -1624,24 +1544,24 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
             showComplete() {
                 try {
-                    const avgAccuracy = this.sessionAccuracies.length > 0 ? 
-                        Math.round(this.sessionAccuracies.reduce((a, b) => a + b, 0) / this.sessionAccuracies.length) : 100;
-                    const avgSpeed = this.sessionSpeeds.length > 0 ? 
-                        Math.round(this.sessionSpeeds.reduce((a, b) => a + b, 0) / this.sessionSpeeds.length) : 0;
+                    // 현재 화면에 표시된 통계를 그대로 사용
+                    const currentAccuracy = document.getElementById('accuracy').textContent;
+                    const currentSpeed = document.getElementById('speed').textContent;
 
-                    document.getElementById('finalAccuracy').textContent = `${avgAccuracy}%`;
-                    document.getElementById('finalSpeed').textContent = avgSpeed;
+                    document.getElementById('finalAccuracy').textContent = currentAccuracy;
+                    document.getElementById('finalSpeed').textContent = currentSpeed;
                     document.getElementById('completeModal').style.display = 'flex';
                 } catch (error) {
                     // 완료 모달 표시 오류 시 기본 상태 유지
+                    document.getElementById('finalAccuracy').textContent = '100%';
+                    document.getElementById('finalSpeed').textContent = '0';
+                    document.getElementById('completeModal').style.display = 'flex';
                 }
             }
 
             restart() {
                 try {
                     this.currentProblem = 0;
-                    this.sessionSpeeds = [];
-                    this.sessionAccuracies = [];
                     this.resetStats();
                     this.generateText();
                     this.updateDisplay();
@@ -1657,8 +1577,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 try {
                     this.currentPosition = 0;
                     this.startTime = null;
-                    this.totalJaso = 0;
-                    this.correctJaso = 0;
                     document.getElementById('accuracy').textContent = '100%';
                     document.getElementById('speed').textContent = '0';
                     document.getElementById('progress').textContent = `1/${this.totalProblems}`;
