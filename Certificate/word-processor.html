@@ -456,62 +456,63 @@
     </style>
 </head>
 <body>
-    <nav> 
-        <div class="nav-container"> 
-            <a href="./index.html" class="logo">⌨️ FingerRun</a> 
-            <ul class="nav-menu"> 
-                <li><a href="./notices.html">공지사항</a></li> 
-                <li> 
-                    <a href="#korean"> 
-                        한글 타자연습 
-                        <span class="dropdown-arrow">▼</span> 
-                    </a> 
-                    <div class="dropdown-menu"> 
-                        <a href="./Korean/practice.html" onclick="switchKoreanMode('consonant')">자음연습</a>
-<a href="./Korean/practice.html" onclick="switchKoreanMode('vowel')">모음연습</a>
-<a href="./Korean/practice.html" onclick="switchKoreanMode('word')">단어연습</a>
-<a href="./Korean/practice.html" onclick="switchKoreanMode('sentence')">문장연습</a>
-                    </div> 
-                </li> 
-                <li> 
-                    <a href="#english"> 
-                        영어 타자연습 
-                        <span class="dropdown-arrow">▼</span> 
-                    </a> 
-                    <div class="dropdown-menu"> 
-<a href="./English/practice.html" onclick="switchEnglishMode('alphabet')">알파벳연습</a>
-<a href="./English/practice.html" onclick="switchEnglishMode('word')">단어연습</a>
-<a href="./English/practice.html" onclick="switchEnglishMode('sentence')">문장연습</a>
-                    </div> 
-                </li> 
-                <li> 
-                    <a href="#games"> 
-                        타자게임 
-                        <span class="dropdown-arrow">▼</span> 
-                    </a> 
-                    <div class="dropdown-menu"> 
-                        <a href="./Korean/game-mole.html">두더지 잡기 (한글)</a> 
-                        <a href="./English/game-mole.html">두더지 잡기 (영어)</a> 
-                        <a href="./Korean/game-plane.html">비행기 조종 (한글)</a> 
-                        <a href="./English/game-plane.html">비행기 조종 (영어)</a> 
-                        <a href="./Korean/game-delivery.html">택배 분류 (한글)</a> 
-                        <a href="./English/game-delivery.html">택배 분류 (영어)</a> 
-                    </div> 
-                </li> 
-                <li><a href="../writing.html">필사</a></li>
-                <li> 
-                    <a href="#certificate"> 
-                        자격증 
-                        <span class="dropdown-arrow">▼</span> 
-                    </a> 
-                    <div class="dropdown-menu"> 
-                        <a href="./Certificate/word-processor.html">워드프로세서</a> 
-                    </div> 
-                </li> 
-                <li><a href="./contact.html">문의하기</a></li> 
-            </ul> 
-        </div> 
-    </nav> 
+<!-- Navigation --> 
+<nav> 
+    <div class="nav-container"> 
+        <a href="./index.html" class="logo">⌨️ FingerRun</a> 
+        <ul class="nav-menu"> 
+            <li><a href="./notices.html">공지사항</a></li> 
+            <li> 
+                <a href="#korean"> 
+                    한글 타자연습 
+                    <span class="dropdown-arrow">▼</span> 
+                </a> 
+                <div class="dropdown-menu"> 
+                    <a href="./Korean/practice.html" onclick="setKoreanMode('consonant'); return false;">자음연습</a>
+                    <a href="./Korean/practice.html" onclick="setKoreanMode('vowel'); return false;">모음연습</a>
+                    <a href="./Korean/practice.html" onclick="setKoreanMode('word'); return false;">단어연습</a>
+                    <a href="./Korean/practice.html" onclick="setKoreanMode('sentence'); return false;">문장연습</a>
+                </div> 
+            </li> 
+            <li> 
+                <a href="#english"> 
+                    영어 타자연습 
+                    <span class="dropdown-arrow">▼</span> 
+                </a> 
+                <div class="dropdown-menu"> 
+                    <a href="./English/practice.html" onclick="setEnglishMode('alphabet'); return false;">알파벳 연습</a>
+                    <a href="./English/practice.html" onclick="setEnglishMode('word'); return false;">단어 연습</a>
+                    <a href="./English/practice.html" onclick="setEnglishMode('sentence'); return false;">문장 연습</a>
+                </div> 
+            </li> 
+            <li> 
+                <a href="#games"> 
+                    타자게임 
+                    <span class="dropdown-arrow">▼</span> 
+                </a> 
+                <div class="dropdown-menu"> 
+                    <a href="./Korean/game-mole.html">두더지 잡기 (한글)</a> 
+                    <a href="./English/game-mole.html">두더지 잡기 (영어)</a> 
+                    <a href="./Korean/game-plane.html">비행기 조종 (한글)</a> 
+                    <a href="./English/game-plane.html">비행기 조종 (영어)</a> 
+                    <a href="./Korean/game-delivery.html">택배 분류 (한글)</a> 
+                    <a href="./English/game-delivery.html">택배 분류 (영어)</a> 
+                </div> 
+            </li> 
+            <li><a href="../writing.html">필사</a></li>
+            <li> 
+                <a href="#certificate"> 
+                    자격증 
+                    <span class="dropdown-arrow">▼</span> 
+                </a> 
+                <div class="dropdown-menu"> 
+                    <a href="./Certificate/word-processor.html">워드프로세서</a> 
+                </div> 
+            </li> 
+            <li><a href="./contact.html" class="active">문의하기</a></li> 
+        </ul> 
+    </div> 
+</nav> 
 
     <div class="main-content">
         <div class="content-wrapper">
