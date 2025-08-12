@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="ko">
 <head>
     <!-- Google Tag Manager -->
@@ -197,6 +196,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             color: #666;
             max-width: 600px;
             margin: 0 auto;
+            white-space: nowrap;
         }
 
         /* Practice Container */
@@ -554,6 +554,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             animation: slideUp 0.5s ease;
         }
 
+        /* Enhanced Modal for AI Feedback */
+        .modal-content.ai-feedback {
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            text-align: left;
+            padding: 2.5rem;
+        }
+
         @keyframes slideUp {
             from { transform: translateY(50px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
@@ -567,6 +576,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: 2rem;
+        }
+
+        .ai-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2rem;
+            text-align: center;
         }
 
         .complete-stats {
@@ -599,7 +619,240 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             font-weight: 500;
         }
 
-        .restart-btn {
+        /* AI Feedback Specific Styles */
+        .feedback-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+
+        .feedback-section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feedback-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+
+        .feedback-highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+
+        /* Speedometer */
+        .speedometer-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem 0;
+        }
+
+        .speedometer {
+            position: relative;
+            width: 300px; /* 1.5배 증가 (200px -> 300px) */
+            height: 150px; /* 1.5배 증가 (100px -> 150px) */
+            margin: 0 auto;
+        }
+
+        .speedometer-arc {
+            width: 300px; /* 1.5배 증가 */
+            height: 150px; /* 1.5배 증가 */
+            border: 12px solid #e2e8f0; /* 테두리도 1.5배 증가 */
+            border-bottom: none;
+            border-radius: 300px 300px 0 0; /* 반지름도 1.5배 증가 */
+            position: relative;
+            background: linear-gradient(90deg, #ff4444 0%, #ffa500 25%, #ffff00 50%, #90EE90 75%, #4CAF50 100%);
+            background-clip: padding-box;
+        }
+
+        .speedometer-needle {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 6px; /* 1.5배 증가 */
+            height: 120px; /* 1.5배 증가 */
+            background: #333;
+            transform-origin: bottom center;
+            transform: translateX(-50%) rotate(-90deg);
+            transition: transform 2s ease-in-out;
+            border-radius: 3px; /* 1.5배 증가 */
+            z-index: 2;
+        }
+
+        .speedometer-center {
+            position: absolute;
+            bottom: -12px; /* 테두리 두께에 맞춰 조정 */
+            left: 50%;
+            width: 24px; /* 1.5배 증가 */
+            height: 24px; /* 1.5배 증가 */
+            background: #333;
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+        }
+
+        .speedometer-labels {
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            right: 0;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .speedometer-labels .left-label {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+        }
+
+        .speedometer-labels .right-label {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+        }
+
+                        /* VS 대결 구도 스타일 */
+        .vs-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .vs-player {
+            flex: 1;
+            text-align: center;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .vs-player.user {
+            border: 3px solid #667eea;
+        }
+
+        .vs-player.average {
+            border: 3px solid #28a745;
+        }
+
+        .vs-divider {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #667eea;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .vs-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .vs-stat {
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+
+        .vs-stat-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .vs-stat-value {
+            font-weight: 700;
+            color: #667eea;
+            margin-left: 0.5rem;
+        }
+
+        .vs-player.average .vs-stat-value {
+            color: #28a745;
+        }
+
+        .skill-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .skill-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .skill-item.advice-item {
+            grid-column: span 3;
+            border-left: 3px solid #28a745;
+            background: linear-gradient(135deg, #f8fff9 0%, #e8f5e8 100%);
+        }
+
+        .skill-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .skill-score {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .advice-content {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #2d5016;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .restart-btn, .continue-btn {
             padding: 15px 40px;
             background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
@@ -610,15 +863,46 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            flex: 1;
         }
 
-        .restart-btn:hover {
+        .continue-btn {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .restart-btn:hover, .continue-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
         }
 
+        .continue-btn:hover {
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.5);
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
+            .feedback-section div[style*="display: flex"] {
+                flex-direction: column !important;
+                gap: 1.5rem !important;
+            }
+            
             .nav-menu {
                 gap: 1rem;
                 flex-wrap: nowrap;
@@ -672,12 +956,54 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 margin: 1rem;
             }
 
+            .modal-content.ai-feedback {
+                padding: 1.5rem;
+                margin: 0.5rem;
+            }
+
             .complete-title {
                 font-size: 2.2rem;
             }
 
+            .ai-title {
+                font-size: 1.8rem;
+            }
+
             .complete-value {
                 font-size: 2rem;
+            }
+
+            .speedometer {
+                width: 225px; /* 모바일에서도 1.5배 크기 유지 */
+                height: 112px;
+            }
+
+            .speedometer-arc {
+                width: 225px;
+                height: 112px;
+            }
+
+            .speedometer-needle {
+                height: 90px;
+            }
+
+            .skill-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .skill-item.advice-item {
+                grid-column: span 1;
+            }
+
+            .modal-buttons {
+                flex-direction: row; /* 한 줄 유지 */
+                gap: 0.8rem;
+            }
+
+            .restart-btn, .continue-btn {
+                padding: 12px 20px; /* 모바일에서 버튼 크기 조정 */
+                font-size: 0.9rem;
+                flex: 1; /* 동일한 크기 유지 */
             }
 
             /* 모바일 키보드 조정 */
@@ -808,7 +1134,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <!-- Page Header -->
         <div class="page-header">
             <h1 class="page-title">한글 타자 연습</h1>
-            <p class="page-description">체계적인 한글 타이핑 연습으로 정확도와 속도를 향상시키세요</p>
+            <p class="page-description">체계적인 학습과 철저한 AI 피드백 분석으로 정확도와 속도를 향상시키세요.</p>
         </div>
 
         <!-- Practice Container -->
@@ -927,7 +1253,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     <!-- Complete Modal -->
     <div class="modal" id="completeModal" style="display: none;">
-        <div class="modal-content">
+        <div class="modal-content" id="modalContent">
             <h2 class="complete-title">연습 완료! 🎉</h2>
             <div class="complete-stats">
                 <div class="complete-stat">
@@ -939,7 +1265,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     <div class="complete-label">평균 속도</div>
                 </div>
             </div>
-            <button class="restart-btn" id="restartBtn">다시 시작</button>
+            <div class="modal-buttons">
+                <button class="restart-btn" id="restartBtn">다시 시작</button>
+            </div>
         </div>
     </div>
 
@@ -956,6 +1284,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 this.totalProblems = 10;
                 this.usedWords = [];
                 this.usedSentences = [];
+
+                // AI 분석용 데이터 (문장연습 전용)
+                this.sentenceTypingData = [];
+                this.sentenceMistakes = [];
+                this.sentenceKeyTimings = [];
+                this.sentenceStartTime = null;
+                this.lastKeyTime = null;
+                this.lastKeyPressed = null;
+                this.keyTransitions = []; // 키 이동 패턴 분석용
+                
+                // 각 문장별 통계 저장용 (새로 추가)
+                this.sentenceStats = [];
 
                 // 한글 자모 매핑
                 this.koreanKeyMap = {
@@ -987,6 +1327,29 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 this.complexVowelMap = {
                     'ㅘ': ['h', 'k'], 'ㅙ': ['h', 'o'], 'ㅚ': ['h', 'l'],
                     'ㅝ': ['n', 'j'], 'ㅞ': ['n', 'p'], 'ㅟ': ['n', 'l'], 'ㅢ': ['m', 'l']
+                };
+
+                // 키보드 위치 매핑 (행, 열 좌표)
+                this.keyPositions = {
+                    'q': [1, 0], 'w': [1, 1], 'e': [1, 2], 'r': [1, 3], 't': [1, 4],
+                    'y': [1, 5], 'u': [1, 6], 'i': [1, 7], 'o': [1, 8], 'p': [1, 9],
+                    'a': [2, 0], 's': [2, 1], 'd': [2, 2], 'f': [2, 3], 'g': [2, 4],
+                    'h': [2, 5], 'j': [2, 6], 'k': [2, 7], 'l': [2, 8],
+                    'z': [3, 0], 'x': [3, 1], 'c': [3, 2], 'v': [3, 3], 'b': [3, 4],
+                    'n': [3, 5], 'm': [3, 6], ' ': [4, 0] // 스페이스바
+                };
+
+                // 손가락별 키 할당
+                this.fingerAssignment = {
+                    'q': '왼새끼', 'a': '왼새끼', 'z': '왼새끼',
+                    'w': '왼약지', 's': '왼약지', 'x': '왼약지',
+                    'e': '왼중지', 'd': '왼중지', 'c': '왼중지',
+                    'r': '왼검지', 'f': '왼검지', 'v': '왼검지', 't': '왼검지', 'g': '왼검지', 'b': '왼검지',
+                    'y': '오검지', 'h': '오검지', 'n': '오검지', 'u': '오검지', 'j': '오검지', 'm': '오검지',
+                    'i': '오중지', 'k': '오중지',
+                    'o': '오약지', 'l': '오약지',
+                    'p': '오새끼',
+                    ' ': '엄지'
                 };
 
                 this.practiceData = {
@@ -1031,56 +1394,42 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         ]
                     },
                     sentence: [
+                        '창업 생태계 조성이 국가 경쟁력 향상의 핵심입니다.',
+                        '비행기 모드로 충전하면 속도가 훨씬 빨라져요.',
                         '경제 성장과 사회 발전은 서로 밀접한 관련이 있습니다.',
-                        '기술 혁신이 우리의 미래를 바꾸고 있습니다.',
-                        '환경 보호는 다음 세대를 위한 중요한 과제입니다.',
-                        '교육의 힘으로 더 나은 세상을 만들어갑시다.',
-                        '꿈을 포기하지 않는 사람만이 성공할 수 있습니다.',
-                        '실패는 성공으로 가는 과정일 뿐입니다.',
-                        '창의적 사고가 문제 해결의 열쇠입니다.',
-                        '글로벌 시대에는 소통 능력이 필수입니다.',
+                        '베이킹소다로 머그컵 얼룩을 간단히 지울 수 있죠.',
                         '인공지능이 인간의 삶을 어떻게 변화시킬까요?',
+                        '옷에 껌 묻었을 땐 냉동 후에 떼면 편하답니다.',
+                        '문화 다양성을 존중하는 사회가 더욱 발전할 수 있습니다.',
+                        '신발 속에 티백 넣으면 냄새가 금방 사라져요.',
+                        '기술 혁신이 우리의 미래를 바꾸고 있습니다.',
+                        '물병에 시간 표시를 해두면 물 섭취량이 늘어요.',
+                        '소셜미디어는 현대인의 의사소통을 크게 변화시켰습니다.',
+                        '케이블 끝에 스프링을 감아 꺾임을 예방하세요.',
                         '민주주의는 시민의 참여로 완성됩니다.',
-                        '오늘 날씨가 정말 좋아서 산책하기 좋은 하루입니다.',
-                        '커피 한 잔과 함께 책을 읽는 시간이 가장 행복합니다.',
-                        '가족과 함께 보내는 시간은 무엇과도 바꿀 수 없습니다.',
-                        '건강한 식습관과 규칙적인 운동이 장수의 비결입니다.',
-                        '새로운 언어를 배우는 것은 새로운 세계를 발견하는 일입니다.',
-                        '음악을 들으면 마음이 편안해지고 스트레스가 풀립니다.',
-                        '여행을 통해 다양한 문화를 경험하고 시야를 넓힐 수 있습니다.',
-                        '친구들과 함께 나누는 대화는 인생의 소중한 기쁨입니다.',
-                        '독서는 상상력을 기르고 지식을 쌓는 최고의 방법입니다.',
-                        '요리를 할 때 가족을 생각하면 더욱 맛있게 만들 수 있습니다.',
-                        '스마트폰이 우리 생활에 미친 영향을 한번 생각해보세요.',
-                        '지구온난화 문제는 전 세계가 함께 해결해야 할 과제입니다.',
-                        '인터넷의 발달로 정보 접근성이 크게 향상되었습니다.',
-                        '코로나19 팬데믹은 우리 사회를 완전히 바꾸었습니다.',
-                        '원격근무가 새로운 일하는 방식으로 자리잡고 있습니다.',
-                        '메타버스가 미래 사회의 새로운 플랫폼이 될 것입니다.',
-                        '블록체인 기술이 금융 시스템을 혁신하고 있습니다.',
-                        '전기자동차 보급으로 친환경 교통수단이 확산되고 있습니다.',
-                        '재생에너지 발전이 기후변화 대응의 핵심입니다.',
-                        '플라스틱 사용 줄이기는 환경 보호의 첫걸음입니다.',
-                        'K팝이 전 세계 청년들에게 큰 인기를 얻고 있습니다.',
-                        '한국 드라마가 넷플릭스를 통해 세계로 퍼져나가고 있습니다.',
-                        '온라인 쇼핑몰이 전통적인 오프라인 매장을 대체하고 있습니다.',
-                        '배달 앱의 성장으로 외식 문화가 크게 변화했습니다.',
-                        '유튜브는 새로운 직업군을 만들어내는 플랫폼입니다.',
-                        '소셜미디어는 현대인의 소통 방식을 완전히 바꾸었습니다.',
-                        '게임 산업이 문화 콘텐츠의 새로운 영역으로 성장하고 있습니다.',
-                        '웹툰이 한국 문화 콘텐츠의 새로운 강자로 떠오르고 있습니다.',
-                        '인공지능 기술이 의료 분야에서 혁신을 이끌고 있습니다.',
-                        '로봇 기술의 발전이 제조업 자동화를 가속화하고 있습니다.',
-                        '빅데이터 분석이 마케팅과 광고의 패러다임을 바꾸고 있습니다.',
-                        '클라우드 컴퓨팅이 기업의 IT 인프라를 혁신하고 있습니다.',
-                        '사물인터넷 기술이 스마트홈 시대를 열어가고 있습니다.',
-                        '드론 기술이 물류와 배송 시스템을 변화시키고 있습니다.',
-                        '가상현실 기술이 교육과 훈련 분야에서 활용되고 있습니다.',
-                        '양자컴퓨터가 컴퓨팅의 새로운 미래를 제시하고 있습니다.',
-                        '바이오 기술이 질병 치료와 예방에 새로운 가능성을 열고 있습니다.',
-                        '나노 기술이 소재 과학의 혁신을 이끌어내고 있습니다.',
-                        '우주 기술의 발전으로 화성 탐사가 현실이 되어가고 있습니다.',
-                        '지속 가능한 발전을 위해서는 모든 분야의 협력이 필요합니다.'
+                        '세탁기에 식초+고온세탁으로 냄새를 없앨 수 있죠.',
+                        '교육의 힘으로 더 나은 세상을 만들어갑시다.',
+                        '양파를 냉동 10분 뒤 자르면 눈물이 덜 난답니다.',
+                        '환경 보호는 다음 세대를 위한 중요한 과제입니다.',
+                        '옷장 속 습기는 신문지로도 쉽게 잡을 수 있어요.',
+                        '글로벌 시대에는 소통 능력이 필수입니다.',
+                        '씨 없는 포도 얼리면 달콤한 간식이 되죠.',
+                        '지속가능한 발전을 위해서는 모두의 노력이 필요합니다.',
+                        '휴지심에 비닐 넣으면 깔끔하게 뽑아 쓰기 좋아요.',
+                        '실패는 성공으로 가는 과정일 뿐입니다.',
+                        '냄비 위 나무주걱 올려두면 거품이 안 넘치죠.',
+                        '기후변화 대응을 위한 국제적 협력이 시급합니다.',
+                        '거울에 비누칠하면 김서림 없이 쓸 수 있답니다.',
+                        '꿈을 포기하지 않는 사람만이 성공할 수 있습니다.',
+                        '휴지심 물주기는 화분 과습 방지에 효과 있죠.',
+                        '건강한 라이프스타일을 유지하는 것은 매우 중요합니다.',
+                        '지퍼에 연필심 문지르면 잘 올라간답니다.',
+                        '디지털 전환이 모든 산업 분야에 영향을 미치고 있습니다.',
+                        '빵 봉지에 사과 넣으면 신선하게 보관돼요.',
+                        '인간관계에서 진정성과 신뢰가 가장 중요한 가치입니다.',
+                        '창의적 사고가 문제 해결의 열쇠입니다.',
+                        '스마트 기술이 일상생활을 편리하게 만들어주고 있습니다.',
+                        '평생학습은 급변하는 시대를 살아가는 필수 조건입니다.'
                     ]
                 };
 
@@ -1091,6 +1440,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 this.bindEvents();
                 this.generateText();
                 this.updateDisplay();
+                
+                // 초기 텍스트 표시 확인 및 강제 설정
+                setTimeout(() => {
+                    const display = document.getElementById('textDisplay');
+                    if (!display.innerHTML || display.innerHTML.trim() === '' || !this.currentText) {
+                        // 강제로 기본 텍스트 설정
+                        this.currentText = 'ㄱ ㄴ ㄷ ㄹ ㅁ ㅂ ㅅ';
+                        this.currentPosition = 0;
+                        this.generateJamoSequence();
+                        this.updateDisplay();
+                    }
+                }, 100);
             }
 
             bindEvents() {
@@ -1112,8 +1473,34 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 });
 
                 typingInput.addEventListener('keydown', (e) => {
+                    // 문장연습에서만 키 타이밍 기록
+                    if (this.currentMode === 'sentence') {
+                        this.recordKeyTiming(e.key);
+                    }
+                    
                     if ((e.key === ' ' || e.key === 'Enter') && this.currentPosition >= this.currentText.length) {
                         e.preventDefault();
+                        
+                        // 문장 완료 시 통계 저장 확인
+                        if (this.currentMode === 'sentence') {
+                            const currentAccuracy = parseInt(document.getElementById('accuracy').textContent.replace('%', ''));
+                            const currentSpeed = parseInt(document.getElementById('speed').textContent);
+                            
+                            // 이미 저장되었는지 확인
+                            const alreadyStored = this.sentenceStats.some(stat => stat.sentenceNumber === this.currentProblem + 1);
+                            
+                            if (!alreadyStored) {
+                                const sentenceData = {
+                                    sentenceNumber: this.currentProblem + 1,
+                                    accuracy: currentAccuracy,
+                                    speed: currentSpeed
+                                };
+                                
+                                this.sentenceStats.push(sentenceData);
+                                console.log(`키다운에서 문장${this.currentProblem + 1} 저장 - 정확도: ${currentAccuracy}%, 속도: ${currentSpeed}타/분`);
+                            }
+                        }
+                        
                         this.nextProblem();
                     }
                 });
@@ -1123,10 +1510,91 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 });
             }
 
+            recordKeyTiming(key) {
+                const now = Date.now();
+                if (this.lastKeyTime) {
+                    const interval = now - this.lastKeyTime;
+                    this.sentenceKeyTimings.push({
+                        key: key,
+                        interval: interval,
+                        position: this.currentPosition,
+                        timestamp: now - this.sentenceStartTime
+                    });
+
+                    // 키 이동 패턴 분석
+                    if (this.lastKeyPressed && key !== this.lastKeyPressed) {
+                        const fromKey = this.lastKeyPressed.toLowerCase();
+                        const toKey = key.toLowerCase();
+                        
+                        // 영문 키만 분석 (한글 자모는 영문 키로 변환)
+                        const fromEngKey = this.getEnglishKey(fromKey);
+                        const toEngKey = this.getEnglishKey(toKey);
+                        
+                        if (fromEngKey && toEngKey && this.keyPositions[fromEngKey] && this.keyPositions[toEngKey]) {
+                            this.keyTransitions.push({
+                                from: fromEngKey,
+                                to: toEngKey,
+                                fromChar: this.lastKeyPressed,
+                                toChar: key,
+                                interval: interval,
+                                distance: this.calculateKeyDistance(fromEngKey, toEngKey),
+                                fingerTransition: this.getFingerTransition(fromEngKey, toEngKey)
+                            });
+                        }
+                    }
+                }
+                this.lastKeyTime = now;
+                this.lastKeyPressed = key;
+            }
+
+            getEnglishKey(key) {
+                // 한글 자모를 영문 키로 변환
+                for (let [engKey, korChar] of Object.entries(this.koreanKeyMap)) {
+                    if (korChar === key) return engKey;
+                }
+                // 이미 영문이면 그대로 반환
+                return key === ' ' ? ' ' : key.toLowerCase();
+            }
+
+            calculateKeyDistance(key1, key2) {
+                const pos1 = this.keyPositions[key1];
+                const pos2 = this.keyPositions[key2];
+                if (!pos1 || !pos2) return 0;
+                
+                // 유클리드 거리 계산
+                return Math.sqrt(Math.pow(pos2[0] - pos1[0], 2) + Math.pow(pos2[1] - pos1[1], 2));
+            }
+
+            getFingerTransition(key1, key2) {
+                const finger1 = this.fingerAssignment[key1];
+                const finger2 = this.fingerAssignment[key2];
+                
+                if (finger1 === finger2) return '같은손가락';
+                if (finger1 && finger2) {
+                    if ((finger1.includes('왼') && finger2.includes('왼')) || 
+                        (finger1.includes('오') && finger2.includes('오'))) {
+                        return '같은손';
+                    }
+                    return '다른손';
+                }
+                return '알수없음';
+            }
+
             changeMode(mode) {
                 this.currentMode = mode;
                 this.currentProblem = 0;
                 this.resetStats();
+                
+                // 문장연습으로 변경시 문제 수를 3개로 변경
+                if (mode === 'sentence') {
+                    this.totalProblems = 3;
+                    this.sentenceTypingData = [];
+                    this.sentenceMistakes = [];
+                    this.sentenceKeyTimings = [];
+                    this.sentenceStats = []; // 문장별 통계 초기화
+                } else {
+                    this.totalProblems = 10;
+                }
                 
                 document.querySelectorAll('.menu-btn').forEach(btn => {
                     btn.classList.remove('active');
@@ -1142,66 +1610,83 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             generateText() {
                 const data = this.practiceData[this.currentMode];
                 
-                if (this.currentMode === 'consonant' || this.currentMode === 'vowel') {
-                    const selected = [];
-                    for (let i = 0; i < 7; i++) {
-                        selected.push(data[Math.floor(Math.random() * data.length)]);
+                try {
+                    if (this.currentMode === 'consonant' || this.currentMode === 'vowel') {
+                        const selected = [];
+                        for (let i = 0; i < 7; i++) {
+                            selected.push(data[Math.floor(Math.random() * data.length)]);
+                        }
+                        this.currentText = selected.join(' ');
+                    } else if (this.currentMode === 'word') {
+                        const selected = [];
+                        const easyWords = this.practiceData.word.easy.filter(word => !this.usedWords.includes(word));
+                        const mediumWords = this.practiceData.word.medium.filter(word => !this.usedWords.includes(word));
+                        const hardWords = this.practiceData.word.hard.filter(word => !this.usedWords.includes(word));
+                        
+                        if (easyWords.length === 0 && mediumWords.length === 0 && hardWords.length === 0) {
+                            this.usedWords = [];
+                        }
+                        
+                        const availableEasy = easyWords.length > 0 ? easyWords : this.practiceData.word.easy;
+                        const availableMedium = mediumWords.length > 0 ? mediumWords : this.practiceData.word.medium;
+                        const availableHard = hardWords.length > 0 ? hardWords : this.practiceData.word.hard;
+                        
+                        const easyWord = availableEasy[Math.floor(Math.random() * availableEasy.length)];
+                        const mediumWord = availableMedium[Math.floor(Math.random() * availableMedium.length)];
+                        const hardWord = availableHard[Math.floor(Math.random() * availableHard.length)];
+                        
+                        this.usedWords.push(easyWord, mediumWord, hardWord);
+                        
+                        const words = [easyWord, mediumWord, hardWord];
+                        for (let i = words.length - 1; i > 0; i--) {
+                            const j = Math.floor(Math.random() * (i + 1));
+                            [words[i], words[j]] = [words[j], words[i]];
+                        }
+                        
+                        this.currentText = words.join(' ');
+                    } else {
+                        const availableSentences = data.filter(sentence => !this.usedSentences.includes(sentence));
+                        
+                        if (availableSentences.length === 0) {
+                            this.usedSentences = [];
+                            availableSentences.push(...data);
+                        }
+                        
+                        const randomIndex = Math.floor(Math.random() * availableSentences.length);
+                        this.currentText = availableSentences[randomIndex];
+                        
+                        this.usedSentences.push(this.currentText);
                     }
-                    this.currentText = selected.join(' ');
-                } else if (this.currentMode === 'word') {
-                    const selected = [];
-                    const easyWords = this.practiceData.word.easy.filter(word => !this.usedWords.includes(word));
-                    const mediumWords = this.practiceData.word.medium.filter(word => !this.usedWords.includes(word));
-                    const hardWords = this.practiceData.word.hard.filter(word => !this.usedWords.includes(word));
-                    
-                    if (easyWords.length === 0 && mediumWords.length === 0 && hardWords.length === 0) {
-                        this.usedWords = [];
-                    }
-                    
-                    const availableEasy = easyWords.length > 0 ? easyWords : this.practiceData.word.easy;
-                    const availableMedium = mediumWords.length > 0 ? mediumWords : this.practiceData.word.medium;
-                    const availableHard = hardWords.length > 0 ? hardWords : this.practiceData.word.hard;
-                    
-                    const easyWord = availableEasy[Math.floor(Math.random() * availableEasy.length)];
-                    const mediumWord = availableMedium[Math.floor(Math.random() * availableMedium.length)];
-                    const hardWord = availableHard[Math.floor(Math.random() * availableHard.length)];
-                    
-                    this.usedWords.push(easyWord, mediumWord, hardWord);
-                    
-                    const words = [easyWord, mediumWord, hardWord];
-                    for (let i = words.length - 1; i > 0; i--) {
-                        const j = Math.floor(Math.random() * (i + 1));
-                        [words[i], words[j]] = [words[j], words[i]];
-                    }
-                    
-                    this.currentText = words.join(' ');
-                } else {
-                    const availableSentences = data.filter(sentence => !this.usedSentences.includes(sentence));
-                    
-                    if (availableSentences.length === 0) {
-                        this.usedSentences = [];
-                        availableSentences.push(...data);
-                    }
-                    
-                    const randomIndex = Math.floor(Math.random() * availableSentences.length);
-                    this.currentText = availableSentences[randomIndex];
-                    
-                    this.usedSentences.push(this.currentText);
-                }
 
-                this.currentPosition = 0;
-                this.startTime = null;
-                this.currentJamoSequence = [];
-                this.currentJamoPosition = 0;
+                    this.currentPosition = 0;
+                    this.startTime = null;
+                    this.currentJamoSequence = [];
+                    this.currentJamoPosition = 0;
 
-                this.generateJamoSequence();
-                this.updateKeyboardHighlight();
+                    // 문장연습에서만 문장별 타이밍 초기화
+                    if (this.currentMode === 'sentence') {
+                        this.sentenceStartTime = null;
+                        this.lastKeyTime = null;
+                        this.sentenceKeyTimings = [];
+                        this.lastKeyPressed = null;
+                        this.keyTransitions = [];
+                    }
 
-                const textDisplay = document.getElementById('textDisplay');
-                if (this.currentMode === 'sentence') {
-                    textDisplay.classList.add('sentence-mode');
-                } else {
-                    textDisplay.classList.remove('sentence-mode');
+                    this.generateJamoSequence();
+                    this.updateKeyboardHighlight();
+
+                    const textDisplay = document.getElementById('textDisplay');
+                    if (this.currentMode === 'sentence') {
+                        textDisplay.classList.add('sentence-mode');
+                    } else {
+                        textDisplay.classList.remove('sentence-mode');
+                    }
+                } catch (error) {
+                    // 텍스트 생성 오류시 기본 텍스트로 fallback
+                    this.currentText = this.currentMode === 'consonant' ? 'ㄱ ㄴ ㄷ ㄹ ㅁ ㅂ ㅅ' : 
+                                     this.currentMode === 'vowel' ? 'ㅏ ㅑ ㅓ ㅕ ㅗ ㅛ ㅜ' :
+                                     this.currentMode === 'word' ? '사람 학교 집' :
+                                     '안녕하세요 타자연습을 시작해보세요';
                 }
             }
 
@@ -1253,6 +1738,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 try {
                     const display = document.getElementById('textDisplay');
                     display.innerHTML = '';
+                    
+                    // 텍스트가 없으면 기본값 설정
+                    if (!this.currentText) {
+                        this.currentText = this.currentMode === 'consonant' ? 'ㄱ ㄴ ㄷ ㄹ ㅁ ㅂ ㅅ' : 
+                                         this.currentMode === 'vowel' ? 'ㅏ ㅑ ㅓ ㅕ ㅗ ㅛ ㅜ' :
+                                         this.currentMode === 'word' ? '사람 학교 집' :
+                                         '안녕하세요 타자연습을 시작해보세요';
+                    }
 
                     for (let i = 0; i < this.currentText.length; i++) {
                         const span = document.createElement('span');
@@ -1281,7 +1774,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     this.updateKeyboardHighlight();
                     document.getElementById('progress').textContent = `${this.currentProblem + 1}/${this.totalProblems}`;
                 } catch (error) {
-                    // UI 렌더링 오류 시 기본 상태 유지
+                    // UI 렌더링 오류 시 기본 텍스트 강제 표시
+                    const display = document.getElementById('textDisplay');
+                    if (display) {
+                        display.innerHTML = '<span class="char current">ㄱ</span><span class="char"> </span><span class="char">ㄴ</span><span class="char"> </span><span class="char">ㄷ</span>';
+                    }
                 }
             }
 
@@ -1440,10 +1937,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 try {
                     if (!this.startTime) {
                         this.startTime = Date.now();
+                        if (this.currentMode === 'sentence') {
+                            this.sentenceStartTime = Date.now();
+                        }
                     }
 
                     if (this.currentMode === 'sentence') {
                         const chars = document.querySelectorAll('.char');
+                        let mistakes = [];
 
                         for (let i = 0; i < this.currentText.length; i++) {
                             const char = chars[i];
@@ -1460,6 +1961,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                                     char.style.color = '#000000';
                                 } else {
                                     char.style.color = '#ff4444';
+                                    mistakes.push({
+                                        position: i,
+                                        expected: this.currentText[i],
+                                        actual: inputValue[i],
+                                        timestamp: Date.now() - this.sentenceStartTime
+                                    });
                                 }
                             } else if (i === inputValue.length) {
                                 char.style.color = '#3b82f6';
@@ -1467,6 +1974,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                                 char.style.color = '#8b5cf6';
                             }
                         }
+
+                        // 문장연습에서 실수 기록
+                        this.sentenceMistakes = mistakes;
                     } else {
                         const chars = document.querySelectorAll('.char');
 
@@ -1493,7 +2003,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     this.updateKeyboardHighlight();
 
                     if (inputValue === this.currentText) {
-                        this.showNextButton();
+                        // 문장이 완료되면 IMMEDIATELY 현재 통계창의 정확도와 타자/분을 저장
+                        if (this.currentMode === 'sentence') {
+                            const currentAccuracy = parseInt(document.getElementById('accuracy').textContent.replace('%', ''));
+                            const currentSpeed = parseInt(document.getElementById('speed').textContent);
+                            
+                            const sentenceData = {
+                                sentenceNumber: this.currentProblem + 1,
+                                accuracy: currentAccuracy,
+                                speed: currentSpeed
+                            };
+                            
+                            this.sentenceStats.push(sentenceData);
+                            
+                            console.log(`문장${this.currentProblem + 1} 완료 - 통계창에서 저장됨:`);
+                            console.log(`  정확도: ${currentAccuracy}%`);
+                            console.log(`  속도: ${currentSpeed}타/분`);
+                            console.log(`sentenceStats 배열:`, this.sentenceStats);
+                        }
+                        
+                        this.recordSentenceData();
                     }
                 } catch (error) {
                     document.getElementById('accuracy').textContent = '100%';
@@ -1501,15 +2030,45 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 }
             }
 
+            recordSentenceData() {
+                if (this.currentMode === 'sentence') {
+                    const sentenceTime = Date.now() - this.sentenceStartTime;
+                    
+                    // 한글 자소 단위로 정확도 계산 (원래 방식과 동일)
+                    const currentTextJasoCount = this.countJaso(this.currentText);
+                    const inputValue = document.getElementById('typingInput').value;
+                    let currentCorrectJaso = 0;
+                    
+                    for (let i = 0; i < Math.min(inputValue.length, this.currentText.length); i++) {
+                        if (inputValue[i] === this.currentText[i]) {
+                            currentCorrectJaso += this.countJaso(this.currentText[i]);
+                        }
+                    }
+                    
+                    const accuracy = currentTextJasoCount > 0 ? Math.round((currentCorrectJaso / currentTextJasoCount) * 100) : 100;
+                    
+                    // 한글 자소 단위로 타이핑 속도 계산 (원래 방식과 동일)
+                    const jasoCount = this.countJaso(this.currentText);
+                    const cpm = Math.round((jasoCount / (sentenceTime / 1000)) * 60);
+                    
+                    this.sentenceTypingData.push({
+                        sentence: this.currentText,
+                        time: sentenceTime,
+                        accuracy: accuracy,
+                        wpm: cpm, // 실제로는 CPM(자소/분)이지만 기존 변수명 유지
+                        mistakes: [...this.sentenceMistakes],
+                        keyTimings: [...this.sentenceKeyTimings]
+                    });
+                }
+            }
+
             updateStats() {
                 try {
-                    // 현재 문제에 대해서만 정확도 계산 (누적 X)
                     const currentTextJasoCount = this.countJaso(this.currentText);
                     let currentCorrectJaso = 0;
                     
                     const inputValue = document.getElementById('typingInput').value;
                     
-                    // 현재 입력된 내용에서 정확한 부분만 계산
                     for (let i = 0; i < Math.min(inputValue.length, this.currentText.length); i++) {
                         if (inputValue[i] === this.currentText[i]) {
                             currentCorrectJaso += this.countJaso(this.currentText[i]);
@@ -1533,14 +2092,34 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 }
             }
 
-            showNextButton() {
-                // 다음 문제로 넘어가는 처리만
-            }
-
             nextProblem() {
                 try {
+                    // 문장연습에서 문장 완료 시 통계 저장 (혹시 누락된 경우를 위해)
+                    if (this.currentMode === 'sentence' && this.currentPosition >= this.currentText.length) {
+                        const currentAccuracy = parseInt(document.getElementById('accuracy').textContent.replace('%', ''));
+                        const currentSpeed = parseInt(document.getElementById('speed').textContent);
+                        
+                        // 이미 저장되었는지 확인 (중복 방지)
+                        const alreadyStored = this.sentenceStats.some(stat => stat.sentenceNumber === this.currentProblem + 1);
+                        
+                        if (!alreadyStored) {
+                            const sentenceData = {
+                                sentenceNumber: this.currentProblem + 1,
+                                accuracy: currentAccuracy,
+                                speed: currentSpeed
+                            };
+                            
+                            this.sentenceStats.push(sentenceData);
+                            console.log(`nextProblem에서 문장${this.currentProblem + 1} 저장 - 정확도: ${currentAccuracy}%, 속도: ${currentSpeed}타/분`);
+                        }
+                    }
+                    
                     this.currentProblem++;
+                    console.log(`다음 문제로 이동: ${this.currentProblem + 1}/${this.totalProblems}`);
+                    console.log(`현재 sentenceStats:`, this.sentenceStats);
+                    
                     if (this.currentProblem >= this.totalProblems) {
+                        console.log('모든 문장 완료! AI 피드백 표시');
                         this.showComplete();
                     } else {
                         this.generateText();
@@ -1549,35 +2128,624 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         document.getElementById('typingInput').focus();
                     }
                 } catch (error) {
+                    console.error('nextProblem 오류:', error);
                     // 다음 문제로 이동 오류 시 기본 상태 유지
                 }
             }
 
             showComplete() {
                 try {
-                    // 현재 화면에 표시된 통계를 그대로 사용
-                    const currentAccuracy = document.getElementById('accuracy').textContent;
-                    const currentSpeed = document.getElementById('speed').textContent;
+                    if (this.currentMode === 'sentence') {
+                        // 문장연습 완료시 AI 피드백 표시
+                        this.showAIFeedback();
+                    } else {
+                        // 기존 완료 모달
+                        const currentAccuracy = document.getElementById('accuracy').textContent;
+                        const currentSpeed = document.getElementById('speed').textContent;
 
-                    document.getElementById('finalAccuracy').textContent = currentAccuracy;
-                    document.getElementById('finalSpeed').textContent = currentSpeed;
-                    document.getElementById('completeModal').style.display = 'flex';
+                        document.getElementById('finalAccuracy').textContent = currentAccuracy;
+                        document.getElementById('finalSpeed').textContent = currentSpeed;
+                        document.getElementById('completeModal').style.display = 'flex';
+                    }
                 } catch (error) {
-                    // 완료 모달 표시 오류 시 기본 상태 유지
                     document.getElementById('finalAccuracy').textContent = '100%';
                     document.getElementById('finalSpeed').textContent = '0';
                     document.getElementById('completeModal').style.display = 'flex';
                 }
             }
 
+            async showAIFeedback() {
+                // 로딩 표시
+                const modalContent = document.getElementById('modalContent');
+                modalContent.className = 'modal-content ai-feedback';
+                modalContent.innerHTML = `
+                    <h2 class="ai-title">🤖 AI가 당신의 타이핑을 분석하고 있습니다...</h2>
+                    <div style="text-align: center; padding: 3rem;">
+                        <div class="loading"></div>
+                        타이핑 패턴을 심층 분석 중입니다...
+                    </div>
+                `;
+                document.getElementById('completeModal').style.display = 'flex';
+
+                // 2초 후 분석 결과 표시
+                setTimeout(() => {
+                    this.generateAIFeedback();
+                }, 2000);
+            }
+
+            generateAIFeedback() {
+                // 디버깅: 각 문장별 통계 데이터 확인
+                console.log("=== AI 피드백 디버깅 시작 ===");
+                console.log("저장된 문장별 통계:", this.sentenceStats);
+                
+                // 각 문장별 저장된 통계 데이터 추출
+                let sentence1Speed = 0, sentence1Accuracy = 0;
+                let sentence2Speed = 0, sentence2Accuracy = 0;
+                let sentence3Speed = 0, sentence3Accuracy = 0;
+                
+                if (this.sentenceStats.length >= 1) {
+                    sentence1Speed = this.sentenceStats[0].speed || 0;
+                    sentence1Accuracy = this.sentenceStats[0].accuracy || 0;
+                    console.log("문장1 저장된 통계 - 속도:", sentence1Speed, "정확도:", sentence1Accuracy);
+                }
+                
+                if (this.sentenceStats.length >= 2) {
+                    sentence2Speed = this.sentenceStats[1].speed || 0;
+                    sentence2Accuracy = this.sentenceStats[1].accuracy || 0;
+                    console.log("문장2 저장된 통계 - 속도:", sentence2Speed, "정확도:", sentence2Accuracy);
+                }
+                
+                if (this.sentenceStats.length >= 3) {
+                    sentence3Speed = this.sentenceStats[2].speed || 0;
+                    sentence3Accuracy = this.sentenceStats[2].accuracy || 0;
+                    console.log("문장3 저장된 통계 - 속도:", sentence3Speed, "정확도:", sentence3Accuracy);
+                }
+                
+                // 전체 평균 계산: (문장1 + 문장2 + 문장3) ÷ 3
+                let totalAvgSpeed = 0;
+                let totalAvgAccuracy = 0;
+                
+                if (this.sentenceStats.length > 0) {
+                    totalAvgSpeed = (sentence1Speed + sentence2Speed + sentence3Speed) / 3;
+                    totalAvgAccuracy = (sentence1Accuracy + sentence2Accuracy + sentence3Accuracy) / 3;
+                    
+                    console.log("계산 과정:");
+                    console.log("속도 합계:", sentence1Speed + sentence2Speed + sentence3Speed);
+                    console.log("정확도 합계:", sentence1Accuracy + sentence2Accuracy + sentence3Accuracy);
+                    console.log("최종 평균 속도:", totalAvgSpeed);
+                    console.log("최종 평균 정확도:", totalAvgAccuracy);
+                } else {
+                    // fallback: 현재 표시되는 값 사용
+                    totalAvgSpeed = parseInt(document.getElementById('speed').textContent) || 0;
+                    totalAvgAccuracy = parseInt(document.getElementById('accuracy').textContent.replace('%', '')) || 0;
+                    console.log("fallback 사용 - 속도:", totalAvgSpeed, "정확도:", totalAvgAccuracy);
+                }
+
+                const currentSpeed = Math.round(totalAvgSpeed);
+                const avgAccuracy = Math.round(totalAvgAccuracy);
+                
+                console.log("AI 피드백에 사용될 최종 값 - 속도:", currentSpeed, "정확도:", avgAccuracy);
+                console.log("=== AI 피드백 디버깅 끝 ===");
+                
+                const totalMistakes = this.sentenceTypingData.reduce((sum, data) => sum + data.mistakes.length, 0);
+                
+                // 사용자 평균 기준으로 점수 계산 (정확도 95%, 속도 350타)
+                // 속도 점수 계산 (0-100점) - 새로운 기준 적용
+                let speedScore = 0;
+                if (currentSpeed >= 600) speedScore = 100; // 전설
+                else if (currentSpeed >= 500) speedScore = 90; // 매우 우수
+                else if (currentSpeed >= 400) speedScore = 80; // 우수
+                else if (currentSpeed >= 300) speedScore = 70; // 평균 (350타 기준)
+                else if (currentSpeed >= 200) speedScore = 50; // 미흡
+                else speedScore = Math.max(0, (currentSpeed / 200) * 50); // 매우 미흡
+
+                // 정확도 점수 계산 (0-100점) - 95%를 평균으로 조정
+                let accuracyScore = 0;
+                if (avgAccuracy >= 99) accuracyScore = 100;
+                else if (avgAccuracy >= 97) accuracyScore = 90;
+                else if (avgAccuracy >= 95) accuracyScore = 70; // 사용자 평균
+                else if (avgAccuracy >= 92) accuracyScore = 60;
+                else if (avgAccuracy >= 88) accuracyScore = 50;
+                else if (avgAccuracy >= 85) accuracyScore = 40;
+                else if (avgAccuracy >= 80) accuracyScore = 30;
+                else accuracyScore = Math.max(0, (avgAccuracy / 80) * 30);
+
+                // 전체 점수 (속도 50% + 정확도 50%)
+                const totalScore = (speedScore * 0.5) + (accuracyScore * 0.5);
+
+                // 전체 등급 계산
+                let overallGrade, overallPercentile;
+                if (totalScore >= 95) {
+                    overallGrade = "전설급";
+                    overallPercentile = "상위 1%";
+                } else if (totalScore >= 85) {
+                    overallGrade = "매우 우수";
+                    overallPercentile = "상위 5%";
+                } else if (totalScore >= 75) {
+                    overallGrade = "우수";
+                    overallPercentile = "상위 15%";
+                } else if (totalScore >= 70) {
+                    overallGrade = "평균 이상";
+                    overallPercentile = "상위 30%";
+                } else if (totalScore >= 65) {
+                    overallGrade = "평균";
+                    overallPercentile = "평균 수준";
+                } else if (totalScore >= 45) {
+                    overallGrade = "평균 미만";
+                    overallPercentile = "하위 40%";
+                } else {
+                    overallGrade = "개선 필요";
+                    overallPercentile = "하위 20%";
+                }
+
+                // 속도별 등급 (계기판용 - 종합 실력 기준으로 변경)
+                let speedGrade, speedPercentile, needleRotation;
+                if (totalScore >= 95) {
+                    speedGrade = "전설급";
+                    speedPercentile = "상위 1%";
+                    needleRotation = 45;
+                } else if (totalScore >= 85) {
+                    speedGrade = "매우 우수";
+                    speedPercentile = "상위 5%";
+                    needleRotation = 35;
+                } else if (totalScore >= 75) {
+                    speedGrade = "우수";
+                    speedPercentile = "상위 15%";
+                    needleRotation = 20;
+                } else if (totalScore >= 70) {
+                    speedGrade = "평균 이상";
+                    speedPercentile = "상위 30%";
+                    needleRotation = 5;
+                } else if (totalScore >= 65) {
+                    speedGrade = "평균";
+                    speedPercentile = "평균 수준";
+                    needleRotation = -5;
+                } else if (totalScore >= 45) {
+                    speedGrade = "평균 미만";
+                    speedPercentile = "하위 40%";
+                    needleRotation = -20;
+                } else {
+                    speedGrade = "개선 필요";
+                    speedPercentile = "하위 20%";
+                    needleRotation = -40;
+                }
+
+                const commonMistakes = this.analyzeCommonMistakes();
+                const feedback = this.generateDetailedFeedback(currentSpeed, avgAccuracy, speedGrade, overallGrade, overallPercentile);
+                const advice = this.generatePersonalizedAdvice(currentSpeed, avgAccuracy, overallGrade);
+
+                const modalContent = document.getElementById('modalContent');
+                modalContent.innerHTML = `
+                    <h2 class="ai-title">🤖 AI 타이핑 분석 결과</h2>
+                    
+                    <div class="feedback-section">
+                        <div class="feedback-section-title">📊 전체적인 성과</div>
+                        
+                        <!-- 계기판을 맨 위 가운데 배치 -->
+                        <div style="text-align: center; margin-bottom: 2rem;">
+                            <div class="speedometer-container">
+                                <div class="speedometer">
+                                    <div class="speedometer-arc"></div>
+                                    <div class="speedometer-needle" id="speedometerNeedle" style="transform: translateX(-50%) rotate(-90deg);"></div>
+                                    <div class="speedometer-center"></div>
+                                </div>
+                            </div>
+                            <div class="speedometer-labels">
+                                <span class="left-label">하위 20%</span>
+                                <span class="right-label">상위 1%</span>
+                            </div>
+                            <div class="percentile-display">
+                                종합 실력은 사용자 중 <strong>${overallPercentile}</strong>에 해당합니다!
+                            </div>
+                        </div>
+
+                        <!-- VS 대결 구도 -->
+                        <div class="vs-container">
+                            <div class="vs-player user">
+                                <div class="vs-title">🎯 나의 실력</div>
+                                <div class="vs-stat">
+                                    <span class="vs-stat-label">종합 등급:</span>
+                                    <span class="vs-stat-value">${overallGrade}</span>
+                                </div>
+                                <div class="vs-stat">
+                                    <span class="vs-stat-label">평균 타이핑 속도:</span>
+                                    <span class="vs-stat-value">${currentSpeed}타/분</span>
+                                </div>
+                                <div class="vs-stat">
+                                    <span class="vs-stat-label">평균 정확도:</span>
+                                    <span class="vs-stat-value">${Math.round(avgAccuracy)}%</span>
+                                </div>
+                            </div>
+                            
+                            <div class="vs-divider">VS</div>
+                            
+                            <div class="vs-player average">
+                                <div class="vs-title">📈 사용자 평균</div>
+                                <div class="vs-stat">
+                                    <span class="vs-stat-label">종합 등급:</span>
+                                    <span class="vs-stat-value">평균</span>
+                                </div>
+                                <div class="vs-stat">
+                                    <span class="vs-stat-label">평균 타이핑 속도:</span>
+                                    <span class="vs-stat-value">350타/분</span>
+                                </div>
+                                <div class="vs-stat">
+                                    <span class="vs-stat-label">평균 정확도:</span>
+                                    <span class="vs-stat-value">95%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feedback-section">
+                        <div class="feedback-section-title">🎯 개선 방안</div>
+                        <div class="feedback-text">
+                            ${feedback.improvements}
+                        </div>
+                    </div>
+
+                    <div class="feedback-section">
+                        <div class="feedback-section-title">📈 목표 설정</div>
+                        <div class="feedback-text">
+                            ${feedback.goals}
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${Math.min((currentSpeed + 50) / 800 * 100, 100)}%"></div>
+                        </div>
+                    </div>
+
+                    <div class="feedback-section">
+                        <div class="feedback-section-title">🏆 종합 평가</div>
+                        <div class="feedback-text" style="margin-bottom: 1.5rem;">
+                            ${feedback.overallAssessment}
+                        </div>
+                        <div class="skill-grid">
+                            <div class="skill-item">
+                                <div class="skill-name">타이핑 속도</div>
+                                <div class="skill-score">${currentSpeed >= 600 ? '전설' : currentSpeed >= 500 ? '매우 우수' : currentSpeed >= 400 ? '우수' : currentSpeed >= 300 ? '평균' : currentSpeed >= 200 ? '미흡' : '매우 미흡'} (${currentSpeed}타/분)</div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-name">정확도</div>
+                                <div class="skill-score">${avgAccuracy >= 99 ? '매우 정확' : avgAccuracy >= 97 ? '정확' : avgAccuracy >= 95 ? '평균' : avgAccuracy >= 92 ? '평균 미만' : '개선 필요'} (${Math.round(avgAccuracy)}%)</div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-name">일관성</div>
+                                <div class="skill-score">${this.sentenceTypingData.length > 1 && (Math.max(...this.sentenceTypingData.map(d => d.wpm)) - Math.min(...this.sentenceTypingData.map(d => d.wpm))) < 10 ? '매우 일관적' : 
+                                    this.sentenceTypingData.length > 1 && (Math.max(...this.sentenceTypingData.map(d => d.wpm)) - Math.min(...this.sentenceTypingData.map(d => d.wpm))) < 20 ? '일관적' : '개선 필요'}</div>
+                            </div>
+                            <div class="skill-item advice-item">
+                                <div class="skill-name">💡 개인 맞춤 조언</div>
+                                <div class="advice-content">${advice}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-buttons">
+                        <button class="restart-btn" id="restartBtn">다시 시작하기</button>
+                        <button class="continue-btn" id="continueBtn">더 연습하기</button>
+                    </div>
+                `;
+
+                // 버튼 이벤트 재바인딩
+                document.getElementById('restartBtn').addEventListener('click', () => {
+                    this.restart();
+                });
+
+                document.getElementById('continueBtn').addEventListener('click', () => {
+                    this.continuePractice();
+                });
+
+                // 계기판 애니메이션 효과
+                setTimeout(() => {
+                    const needle = document.getElementById('speedometerNeedle');
+                    if (needle) {
+                        needle.style.transform = `translateX(-50%) rotate(${needleRotation}deg)`;
+                    }
+                }, 500);
+            }
+
+            generatePersonalizedAdvice(currentSpeed, avgAccuracy, overallGrade) {
+                if (overallGrade === "전설급") {
+                    return "🌟 완벽한 실력입니다! 이제 실무에서 활용하거나 다른 사람들을 가르쳐보세요. 더 어려운 전문 용어나 코딩 연습에 도전해보는 것도 좋습니다. 정기적으로 실력을 유지하기 위해 주 2-3회 정도 연습을 지속하세요.";
+                } else if (overallGrade === "매우 우수" || overallGrade === "우수") {
+                    return "🎯 훌륭한 실력입니다! 일정한 리듬을 유지하며 긴 문서 타이핑 연습을 해보세요. 실무 문서나 뉴스 기사 타이핑으로 실전 감각을 기르는 것을 추천합니다. 손목 스트레칭과 정확한 자세 유지가 중요합니다.";
+                } else if (overallGrade === "평균 이상") {
+                    if (avgAccuracy < 95) {
+                        return "🎨 정확도를 95% 이상으로 높이는 것이 우선입니다. 천천히 정확하게 타이핑하는 습관을 기르고, 틀린 부분을 반복 연습하세요. 매일 15분 정도 정확도 집중 연습을 추천합니다. 속도는 정확도가 높아진 후 자연스럽게 향상됩니다.";
+                    } else {
+                        return "🚀 정확도는 좋으니 이제 속도를 높여보세요. 단어 단위로 인식하며 타이핑하고, 자주 사용하는 단어들을 빠르게 치는 연습을 하세요. 키보드 익숙함 향상을 위해 타자게임도 병행해보세요.";
+                    }
+                } else if (overallGrade === "평균") {
+                    return "📚 기본기를 탄탄히 하는 시기입니다. 정확한 손가락 위치를 익히고, 매일 15-20분씩 꾸준히 연습하세요. 정확도를 먼저 95% 이상으로 높인 후 속도를 향상시키는 것이 중요합니다. 올바른 자세(손목을 키보드에 대지 않기)를 꼭 지켜주세요.";
+                } else {
+                    return "🌱 기초부터 차근차근 시작하세요. 자세 교정이 가장 중요합니다. 손목을 키보드에 대지 말고, 각 손가락의 담당 키를 정확히 익혀주세요. 처음에는 속도보다 정확도에 집중하고, 매일 10분씩이라도 꾸준히 연습하면 반드시 늘어납니다! 인내심을 갖고 꾸준히 하시면 됩니다.";
+                }
+            }
+
+            continuePractice() {
+                // 현재 문제 번호를 초기화하고 계속 진행
+                this.currentProblem = 0;
+                // 문장 연습 데이터는 유지
+                this.generateText();
+                this.updateDisplay();
+                document.getElementById('typingInput').value = '';
+                document.getElementById('completeModal').style.display = 'none';
+                
+                // 모달 클래스 초기화
+                document.getElementById('modalContent').className = 'modal-content';
+                
+                document.getElementById('typingInput').focus();
+            }
+
+            generateDetailedFeedback(currentSpeed, avgAccuracy, speedGrade, overallGrade, overallPercentile) {
+                // 현실적인 목표 설정 - 사용자 평균 기준 조정 (정확도 95% 기준)
+                let targetSpeed, targetAccuracy, targetPercentile;
+                
+                // 정확도가 낮으면 속도보다 정확도 우선
+                if (avgAccuracy < 88) {
+                    targetAccuracy = Math.min(92, avgAccuracy + 4);
+                    targetSpeed = currentSpeed + 20; // 속도는 조금만 증가
+                    targetPercentile = "정확도 개선 우선";
+                } else if (avgAccuracy < 92) {
+                    targetAccuracy = Math.min(95, avgAccuracy + 3);
+                    targetSpeed = currentSpeed + 30;
+                    targetPercentile = "평균 수준 달성";
+                } else if (avgAccuracy < 95) {
+                    targetAccuracy = Math.min(97, avgAccuracy + 2);
+                    targetSpeed = currentSpeed < 250 ? 350 : currentSpeed + 50;
+                    targetPercentile = "평균 달성";
+                } else if (avgAccuracy < 97) {
+                    targetAccuracy = Math.min(99, avgAccuracy + 2);
+                    targetSpeed = currentSpeed < 250 ? 350 : currentSpeed + 50;
+                    targetPercentile = "평균 이상";
+                } else {
+                    // 정확도가 충분하면 속도 위주
+                    targetAccuracy = Math.min(100, avgAccuracy + 1);
+                    targetSpeed = currentSpeed < 250 ? 350 : 
+                                 currentSpeed < 350 ? 450 : 
+                                 currentSpeed < 450 ? 550 : 
+                                 currentSpeed + 50;
+                    targetPercentile = currentSpeed < 350 ? "평균 수준" : 
+                                      currentSpeed < 450 ? "상위 30%" : 
+                                      currentSpeed < 550 ? "상위 15%" : 
+                                      currentSpeed < 650 ? "상위 5%" : "상위 1%";
+                }
+
+                const improvements = `
+                    ${avgAccuracy < 92 ? 
+                        '🎯 <strong>정확도 최우선:</strong> 속도를 늦추더라도 정확하게 타이핑하는 연습을 하세요. 사용자 평균 정확도 95% 달성이 첫 번째 목표입니다. 틀린 글자가 나올 때마다 즉시 멈추고 다시 정확하게 타이핑해보세요.<br>' : 
+                        avgAccuracy < 95 ?
+                        '🎯 <strong>평균 정확도 달성:</strong> 95% 이상의 정확도를 목표로 하세요. 이것이 사용자 평균 수준입니다. 백스페이스 사용을 최소화하고 처음부터 정확하게 타이핑하는 습관을 기르세요.<br>' :
+                        avgAccuracy < 97 ?
+                        '🎯 <strong>정확도 향상:</strong> 97% 이상의 정확도를 목표로 하세요. 실무에서 활용할 수 있는 수준입니다. 자주 틀리는 문자들을 따로 연습해보세요.<br>' :
+                        ''
+                    }
+                    ${currentSpeed < 200 && avgAccuracy >= 85 ? 
+                        '🔥 <strong>기본 자세 교정:</strong> 손목을 키보드에 대지 말고 손가락만 움직여 타이핑하세요. 정확한 손가락 위치를 익히는 것이 우선입니다. 각 손가락의 담당 키를 명확히 구분해서 연습하세요.<br>' : 
+                        ''
+                    }
+                    ${this.analyzeCommonMistakes().length > 0 ? 
+                        `⌨️ <strong>취약 문자 집중 연습:</strong> "${this.analyzeCommonMistakes().join(', ')}" 문자가 포함된 단어를 반복 연습하세요. 이 문자들을 천천히 정확하게 치는 연습을 매일 5분씩 해보세요.<br>` : 
+                        ''
+                    }
+                    ${this.sentenceTypingData.length > 1 && this.calculateSpeedVariance() > 50 ? 
+                        '📊 <strong>일정한 리듬 유지:</strong> 빠르게 치려고 하지 말고 일정한 리듬을 유지하며 타이핑하세요. 메트로놈을 활용하거나 마음속으로 일정한 박자를 세면서 연습해보세요.<br>' : 
+                        ''
+                    }
+                    ${currentSpeed >= 400 && avgAccuracy >= 97 ? 
+                        '🚀 <strong>고급 기법:</strong> 단어 단위로 인식하여 타이핑하는 연습을 시작하세요. 문장의 흐름을 미리 읽고 타이핑하면 더욱 빨라집니다. 시각적 기억과 근육 기억을 동시에 활용하세요.' : 
+                        currentSpeed >= 200 && avgAccuracy >= 95 ?
+                        '📈 <strong>속도 향상:</strong> 정확도를 유지하면서 점진적으로 속도를 높여보세요. 사용자 평균(350타)을 목표로 하되, 무리하지 말고 단계적으로 증가시키세요.' :
+                        '📚 <strong>기초 연습:</strong> 매일 15-20분씩 정확도 위주로 연습하는 것이 가장 중요합니다. 기초가 탄탄해야 나중에 속도도 자연스럽게 향상됩니다.'
+                    }
+                `;
+
+                const goals = `
+                    <strong>단기 목표 (2주 내):</strong><br>
+                    • 타이핑 속도: <span class="feedback-highlight">${Math.round(currentSpeed + (targetSpeed - currentSpeed) * 0.3)}타/분</span> 달성<br>
+                    • 정확도: <span class="feedback-highlight">${Math.round(avgAccuracy + (targetAccuracy - avgAccuracy) * 0.6)}%</span> 달성<br><br>
+                    
+                    <strong>중기 목표 (1개월 내):</strong><br>
+                    • 타이핑 속도: <span class="feedback-highlight">${targetSpeed}타/분</span> 달성<br>
+                    • 정확도: <span class="feedback-highlight">${targetAccuracy}%</span> 달성<br>
+                    • 실력 등급: <span class="feedback-highlight">${targetPercentile}</span> 진입<br><br>
+                    
+                    <strong>권장 연습 시간 및 방법:</strong><br>
+                    ${avgAccuracy < 88 ? 
+                        '매일 25-30분씩 정확도 집중 연습 (속도는 천천히). 틀린 문자 즉시 교정하기' : 
+                        avgAccuracy < 92 ?
+                        '매일 20-25분씩 기본기 다지기 (평균 달성 목표). 정확도 92% 우선' :
+                        avgAccuracy < 95 ?
+                        '매일 20-25분씩 정확도와 속도 균형 연습. 95% 정확도 달성 후 속도 향상' :
+                        avgAccuracy < 97 ?
+                        '매일 18-22분씩 정확도 향상과 속도 연습. 97% 정확도 목표' :
+                        currentSpeed < 300 ? 
+                        '매일 15-20분씩 속도 향상 위주 연습. 리듬감과 일관성 중시' : 
+                        '매일 10-15분씩 고급 기법과 실전 연습. 긴 문서 타이핑 도전'
+                    }
+                `;
+
+                const overallAssessment = overallGrade === "전설급" ? 
+                    '축하합니다! 속도와 정확도 모두 최고 수준입니다. 이제 실무에서도 충분히 활용할 수 있는 완벽한 실력입니다!' :
+                    overallGrade === "매우 우수" || overallGrade === "우수" ? 
+                    '훌륭한 실력입니다! 속도와 정확도의 균형이 잘 잡혀있습니다. 조금만 더 연습하면 최고 수준에 도달할 수 있습니다.' :
+                    overallGrade === "평균 이상" ? 
+                    '사용자 평균을 넘어선 좋은 실력입니다. 속도나 정확도 중 부족한 부분을 집중적으로 연습하면 크게 향상될 수 있습니다.' :
+                    overallGrade === "평균" ? 
+                    '사용자 평균 수준에 근접한 실력입니다. 정확도를 먼저 높이고, 그 다음 속도를 향상시키는 순서로 연습하세요.' :
+                    '기초부터 차근차근 연습이 필요합니다. 정확도를 95% 이상으로 높이는 것을 최우선 목표로 하세요. 사용자 평균에 도달하는 것이 첫 번째 목표입니다.';
+
+                return {
+                    improvements,
+                    goals,
+                    overallAssessment
+                };
+            }
+
+            analyzeSlowTransitions() {
+                if (this.keyTransitions.length < 5) return [];
+
+                // 키 이동별 평균 시간 계산
+                const transitionGroups = {};
+                this.keyTransitions.forEach(transition => {
+                    const key = `${transition.from}-${transition.to}`;
+                    if (!transitionGroups[key]) {
+                        transitionGroups[key] = {
+                            intervals: [],
+                            distance: transition.distance,
+                            fingerTransition: transition.fingerTransition,
+                            fromChar: transition.fromChar,
+                            toChar: transition.toChar,
+                            from: transition.from,
+                            to: transition.to
+                        };
+                    }
+                    transitionGroups[key].intervals.push(transition.interval);
+                });
+
+                // 각 이동 패턴의 평균 시간 계산
+                const transitionStats = [];
+                Object.entries(transitionGroups).forEach(([key, data]) => {
+                    if (data.intervals.length >= 2) { // 최소 2번 이상 나타난 패턴만
+                        const avgTime = data.intervals.reduce((a, b) => a + b, 0) / data.intervals.length;
+                        const expectedTime = this.getExpectedTransitionTime(data.distance, data.fingerTransition);
+                        
+                        transitionStats.push({
+                            key: key,
+                            avgTime: avgTime,
+                            expectedTime: expectedTime,
+                            slowness: avgTime / expectedTime, // 예상 시간 대비 실제 시간 비율
+                            distance: data.distance,
+                            fingerTransition: data.fingerTransition,
+                            fromChar: data.fromChar,
+                            toChar: data.toChar,
+                            from: data.from,
+                            to: data.to,
+                            count: data.intervals.length
+                        });
+                    }
+                });
+
+                // 가장 느린 3개 패턴 반환
+                return transitionStats
+                    .filter(stat => stat.slowness > 1.5) // 예상보다 50% 이상 느린 것만
+                    .sort((a, b) => b.slowness - a.slowness)
+                    .slice(0, 3)
+                    .map(stat => ({
+                        display: `${this.getKoreanChar(stat.fromChar)} → ${this.getKoreanChar(stat.toChar)}`,
+                        slowness: stat.slowness,
+                        fingerTransition: stat.fingerTransition,
+                        advice: this.getTransitionAdvice(stat)
+                    }));
+            }
+
+            getKoreanChar(char) {
+                // 영문 키를 한글로 변환해서 표시
+                return this.koreanKeyMap[char.toLowerCase()] || char;
+            }
+
+            getExpectedTransitionTime(distance, fingerTransition) {
+                // 거리와 손가락 이동 패턴에 따른 예상 시간 (밀리초)
+                let baseTime = 150; // 기본 150ms
+                
+                if (fingerTransition === '같은손가락') {
+                    baseTime += distance * 50; // 같은 손가락은 더 느림
+                } else if (fingerTransition === '같은손') {
+                    baseTime += distance * 30;
+                } else if (fingerTransition === '다른손') {
+                    baseTime += distance * 20; // 다른 손은 상대적으로 빠름
+                }
+                
+                return baseTime;
+            }
+
+            getTransitionAdvice(stat) {
+                const finger = stat.fingerTransition;
+                const slowness = stat.slowness;
+                
+                if (finger === '같은손가락') {
+                    return `같은 손가락으로 연속 타이핑시 ${Math.round((slowness - 1) * 100)}% 지연. 손가락을 빠르게 이동하는 연습이 필요합니다.`;
+                } else if (finger === '같은손') {
+                    return `같은 손 내에서 ${Math.round((slowness - 1) * 100)}% 지연. 손가락 독립성을 기르는 연습을 하세요.`;
+                } else if (finger === '다른손') {
+                    return `양손 협응에서 ${Math.round((slowness - 1) * 100)}% 지연. 양손 리듬 연습이 필요합니다.`;
+                } else {
+                    return `이 키 조합에 대한 반복 연습이 필요합니다.`;
+                }
+            }
+
+            calculateSpeedVariance() {
+                if (this.sentenceTypingData.length <= 1) return 0;
+                const speeds = this.sentenceTypingData.map(data => data.wpm);
+                return Math.max(...speeds) - Math.min(...speeds);
+            }
+
+            analyzeCommonMistakes() {
+                const mistakeCount = {};
+                this.sentenceTypingData.forEach(data => {
+                    data.mistakes.forEach(mistake => {
+                        const key = mistake.expected;
+                        mistakeCount[key] = (mistakeCount[key] || 0) + 1;
+                    });
+                });
+
+                return Object.entries(mistakeCount)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 3)
+                    .map(([char, count]) => char);
+            }
+
+            analyzeSlowCharacters() {
+                const charTimings = {};
+                this.sentenceTypingData.forEach(data => {
+                    data.keyTimings.forEach(timing => {
+                        if (timing.key !== ' ' && timing.interval > 0) {
+                            if (!charTimings[timing.key]) {
+                                charTimings[timing.key] = [];
+                            }
+                            charTimings[timing.key].push(timing.interval);
+                        }
+                    });
+                });
+
+                const avgTimings = {};
+                Object.entries(charTimings).forEach(([char, timings]) => {
+                    avgTimings[char] = timings.reduce((a, b) => a + b, 0) / timings.length;
+                });
+
+                if (Object.keys(avgTimings).length === 0) return [];
+
+                const overallAvg = Object.values(avgTimings).reduce((a, b) => a + b, 0) / Object.values(avgTimings).length;
+
+                return Object.entries(avgTimings)
+                    .filter(([char, time]) => time > overallAvg * 1.5)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 3)
+                    .map(([char, time]) => char);
+            }
+
             restart() {
                 try {
                     this.currentProblem = 0;
                     this.resetStats();
+                    
+                    // 문장연습 데이터 초기화
+                    if (this.currentMode === 'sentence') {
+                        this.sentenceTypingData = [];
+                        this.sentenceMistakes = [];
+                        this.sentenceKeyTimings = [];
+                        this.keyTransitions = [];
+                        this.sentenceStats = []; // 문장별 통계도 초기화
+                    }
+                    
                     this.generateText();
                     this.updateDisplay();
                     document.getElementById('typingInput').value = '';
                     document.getElementById('completeModal').style.display = 'none';
+                    
+                    // 모달 클래스 초기화
+                    document.getElementById('modalContent').className = 'modal-content';
+                    
                     document.getElementById('typingInput').focus();
                 } catch (error) {
                     // 재시작 오류 시 기본 상태 유지
@@ -1588,6 +2756,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 try {
                     this.currentPosition = 0;
                     this.startTime = null;
+                    this.sentenceStartTime = null;
+                    this.lastKeyTime = null;
+                    this.lastKeyPressed = null;
                     document.getElementById('accuracy').textContent = '100%';
                     document.getElementById('speed').textContent = '0';
                     document.getElementById('progress').textContent = `1/${this.totalProblems}`;
