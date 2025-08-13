@@ -67,9 +67,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         .menu-btn { padding: 12px 25px; border: none; border-radius: 25px; font-size: 1rem; font-weight: 500; cursor: pointer; background: #f8f9fa; color: #667eea; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
         .menu-btn:hover { background: linear-gradient(45deg, #667eea, #764ba2); color: white; transform: translateY(-3px); box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3); }
         .menu-btn.active { background: linear-gradient(45deg, #667eea, #764ba2); color: white; transform: scale(1.05); box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4); }
-        .text-display { font-size: 1.8rem; line-height: 1.8; margin-bottom: 2rem; min-height: 120px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; background: #f8f9fa; border-radius: 15px; padding: 2rem; word-break: keep-all; letter-spacing: 2px; border: 2px solid #e2e8f0; text-align: center; }
-        .text-display.sentence-mode { letter-spacing: 0.2px; line-height: 1.6; background: white; border: 2px solid #e2e8f0; }
+        .text-display { font-size: 1.8rem; line-height: 1.8; margin-bottom: 2rem; min-height: 160px; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #f8f9fa; border-radius: 15px; padding: 2rem; word-break: keep-all; letter-spacing: 2px; border: 2px solid #e2e8f0; text-align: center; }
+        .text-display.sentence-mode { letter-spacing: 0.2px; line-height: 1.6; background: white; border: 2px solid #e2e8f0; min-height: 180px; }
         .text-display.sentence-mode .char { margin: 0; padding: 0; background: none !important; border-radius: 0; transition: color 0.2s ease; color: #8b5cf6; font-weight: 500; box-shadow: none !important; transform: none !important; animation: none !important; }
+        .text-display.sentence-mode .char.correct { color: #000000; }
+        .text-display.sentence-mode .char.incorrect { color: #ff4444; }
+        .text-display.sentence-mode .char.current { color: #3b82f6; background: none !important; }
+        /* 띄어쓰기 스타일 */
+        .text-display.sentence-mode .char.space {
+            display: inline-block;
+            width: 0.5em;
+        }
         .char { margin: 3px; padding: 8px 10px; border-radius: 8px; transition: all 0.3s ease; color: #666; font-weight: 500; }
         .char.correct { color: white; background: linear-gradient(45deg, #4caf50, #45a049); transform: scale(1.1); box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3); }
         .char.incorrect { color: white; background: linear-gradient(45deg, #ff6b6b, #ff5252); transform: scale(1.1); box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3); }
@@ -98,23 +106,76 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         .stat-item { text-align: center; padding: 1.5rem; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); }
         .stat-value { font-size: 2.2rem; font-weight: 700; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.5rem; }
         .stat-label { color: #666; font-size: 1rem; font-weight: 500; }
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: flex; justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: white; padding: 3rem; border-radius: 20px; text-align: center; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); max-width: 500px; width: 90%; }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: flex; justify-content: center; align-items: center; z-index: 1000; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal-content { background: white; padding: 3rem; border-radius: 20px; text-align: center; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); max-width: 500px; width: 90%; animation: slideUp 0.5s ease; }
+        .modal-content.ai-feedback { max-width: 900px; max-height: 90vh; overflow-y: auto; text-align: left; padding: 2.5rem; }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .complete-title { font-size: 2.8rem; font-weight: 700; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 2rem; }
+        .ai-title { font-size: 2.2rem; font-weight: 700; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 2rem; text-align: center; }
         .complete-stats { display: flex; justify-content: space-around; margin-bottom: 3rem; }
         .complete-stat { text-align: center; padding: 1.5rem; background: #f8f9fa; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); }
         .complete-value { font-size: 2.5rem; font-weight: 700; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.5rem; }
         .complete-label { color: #666; font-size: 1.1rem; font-weight: 500; }
-        .restart-btn { padding: 15px 40px; background: linear-gradient(45deg, #667eea, #764ba2); color: white; border: none; border-radius: 25px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); }
-        .restart-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4); }
+        .feedback-section { margin-bottom: 2rem; padding: 1.5rem; background: #f8f9fa; border-radius: 12px; border-left: 4px solid #667eea; }
+        .feedback-section-title { font-size: 1.3rem; font-weight: 600; color: #333; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .feedback-text { font-size: 1rem; line-height: 1.6; color: #555; margin-bottom: 0.5rem; }
+        .feedback-highlight { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 600; }
+        .speedometer-container { display: flex; justify-content: center; align-items: center; margin: 2rem 0; }
+        .speedometer { position: relative; width: 300px; height: 150px; margin: 0 auto; }
+        .speedometer-arc { width: 300px; height: 150px; border: 12px solid #e2e8f0; border-bottom: none; border-radius: 300px 300px 0 0; position: relative; background: linear-gradient(90deg, #ff4444 0%, #ffa500 25%, #ffff00 50%, #90EE90 75%, #4CAF50 100%); background-clip: padding-box; }
+        .speedometer-needle { position: absolute; bottom: 0; left: 50%; width: 6px; height: 120px; background: #333; transform-origin: bottom center; transform: translateX(-50%) rotate(-90deg); transition: transform 2s ease-in-out; border-radius: 3px; z-index: 2; }
+        .speedometer-center { position: absolute; bottom: -12px; left: 50%; width: 24px; height: 24px; background: #333; border-radius: 50%; transform: translateX(-50%); z-index: 3; }
+        .speedometer-labels { position: absolute; bottom: -20px; left: 0; right: 0; font-size: 0.8rem; color: #666; }
+        .speedometer-labels .left-label { position: absolute; left: 0; bottom: 0; }
+        .speedometer-labels .right-label { position: absolute; right: 0; bottom: 0; }
+        .percentile-display { text-align: center; margin-top: 1rem; font-size: 1.1rem; color: #333; }
+        .vs-container { display: flex; align-items: center; justify-content: center; gap: 2rem; margin: 2rem 0; padding: 2rem; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 15px; border: 2px solid #e2e8f0; }
+        .vs-player { flex: 1; text-align: center; padding: 1.5rem; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
+        .vs-player.user { border: 3px solid #667eea; }
+        .vs-player.average { border: 3px solid #28a745; }
+        .vs-divider { font-size: 3rem; font-weight: bold; color: #667eea; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); }
+        .vs-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem; color: #333; }
+        .vs-stat { margin-bottom: 0.8rem; font-size: 1rem; }
+        .vs-stat-label { color: #666; font-weight: 500; }
+        .vs-stat-value { font-weight: 700; color: #667eea; margin-left: 0.5rem; }
+        .vs-player.average .vs-stat-value { color: #28a745; }
+        .skill-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0; }
+        .skill-item { background: white; padding: 1rem; border-radius: 8px; border-left: 3px solid #667eea; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); }
+        .skill-item.advice-item { grid-column: span 3; border-left: 3px solid #28a745; background: linear-gradient(135deg, #f8fff9 0%, #e8f5e8 100%); }
+        .skill-name { font-weight: 600; color: #333; margin-bottom: 0.5rem; }
+        .skill-score { font-size: 1.1rem; font-weight: 700; color: #667eea; }
+        .advice-content { font-size: 1rem; line-height: 1.6; color: #2d5016; }
+        .progress-bar { width: 100%; height: 20px; background: #e2e8f0; border-radius: 10px; overflow: hidden; margin: 1rem 0; }
+        .progress-fill { height: 100%; background: linear-gradient(45deg, #667eea, #764ba2); border-radius: 10px; transition: width 0.5s ease; }
+        .modal-buttons { display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; }
+        .restart-btn, .continue-btn { padding: 15px 40px; background: linear-gradient(45deg, #667eea, #764ba2); color: white; border: none; border-radius: 25px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); flex: 1; }
+        .continue-btn { background: linear-gradient(45deg, #28a745, #20c997); box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3); }
+        .restart-btn:hover, .continue-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5); }
+        .continue-btn:hover { box-shadow: 0 8px 25px rgba(40, 167, 69, 0.5); }
+        .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid #f3f3f3; border-top: 3px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 10px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @media (max-width: 768px) {
+            .feedback-section div[style*="display: flex"] { flex-direction: column !important; gap: 1.5rem !important; }
             .main-container { padding: 1rem; }
             .practice-container { padding: 2rem; }
-            .text-display { font-size: 1.4rem; padding: 1.5rem; }
+            .text-display { font-size: 1.4rem; padding: 1.5rem; min-height: 140px; }
+            .text-display.sentence-mode { min-height: 160px; }
             .keyboard { padding: 1rem; }
             .key { min-width: 2rem; height: 2rem; padding: 0.5rem; font-size: 0.8rem; }
             .stats { grid-template-columns: 1fr; gap: 15px; }
             .nav-menu { flex-wrap: wrap; gap: 0.5rem; }
+            .modal-content.ai-feedback { padding: 1.5rem; margin: 0.5rem; }
+            .complete-title { font-size: 2.2rem; }
+            .ai-title { font-size: 1.8rem; }
+            .complete-value { font-size: 2rem; }
+            .speedometer { width: 225px; height: 112px; }
+            .speedometer-arc { width: 225px; height: 112px; }
+            .speedometer-needle { height: 90px; }
+            .skill-grid { grid-template-columns: 1fr; }
+            .skill-item.advice-item { grid-column: span 1; }
+            .modal-buttons { flex-direction: row; gap: 0.8rem; }
+            .restart-btn, .continue-btn { padding: 12px 20px; font-size: 0.9rem; flex: 1; }
         }
     </style>
 </head>
@@ -130,10 +191,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         <span class="dropdown-arrow">▼</span>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="../Korean/practice.html" onclick="switchKoreanMode('consonant')">자음 연습</a>
-                        <a href="../Korean/practice.html" onclick="switchKoreanMode('vowel')">모음 연습</a>
-                        <a href="../Korean/practice.html" onclick="switchKoreanMode('word')">단어 연습</a>
-                        <a href="../Korean/practice.html" onclick="switchKoreanMode('sentence')">문장 연습</a>
+                        <a href="../Korean/practice.html">자음 연습</a>
+                        <a href="../Korean/practice.html">모음 연습</a>
+                        <a href="../Korean/practice.html">단어 연습</a>
+                        <a href="../Korean/practice.html">문장 연습</a>
                     </div>
                 </li>
                 <li>
@@ -142,9 +203,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         <span class="dropdown-arrow">▼</span>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="./practice.html" onclick="switchMode('alphabet')">알파벳 연습</a>
-                        <a href="./practice.html" onclick="switchMode('word')">단어 연습</a>
-                        <a href="./practice.html" onclick="switchMode('sentence')">문장 연습</a>
+                        <a href="#" onclick="switchMode('alphabet'); return false;">알파벳 연습</a>
+                        <a href="#" onclick="switchMode('word'); return false;">단어 연습</a>
+                        <a href="#" onclick="switchMode('sentence'); return false;">문장 연습</a>
                     </div>
                 </li>
                 <li>
@@ -277,7 +338,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             </div>
         </div>
         <div class="modal" id="completeModal" style="display: none;">
-            <div class="modal-content">
+            <div class="modal-content" id="modalContent">
                 <h2 class="complete-title">연습 완료! 🎉</h2>
                 <div class="complete-stats">
                     <div class="complete-stat">
@@ -289,7 +350,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         <div class="complete-label">평균 속도</div>
                     </div>
                 </div>
-                <button class="restart-btn" id="restartBtn">다시 시작</button>
+                <div class="modal-buttons">
+                    <button class="restart-btn" id="restartBtn">다시 시작</button>
+                    <button class="continue-btn" id="continueBtn">더 풀기</button>
+                </div>
             </div>
         </div>
     </div>
@@ -298,6 +362,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             constructor() {
                 this.currentMode = 'alphabet';
                 this.currentText = '';
+                this.currentTranslation = '';
                 this.currentPosition = 0;
                 this.startTime = null;
                 this.totalChars = 0;
@@ -308,48 +373,179 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 this.usedSentences = [];
                 this.sessionSpeeds = [];
                 this.sessionAccuracies = [];
+
+                // AI 분석용 데이터 (문장연습 전용)
+                this.sentenceTypingData = [];
+                this.sentenceMistakes = [];
+                this.sentenceKeyTimings = [];
+                this.sentenceStartTime = null;
+                this.lastKeyTime = null;
+                this.lastKeyPressed = null;
+                this.keyTransitions = [];
+                this.sentenceStats = [];
+
+                // 키보드 위치 매핑
+                this.keyPositions = {
+                    'q': [1, 0], 'w': [1, 1], 'e': [1, 2], 'r': [1, 3], 't': [1, 4],
+                    'y': [1, 5], 'u': [1, 6], 'i': [1, 7], 'o': [1, 8], 'p': [1, 9],
+                    'a': [2, 0], 's': [2, 1], 'd': [2, 2], 'f': [2, 3], 'g': [2, 4],
+                    'h': [2, 5], 'j': [2, 6], 'k': [2, 7], 'l': [2, 8],
+                    'z': [3, 0], 'x': [3, 1], 'c': [3, 2], 'v': [3, 3], 'b': [3, 4],
+                    'n': [3, 5], 'm': [3, 6], ' ': [4, 0]
+                };
+
+                this.fingerAssignment = {
+                    'q': '왼새끼', 'a': '왼새끼', 'z': '왼새끼',
+                    'w': '왼약지', 's': '왼약지', 'x': '왼약지',
+                    'e': '왼중지', 'd': '왼중지', 'c': '왼중지',
+                    'r': '왼검지', 'f': '왼검지', 'v': '왼검지', 't': '왼검지', 'g': '왼검지', 'b': '왼검지',
+                    'y': '오검지', 'h': '오검지', 'n': '오검지', 'u': '오검지', 'j': '오검지', 'm': '오검지',
+                    'i': '오중지', 'k': '오중지',
+                    'o': '오약지', 'l': '오약지',
+                    'p': '오새끼',
+                    ' ': '엄지'
+                };
+
                 this.keyboardMap = {
                     'a': 'a', 'b': 'b', 'c': 'c', 'd': 'd', 'e': 'e', 'f': 'f', 'g': 'g', 'h': 'h', 'i': 'i', 'j': 'j', 'k': 'k', 'l': 'l', 'm': 'm', 'n': 'n', 'o': 'o', 'p': 'p', 'q': 'q', 'r': 'r', 's': 's', 't': 't', 'u': 'u', 'v': 'v', 'w': 'w', 'x': 'x', 'y': 'y', 'z': 'z',
                     'A': 'a', 'B': 'b', 'C': 'c', 'D': 'd', 'E': 'e', 'F': 'f', 'G': 'g', 'H': 'h', 'I': 'i', 'J': 'j', 'K': 'k', 'L': 'l', 'M': 'm', 'N': 'n', 'O': 'o', 'P': 'p', 'Q': 'q', 'R': 'r', 'S': 's', 'T': 't', 'U': 'u', 'V': 'v', 'W': 'w', 'X': 'x', 'Y': 'y', 'Z': 'z',
                     '1': '1', '2': '2', '3': '3', '4': '4', '5': '5', '6': '6', '7': '7', '8': '8', '9': '9', '0': '0',
                     '.': '.', ',': ',', '?': '/', '!': '1', ';': ';', ':': ';', "'": "'", '"': "'", ' ': ' '
                 };
+
                 this.practiceData = {
                     alphabet: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
-                    word: ['apple', 'book', 'computer', 'dream', 'effort', 'freedom', 'growth', 'history', 'idea', 'journey', 'knowledge', 'love', 'music', 'nature', 'ocean', 'peace', 'question', 'river', 'science', 'time', 'adventure', 'beauty', 'challenge', 'culture', 'discovery', 'energy', 'future', 'happiness', 'inspiration', 'justice', 'kindness', 'learning', 'memory', 'opportunity', 'progress', 'respect', 'success', 'trust', 'vision', 'wisdom', 'art', 'balance', 'courage', 'desire', 'emotion', 'friendship', 'goal', 'hope', 'imagination', 'life', 'motivation', 'passion', 'reason', 'skill', 'talent', 'unity', 'value', 'work', 'youth', 'zeal', 'action', 'belief', 'change', 'community', 'decision', 'environment', 'focus', 'gratitude', 'health', 'innovation', 'joy', 'leadership', 'mind', 'power', 'quality', 'resource', 'spirit', 'team', 'understanding', 'victory', 'amazing', 'brilliant', 'creative', 'dynamic', 'elegant', 'fantastic', 'genuine', 'honest', 'incredible', 'joyful', 'kind', 'lovely', 'magnificent', 'noble', 'optimistic', 'positive', 'quiet', 'remarkable', 'sincere', 'thoughtful', 'unique', 'vibrant', 'wonderful', 'excellent', 'young', 'zealous', 'ambitious', 'bright', 'confident', 'determined', 'enthusiastic', 'faithful', 'generous', 'helpful', 'intelligent', 'jovial', 'knowledgeable', 'logical', 'mature', 'natural', 'organized', 'patient', 'quick', 'reliable', 'strong', 'talented', 'understanding', 'versatile', 'wise', 'extraordinary', 'youthful', 'zestful', 'active', 'brave', 'calm', 'dedicated', 'efficient', 'flexible', 'graceful', 'humble', 'innovative', 'just', 'keen', 'loyal', 'mindful', 'neat', 'open', 'practical', 'quick-witted', 'responsible', 'stable', 'trustworthy', 'uplifting', 'valuable', 'warm', 'expressive', 'youthful-spirit', 'zen-like', 'accomplished', 'benevolent', 'cheerful', 'diligent', 'empathetic', 'forgiving', 'gracious', 'hardworking', 'insightful', 'jubilant', 'kindhearted'],
-                    sentence: ['The quick brown fox jumps over the lazy dog.', 'Success comes from hard work and dedication.', 'Learning is a lifelong journey of discovery.', 'Nature inspires us to live in harmony.', 'Dreams fuel our motivation to achieve greatness.', 'Innovation drives progress in the modern world.', 'Kindness is the key to building strong communities.', 'The beauty of art lies in its expression.', 'Courage allows us to face challenges with confidence.', 'Knowledge empowers us to shape the future.', 'Music connects people across cultures and time.', 'A journey of a thousand miles begins with a single step.', 'Hope is the light that guides us through darkness.', 'Teamwork makes the dream work.', 'The environment needs our care and protection.', 'Every challenge is an opportunity for growth.', 'Happiness is found in the simplest moments.', 'Wisdom comes from experience and reflection.', 'Freedom is the foundation of a just society.', 'Creativity unlocks endless possibilities.', 'The stars remind us of our place in the universe.', 'Effort today leads to success tomorrow.', 'Respect is earned through actions, not words.', 'The ocean is a vast and mysterious world.', 'Learning from failure builds resilience.', 'Gratitude transforms our perspective on life.', 'Peace begins with understanding and empathy.', 'The future belongs to those who prepare today.', 'Love is the universal language of humanity.', 'Adventure awaits those who seek it.', 'Time is the most precious gift we can give to others.', 'Education opens doors to countless opportunities.', 'Patience is a virtue that leads to great rewards.', 'Laughter is the best medicine for the soul.', 'Books are windows to different worlds and perspectives.', 'Technology has revolutionized the way we communicate.', 'Friendship is one of life\'s greatest treasures.', 'Hard work and persistence always pay off.', 'The journey matters more than the destination.', 'Small acts of kindness can change the world.', 'Curiosity is the engine of achievement.', 'Honesty builds trust and lasting relationships.', 'Diversity makes our communities stronger and richer.', 'Exercise keeps both body and mind healthy.', 'Art has the power to inspire and heal.', 'Family bonds provide strength and support.', 'Reading expands our imagination and knowledge.', 'Fresh air and sunshine boost our energy.', 'Good communication prevents misunderstandings.', 'Practice makes perfect in any skill.', 'Sleep is essential for mental and physical health.', 'Water is the source of all life on Earth.', 'Mountains teach us about strength and endurance.', 'Gardens remind us of growth and renewal.', 'Sunsets paint the sky with magical colors.', 'Rain brings life to the earth and all living things.', 'Trees provide oxygen and shelter for many creatures.', 'Flowers brighten our days with their beauty.', 'Birds sing melodies that lift our spirits.', 'Seasons change, teaching us about life cycles.']
+                    word: [
+                        {en: 'apple', ko: '사과'}, {en: 'book', ko: '책'}, {en: 'computer', ko: '컴퓨터'}, {en: 'dream', ko: '꿈'}, {en: 'effort', ko: '노력'},
+                        {en: 'freedom', ko: '자유'}, {en: 'growth', ko: '성장'}, {en: 'history', ko: '역사'}, {en: 'idea', ko: '아이디어'}, {en: 'journey', ko: '여행'},
+                        {en: 'knowledge', ko: '지식'}, {en: 'love', ko: '사랑'}, {en: 'music', ko: '음악'}, {en: 'nature', ko: '자연'}, {en: 'ocean', ko: '바다'},
+                        {en: 'peace', ko: '평화'}, {en: 'question', ko: '질문'}, {en: 'river', ko: '강'}, {en: 'science', ko: '과학'}, {en: 'time', ko: '시간'},
+                        {en: 'adventure', ko: '모험'}, {en: 'beauty', ko: '아름다움'}, {en: 'challenge', ko: '도전'}, {en: 'culture', ko: '문화'}, {en: 'discovery', ko: '발견'},
+                        {en: 'energy', ko: '에너지'}, {en: 'future', ko: '미래'}, {en: 'happiness', ko: '행복'}, {en: 'inspiration', ko: '영감'}, {en: 'justice', ko: '정의'},
+                        {en: 'kindness', ko: '친절'}, {en: 'learning', ko: '학습'}, {en: 'memory', ko: '기억'}, {en: 'opportunity', ko: '기회'}, {en: 'progress', ko: '발전'},
+                        {en: 'respect', ko: '존경'}, {en: 'success', ko: '성공'}, {en: 'trust', ko: '신뢰'}, {en: 'vision', ko: '비전'}, {en: 'wisdom', ko: '지혜'},
+                        {en: 'balance', ko: '균형'}, {en: 'creative', ko: '창조적인'}, {en: 'purpose', ko: '목적'}, {en: 'gentle', ko: '부드러운'}, {en: 'bright', ko: '밝은'},
+                        {en: 'strong', ko: '강한'}, {en: 'wonder', ko: '경이'}, {en: 'explore', ko: '탐험하다'}, {en: 'believe', ko: '믿다'}, {en: 'achieve', ko: '달성하다'},
+                        {en: 'harmony', ko: '조화'}, {en: 'passion', ko: '열정'}, {en: 'courage', ko: '용기'}, {en: 'honest', ko: '정직한'}, {en: 'patient', ko: '인내심 있는'},
+                        {en: 'grateful', ko: '감사하는'}, {en: 'humble', ko: '겸손한'}, {en: 'joyful', ko: '기쁜'}, {en: 'mindful', ko: '주의 깊은'}, {en: 'positive', ko: '긍정적인'}
+                    ],
+                    sentence: [
+                        {en: 'The quick brown fox jumps over the lazy dog.', ko: '빠른 갈색 여우가 게으른 개를 뛰어넘는다.'},
+                        {en: 'Success comes from hard work and dedication.', ko: '성공은 노력과 헌신에서 나온다.'},
+                        {en: 'Learning is a lifelong journey of discovery.', ko: '학습은 평생에 걸친 발견의 여행이다.'},
+                        {en: 'Nature inspires us to live in harmony.', ko: '자연은 우리가 조화롭게 살도록 영감을 준다.'},
+                        {en: 'Dreams fuel our motivation to achieve goals.', ko: '꿈은 목표를 달성하려는 동기를 부여한다.'},
+                        {en: 'Innovation drives progress in the world.', ko: '혁신은 세상의 발전을 이끈다.'},
+                        {en: 'Kindness is the key to strong communities.', ko: '친절은 강한 공동체의 열쇠이다.'},
+                        {en: 'The beauty of art lies in its expression.', ko: '예술의 아름다움은 그 표현에 있다.'},
+                        {en: 'Courage allows us to face challenges.', ko: '용기는 우리가 도전에 맞설 수 있게 한다.'},
+                        {en: 'Knowledge empowers us to shape the future.', ko: '지식은 우리가 미래를 만들 힘을 준다.'},
+                        {en: 'Love is the bridge between two hearts.', ko: '사랑은 두 마음을 잇는 다리이다.'},
+                        {en: 'Every sunset brings promise of a new dawn.', ko: '모든 석양은 새로운 새벽의 약속을 가져온다.'},
+                        {en: 'Happiness is found in simple moments.', ko: '행복은 단순한 순간에서 발견된다.'},
+                        {en: 'Time is the most precious gift we have.', ko: '시간은 우리가 가진 가장 소중한 선물이다.'},
+                        {en: 'Believe in yourself and magic will happen.', ko: '자신을 믿으면 기적이 일어날 것이다.'},
+                        {en: 'Life begins at the end of comfort zone.', ko: '인생은 안전지대의 끝에서 시작된다.'},
+                        {en: 'Stars cannot shine without darkness.', ko: '별은 어둠 없이는 빛날 수 없다.'},
+                        {en: 'The best way to predict future is to create.', ko: '미래를 예측하는 가장 좋은 방법은 창조하는 것이다.'},
+                        {en: 'Music speaks what words cannot express.', ko: '음악은 말로 표현할 수 없는 것을 말한다.'},
+                        {en: 'Friendship is the cement that holds forever.', ko: '우정은 영원히 지속되는 시멘트이다.'},
+                        {en: 'Hope is the thing with feathers that flies.', ko: '희망은 날개를 가지고 나는 것이다.'},
+                        {en: 'Adventure awaits those who dare to explore.', ko: '모험은 탐험할 용기가 있는 자를 기다린다.'},
+                        {en: 'Wisdom comes from experience and reflection.', ko: '지혜는 경험과 성찰에서 나온다.'},
+                        {en: 'Art washes away dust from our souls.', ko: '예술은 우리 영혼의 먼지를 씻어낸다.'},
+                        {en: 'Peace cannot be kept by force alone.', ko: '평화는 힘만으로는 지켜질 수 없다.'},
+                        {en: 'Freedom is not worth having without choice.', ko: '자유는 선택권 없이는 가질 가치가 없다.'},
+                        {en: 'Change is the only constant in our lives.', ko: '변화는 우리 삶의 유일한 상수이다.'},
+                        {en: 'Creativity is intelligence having fun.', ko: '창의성은 지성이 즐거워하는 것이다.'},
+                        {en: 'Trust takes years to build, seconds to break.', ko: '신뢰는 쌓는 데 몇 년, 깨는 데 몇 초가 걸린다.'},
+                        {en: 'Passion is energy that flows through veins.', ko: '열정은 혈관을 통해 흐르는 에너지이다.'},
+                        {en: 'Wonder is the beginning of all wisdom.', ko: '경이로움은 모든 지혜의 시작이다.'},
+                        {en: 'Growth requires stepping out of patterns.', ko: '성장은 기존 패턴에서 벗어나는 것을 필요로 한다.'},
+                        {en: 'Memory is the treasure house of mind.', ko: '기억은 마음의 보물창고이다.'},
+                        {en: 'Joy is not in things but in ourselves.', ko: '기쁨은 사물이 아니라 우리 자신에게 있다.'},
+                        {en: 'Strength grows when you think you cannot.', ko: '힘은 할 수 없다고 생각할 때 자란다.'},
+                        {en: 'Beauty is truly seen through eyes of love.', ko: '아름다움은 사랑의 눈을 통해 진정으로 보인다.'}
+                    ]
                 };
+                
                 this.init();
             }
+
             init() {
                 this.bindEvents();
                 this.generateText();
                 this.updateDisplay();
             }
+
             bindEvents() {
                 document.querySelectorAll('.menu-btn').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         this.changeMode(e.target.dataset.mode);
                     });
                 });
+
                 const typingInput = document.getElementById('typingInput');
                 typingInput.addEventListener('input', (e) => {
                     this.handleInput(e.target.value);
                 });
+
                 typingInput.addEventListener('keydown', (e) => {
+                    if (this.currentMode === 'sentence') {
+                        this.recordKeyTiming(e.key);
+                    }
+
                     if ((e.key === ' ' || e.key === 'Enter') && this.currentPosition >= this.currentText.length) {
                         e.preventDefault();
                         this.nextProblem();
                     }
                 });
+
                 document.getElementById('restartBtn').addEventListener('click', () => {
                     this.restart();
                 });
+
+                // 더 풀기 버튼 이벤트 (모달에 있는 경우에만)
+                const continueBtn = document.getElementById('continueBtn');
+                if (continueBtn) {
+                    continueBtn.addEventListener('click', () => {
+                        this.continuePractice();
+                    });
+                }
             }
+
+            recordKeyTiming(key) {
+                const now = Date.now();
+                if (this.lastKeyTime) {
+                    const interval = now - this.lastKeyTime;
+                    this.sentenceKeyTimings.push({
+                        key: key,
+                        interval: interval,
+                        position: this.currentPosition,
+                        timestamp: now - this.sentenceStartTime
+                    });
+                }
+                this.lastKeyTime = now;
+                this.lastKeyPressed = key;
+            }
+
             changeMode(mode) {
                 this.currentMode = mode;
                 this.currentProblem = 0;
                 this.resetStats();
+
+                if (mode === 'sentence') {
+                    this.totalProblems = 3;
+                    this.sentenceTypingData = [];
+                    this.sentenceMistakes = [];
+                    this.sentenceKeyTimings = [];
+                    this.sentenceStats = [];
+                } else if (mode === 'word') {
+                    this.totalProblems = 5;
+                } else {
+                    this.totalProblems = 10;
+                }
+
                 document.querySelectorAll('.menu-btn').forEach(btn => {
                     btn.classList.remove('active');
                 });
@@ -359,8 +555,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 document.getElementById('typingInput').value = '';
                 document.getElementById('typingInput').focus();
             }
+
             generateText() {
-                this.startTime = Date.now(); // Initialize startTime for each problem
                 const data = this.practiceData[this.currentMode];
                 if (this.currentMode === 'alphabet') {
                     const selected = [];
@@ -368,33 +564,47 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         selected.push(data[Math.floor(Math.random() * data.length)]);
                     }
                     this.currentText = selected.join(' ');
+                    this.currentTranslation = '';
                 } else if (this.currentMode === 'word') {
-                    const availableWords = data.filter(word => !this.usedWords.includes(word));
-                    const wordsToUse = availableWords.length >= 3 ? availableWords : data;
+                    const availableWords = data.filter(word => !this.usedWords.includes(word.en));
+                    const wordsToUse = availableWords.length >= 2 ? availableWords : data;
                     const selected = [];
                     const tempUsed = [...wordsToUse];
-                    for (let i = 0; i < 3 && tempUsed.length > 0; i++) {
+                    for (let i = 0; i < 2 && tempUsed.length > 0; i++) {
                         const randomIndex = Math.floor(Math.random() * tempUsed.length);
                         const selectedWord = tempUsed[randomIndex];
                         selected.push(selectedWord);
-                        if (availableWords.length >= 3) {
-                            this.usedWords.push(selectedWord);
+                        if (availableWords.length >= 2) {
+                            this.usedWords.push(selectedWord.en);
                         }
                         tempUsed.splice(randomIndex, 1);
                     }
-                    this.currentText = selected.join(' ');
+                    this.currentText = selected.map(w => w.en).join(' ');
+                    this.currentTranslation = selected.map(w => w.ko).join(' / ');
                 } else {
-                    const availableSentences = data.filter(sentence => !this.usedSentences.includes(sentence));
+                    const availableSentences = data.filter(sentence => !this.usedSentences.includes(sentence.en));
                     const sentencesToUse = availableSentences.length > 0 ? availableSentences : data;
                     const randomIndex = Math.floor(Math.random() * sentencesToUse.length);
-                    this.currentText = sentencesToUse[randomIndex];
+                    const selectedSentence = sentencesToUse[randomIndex];
+                    this.currentText = selectedSentence.en;
+                    this.currentTranslation = selectedSentence.ko;
                     if (availableSentences.length > 0) {
-                        this.usedSentences.push(this.currentText);
+                        this.usedSentences.push(selectedSentence.en);
                     }
                 }
+                
                 this.currentPosition = 0;
                 this.correctChars = 0;
                 this.totalChars = 0;
+
+                if (this.currentMode === 'sentence') {
+                    this.sentenceStartTime = null;
+                    this.lastKeyTime = null;
+                    this.sentenceKeyTimings = [];
+                    this.lastKeyPressed = null;
+                    this.keyTransitions = [];
+                }
+
                 this.updateKeyboardHighlight();
                 const textDisplay = document.getElementById('textDisplay');
                 if (this.currentMode === 'sentence') {
@@ -403,6 +613,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     textDisplay.classList.remove('sentence-mode');
                 }
             }
+
             updateKeyboardHighlight() {
                 document.querySelectorAll('.key').forEach(key => {
                     key.classList.remove('active');
@@ -424,17 +635,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     }
                 }
             }
-            countChars(text) {
-                return text.length;
-            }
+
             updateDisplay() {
                 const display = document.getElementById('textDisplay');
                 display.innerHTML = '';
+                
+                // 영어 텍스트 표시
+                const textContainer = document.createElement('div');
                 for (let i = 0; i < this.currentText.length; i++) {
                     const span = document.createElement('span');
                     span.className = 'char';
                     if (this.currentText[i] === ' ') {
-                        span.innerHTML = ' ';
+                        span.innerHTML = '&nbsp;';
                         span.classList.add('space');
                     } else {
                         span.textContent = this.currentText[i];
@@ -444,14 +656,29 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     } else if (i === this.currentPosition) {
                         span.classList.add('current');
                     }
-                    display.appendChild(span);
+                    textContainer.appendChild(span);
                 }
+                display.appendChild(textContainer);
+                
+                // 번역 텍스트 표시 (단어 및 문장 모드에서만)
+                if (this.currentTranslation && (this.currentMode === 'word' || this.currentMode === 'sentence')) {
+                    const translationDiv = document.createElement('div');
+                    translationDiv.style.fontSize = '1rem';
+                    translationDiv.style.color = '#666';
+                    translationDiv.style.marginTop = this.currentMode === 'sentence' ? '1.5rem' : '1rem';
+                    translationDiv.style.fontWeight = '400';
+                    translationDiv.style.lineHeight = '1.4';
+                    translationDiv.textContent = this.currentTranslation;
+                    display.appendChild(translationDiv);
+                }
+                
                 if (this.currentMode === 'sentence') {
                     this.applyInitialColors();
                 }
                 this.updateKeyboardHighlight();
                 document.getElementById('progress').textContent = `${this.currentProblem + 1}/${this.totalProblems}`;
             }
+
             applyInitialColors() {
                 const chars = document.querySelectorAll('.char');
                 chars.forEach(char => {
@@ -463,19 +690,27 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     char.style.transform = 'none';
                 });
             }
+
             handleInput(inputValue) {
                 if (!this.startTime) {
                     this.startTime = Date.now();
+                    if (this.currentMode === 'sentence') {
+                        this.sentenceStartTime = Date.now();
+                    }
                 }
+
                 this.correctChars = 0;
-                this.totalChars = this.countChars(inputValue);
+                this.totalChars = inputValue.length;
                 const chars = document.querySelectorAll('.char');
+                
                 for (let i = 0; i < inputValue.length && i < this.currentText.length; i++) {
                     if (inputValue[i] === this.currentText[i]) {
                         this.correctChars += 1;
                     }
                 }
+
                 if (this.currentMode === 'sentence') {
+                    let mistakes = [];
                     for (let i = 0; i < this.currentText.length; i++) {
                         const char = chars[i];
                         if (!char) continue;
@@ -485,13 +720,24 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         char.style.boxShadow = 'none';
                         char.style.transform = 'none';
                         if (i < inputValue.length) {
-                            char.style.color = inputValue[i] === this.currentText[i] ? '#000000' : '#ff4444';
+                            if (inputValue[i] === this.currentText[i]) {
+                                char.style.color = '#000000';
+                            } else {
+                                char.style.color = '#ff4444';
+                                mistakes.push({
+                                    position: i,
+                                    expected: this.currentText[i],
+                                    actual: inputValue[i],
+                                    timestamp: Date.now() - this.sentenceStartTime
+                                });
+                            }
                         } else if (i === inputValue.length) {
                             char.style.color = '#3b82f6';
                         } else {
                             char.style.color = '#8b5cf6';
                         }
                     }
+                    this.sentenceMistakes = mistakes;
                 } else {
                     for (let i = 0; i < this.currentText.length; i++) {
                         const char = chars[i];
@@ -506,15 +752,62 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         }
                     }
                 }
+
                 this.currentPosition = inputValue.length;
                 this.updateStats();
                 this.updateKeyboardHighlight();
+                
                 if (inputValue.length >= this.currentText.length) {
                     this.showNextButton(inputValue);
+                    if (inputValue === this.currentText) {
+                        if (this.currentMode === 'sentence') {
+                            const currentAccuracy = parseInt(document.getElementById('accuracy').textContent.replace('%', ''));
+                            const currentSpeed = parseInt(document.getElementById('speed').textContent);
+                            
+                            const sentenceData = {
+                                sentenceNumber: this.currentProblem + 1,
+                                accuracy: currentAccuracy,
+                                speed: currentSpeed
+                            };
+                            
+                            this.sentenceStats.push(sentenceData);
+                        }
+                        
+                        this.recordSentenceData();
+                    }
                 }
             }
+
+            recordSentenceData() {
+                if (this.currentMode === 'sentence') {
+                    const sentenceTime = Date.now() - this.sentenceStartTime;
+                    const currentTextCharCount = this.currentText.length;
+                    const inputValue = document.getElementById('typingInput').value;
+                    let currentCorrectChars = 0;
+                    
+                    for (let i = 0; i < Math.min(inputValue.length, this.currentText.length); i++) {
+                        if (inputValue[i] === this.currentText[i]) {
+                            currentCorrectChars += 1;
+                        }
+                    }
+                    
+                    const accuracy = currentTextCharCount > 0 ? Math.round((currentCorrectChars / currentTextCharCount) * 100) : 100;
+                    const charCount = this.currentText.length;
+                    const cpm = Math.round((charCount / (sentenceTime / 1000)) * 60);
+                    
+                    this.sentenceTypingData.push({
+                        sentence: this.currentText,
+                        time: sentenceTime,
+                        accuracy: accuracy,
+                        wpm: cpm,
+                        mistakes: [...this.sentenceMistakes],
+                        keyTimings: [...this.sentenceKeyTimings]
+                    });
+                }
+            }
+
             updateStats() {
-                const accuracy = this.totalChars > 0 ? Math.round((this.correctChars / this.totalChars) * 100) : 0;
+                const accuracy = this.totalChars > 0 ? Math.round((this.correctChars / this.totalChars) * 100) : 100;
                 document.getElementById('accuracy').textContent = `${accuracy}%`;
                 if (this.startTime) {
                     const elapsed = (Date.now() - this.startTime) / 1000;
@@ -524,6 +817,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     document.getElementById('speed').textContent = '0';
                 }
             }
+
             showNextButton(inputValue) {
                 const correctChars = inputValue.slice(0, this.currentText.length).split('').reduce((acc, char, i) => {
                     return acc + (char === this.currentText[i] ? 1 : 0);
@@ -535,8 +829,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 this.sessionAccuracies.push(accuracy);
                 this.sessionSpeeds.push(cpm);
             }
+
             nextProblem() {
                 this.currentProblem++;
+                
                 if (this.currentProblem >= this.totalProblems) {
                     this.showComplete();
                 } else {
@@ -544,33 +840,359 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     this.updateDisplay();
                     document.getElementById('typingInput').value = '';
                     document.getElementById('typingInput').focus();
+                    this.startTime = null;
                 }
             }
+
             showComplete() {
-                const avgAccuracy = this.sessionAccuracies.length > 0 
-                    ? Math.round(this.sessionAccuracies.reduce((a, b) => a + b, 0) / this.sessionAccuracies.length) 
-                    : 0;
-                const avgSpeed = this.sessionSpeeds.length > 0 
-                    ? Math.round(this.sessionSpeeds.reduce((a, b) => a + b, 0) / this.sessionSpeeds.length) 
-                    : 0;
-                document.getElementById('finalAccuracy').textContent = `${avgAccuracy}%`;
-                document.getElementById('finalSpeed').textContent = avgSpeed;
-                document.getElementById('completeModal').style.display = 'flex';
+                if (this.currentMode === 'sentence') {
+                    this.showAIFeedback();
+                } else {
+                    const avgAccuracy = this.sessionAccuracies.length > 0 
+                        ? Math.round(this.sessionAccuracies.reduce((a, b) => a + b, 0) / this.sessionAccuracies.length) 
+                        : 0;
+                    const avgSpeed = this.sessionSpeeds.length > 0 
+                        ? Math.round(this.sessionSpeeds.reduce((a, b) => a + b, 0) / this.sessionSpeeds.length) 
+                        : 0;
+                    document.getElementById('finalAccuracy').textContent = `${avgAccuracy}%`;
+                    document.getElementById('finalSpeed').textContent = avgSpeed;
+                    
+                    // 단어 모드일 때만 더 풀기 버튼 추가
+                    const modalContent = document.getElementById('modalContent');
+                    if (this.currentMode === 'word') {
+                        modalContent.innerHTML = `
+                            <h2 class="complete-title">연습 완료! 🎉</h2>
+                            <div class="complete-stats">
+                                <div class="complete-stat">
+                                    <div class="complete-value">${avgAccuracy}%</div>
+                                    <div class="complete-label">최종 정확도</div>
+                                </div>
+                                <div class="complete-stat">
+                                    <div class="complete-value">${avgSpeed}</div>
+                                    <div class="complete-label">평균 속도</div>
+                                </div>
+                            </div>
+                            <div class="modal-buttons">
+                                <button class="restart-btn" id="restartBtn">다시 시작</button>
+                                <button class="continue-btn" id="continueBtn">더 풀기</button>
+                            </div>
+                        `;
+                        
+                        document.getElementById('restartBtn').addEventListener('click', () => {
+                            this.restart();
+                        });
+                        
+                        document.getElementById('continueBtn').addEventListener('click', () => {
+                            this.continuePractice();
+                        });
+                    }
+                    
+                    document.getElementById('completeModal').style.display = 'flex';
+                }
             }
-            restart() {
+
+            async showAIFeedback() {
+                const modalContent = document.getElementById('modalContent');
+                modalContent.className = 'modal-content ai-feedback';
+                modalContent.innerHTML = `
+                    <h2 class="ai-title">🤖 AI가 당신의 영어 타이핑을 분석하고 있습니다...</h2>
+                    <div style="text-align: center; padding: 3rem;">
+                        <div class="loading"></div>
+                        영어 타이핑 패턴을 심층 분석 중입니다...
+                    </div>
+                `;
+                document.getElementById('completeModal').style.display = 'flex';
+
+                setTimeout(() => {
+                    this.generateAIFeedback();
+                }, 2000);
+            }
+
+            generateAIFeedback() {
+                let sentence1Speed = 0, sentence1Accuracy = 0;
+                let sentence2Speed = 0, sentence2Accuracy = 0;
+                let sentence3Speed = 0, sentence3Accuracy = 0;
+                
+                if (this.sentenceStats.length >= 1) {
+                    sentence1Speed = this.sentenceStats[0].speed || 0;
+                    sentence1Accuracy = this.sentenceStats[0].accuracy || 0;
+                }
+                
+                if (this.sentenceStats.length >= 2) {
+                    sentence2Speed = this.sentenceStats[1].speed || 0;
+                    sentence2Accuracy = this.sentenceStats[1].accuracy || 0;
+                }
+                
+                if (this.sentenceStats.length >= 3) {
+                    sentence3Speed = this.sentenceStats[2].speed || 0;
+                    sentence3Accuracy = this.sentenceStats[2].accuracy || 0;
+                }
+                
+                let totalAvgSpeed = 0;
+                let totalAvgAccuracy = 0;
+                
+                if (this.sentenceStats.length > 0) {
+                    totalAvgSpeed = (sentence1Speed + sentence2Speed + sentence3Speed) / 3;
+                    totalAvgAccuracy = (sentence1Accuracy + sentence2Accuracy + sentence3Accuracy) / 3;
+                } else {
+                    totalAvgSpeed = parseInt(document.getElementById('speed').textContent) || 0;
+                    totalAvgAccuracy = parseInt(document.getElementById('accuracy').textContent.replace('%', '')) || 0;
+                }
+
+                const currentSpeed = Math.round(totalAvgSpeed);
+                const avgAccuracy = Math.round(totalAvgAccuracy);
+                
+                let speedScore = 0;
+                if (currentSpeed >= 500) speedScore = 100;
+                else if (currentSpeed >= 350) speedScore = 90;
+                else if (currentSpeed >= 200) speedScore = 80;
+                else if (currentSpeed >= 150) speedScore = 70;
+                else if (currentSpeed >= 100) speedScore = 50;
+                else speedScore = Math.max(0, (currentSpeed / 100) * 50);
+
+                let accuracyScore = 0;
+                if (avgAccuracy >= 100) accuracyScore = 100;
+                else if (avgAccuracy >= 98) accuracyScore = 90;
+                else if (avgAccuracy >= 95) accuracyScore = 70;
+                else if (avgAccuracy >= 93) accuracyScore = 60;
+                else if (avgAccuracy >= 92) accuracyScore = 50;
+                else accuracyScore = Math.max(0, (avgAccuracy / 92) * 50);
+
+                const totalScore = (speedScore * 0.5) + (accuracyScore * 0.5);
+
+                let overallGrade, overallPercentile;
+                if (totalScore >= 95) {
+                    overallGrade = "전설급";
+                    overallPercentile = "상위 1%";
+                } else if (totalScore >= 85) {
+                    overallGrade = "매우 우수";
+                    overallPercentile = "상위 5%";
+                } else if (totalScore >= 75) {
+                    overallGrade = "우수";
+                    overallPercentile = "상위 15%";
+                } else if (totalScore >= 70) {
+                    overallGrade = "평균 이상";
+                    overallPercentile = "상위 30%";
+                } else if (totalScore >= 65) {
+                    overallGrade = "평균";
+                    overallPercentile = "평균 수준";
+                } else if (totalScore >= 45) {
+                    overallGrade = "평균 미만";
+                    overallPercentile = "하위 40%";
+                } else {
+                    overallGrade = "개선 필요";
+                    overallPercentile = "하위 20%";
+                }
+
+                let needleRotation;
+                if (totalScore >= 95) {
+                    needleRotation = 45;
+                } else if (totalScore >= 85) {
+                    needleRotation = 35;
+                } else if (totalScore >= 75) {
+                    needleRotation = 20;
+                } else if (totalScore >= 70) {
+                    needleRotation = 5;
+                } else if (totalScore >= 65) {
+                    needleRotation = -5;
+                } else if (totalScore >= 45) {
+                    needleRotation = -20;
+                } else {
+                    needleRotation = -40;
+                }
+
+                const advice = this.generatePersonalizedAdvice(currentSpeed, avgAccuracy, overallGrade);
+
+                const modalContent = document.getElementById('modalContent');
+                modalContent.innerHTML = `
+                    <h2 class="ai-title">🤖 AI 영어 타이핑 분석 결과</h2>
+                    
+                    <div class="feedback-section">
+                        <div class="feedback-section-title">📊 전체적인 성과</div>
+                        
+                        <div style="text-align: center; margin-bottom: 2rem;">
+                            <div class="speedometer-container">
+                                <div class="speedometer">
+                                    <div class="speedometer-arc"></div>
+                                    <div class="speedometer-needle" id="speedometerNeedle" style="transform: translateX(-50%) rotate(-90deg);"></div>
+                                    <div class="speedometer-center"></div>
+                                </div>
+                            </div>
+                            <div class="speedometer-labels">
+                                <span class="left-label">하위 20%</span>
+                                <span class="right-label">상위 1%</span>
+                            </div>
+                            <div class="percentile-display">
+                                종합 실력은 영어 타이핑 사용자 중 <strong>${overallPercentile}</strong>에 해당합니다!
+                            </div>
+                        </div>
+
+                        <div class="vs-container">
+                            <div class="vs-player user">
+                                <div class="vs-title">🎯 나의 실력</div>
+                                <div class="vs-stat">
+                                    <span class="vs-stat-label">종합 등급:</span>
+                                    <span class="vs-stat-value">${overallGrade}</span>
+                                </div>
+                                <div class="vs-stat">
+                                    <span class="vs-stat-label">평균 타이핑 속도:</span>
+                                    <span class="vs-stat-value">${currentSpeed}타/분</span>
+                                </div>
+                                <div class="vs-stat">
+                                    <span class="vs-stat-label">평균 정확도:</span>
+                                    <span class="vs-stat-value">${Math.round(avgAccuracy)}%</span>
+                                </div>
+                            </div>
+                            
+                            <div class="vs-divider">VS</div>
+                            
+                            <div class="vs-player average">
+                                <div class="vs-title">📈 영어 사용자 평균</div>
+                                <div class="vs-stat">
+                                    <span class="vs-stat-label">종합 등급:</span>
+                                    <span class="vs-stat-value">평균</span>
+                                </div>
+                                <div class="vs-stat">
+                                    <span class="vs-stat-label">평균 타이핑 속도:</span>
+                                    <span class="vs-stat-value">150타/분</span>
+                                </div>
+                                <div class="vs-stat">
+                                    <span class="vs-stat-label">평균 정확도:</span>
+                                    <span class="vs-stat-value">95%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feedback-section">
+                        <div class="feedback-section-title">🏆 종합 평가</div>
+                        <div class="feedback-text" style="margin-bottom: 1.5rem;">
+                            ${this.getOverallAssessment(overallGrade)}
+                        </div>
+                        <div class="skill-grid">
+                            <div class="skill-item">
+                                <div class="skill-name">타이핑 속도</div>
+                                <div class="skill-score">${currentSpeed >= 500 ? '전설' : currentSpeed >= 350 ? '매우 우수' : currentSpeed >= 200 ? '우수' : currentSpeed >= 150 ? '평균' : currentSpeed >= 100 ? '미흡' : '매우 미흡'} (${currentSpeed}타/분)</div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-name">정확도</div>
+                                <div class="skill-score">${avgAccuracy >= 100 ? '매우 정확' : avgAccuracy >= 98 ? '정확' : avgAccuracy >= 95 ? '평균' : avgAccuracy >= 93 ? '평균 미만' : '개선 필요'} (${Math.round(avgAccuracy)}%)</div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-name">일관성</div>
+                                <div class="skill-score">${this.sentenceTypingData.length > 1 && (Math.max(...this.sentenceTypingData.map(d => d.wpm)) - Math.min(...this.sentenceTypingData.map(d => d.wpm))) < 20 ? '매우 일관적' : 
+                                    this.sentenceTypingData.length > 1 && (Math.max(...this.sentenceTypingData.map(d => d.wpm)) - Math.min(...this.sentenceTypingData.map(d => d.wpm))) < 40 ? '일관적' : 
+                                    this.sentenceTypingData.length > 1 && (Math.max(...this.sentenceTypingData.map(d => d.wpm)) - Math.min(...this.sentenceTypingData.map(d => d.wpm))) < 60 ? '개선 필요' : '매우 불안정'}</div>
+                            </div>
+                            <div class="skill-item advice-item">
+                                <div class="skill-name">💡 개인 맞춤 조언</div>
+                                <div class="advice-content">${advice}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-buttons">
+                        <button class="restart-btn" id="restartBtn">다시 시작하기</button>
+                        <button class="continue-btn" id="continueBtn">더 연습하기</button>
+                    </div>
+                `;
+
+                document.getElementById('restartBtn').addEventListener('click', () => {
+                    this.restart();
+                });
+
+                document.getElementById('continueBtn').addEventListener('click', () => {
+                    this.continuePractice();
+                });
+
+                setTimeout(() => {
+                    const needle = document.getElementById('speedometerNeedle');
+                    if (needle) {
+                        needle.style.transform = `translateX(-50%) rotate(${needleRotation}deg)`;
+                    }
+                }, 500);
+            }
+
+            getOverallAssessment(overallGrade) {
+                const assessments = {
+                    "전설급": "축하합니다! 영어 타이핑 속도와 정확도 모두 최고 수준입니다. 이제 실무에서도 충분히 활용할 수 있는 완벽한 실력입니다!",
+                    "매우 우수": "훌륭한 영어 타이핑 실력입니다! 속도와 정확도의 균형이 잘 잡혀있습니다. 조금만 더 연습하면 최고 수준에 도달할 수 있습니다.",
+                    "우수": "훌륭한 영어 타이핑 실력입니다! 속도와 정확도의 균형이 잘 잡혀있습니다. 조금만 더 연습하면 최고 수준에 도달할 수 있습니다.",
+                    "평균 이상": "영어 타이핑 사용자 평균을 넘어선 좋은 실력입니다. 속도나 정확도 중 부족한 부분을 집중적으로 연습하면 크게 향상될 수 있습니다.",
+                    "평균": "영어 타이핑 사용자 평균 수준에 근접한 실력입니다. 정확도를 먼저 높이고, 그 다음 속도를 향상시키는 순서로 연습하세요.",
+                    "평균 미만": "기초부터 차근차근 연습이 필요합니다. 정확도를 95% 이상으로 높이는 것을 최우선 목표로 하세요. 영어 타이핑 사용자 평균에 도달하는 것이 첫 번째 목표입니다.",
+                    "개선 필요": "기초부터 차근차근 연습이 필요합니다. 정확도를 95% 이상으로 높이는 것을 최우선 목표로 하세요. 영어 타이핑 사용자 평균에 도달하는 것이 첫 번째 목표입니다."
+                };
+                return assessments[overallGrade] || assessments["개선 필요"];
+            }
+
+            generatePersonalizedAdvice(currentSpeed, avgAccuracy, overallGrade) {
+                if (overallGrade === "전설급") {
+                    return "🌟 완벽한 영어 타이핑 실력입니다! 이제 코딩이나 전문 영어 문서 작업에 활용해보세요. 더 어려운 기술 문서나 영문 소설 타이핑에 도전해보는 것도 좋습니다. 정기적으로 실력을 유지하기 위해 주 2-3회 정도 연습을 지속하세요.";
+                } else if (overallGrade === "매우 우수" || overallGrade === "우수") {
+                    return "🎯 훌륭한 영어 타이핑 실력입니다! 일정한 리듬을 유지하며 긴 영문 문서 타이핑 연습을 해보세요. 영어 뉴스 기사나 논문 타이핑으로 실전 감각을 기르는 것을 추천합니다. 대소문자 변환과 특수문자 연습도 병행하세요.";
+                } else if (overallGrade === "평균 이상") {
+                    if (avgAccuracy < 95) {
+                        return "🎨 정확도를 95% 이상으로 높이는 것이 우선입니다. 천천히 정확하게 타이핑하는 습관을 기르고, 자주 틀리는 영문자를 반복 연습하세요. 매일 15분 정도 정확도 집중 연습을 추천합니다. 속도는 정확도가 높아진 후 자연스럽게 향상됩니다.";
+                    } else {
+                        return "🚀 정확도는 좋으니 이제 속도를 높여보세요. 영어 단어 단위로 인식하며 타이핑하고, 자주 사용하는 영어 단어들을 빠르게 치는 연습을 하세요. 영어 타자게임도 병행해보세요.";
+                    }
+                } else if (overallGrade === "평균") {
+                    return "📚 영어 타이핑 기본기를 탄탄히 하는 시기입니다. 정확한 손가락 위치를 익히고, 매일 15-20분씩 꾸준히 연습하세요. 정확도를 먼저 95% 이상으로 높인 후 속도를 향상시키는 것이 중요합니다. 영어 알파벳 배치를 완전히 숙지하는 것이 우선입니다.";
+                } else {
+                    return "🌱 영어 타이핑 기초부터 차근차근 시작하세요. 올바른 자세가 가장 중요합니다. 각 손가락의 담당 영문자를 정확히 익혀주세요. 처음에는 속도보다 정확도에 집중하고, 매일 10분씩이라도 꾸준히 연습하면 반드시 늘어납니다! 영어 알파벳 연습부터 차근차근 시작하세요.";
+                }
+            }
+
+            continuePractice() {
                 this.currentProblem = 0;
+                // 단어 모드일 때는 사용된 단어 목록을 초기화하지 않음 (이전 단어 제외하고 계속)
+                if (this.currentMode !== 'word') {
+                    this.usedWords = [];
+                    this.usedSentences = [];
+                }
                 this.sessionSpeeds = [];
                 this.sessionAccuracies = [];
-                this.resetStats();
                 this.generateText();
                 this.updateDisplay();
                 document.getElementById('typingInput').value = '';
                 document.getElementById('completeModal').style.display = 'none';
+                document.getElementById('modalContent').className = 'modal-content';
                 document.getElementById('typingInput').focus();
             }
+
+            restart() {
+                this.currentProblem = 0;
+                this.resetStats();
+                this.sessionSpeeds = [];
+                this.sessionAccuracies = [];
+                
+                // 다시 시작할 때는 모든 사용된 단어/문장 목록 초기화
+                this.usedWords = [];
+                this.usedSentences = [];
+                
+                if (this.currentMode === 'sentence') {
+                    this.sentenceTypingData = [];
+                    this.sentenceMistakes = [];
+                    this.sentenceKeyTimings = [];
+                    this.keyTransitions = [];
+                    this.sentenceStats = [];
+                }
+                
+                this.generateText();
+                this.updateDisplay();
+                document.getElementById('typingInput').value = '';
+                document.getElementById('completeModal').style.display = 'none';
+                document.getElementById('modalContent').className = 'modal-content';
+                document.getElementById('typingInput').focus();
+            }
+
             resetStats() {
                 this.currentPosition = 0;
                 this.startTime = null;
+                this.sentenceStartTime = null;
+                this.lastKeyTime = null;
+                this.lastKeyPressed = null;
                 this.totalChars = 0;
                 this.correctChars = 0;
                 document.getElementById('accuracy').textContent = '100%';
@@ -578,15 +1200,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 document.getElementById('progress').textContent = `1/${this.totalProblems}`;
             }
         }
+
         function switchMode(mode) {
             if (window.englishTypingPractice) {
                 window.englishTypingPractice.changeMode(mode);
             }
         }
-        function switchKoreanMode(mode) {
-            const modeNames = { 'consonant': '자음', 'vowel': '모음', 'word': '단어', 'sentence': '문장' };
-            alert(`한글 ${modeNames[mode]}연습을 시작합니다!\n\n한글 타자연습 페이지로 이동합니다.`);
-        }
+
         document.addEventListener('DOMContentLoaded', () => {
             window.englishTypingPractice = new EnglishTypingPractice();
         });
