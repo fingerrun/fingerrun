@@ -1541,10 +1541,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <span class="dropdown-arrow">▼</span> 
                     </a> 
                     <div class="dropdown-menu"> 
-                        <a href="./Korean/practice.html" onclick="switchKoreanMode('consonant')">자음연습</a>
-<a href="./Korean/practice.html" onclick="switchKoreanMode('vowel')">모음 연습</a>
-<a href="./Korean/practice.html" onclick="switchKoreanMode('word')">단어 연습</a>
-<a href="./Korean/practice.html" onclick="switchKoreanMode('sentence')">문장 연습</a>
+<a href="./Korean/practice.html?mode=consonant">자음연습</a>
+<a href="./Korean/practice.html?mode=vowel">모음 연습</a>
+<a href="./Korean/practice.html?mode=word">단어 연습</a>
+<a href="./Korean/practice.html?mode=sentence">문장 연습</a>
                     </div> 
                 </li> 
                 <li> 
@@ -1553,9 +1553,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <span class="dropdown-arrow">▼</span> 
                     </a> 
                     <div class="dropdown-menu"> 
-<a href="./English/practice.html" onclick="switchEnglishMode('alphabet')">알파벳연습</a>
-<a href="./English/practice.html" onclick="switchEnglishMode('word')">단어연습</a>
-<a href="./English/practice.html" onclick="switchEnglishMode('sentence')">문장연습</a>
+<a href="./English/practice.html?mode=alphabet">알파벳연습</a>
+<a href="./English/practice.html?mode=word">단어연습</a>
+<a href="./English/practice.html?mode=sentence">문장연습</a>
                     </div> 
                 </li> 
                 <li> 
@@ -3200,18 +3200,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 nav.style.background = 'rgba(255, 255, 255, 0.95)'; 
             } 
         }); 
-
-        // 한글 모드 전환 함수
-        function switchKoreanMode(mode) {
-            localStorage.setItem('koreanMode', mode);
-            window.location.href = './Korean/practice.html';
-        }
-
-        // 영어 모드 전환 함수  
-        function switchEnglishMode(mode) {
-            localStorage.setItem('englishMode', mode);
-            window.location.href = './English/practice.html';
-        }
 
         // 인터섹션 옵저버를 이용한 스크롤 애니메이션
         const observerOptions = {

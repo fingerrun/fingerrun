@@ -1207,8 +1207,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
             window.englishTypingPractice = new EnglishTypingPractice();
+            
+            // URL 파라미터 확인하여 모드 설정
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode');
+            
+            if (mode && ['alphabet', 'word', 'sentence'].includes(mode)) {
+                window.englishTypingPractice.changeMode(mode);
+            }
         });
     </script>
 </body>

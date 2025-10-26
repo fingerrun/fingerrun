@@ -2810,14 +2810,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             alert('영어 택배 분류 게임을 시작합니다! 📮\n\n실제 구현에서는 영어 택배 게임 페이지로 이동합니다.');
         }
 
-        // 페이지 로드 시 초기화
-        document.addEventListener('DOMContentLoaded', () => {
-            try {
-                window.typingPractice = new KoreanTypingPractice();
-            } catch (error) {
-                // 초기화 오류 시 기본 상태 유지
-            }
-        });
+// 페이지 로드 시 초기화
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        window.typingPractice = new KoreanTypingPractice();
+        
+        // URL 파라미터 확인하여 모드 설정
+        const urlParams = new URLSearchParams(window.location.search);
+        const mode = urlParams.get('mode');
+        
+        if (mode && ['consonant', 'vowel', 'word', 'sentence'].includes(mode)) {
+            window.typingPractice.changeMode(mode);
+        }
+    } catch (error) {
+        // 초기화 오류 시 기본 상태 유지
+    }
+});
 
         // 네비게이션 스크롤 효과
         window.addEventListener('scroll', () => {
