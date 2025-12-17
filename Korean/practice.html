@@ -260,7 +260,12 @@
 
         .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; background: #f8f9fa; padding: 2rem; border-radius: 15px; margin-bottom: 2rem; border: 2px solid #e2e8f0; }
         .stat-item { text-align: center; padding: 1.5rem; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); }
-        .stat-value { font-size: 2.2rem; font-weight: 700; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; }
+        .stat-value { 
+            font-size: 2.2rem; font-weight: 700; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            -webkit-background-clip: text; background-clip: text; 
+            -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; 
+        }
 
         /* Modal Styles Updated */
         .modal {
@@ -278,10 +283,11 @@
         .modal-content.ai-feedback { max-width: 1000px; width: 95%; max-height: 95vh; overflow-y: auto; text-align: left; padding: 0; background: #fdfdfd; }
         
         .complete-title {
-            font-size: 2.5rem; font-weight: 800; color: #333;
+            font-size: 2.8rem; font-weight: 700;
             margin-bottom: 0.5rem;
             background: linear-gradient(to right, #667eea, #764ba2);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; background-clip: text; 
+            -webkit-text-fill-color: transparent;
         }
         .complete-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 2rem; }
         
@@ -315,7 +321,12 @@
         .ai-card-title { font-size: 1.1rem; font-weight: 700; color: #495057; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
         .ai-card-title svg { width: 20px; height: 20px; color: #667eea; }
         .neon-score { font-size: 3.5rem; font-weight: 800; color: #667eea; text-shadow: 0 0 15px rgba(102, 126, 234, 0.4); margin: 0.5rem 0; line-height: 1; }
-        .neon-grade { font-size: 1.5rem; font-weight: 700; background: linear-gradient(90deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem; }
+        .neon-grade { 
+            font-size: 1.5rem; font-weight: 700; 
+            background: linear-gradient(90deg, #667eea, #764ba2); 
+            -webkit-background-clip: text; background-clip: text; 
+            -webkit-text-fill-color: transparent; margin-bottom: 1rem; 
+        }
         .stat-grid-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
         .stat-box-mini { background: rgba(255, 255, 255, 0.6); border-radius: 12px; padding: 10px; border: 1px solid rgba(0,0,0,0.05); }
         .stat-box-mini .label { font-size: 0.8rem; color: #868e96; }
@@ -634,7 +645,7 @@
                 // Enhanced Word Data (~150+ words per difficulty)
                 this.practiceData = {
                     consonant: ['ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅅ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ', 'ㄲ', 'ㄸ', 'ㅃ', 'ㅆ', 'ㅉ'],
-                    vowel: ['ㅏ', 'ㅑ', 'ㅓ', 'ㅕ', 'ㅗ', 'ㅛ', 'ㅜ', 'ㅠ', 'ㅡ', 'ㅣ', 'ㅐ', 'ㅒ', 'ㅔ', 'ㅖ', 'ㅘ', 'ㅙ', 'ㅚ', 'ㅝ', 'ㅞ', 'ㅟ', 'ㅢ'],
+                    vowel: ['ㅏ', 'ㅑ', 'ㅓ', 'ㅕ', 'ㅗ', 'ㅛ', 'ㅜ', 'ㅠ', 'ㅡ', 'ㅣ', 'ㅐ', 'ㅒ', 'ㅔ', 'ㅖ', 'ㅘ', 'ㅙ', 'ㅚ', 'ㅝ', 'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ'],
                     word: {
                         easy: [
                             '사랑', '우정', '행복', '미래', '희망', '가족', '친구', '학교', '여행', '음악', '하늘', '바다', '구름', '나무', '꽃',

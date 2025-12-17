@@ -73,7 +73,17 @@
         
         /* --- Modal Screens --- */
         .modal-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 50; }
-        .modal-title { font-family: 'Orbitron', sans-serif; font-size: 4rem; font-weight: 900; background: linear-gradient(to bottom, #3b82f6, #1d4ed8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 20px; text-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); }
+        .modal-title { 
+            font-family: 'Orbitron', sans-serif; 
+            font-size: 4rem; 
+            font-weight: 900; 
+            background: linear-gradient(to bottom, #3b82f6, #1d4ed8); 
+            -webkit-background-clip: text; 
+            background-clip: text; /* Added standard property */
+            -webkit-text-fill-color: transparent; 
+            margin-bottom: 20px; 
+            text-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); 
+        }
         .modal-subtitle { font-size: 1.5rem; color: #e2e8f0; margin-bottom: 40px; text-align: center; line-height: 1.6; }
         .game-btn { padding: 15px 40px; font-size: 1.5rem; font-weight: bold; color: white; border: none; border-radius: 12px; cursor: pointer; transition: 0.3s; background: linear-gradient(135deg, #2563eb, #1d4ed8); box-shadow: 0 4px 0 #1e3a8a; }
         .game-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
@@ -99,7 +109,7 @@
                 <li><a href="../notices.html">공지사항</a></li>
                 
                 <li>
-                    <a href="../Korean/practice.html">
+                    <a href="#korean">
                         한글 타자연습
                         <span class="dropdown-arrow">▼</span>
                     </a>
@@ -113,7 +123,7 @@
                 </li>
                 
                 <li>
-                    <a href="../English/practice.html">
+                    <a href="#english">
                         영어 타자연습
                         <span class="dropdown-arrow">▼</span>
                     </a>
@@ -125,13 +135,13 @@
                     </div>
                 </li>
                 
+                <!-- 요청하신 순서대로 정렬 & 같은 폴더이므로 파일명만 사용 -->
                 <li>
-                    <a href="delivery.html">
+                    <a href="#games">
                         타자게임
                         <span class="dropdown-arrow">▼</span>
                     </a>
                     <div class="dropdown-menu">
-                        <!-- 같은 폴더(Game) 안에 있으므로 파일명만 사용 -->
                         <a href="delivery.html">택배 분류</a>
                         <a href="mole.html">두더지 잡기</a>
                         <a href="plane.html">비행기 조종</a>
@@ -140,17 +150,6 @@
                 </li>
                 
                 <li><a href="../writing.html">필사</a></li>
-                
-                <li>
-                    <a href="../Certificate/word-processor.html">
-                        자격증
-                        <span class="dropdown-arrow">▼</span>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="../Certificate/word-processor.html">워드프로세서</a>
-                    </div>
-                </li>
-                
                 <li><a href="../contact.html">문의하기</a></li>
             </ul>
         </div>
@@ -208,11 +207,7 @@
                     "사과", "포도", "배", "감", "귤", "밤", "망고", "키위", "레몬", "자몽", "체리", "앵두", "석류", "유자", "밥", "빵", "떡", "면", "국", "죽", "꿀", "물",
                     "마음", "감정", "심리", "성격", "태도", "불안", "우울", "긍정", "부정", "자아", "공감", "위로", "사랑", "우정", "희망", "용기", "행복", "기쁨", "슬픔", "분노",
                     "돈", "주식", "투자", "저축", "은행", "이자", "환율", "물가", "소비", "소득", "자산", "부채", "세금", "창업", "경영", "무역", "수출", "수입", "시장", "회사",
-                    "하늘", "바다", "구름", "바람", "나무", "꽃", "잔디", "호수", "우주", "지구", "태양", "달", "별", "여행", "캠핑", "등산", "낚시", "영화", "게임", "쇼핑", "건강", "운동",
-                    "호랑이", "토끼", "여우", "곰", "사슴", "기린", "하마", "낙타", "타조", "독수리", "참새", "비둘기", "까치", "까마귀", "오리", "거위", "백조", "펭귄", "상어", "고래",
-                    "엄마", "아빠", "형님", "누나", "할머니", "할아버지", "삼촌", "이모", "고모", "친구", "동생", "가족", "식구", "아들", "딸", "손자", "손녀", "조카", "사촌", "부모",
-                    "책상", "의자", "침대", "소파", "탁자", "거울", "시계", "달력", "화분", "액자", "조명", "전등", "창문", "커튼", "문", "열쇠", "가방", "지갑", "우산", "모자",
-                    "버스", "택시", "기차", "지하철", "비행기", "배", "자전거", "오토바이", "트럭", "승용차", "도로", "신호등", "횡단보도", "육교", "터널", "다리", "항구", "공항", "정류장", "역"
+                    "하늘", "바다", "구름", "바람", "나무", "꽃", "잔디", "호수", "우주", "지구", "태양", "달", "별", "여행", "캠핑", "등산", "낚시", "영화", "게임", "쇼핑", "건강", "운동"
                 ],
                 level4_6: [
                     "지구과학", "정보기술", "가정가사", "프로그래밍", "교과서", "참고서", "문제집", "독서실", "도서관", "장학금", "수능시험", "모의고사", "수행평가", "체험학습", "졸업식", "입학식",
@@ -220,10 +215,7 @@
                     "무의식", "트라우마", "스트레스", "콤플렉스", "방어기제", "자아실현", "자존감", "효능감", "정서지능", "심리학", "상담치료", "대인관계", "첫사랑", "짝사랑",
                     "마케팅", "비즈니스", "인플레이션", "디플레이션", "가상화폐", "부동산", "재무설계", "연말정산", "부가가치세", "기회비용", "최저임금", "재테크",
                     "컴퓨터", "스마트폰", "인공지능", "알고리즘", "빅데이터", "클라우드", "네트워크", "사물인터넷", "메타버스", "가상현실", "우주정거장", "인공위성", "블랙홀", "은하수", "태양계",
-                    "일석이조", "금상첨화", "다다익선", "과유불급", "동문서답", "설상가상", "오비이락", "유비무환", "죽마고우", "청출어람", "대기만성", "새옹지마", "역지사지", "고진감래",
-                    "대한민국", "미국", "중국", "일본", "영국", "프랑스", "독일", "이탈리아", "캐나다", "호주", "브라질", "러시아", "인도", "스페인", "멕시코", "인도네시아", "튀르키예", "네덜란드", "사우디아라비아", "스위스",
-                    "서울", "부산", "대구", "인천", "광주", "대전", "울산", "세종", "경기", "강원", "충북", "충남", "전북", "전남", "경북", "경남", "제주", "평양", "개성", "금강산",
-                    "소방관", "경찰관", "군인", "의사", "간호사", "약사", "변호사", "판사", "검사", "기자", "아나운서", "PD", "작가", "화가", "음악가", "연예인", "운동선수", "과학자", "기술자", "요리사"
+                    "일석이조", "금상첨화", "다다익선", "과유불급", "동문서답", "설상가상", "오비이락", "유비무환", "죽마고우", "청출어람", "대기만성", "새옹지마", "역지사지", "고진감래"
                 ],
                 level7_10: [
                     "대학수학능력시험", "학교폭력예방교육", "진로진학상담", "평생교육원", "사이버대학교", "방과후학교", "자기주도학습",
@@ -231,9 +223,7 @@
                     "소비자물가지수", "국내총생산", "최저임금제도", "주식시장상장", "암호화폐거래소", "소득주도성장", "부가가치세법", "사회적거리두기",
                     "온실가스배출량", "미세먼지농도", "신재생에너지", "유전자변형식품", "인공지능로봇", "자율주행자동차", "전기자동차", "수소자동차", "태양광발전소",
                     "지휘자선생님", "피아노연주자", "바이올리니스트", "오케스트라", "싱어송라이터", "뮤지컬배우", "국립중앙박물관", "예술의전당", "세종문화회관", "인천국제공항",
-                    "가는날이장날", "가는말이고와야", "오는말이곱다", "등잔밑이어둡다", "소잃고외양간고친다", "개천에서용난다", "공든탑이무너지랴", "금강산도식후경", "누워서떡먹기",
-                    "지속가능한발전목표", "기후변화대응협약", "생물다양성보존", "멸종위기종보호", "해양생태계보전", "탄소중립실천운동", "에너지절약캠페인", "자원재활용활성화", "친환경제품사용", "일회용품줄이기", "대중교통이용하기", "자전거타기생활화", "가까운거리걷기", "음식물쓰레기줄이기", "분리수거철저히", "장바구니사용하기", "텀블러가지고다니기", "플라스틱프리챌린지", "제로웨이스트운동", "미니멀라이프실천", "워라밸균형잡기", "주52시간근무제", "유연근무제도입", "재택근무활성화", "스마트워크센터", "디지털노마드족", "원격수업시스템", "온라인화상회의", "비대면업무처리", "전자결재시스템", "클라우드서비스", "빅데이터플랫폼", "인공지능비서", "사물인터넷기기", "자율주행자동차", "드론택배서비스", "도심항공모빌리티", "스마트시티구축", "디지털트윈기술", "메타버스플랫폼",
-                    "관세청전자통관시스템", "국세청홈택스서비스", "정부24민원발급", "국민건강보험공단", "국민연금관리공단", "근로복지공단", "한국토지주택공사", "한국전력공사", "한국도로공사", "한국철도공사", "인천국제공항공사", "한국가스공사", "한국석유공사", "한국수자원공사", "한국관광공사", "대한무역투자진흥공사", "중소벤처기업진흥공단", "소상공인시장진흥공단", "한국콘텐츠진흥원", "한국인터넷진흥원"
+                    "가는날이장날", "가는말이고와야", "오는말이곱다", "등잔밑이어둡다", "소잃고외양간고친다", "개천에서용난다", "공든탑이무너지랴", "금강산도식후경", "누워서떡먹기"
                 ]
             },
             EN: {
@@ -242,30 +232,21 @@
                     "kiwi", "lime", "pear", "plum", "fig", "date", "nut", "bean", "corn", "rice",
                     "mind", "soul", "mood", "ego", "id", "fear", "hope", "love", "hate", "envy",
                     "cash", "gold", "coin", "bank", "loan", "debt", "tax", "fund", "cost", "sale",
-                    "tree", "leaf", "rose", "rain", "snow", "wind", "sun", "moon", "star", "mars",
-                    "cat", "dog", "cow", "pig", "fox", "bear", "lion", "wolf", "duck", "fish", "bird", "frog", "deer", "goat", "lamb", "seal", "swan", "crow", "dove", "owl",
-                    "red", "blue", "pink", "grey", "gray", "gold", "cyan", "lime", "navy", "teal", "plum", "ruby", "sand", "jade", "snow", "coal", "iron", "lead", "zinc", "rust",
-                    "run", "jump", "walk", "swim", "fly", "sit", "eat", "play", "sing", "read", "cook", "wash", "draw", "talk", "hear", "see", "look", "love", "like", "hate",
-                    "one", "two", "six", "ten", "big", "bad", "hot", "dry", "wet", "new", "old", "fat", "sad", "mad", "fit", "joy", "fun", "win", "top", "end"
+                    "tree", "leaf", "rose", "rain", "snow", "wind", "sun", "moon", "star", "mars"
                 ],
                 level4_6: [
                     "physics", "history", "english", "science", "biology", "algebra", "lesson", "school", "campus", "degree",
                     "orange", "banana", "cherry", "grapes", "melon", "papaya", "tomato", "potato", "carrot", "onion",
                     "emotion", "feeling", "anxiety", "stress", "trauma", "memory", "psyche", "mental", "social", "habit",
                     "market", "profit", "income", "budget", "credit", "invest", "trade", "value", "price", "stock",
-                    "nature", "planet", "galaxy", "forest", "jungle", "desert", "ocean", "river", "cloud", "storm",
-                    "computer", "internet", "software", "keyboard", "monitor", "printer", "network", "website", "program", "database", "security", "digital", "virtual", "online", "system", "server", "router", "coding", "hacker", "update",
-                    "doctor", "nurse", "police", "lawyer", "artist", "writer", "driver", "farmer", "worker", "singer", "dancer", "player", "leader", "teacher", "student", "editor", "author", "expert", "master", "novice",
-                    "morning", "evening", "tonight", "weekend", "holiday", "january", "october", "tuesday", "sunday", "minute", "second", "moment", "future", "season", "summer", "winter", "spring", "autumn", "period", "decade",
-                    "family", "friend", "mother", "father", "sister", "brother", "cousin", "parent", "people", "person", "public", "nation", "global", "social", "common", "member", "leader", "couple", "single", "human"
+                    "nature", "planet", "galaxy", "forest", "jungle", "desert", "ocean", "river", "cloud", "storm"
                 ],
                 level7_10: [
                     "university", "education", "knowledge", "curriculum", "scholarship", "assignment", "graduation",
                     "psychology", "depression", "motivation", "personality", "confidence", "consciousness", "behavior",
                     "economics", "investment", "inflation", "recession", "marketing", "business", "management", "enterprise",
                     "technology", "computer", "software", "hardware", "internet", "network", "database", "security",
-                    "environment", "pollution", "recycling", "sustainability", "ecosystem", "atmosphere", "evolution",
-                    "championship", "tournament", "competition", "performance", "presentation", "demonstration", "explanation", "investigation", "exploration", "destination", "reservation", "cancellation", "confirmation", "registration", "application", "qualification", "certification", "graduation", "celebration", "anniversary", "imagination", "inspiration", "motivation", "dedication", "determination", "concentration", "communication", "transportation", "accommodation", "entertainment", "advertisement", "announcement", "arrangement", "development", "improvement", "achievement", "establishment", "organization", "association", "institution", "administration", "government", "environment", "measurement", "requirement", "assessment", "adjustment", "investment", "commitment", "appointment", "disappointment", "embarrassment", "encouragement", "acknowledgment", "responsibility", "representative", "characteristic", "international", "constitutional", "psychological", "technological", "philosophical", "mathematical", "geographical", "historical", "biological"
+                    "environment", "pollution", "recycling", "sustainability", "ecosystem", "atmosphere", "evolution"
                 ]
             }
         };

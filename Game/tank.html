@@ -339,6 +339,7 @@
             font-weight: 900;
             background: linear-gradient(to bottom, #ef4444, #991b1b);
             -webkit-background-clip: text;
+            background-clip: text; /* Added for compatibility */
             -webkit-text-fill-color: transparent;
             margin-bottom: 20px;
             text-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
@@ -498,7 +499,8 @@
     </div>
 
     <div id="start-screen" class="modal-overlay">
-        <h1 class="modal-title" style="background: linear-gradient(to bottom, #3b82f6, #1d4ed8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">TANK COMMANDER</h1>
+        <!-- Added background-clip: text for compatibility -->
+        <h1 class="modal-title" style="background: linear-gradient(to bottom, #3b82f6, #1d4ed8); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">TANK COMMANDER</h1>
         <p class="text-xl text-blue-200 mb-8 max-w-lg text-center leading-relaxed">
             하늘에서 쏟아지는 단어 폭격을 막아내십시오.<br>
             <span class="text-sm text-gray-400">총 10단계 작전 | 1분마다 레벨업 | 엔터로 발사</span>
