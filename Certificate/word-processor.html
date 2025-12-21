@@ -15,7 +15,11 @@
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>핑거런 | 워드프로세서 자격증 타자연습 - 자격증 실전 대비 연습</title>
+    
+    <!-- 파비콘 설정: 상위 폴더의 images 내 로고를 사용하여 확실하게 표시 -->
     <link rel="icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
+    <link rel="shortcut icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
+    <link rel="apple-touch-icon" href="../images/finger-run-logo.svg">
     
     <!-- SEO 메타태그 -->
     <meta name="description" content="핑거런 워드프로세서 자격증 타자연습에서 컴활 워드프로세서 자격증 취득을 위한 전문 타자연습을 제공합니다. 실제 시험 환경과 동일한 조건으로 타이핑 실력을 향상시키고 합격률을 높이는 최고의 워드프로세서 자격증 대비 타자연습 사이트입니다.">
@@ -67,11 +71,22 @@
             padding: 0 2rem;
         }
 
+        /* 로고 이미지 정렬을 위해 flex 및 정렬 속성 추가 */
         .logo {
             font-size: 1.8rem;
             font-weight: bold;
             color: #667eea;
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
+        }
+
+        /* 로고 이미지 크기 지정 */
+        .logo img {
+            height: 32px;
+            width: auto;
         }
 
         .nav-menu {
@@ -465,12 +480,15 @@
             }
         }
     </style>
+</head>
 <body>
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <!-- 메인(index.html)은 상위 폴더에 있음 -->
-            <a href="../index.html" class="logo">⌨️ FingerRun</a>
+            <!-- 메인으로 이동 및 로고 이미지 삽입 -->
+            <a href="../index.html" class="logo">
+                <img src="../images/finger-run-logo.svg" alt=""> FingerRun
+            </a>
             <ul class="nav-menu">
                 <li><a href="../notices.html">공지사항</a></li>
                 
@@ -515,7 +533,6 @@
                 <li><a href="../writing.html">필사</a></li>
                 
                 <li>
-                    <!-- 자격증 페이지 (현재 페이지) -->
                     <a href="word-processor.html">
                         자격증
                         <span class="dropdown-arrow">▼</span>
@@ -529,12 +546,6 @@
             </ul>
         </div>
     </nav> 
-
-    <header style="display: none; background: #f8f9fa; padding: 1.5rem 0; margin-top: 80px; border-bottom: 1px solid #e9ecef;">
-        <div style="max-width: 1200px; margin: 0 auto; text-align: center; padding: 0 2rem;">
-            <h1 style="font-size: 2rem; font-weight: 700; color: #191f28; margin: 0; line-height: 1.3;">워드프로세서 자격증 타자연습 - 워드프로세서 시험 대비 전문 타이핑 실력 향상 온라인 프로그램으로 실제 시험 환경에서 정확한 타자 속도와 정밀도를 완벽하게 마스터하는 최고의 타자 학습 플랫폼</h1>
-        </div>
-    </header>
 
     <div class="main-content">
         <div class="content-wrapper">

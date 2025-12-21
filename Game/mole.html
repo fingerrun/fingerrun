@@ -15,7 +15,11 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>핑거런 | 통합 두더지 잡기 타자게임</title>
+    
+    <!-- 파비콘 설정: 상위 폴더의 images 내 로고를 사용하여 확실하게 표시 -->
     <link rel="icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
+    <link rel="shortcut icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
+    <link rel="apple-touch-icon" href="../images/finger-run-logo.svg">
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -32,7 +36,24 @@
         /* --- Navigation (FingerRun Standard) --- */
         nav { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 1rem 0; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1); height: 80px; }
         .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 2rem; height: 100%; }
-        .logo { font-size: 1.8rem; font-weight: bold; color: #667eea; text-decoration: none; }
+        
+        /* 로고 이미지 정렬을 위해 flex 및 정렬 속성 추가 */
+        .logo { 
+            font-size: 1.8rem; 
+            font-weight: bold; 
+            color: #667eea; 
+            text-decoration: none; 
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        } 
+
+        /* 로고 이미지 크기 지정 */
+        .logo img {
+            height: 32px;
+            width: auto;
+        }
+
         .nav-menu { display: flex; list-style: none; gap: 1rem; }
         .nav-menu li { position: relative; }
         .nav-menu a { text-decoration: none; color: #333; font-weight: 500; padding: 0.5rem 0.8rem; border-radius: 25px; transition: all 0.3s; font-size: 0.9rem; display: flex; align-items: center; gap: 0.3rem; }
@@ -534,16 +555,17 @@
 </head>
 
 <body>
-<!-- Navigation -->
+    <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <!-- 메인으로 나가기 (상위 폴더로 이동) -->
-            <a href="../index.html" class="logo">⌨️ FingerRun</a>
+            <!-- 로고 이미지 및 텍스트 삽입 -->
+            <a href="../index.html" class="logo">
+                <img src="../images/finger-run-logo.svg" alt=""> FingerRun
+            </a>
             
             <div style="display:flex; align-items:center;">
                 <!-- 메뉴 목록 -->
                 <ul class="nav-menu">
-                    <!-- 상위 폴더에 있는 공지사항 -->
                     <li><a href="../notices.html">공지사항</a></li>
                     
                     <li>
@@ -552,7 +574,6 @@
                             <span class="dropdown-arrow">▼</span>
                         </a>
                         <div class="dropdown-menu">
-                            <!-- 상위 폴더(../)로 나가서 Korean 폴더로 진입 -->
                             <a href="../Korean/practice.html">자음 연습</a>
                             <a href="../Korean/practice.html">모음 연습</a>
                             <a href="../Korean/practice.html">단어 연습</a>
@@ -566,14 +587,12 @@
                             <span class="dropdown-arrow">▼</span>
                         </a>
                         <div class="dropdown-menu">
-                            <!-- 상위 폴더(../)로 나가서 English 폴더로 진입 -->
                             <a href="../English/practice.html">알파벳 연습</a>
                             <a href="../English/practice.html">단어 연습</a>
                             <a href="../English/practice.html">문장 연습</a>
                         </div>
                     </li>
                     
-                    <!-- 요청하신 순서대로 정렬 & 같은 폴더이므로 파일명만 사용 -->
                     <li>
                         <a href="delivery.html">
                             타자게임

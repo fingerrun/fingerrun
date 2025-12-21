@@ -22,10 +22,11 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=0.67, maximum-scale=1.0, user-scalable=yes">
     <title>핑거런 | 영어 타자연습 - 알파벳 단어 문장 단계별 학습과 AI 피드백</title>
+    
+    <!-- 파비콘 설정: 모든 설정을 SVG 파일로 통일하여 확실하게 나타나도록 함 -->
     <link rel="icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
     <link rel="shortcut icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
     <link rel="apple-touch-icon" href="../images/finger-run-logo.svg">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⌨️</text></svg>">
     
     <!-- SEO 메타태그 -->
     <meta name="description" content="핑거런 영어타자연습에서 압도적인 디자인과 성능을 갖춘 영어타자연습을 경험하세요. 알파벳, 단어, 문장까지 단계별 학습과 AI 피드백으로 영어 타이핑 속도와 정확도를 효과적으로 향상시킬 수 있습니다.">
@@ -34,7 +35,7 @@
     <meta name="robots" content="index, follow">
 
     <!-- Open Graph (SNS 공유) -->
-    <meta property="og:title" content="핑거런 | 영어타자연습">
+    <meta property="og:title" content="핑거런 | 영어 타자연습">
     <meta property="og:description" content="압도적인 디자인과 성능의 타자연습 사이트로 타이핑 속도와 정확도를 향상시키세요. 알파벳, 단어, 문장까지 체계적 학습.">
     <meta property="og:url" content="https://fingerrun.com/English/practice.html">
     <meta property="og:type" content="website">
@@ -42,7 +43,6 @@
     <!-- 추가 SEO -->
     <link rel="canonical" href="https://fingerrun.com/English/practice.html">
     
-    <!-- 한글 사이트와 동일한 스타일 적용 -->
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; min-height: 100vh; color: #333; line-height: 1.6; }
@@ -50,7 +50,25 @@
         /* Navigation */
         nav { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 1rem 0; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1); }
         .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 2rem; }
-        .logo { font-size: 1.8rem; font-weight: bold; color: #667eea; text-decoration: none; }
+        
+        /* 로고 이미지 정렬을 위한 스타일 */
+        .logo { 
+            font-size: 1.8rem; 
+            font-weight: bold; 
+            color: #667eea; 
+            text-decoration: none; 
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
+        }
+
+        /* 로고 이미지 크기 지정 */
+        .logo img {
+            height: 32px;
+            width: auto;
+        }
+
         .nav-menu { display: flex; list-style: none; gap: 1.5rem; flex-wrap: nowrap; white-space: nowrap; }
         .nav-menu li { position: relative; }
         .nav-menu a { text-decoration: none; color: #333; font-weight: 500; padding: 0.5rem 0.8rem; border-radius: 25px; transition: all 0.3s ease; font-size: 0.9rem; display: flex; align-items: center; gap: 0.3rem; }
@@ -186,12 +204,9 @@
         .continue-btn:hover { box-shadow: 0 8px 25px rgba(40, 167, 69, 0.5); }
         
         .loading { display: inline-block; width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 1rem; }
-        .ai-badge-container { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 5px; }
-        .ai-badge { padding: 4px 10px; border-radius: 12px; font-size: 0.85rem; font-weight: 600; }
+        .highlight-badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-weight: 600; font-size: 0.9em; }
         .badge-red { background: #ffe3e3; color: #e03131; }
         .badge-blue { background: #dbe4ff; color: #4263eb; }
-        .badge-green { background: #d3f9d8; color: #2b8a3e; }
-        .highlight-badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-weight: 600; font-size: 0.9em; }
         
         /* Speedometer */
         .speedometer { position: relative; width: 300px; height: 150px; margin: 0 auto; }
@@ -216,43 +231,40 @@
 </head>
 
 <body>
-<!-- Navigation -->
+    <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <!-- [수정] 메인으로 이동 (상위 폴더 ../index.html) -->
-            <a href="../index.html" class="logo">⌨️ FingerRun</a>
+            <a href="../index.html" class="logo">
+                <img src="../images/finger-run-logo.svg" alt=""> FingerRun
+            </a>
             <ul class="nav-menu">
                 <li><a href="../notices.html">공지사항</a></li>
                 
-                <!-- 현재 페이지(한글 연습)는 그대로 유지 -->
                 <li>
-                    <a href="practice.html">
+                    <a href="../Korean/practice.html">
                         한글 타자연습
                         <span class="dropdown-arrow">▼</span>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="#" onclick="event.preventDefault(); window.typingPractice.changeMode('consonant')">자음 연습</a>
-                        <a href="#" onclick="event.preventDefault(); window.typingPractice.changeMode('vowel')">모음 연습</a>
-                        <a href="#" onclick="event.preventDefault(); window.typingPractice.changeMode('word')">단어 연습</a>
-                        <a href="#" onclick="event.preventDefault(); window.typingPractice.changeMode('sentence')">문장 연습</a>
+                        <a href="../Korean/practice.html">자음 연습</a>
+                        <a href="../Korean/practice.html">모음 연습</a>
+                        <a href="../Korean/practice.html">단어 연습</a>
+                        <a href="../Korean/practice.html">문장 연습</a>
                     </div>
                 </li>
                 
-                <!-- 영어 연습 페이지로 이동 (상위 폴더 -> English 폴더) -->
                 <li>
-                    <a href="../English/practice.html">
+                    <a href="practice.html">
                         영어 타자연습
                         <span class="dropdown-arrow">▼</span>
                     </a>
                     <div class="dropdown-menu">
-                        <!-- 상위 폴더(../)로 나가서 English 폴더로 진입 -->
-                        <a href="../English/practice.html">알파벳 연습</a>
-                        <a href="../English/practice.html">단어 연습</a>
-                        <a href="../English/practice.html">문장 연습</a>
+                        <a href="#" onclick="event.preventDefault(); window.englishTypingPractice.changeMode('alphabet')">알파벳 연습</a>
+                        <a href="#" onclick="event.preventDefault(); window.englishTypingPractice.changeMode('word')">단어 연습</a>
+                        <a href="#" onclick="event.preventDefault(); window.englishTypingPractice.changeMode('sentence')">문장 연습</a>
                     </div>
                 </li>
                 
-                <!-- [수정됨] 게임 경로: 상위 폴더(../) -> Game 폴더로 연결 -->
                 <li>
                     <a href="../Game/delivery.html">
                         타자게임
@@ -294,7 +306,7 @@
                 <button class="menu-btn" data-mode="word">단어연습</button>
                 <button class="menu-btn" data-mode="sentence">문장연습</button>
             </div>
-            <!-- Submenu for Finger Practice (Initially hidden or populated) -->
+            <!-- Submenu for Finger Practice -->
             <div class="submenu-area" id="alphabetSubmenu" style="display:none;">
                 <!-- Buttons will be injected here via JS -->
             </div>
@@ -697,8 +709,6 @@
                 } else {
                     this.totalProblems = 10;
                     submenu.style.display = 'flex'; // Show submenu only for alphabet
-                    // Reset to 'all' or keep previous submode? Let's keep previous for UX, 
-                    // or reset if needed. Keeping previous is fine.
                 }
 
                 document.querySelectorAll('.menu-btn').forEach(btn => {
@@ -714,7 +724,6 @@
 
             generateText() {
                 if (this.currentMode === 'alphabet') {
-                    // Use submode chars
                     const charsString = this.fingerSets[this.currentSubMode].chars;
                     const selected = [];
                     for (let i = 0; i < 7; i++) {
@@ -857,7 +866,6 @@
                     }
                 }
 
-                // Sound Effect Logic
                 if (inputValue.length > 0) {
                     const lastIdx = inputValue.length - 1;
                     if (lastIdx < this.currentText.length) {
@@ -1013,7 +1021,6 @@
                 }
             }
 
-            // New Analytics Helpers
             analyzeFingerPerformance() {
                 const fingerStats = {};
                 for (let [key, latencies] of Object.entries(this.keyLatencies)) {

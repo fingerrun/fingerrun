@@ -22,11 +22,11 @@
     </script>
 
     <title>핑거런 | 한글 타자연습 - 자음 모음 단어 문장 단계별 학습과 AI 피드백</title>
+    
+    <!-- 파비콘 설정: SVG 로고로 확실하게 나타나도록 경로 설정 -->
     <link rel="icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
     <link rel="shortcut icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
     <link rel="apple-touch-icon" href="../images/finger-run-logo.svg">
-    <!-- Favicon Fallback -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⌨️</text></svg>">
     
     <!-- SEO 메타태그 -->
     <meta name="description" content="한글 타자연습으로 타이핑 실력을 향상시키세요. 자음, 모음, 단어, 문장 순서의 체계적인 학습 시스템과 실시간 정확도 및 타자속도 측정을 제공합니다.">
@@ -40,6 +40,8 @@
     <meta property="og:url" content="https://fingerrun.com/Korean/practice.html">
     <meta property="og:type" content="website">
 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -56,8 +58,8 @@
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             padding: 1rem 0;
-            position: fixed;
             width: 100%;
+            position: fixed;
             top: 0;
             z-index: 1000;
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
@@ -72,6 +74,7 @@
             padding: 0 2rem;
         }
 
+        /* 로고 이미지와 텍스트 정렬을 위해 flex 및 정렬 속성 유지 */
         .logo {
             font-size: 1.5rem;
             font-weight: bold;
@@ -79,6 +82,12 @@
             text-decoration: none;
             display: flex; align-items: center; gap: 0.5rem;
             text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
+        }
+
+        /* 로고 이미지 크기 지정 */
+        .logo img {
+            height: 32px;
+            width: auto;
         }
 
         .nav-menu {
@@ -359,8 +368,10 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <!-- [수정] 메인으로 이동 (상위 폴더 ../index.html) -->
-            <a href="../index.html" class="logo">⌨️ FingerRun</a>
+            <!-- [수정] 메인으로 이동 및 로고 이미지 삽입 -->
+            <a href="../index.html" class="logo">
+                <img src="../images/finger-run-logo.svg" alt=""> FingerRun
+            </a>
             <ul class="nav-menu">
                 <li><a href="../notices.html">공지사항</a></li>
                 
@@ -389,7 +400,6 @@
                     </div>
                 </li>
                 
-                <!-- [수정] 게임 경로 (../Game/...) -->
                 <li>
                     <a href="../Game/delivery.html">
                         타자게임
@@ -1350,11 +1360,6 @@
                             <div class="stat-grid-mini">
                                 <div class="stat-box-mini"><div class="label">평균 속도</div><div class="value">${avgSpeed} <span style="font-size:0.8rem">타/분</span></div></div>
                                 <div class="stat-box-mini"><div class="label">정확도</div><div class="value">${avgAcc}%</div></div>
-                            </div>
-                            <div class="speedometer" style="transform:scale(0.8); margin-top:20px;">
-                                <div class="speedometer-arc"></div>
-                                <div class="speedometer-needle" style="transform: translateX(-50%) rotate(${Math.min(90, Math.max(-90, (avgSpeed - 300)*0.5))}deg);"></div>
-                                <div class="speedometer-center"></div>
                             </div>
                         </div>
                         <div class="ai-main-content">

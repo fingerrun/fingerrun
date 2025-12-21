@@ -23,7 +23,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 <title>핑거런 | 문의하기 - 고객지원 및 제안사항 접수</title>
+
+<!-- 파비콘 설정: index.html, notices.html과 동일하게 설정 -->
 <link rel="icon" type="image/svg+xml" href="images/finger-run-logo.svg">
+<link rel="shortcut icon" type="image/svg+xml" href="images/finger-run-logo.svg">
+<link rel="apple-touch-icon" href="images/finger-run-logo.svg">
 
 <!-- EmailJS SDK - HEAD에서 먼저 로드 -->
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -76,12 +80,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         padding: 0 2rem; 
     } 
     
+    /* 로고 이미지와 텍스트 정렬을 위해 flex 및 정렬 속성 추가 */
     .logo { 
         font-size: 1.8rem; 
         font-weight: bold; 
         color: #667eea; 
         text-decoration: none; 
+        display: flex;
+        align-items: center;
+        gap: 10px;
     } 
+
+    /* 로고 이미지 크기 지정 */
+    .logo img {
+        height: 32px;
+        width: auto;
+    }
     
     .nav-menu { 
         display: flex; 
@@ -551,7 +565,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- Navigation --> 
 <nav> 
     <div class="nav-container"> 
-        <a href="./index.html" class="logo">⌨️ FingerRun</a> 
+        <a href="./index.html" class="logo">
+            <img src="images/finger-run-logo.svg" alt=""> FingerRun
+        </a> 
         <ul class="nav-menu"> 
             <li><a href="./notices.html">공지사항</a></li> 
             <li> 
@@ -787,11 +803,11 @@ function validateForm() {
 
     // 전체 폼 유효성 검사
     const isValid = selectedInquiryType && 
-                   email && 
-                   subject && 
-                   content && 
-                   agreement && 
-                   isValidEmail(email);
+                    email && 
+                    subject && 
+                    content && 
+                    agreement && 
+                    isValidEmail(email);
 
     if (isValid) {
         submitBtn.classList.add('active');

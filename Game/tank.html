@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Realistic Tank Typing Defense</title>
+    
+    <!-- 파비콘 설정: 상위 폴더의 images 내 로고를 사용 -->
+    <link rel="icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
+    <link rel="shortcut icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
+    <link rel="apple-touch-icon" href="../images/finger-run-logo.svg">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -45,11 +51,21 @@
             height: 100%;
         }
 
+        /* 로고 이미지와 텍스트 정렬을 위해 flex 및 정렬 속성 추가 */
         .logo {
             font-size: 1.8rem;
             font-weight: bold;
             color: #667eea;
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 로고 이미지 크기 지정 */
+        .logo img {
+            height: 32px;
+            width: auto;
         }
 
         .nav-menu {
@@ -391,14 +407,18 @@
     </style>
 </head>
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T9HC454Z"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <!-- 메인으로 나가기 (상위 폴더로 이동) -->
-            <a href="../index.html" class="logo">⌨️ FingerRun</a>
+            <a href="../index.html" class="logo">
+                <img src="../images/finger-run-logo.svg" alt=""> FingerRun
+            </a>
             <ul class="nav-menu">
-                <!-- 상위 폴더에 있는 공지사항 -->
                 <li><a href="../notices.html">공지사항</a></li>
                 
                 <li>
@@ -407,7 +427,6 @@
                         <span class="dropdown-arrow">▼</span>
                     </a>
                     <div class="dropdown-menu">
-                        <!-- 상위 폴더(../)로 나가서 Korean 폴더로 진입 -->
                         <a href="../Korean/practice.html">자음 연습</a>
                         <a href="../Korean/practice.html">모음 연습</a>
                         <a href="../Korean/practice.html">단어 연습</a>
@@ -421,7 +440,6 @@
                         <span class="dropdown-arrow">▼</span>
                     </a>
                     <div class="dropdown-menu">
-                        <!-- 상위 폴더(../)로 나가서 English 폴더로 진입 -->
                         <a href="../English/practice.html">알파벳 연습</a>
                         <a href="../English/practice.html">단어 연습</a>
                         <a href="../English/practice.html">문장 연습</a>
@@ -434,7 +452,6 @@
                         <span class="dropdown-arrow">▼</span>
                     </a>
                     <div class="dropdown-menu">
-                        <!-- 같은 폴더(Game) 안에 있으므로 파일명만 사용 -->
                         <a href="delivery.html">택배 분류</a>
                         <a href="mole.html">두더지 잡기</a>
                         <a href="plane.html">비행기 조종</a>
@@ -499,7 +516,6 @@
     </div>
 
     <div id="start-screen" class="modal-overlay">
-        <!-- Added background-clip: text for compatibility -->
         <h1 class="modal-title" style="background: linear-gradient(to bottom, #3b82f6, #1d4ed8); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">TANK COMMANDER</h1>
         <p class="text-xl text-blue-200 mb-8 max-w-lg text-center leading-relaxed">
             하늘에서 쏟아지는 단어 폭격을 막아내십시오.<br>

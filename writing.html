@@ -11,6 +11,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 
+<!-- 파비콘 설정: 모든 설정을 SVG 파일로 통일하여 확실하게 나타나도록 함 -->
+<link rel="icon" type="image/svg+xml" href="images/finger-run-logo.svg">
+<link rel="shortcut icon" type="image/svg+xml" href="images/finger-run-logo.svg">
+<link rel="apple-touch-icon" href="images/finger-run-logo.svg">
+
 <style>
     :root {
         --primary-color: #667eea;
@@ -93,6 +98,7 @@
         padding: 0 2rem;
     }
 
+    /* 로고 이미지 정렬을 위해 flex 및 정렬 속성 유지 */
     .logo {
         font-size: 1.5rem;
         font-weight: bold;
@@ -100,6 +106,12 @@
         text-decoration: none;
         display: flex; align-items: center; gap: 0.5rem;
         text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
+    }
+
+    /* 로고 이미지 크기 지정 */
+    .logo img {
+        height: 32px;
+        width: auto;
     }
 
     .nav-menu {
@@ -532,8 +544,10 @@
 
     <nav>
         <div class="nav-container">
-            <!-- 메인 로고 (현재 위치가 Root이므로 그냥 index.html) -->
-            <a href="index.html" class="logo">⌨️ FingerRun</a>
+            <!-- 로고 이미지 및 텍스트 삽입 -->
+            <a href="index.html" class="logo">
+                <img src="images/finger-run-logo.svg" alt=""> FingerRun
+            </a>
             
             <!-- 메뉴 목록 -->
             <ul class="nav-menu">
@@ -742,7 +756,7 @@
         { title: '열정', author: '스티브 잡스', content: '당신의 일을 사랑하라\n이것이 위대한 일을 하는 유일한 방법이다' },
         { title: '인생', author: '존 레논', content: '인생은 당신이 다른 계획을 세우느라 바쁠 때 일어나는 일이다\n\n인생의 아름다움은 예측할 수 없음에 있다\n모든 순간이 선물이고 기회다\n과거는 경험이고 미래는 희망이다\n현재는 우리가 가진 유일한 시간이다' },
         { title: '지혜', author: '소크라테스', content: '나는 내가 모른다는 것을 안다' },
-        { title: '평화', author: '마틴 루터 킹', content: '어둠은 어둠을 몰아낼 수 없다\n오직 빛만이 그것을 할 수 있다\n\n미움은 미움으로 이길 수 없다\n사랑만이 미움을 이길 수 있다\n폭력은 문제를 해결하지 못한다\n대화와 이해만이 진정한 평화를 가져온다' },
+        { title: '평화', author: '마틴 루터 킹', content: '어둠은 어둠을 몰아낼 수 없다\n오직 빛만이 그것을 할 수 있다\n\n미움은 미움으로 이길 수 없다\n사랑만이 미움을 이길 수 있다\n폭력은 문제를 해결하지 못한다\n대화 및 이해만이 진정한 평화를 가져온다' },
         { title: '희망', author: '헬렌 켈러', content: '비관은 기분에서 나오고 낙관은 의지에서 나온다' },
         { title: '감사', author: '오프라 윈프리', content: '감사는 당신이 가진 것을 충분하게 만든다\n\n감사하는 마음은 행복의 열쇠다\n작은 것에 감사할 줄 알면 큰 복이 온다\n감사는 과거를 의미 있게 하고\n현재에 평화를 가져다주며 미래에 대한 비전을 만든다' },
         { title: '실패', author: '마이클 조던', content: '나는 계속해서 실패했다 그래서 성공했다' },

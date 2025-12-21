@@ -17,7 +17,11 @@
 <meta name="description" content="핑거런 공지사항 페이지에서 타자연습 서비스의 최신 소식, 업데이트 정보, 서비스 이용 가이드, 이용약관을 확인하세요. 한글/영어 타자연습과 다양한 타자게임 관련 정보, 개인정보처리방침까지 모든 정보를 제공하는 종합 안내 페이지입니다.">
 <meta name="keywords" content="핑거런 공지사항, 타자연습 최신소식, 서비스 업데이트, 서비스 이용가이드, 이용약관, 타자연습 가이드, 타자게임 가이드">
 <title>핑거런 | 공지사항 - 타자연습 서비스 최신 소식과 이용 가이드</title>
+
+<!-- 파비콘 설정: index.html과 동일하게 SVG 로고로 통일 -->
 <link rel="icon" type="image/svg+xml" href="images/finger-run-logo.svg">
+<link rel="shortcut icon" type="image/svg+xml" href="images/finger-run-logo.svg">
+<link rel="apple-touch-icon" href="images/finger-run-logo.svg">
 
 <style>
     * {
@@ -55,11 +59,21 @@
         padding: 0 2rem;
     }
 
+    /* 로고 이미지와 텍스트 정렬을 위해 flex 속성 추가 */
     .logo {
         font-size: 1.8rem;
         font-weight: bold;
         color: #667eea;
         text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* 로고 이미지 크기 지정 */
+    .logo img {
+        height: 32px;
+        width: auto;
     }
 
     .nav-menu {
@@ -422,7 +436,9 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <a href="index.html" class="logo">⌨️ FingerRun</a>
+            <a href="index.html" class="logo">
+                <img src="images/finger-run-logo.svg" alt=""> FingerRun
+            </a>
             <ul class="nav-menu">
                 <li><a href="notices.html">공지사항</a></li>
                 

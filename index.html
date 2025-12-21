@@ -43,11 +43,10 @@
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://fingerrun.com">
 
-    <!-- 파비콘 설정 -->
-    <link rel="icon" type="image/svg+xml" href="./images/finger-run-logo.svg">
-    <link rel="shortcut icon" type="image/svg+xml" href="./images/finger-run-logo.svg">
-    <link rel="apple-touch-icon" href="./images/finger-run-logo.svg">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⌨️</text></svg>">
+    <!-- 파비콘 설정: 모든 설정을 동일한 SVG 파일로 통일하여 확실하게 나타나도록 함 -->
+    <link rel="icon" type="image/svg+xml" href="images/finger-run-logo.svg">
+    <link rel="shortcut icon" type="image/svg+xml" href="images/finger-run-logo.svg">
+    <link rel="apple-touch-icon" href="images/finger-run-logo.svg">
 
     <!-- [SEO] Open Graph (SNS 공유) -->
     <meta property="og:title" content="핑거런 | AI 피드백으로 배우는 온라인 타자연습 사이트">
@@ -55,7 +54,7 @@
     <meta property="og:url" content="https://fingerrun.com">
     <meta property="og:type" content="website">
 
-    <!-- [SEO] 구조화 데이터 (JSON-LD) - 원본의 모든 상세 필드 유지 -->
+    <!-- [SEO] 구조화 데이터 (JSON-LD) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -416,7 +415,11 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <a href="index.html" class="logo" aria-label="핑거런 홈페이지 메인으로 이동">⌨️ FingerRun</a>
+            <a href="index.html" class="logo" aria-label="핑거런 홈페이지 메인으로 이동">
+                <!-- 파비콘 이미지와 동일한 로고 파일 삽입 -->
+                <img src="images/finger-run-logo.svg" alt="" class="h-8 w-auto"> 
+                FingerRun
+            </a>
             <ul class="nav-menu">
                 <li><a href="notices.html">공지사항</a></li>
                 <li>
