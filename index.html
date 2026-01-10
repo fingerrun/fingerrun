@@ -26,6 +26,9 @@
       gtag('config', 'G-7QSEYCFK83');
     </script>
 
+    <!-- [광고] 구글 에드센스 라이브러리 로드 -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5657188598576847" crossorigin="anonymous"></script>
+
     <!-- 알림 차단 스크립트 -->
     <script>
     if ('Notification' in window) {
@@ -140,6 +143,30 @@
             color: #191f28;
             overflow-x: hidden;
         }
+
+        /* --- [광고] 사이드 수동 광고 스타일 --- */
+        .ad-sidebar {
+            position: fixed;
+            top: 100px;
+            width: 160px;
+            height: 600px;
+            z-index: 50;
+            display: none; /* 기본적으로 숨김 */
+        }
+
+        /* 1480px 브레이크포인트 */
+        @media (min-width: 1480px) {
+            .ad-sidebar { display: block; }
+        }
+
+        .ad-left {
+            left: calc(50% - 600px - 180px); /* 본문 1200px 기준 왼쪽 여백 배치 */
+        }
+
+        .ad-right {
+            right: calc(50% - 600px - 180px); /* 본문 1200px 기준 오른쪽 여백 배치 */
+        }
+        /* ------------------------------------------- */
 
         nav {
             background: rgba(255, 255, 255, 0.85);
@@ -412,11 +439,34 @@
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
+    <!-- [광고] 사이드 수동 광고 영역 (왼쪽) -->
+    <div class="ad-sidebar ad-left">
+        <!-- 랜딩페이지 사이드 -->
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:160px;height:600px"
+             data-ad-client="ca-pub-5657188598576847"
+             data-ad-slot="4465825129"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+    <!-- [광고] 사이드 수동 광고 영역 (오른쪽) -->
+    <div class="ad-sidebar ad-right">
+        <!-- 랜딩페이지 사이드 -->
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:160px;height:600px"
+             data-ad-client="ca-pub-5657188598576847"
+             data-ad-slot="4465825129"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
             <a href="index.html" class="logo" aria-label="핑거런 홈페이지 메인으로 이동">
-                <!-- 파비콘 이미지와 동일한 로고 파일 삽입 -->
                 <img src="images/finger-run-logo.svg" alt="" class="h-8 w-auto"> 
                 FingerRun
             </a>
@@ -815,7 +865,7 @@
     <!-- Footer -->
     <footer class="bg-gray-50 py-12 border-t border-gray-200 text-sm text-gray-500">
         <div class="max-w-6xl mx-auto px-6 text-center">
-            <p class="mb-2 font-medium text-gray-600">© 2025 FingerRun. 모든 권리 보유.</p>
+            <p class="mb-2 font-medium text-gray-600">© 2026 FingerRun. 모든 권리 보유.</p>
             <p class="mb-2">빠르고 정확한 타이핑의 시작, FingerRun과 함께하세요! ⌨️</p>
             <p>문의: <a href="mailto:fingerrun@naver.com" class="hover:text-blue-600 hover:underline transition">fingerrun@naver.com</a></p>
         </div>
