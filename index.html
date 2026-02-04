@@ -144,27 +144,27 @@
             overflow-x: hidden;
         }
 
-        /* --- [광고] 사이드 수동 광고 스타일 --- */
+        /* --- [광고] 사이드 수동 광고 스타일 (가로 3배, 세로 2배 확대 및 가장자리 배치) --- */
         .ad-sidebar {
             position: fixed;
-            top: 100px;
-            width: 160px;
-            height: 600px;
+            top: 50px;       /* 고해상도 환경에 맞춰 상단 여백 소폭 조정 */
+            width: 480px;    /* 160px * 3 */
+            height: 1200px;  /* 600px * 2 */
             z-index: 50;
-            display: none; /* 기본적으로 숨김 */
+            display: none;   /* 기본적으로 숨김 */
         }
 
-        /* 1480px 브레이크포인트 */
+        /* 1480px 브레이크포인트 유지 */
         @media (min-width: 1480px) {
             .ad-sidebar { display: block; }
         }
 
         .ad-left {
-            left: calc(50% - 600px - 180px); /* 본문 1200px 기준 왼쪽 여백 배치 */
+            left: 0; /* 왼쪽 가장자리 밀착 */
         }
 
         .ad-right {
-            right: calc(50% - 600px - 180px); /* 본문 1200px 기준 오른쪽 여백 배치 */
+            right: 0; /* 오른쪽 가장자리 밀착 */
         }
         /* ------------------------------------------- */
 
@@ -439,11 +439,11 @@
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
-    <!-- [광고] 사이드 수동 광고 영역 (왼쪽) -->
+    <!-- [광고] 사이드 수동 광고 영역 (왼쪽 - 480x1200 적용) -->
     <div class="ad-sidebar ad-left">
         <!-- 랜딩페이지 사이드 -->
         <ins class="adsbygoogle"
-             style="display:inline-block;width:160px;height:600px"
+             style="display:inline-block;width:480px;height:1200px"
              data-ad-client="ca-pub-5657188598576847"
              data-ad-slot="4465825129"></ins>
         <script>
@@ -451,11 +451,11 @@
         </script>
     </div>
 
-    <!-- [광고] 사이드 수동 광고 영역 (오른쪽) -->
+    <!-- [광고] 사이드 수동 광고 영역 (오른쪽 - 480x1200 적용) -->
     <div class="ad-sidebar ad-right">
         <!-- 랜딩페이지 사이드 -->
         <ins class="adsbygoogle"
-             style="display:inline-block;width:160px;height:600px"
+             style="display:inline-block;width:480px;height:1200px"
              data-ad-client="ca-pub-5657188598576847"
              data-ad-slot="4465825129"></ins>
         <script>
@@ -653,7 +653,7 @@
                             <div class="demo-key key-tab key-special" data-code="Tab">Tab</div><div class="demo-key" data-code="KeyQ">Q</div><div class="demo-key" data-code="KeyW">W</div><div class="demo-key" data-code="KeyE">E</div><div class="demo-key" data-code="KeyR">R</div><div class="demo-key" data-code="KeyT">T</div><div class="demo-key" data-code="KeyY">Y</div><div class="demo-key" data-code="KeyU">U</div><div class="demo-key" data-code="KeyI">I</div><div class="demo-key" data-code="KeyO">O</div><div class="demo-key" data-code="KeyP">P</div><div class="demo-key" data-code="BracketLeft">[</div><div class="demo-key" data-code="BracketRight">]</div><div class="demo-key" data-code="Backslash">\</div>
                         </div>
                         <div class="demo-row">
-                            <div class="demo-key key-caps key-special" data-code="CapsLock">Caps</div><div class="demo-key" data-code="KeyA">A</div><div class="demo-key" data-code="KeyS">S</div><div class="demo-key" data-code="KeyD">D</div><div class="demo-key" data-code="KeyF">F</div><div class="demo-key" data-code="KeyG">G</div><div class="demo-key" data-code="KeyH">H</div><div class="demo-key" data-code="KeyJ">J</div><div class="demo-key" data-code="KeyK">K</div><div class="demo-key" data-code="KeyL">L</div><div class="demo-key" data-code="Semicolon">;</div><div class="demo-key" data-code="Quote">'</div><div class="demo-key key-enter key-special" data-code="Enter">Enter</div>
+                            <div class="demo-key key-caps key-special" data-code="CapsLock">CapsLock</div><div class="demo-key" data-code="KeyA">A</div><div class="demo-key" data-code="KeyS">S</div><div class="demo-key" data-code="KeyD">D</div><div class="demo-key" data-code="KeyF">F</div><div class="demo-key" data-code="KeyG">G</div><div class="demo-key" data-code="KeyH">H</div><div class="demo-key" data-code="KeyJ">J</div><div class="demo-key" data-code="KeyK">K</div><div class="demo-key" data-code="KeyL">L</div><div class="demo-key" data-code="Semicolon">;</div><div class="demo-key" data-code="Quote">'</div><div class="demo-key key-enter key-special" data-code="Enter">Enter</div>
                         </div>
                         <div class="demo-row">
                             <div class="demo-key key-shift key-special" data-code="ShiftLeft">Shift</div><div class="demo-key" data-code="KeyZ">Z</div><div class="demo-key" data-code="KeyX">X</div><div class="demo-key" data-code="KeyC">C</div><div class="demo-key" data-code="KeyV">V</div><div class="demo-key" data-code="KeyB">B</div><div class="demo-key" data-code="KeyN">N</div><div class="demo-key" data-code="KeyM">M</div><div class="demo-key" data-code="Comma">,</div><div class="demo-key" data-code="Period">.</div><div class="demo-key" data-code="Slash">/</div><div class="demo-key key-shift key-special" data-code="ShiftRight">Shift</div>
