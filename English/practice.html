@@ -227,10 +227,54 @@
             .submenu-area { flex-direction: column; align-items: stretch; }
             .submenu-btn { width: 100%; text-align: center; }
         }
+        /* --- [광고] 사이드 광고 위치 및 크기 수정 --- */
+        .ad-sidebar {
+            position: fixed;
+            width: 240px; /* 가로폭 축소 */
+            top: 155px;   /* 상단 2cm 여백 */
+            bottom: 75px; /* 하단 2cm 여백 */
+            z-index: 50;
+            left: -5000px; 
+            visibility: hidden;
+        }
+
+        /* 1800px 이상의 넓은 모니터에서만 표시 */
+        @media (min-width: 1800px) {
+            .ad-sidebar { visibility: visible; }
+            .ad-left { left: 75px; }  /* 왼쪽 2cm 여백 */
+            .ad-right { right: 75px; left: auto; } /* 오른쪽 2cm 여백 */
+        }
+
+        .ad-sidebar ins {
+            display: inline-block !important;
+            width: 240px !important;
+            height: 100% !important;
+        }
     </style>
 </head>
 
 <body>
+    <div class="ad-sidebar ad-left">
+        <ins class="adsbygoogle"
+             style="display:inline-block; width:240px; height:100%;"
+             data-ad-client="ca-pub-5657188598576847"
+             data-ad-slot="4465825129"
+             data-ad-format="vertical"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+    <div class="ad-sidebar ad-right">
+        <ins class="adsbygoogle"
+             style="display:inline-block; width:240px; height:100%;"
+             data-ad-client="ca-pub-5657188598576847"
+             data-ad-slot="4465825129"
+             data-ad-format="vertical"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
