@@ -332,6 +332,7 @@
         
         .btn-primary { background: linear-gradient(135deg, #2563eb, #1d4ed8); box-shadow: 0 4px 0 #1e3a8a; }
         .btn-danger { background: linear-gradient(135deg, #dc2626, #b91c1c); box-shadow: 0 4px 0 #7f1d1d; }
+        .btn-warning { background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 4px 0 #92400e; }
         .game-btn:active { transform: translateY(4px); box-shadow: none; }
         .game-btn:hover { filter: brightness(1.2); }
 
@@ -437,13 +438,23 @@
             <span class="text-sm text-gray-400">총 10단계 작전 | 1분마다 레벨업 | 엔터로 발사</span><br>
             <span class="text-xs text-blue-300 mt-2 block font-bold">한글, 영어 지원</span>
         </p>
-        <button class="game-btn btn-primary" onclick="game.start()">작전 시작</button>
+        <button class="game-btn btn-primary" onclick="game.start(1)">작전 시작</button>
     </div>
 
     <div id="game-over-screen" class="modal-overlay hidden">
         <h1 class="modal-title">GAME OVER</h1>
-        <div class="btn-group">
-            <button class="game-btn btn-primary" onclick="game.start()">다시하기</button>
+        
+        <!-- 레벨 선택 버튼 영역 -->
+        <div id="restart-options" class="flex flex-col items-center gap-4 mb-8 hidden">
+            <p class="text-white text-lg font-bold">재시작 레벨 선택</p>
+            <div class="flex gap-4">
+                <button class="game-btn btn-primary" onclick="game.start(1)">1레벨부터</button>
+                <button class="game-btn btn-warning" onclick="game.start(4)">4레벨부터</button>
+            </div>
+        </div>
+
+        <div id="default-options" class="btn-group">
+            <button class="game-btn btn-primary" onclick="game.start(1)">다시하기</button>
             <button class="game-btn btn-danger" onclick="exitGame()">나가기</button>
         </div>
     </div>
@@ -585,6 +596,8 @@
             this.livesEl = document.getElementById('lives-el');
             this.startScreen = document.getElementById('start-screen');
             this.gameOverScreen = document.getElementById('game-over-screen');
+            this.restartOptions = document.getElementById('restart-options');
+            this.defaultOptions = document.getElementById('default-options');
             this.container = document.getElementById('input-display-container');
             this.state = 'MENU'; this.language = 'KO'; this.score = 0; this.level = 1; this.lives = 3; this.levelStartTime = 0;
             this.tank = new Tank(this);
@@ -602,17 +615,17 @@
                 if (this.state === 'PLAYING' && !e.target.closest('button') && !e.target.closest('nav')) this.hiddenInput.focus();
             });
             this.hiddenInput.addEventListener('keydown', (e) => {
-                 if (e.key === 'Enter') {
-                     e.preventDefault();
-                     const val = this.hiddenInput.value.trim();
-                     const exactMatch = this.words.find(w => w.text === val && !w.isTargeted);
-                     if (exactMatch) {
-                         exactMatch.isTargeted = true; 
-                         this.tank.shoot(exactMatch);
-                         this.handleEnterSuccess();
-                         this.flashInput('valid');
-                     } else { this.handleEnterSuccess(); this.flashInput('invalid'); }
-                 }
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const val = this.hiddenInput.value.trim();
+                    const exactMatch = this.words.find(w => w.text === val && !w.isTargeted);
+                    if (exactMatch) {
+                        exactMatch.isTargeted = true; 
+                        this.tank.shoot(exactMatch);
+                        this.handleEnterSuccess();
+                        this.flashInput('valid');
+                    } else { this.handleEnterSuccess(); this.flashInput('invalid'); }
+                }
             });
             this.hiddenInput.addEventListener('input', () => {
                 if (this.state !== 'PLAYING') return;
@@ -620,9 +633,8 @@
                 this.currentInput = val;
                 if (!val) { this.targetWord = null; this.updateHUD(); return; }
 
-                // 레이저 끊김 해결 로직: 현재 타겟 단어가 여전히 매칭되면 타겟 유지
                 if (this.targetWord && this.targetWord.text.startsWith(val) && !this.targetWord.isTargeted) {
-                    // 타겟 고정 (재검색 안함)
+                    // 타겟 유지
                 } else {
                     const potentialMatch = this.words.find(w => w.text.startsWith(val) && !w.isTargeted);
                     this.targetWord = potentialMatch || null;
@@ -648,14 +660,11 @@
             let spawnRate = Math.max(30, 120 - level * 5);
             let minWords = 2, maxWords = 4 + level;
             
-            // 한글/영어 공통 난이도 로직 적용
-            // 레벨 1~3: 매우 적은 양에서 1.5배 상향
             if (level <= 3) {
                 minWords = 1;
                 maxWords = Math.max(1, Math.floor((maxWords / 4) * 1.5));
                 spawnRate = Math.floor(spawnRate * 4 / 1.5); 
             }
-            // 레벨 4~5: 기존 대비 절반
             else if (level <= 5) {
                 minWords = Math.max(1, Math.floor(minWords / 2));
                 maxWords = Math.max(1, Math.floor(maxWords / 2));
@@ -664,17 +673,37 @@
             return { minWords, maxWords, speedBase, spawnRate };
         }
 
-        start() {
-            this.state = 'PLAYING'; this.score = 0; this.level = 1; this.lives = 3;
+        start(startLevel = 1) {
+            this.state = 'PLAYING'; 
+            this.level = startLevel;
+            // 4레벨부터 시작하더라도 점수는 0점 혹은 해당 레벨에 걸맞는 기본 점수로 초기화 (여기선 0점)
+            this.score = 0; 
+            this.lives = 3;
             this.levelStartTime = Date.now();
             this.words = []; this.projectiles = []; this.particles = [];
             this.currentInput = ""; this.hiddenInput.value = ""; this.targetWord = null;
-            this.difficulty = this.getDifficulty(1);
-            this.startScreen.classList.add('hidden'); this.gameOverScreen.classList.add('hidden');
-            this.container.style.opacity = 1; this.updateHUD(); this.hiddenInput.focus();
+            this.difficulty = this.getDifficulty(this.level);
+            this.startScreen.classList.add('hidden'); 
+            this.gameOverScreen.classList.add('hidden');
+            this.container.style.opacity = 1; 
+            this.updateHUD(); 
+            this.hiddenInput.focus();
         }
 
-        gameOver() { this.state = 'GAMEOVER'; this.gameOverScreen.classList.remove('hidden'); this.container.style.opacity = 0; }
+        gameOver() { 
+            this.state = 'GAMEOVER'; 
+            this.gameOverScreen.classList.remove('hidden'); 
+            this.container.style.opacity = 0; 
+
+            // 4레벨 이상 도달했었는지 확인하여 재시작 옵션 노출 결정
+            if (this.level >= 4) {
+                this.restartOptions.classList.remove('hidden');
+                this.defaultOptions.classList.add('hidden');
+            } else {
+                this.restartOptions.classList.add('hidden');
+                this.defaultOptions.classList.remove('hidden');
+            }
+        }
 
         updateHUD() {
             this.scoreEl.innerText = this.score; this.levelEl.innerText = this.level;
