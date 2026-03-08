@@ -144,24 +144,35 @@
             overflow-x: hidden;
         }
 
-        /* --- [광고] 사이드 수동 광고 스타일 (가로 3배, 세로 2배 확대 및 가장자리 배치) --- */
-        .ad-sidebar {
-            position: fixed;
-            top: 50px;
-            width: 480px;    /* 가로 3배 */
-            height: 1200px;  /* 세로 2배 */
-            z-index: 50;
-            /* availableWidth=0 에러 방지를 위해 display: none 대신 위치 이동 사용 */
-            left: -5000px; 
-            visibility: hidden;
-        }
+/* --- [광고] 사이드 광고 위치 및 크기 수정 --- */
+.ad-sidebar {
+    position: fixed;
+    /* 가로 길이를 기존 480px에서 절반인 240px로 축소 */
+    width: 240px; 
+    /* 상단 여백: 내비게이션(약 80px) + 2cm 여백(75px) = 155px */
+    top: 155px;   
+    /* 하단 여백: 바닥에서 2cm(75px) 띄움 */
+    bottom: 75px; 
+    z-index: 50;
+    /* 화면이 좁을 때는 숨김 처리 */
+    left: -5000px; 
+    visibility: hidden;
+}
 
-        /* 1480px 브레이크포인트 설정 */
-        @media (min-width: 1480px) {
-            .ad-sidebar { visibility: visible; }
-            .ad-left { left: 0; }
-            .ad-right { right: 0; left: auto; }
-        }
+/* 화면 너비가 1800px 이상인 넓은 모니터에서만 광고를 보여줍니다 */
+@media (min-width: 1800px) {
+    .ad-sidebar { visibility: visible; }
+    /* 내비게이션 옆 가장자리로부터 2cm(75px) 띄움 */
+    .ad-left { left: 75px; } 
+    .ad-right { right: 75px; left: auto; }
+}
+
+/* 구글 광고 자체가 박스 안을 가득 채우도록 설정 */
+.ad-sidebar ins {
+    display: inline-block !important;
+    width: 240px !important;
+    height: 100% !important;
+}
         /* ------------------------------------------- */
 
         nav {
@@ -435,31 +446,27 @@
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
-    <!-- [광고] 사이드 수동 광고 영역 (왼쪽 - 이미지 b6a159 코드 적용) -->
-    <div class="ad-sidebar ad-left">
-        <ins class="adsbygoogle"
-             style="display:block; width:480px; height:1200px;"
-             data-ad-client="ca-pub-5657188598576847"
-             data-ad-slot="4465825129"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
+<div class="ad-sidebar ad-left">
+    <ins class="adsbygoogle"
+         style="display:inline-block; width:240px; height:100%;"
+         data-ad-client="ca-pub-5657188598576847"
+         data-ad-slot="4465825129"
+         data-ad-format="vertical"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
 
-    <!-- [광고] 사이드 수동 광고 영역 (오른쪽 - 이미지 b6a159 코드 적용) -->
-    <div class="ad-sidebar ad-right">
-        <ins class="adsbygoogle"
-             style="display:block; width:480px; height:1200px;"
-             data-ad-client="ca-pub-5657188598576847"
-             data-ad-slot="4465825129"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
+<div class="ad-sidebar ad-right">
+    <ins class="adsbygoogle"
+         style="display:inline-block; width:240px; height:100%;"
+         data-ad-client="ca-pub-5657188598576847"
+         data-ad-slot="4465825129"
+         data-ad-format="vertical"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
 
     <!-- Navigation -->
     <nav>
