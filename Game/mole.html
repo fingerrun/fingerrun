@@ -33,7 +33,8 @@
         }
 
         /* --- Navigation (FingerRun Standard) --- */
-        nav { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 1rem 0; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1); height: 80px; }
+        /* z-index를 3000으로 높여 모달(2000)보다 위에 오도록 설정 */
+        nav { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 1rem 0; position: fixed; width: 100%; top: 0; z-index: 3000; box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1); height: 80px; }
         .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 2rem; height: 100%; }
         .logo { font-size: 1.8rem; font-weight: bold; color: #667eea; text-decoration: none; display: flex; align-items: center; gap: 10px; } 
         .logo img { height: 32px; width: auto; }
@@ -42,7 +43,8 @@
         .nav-menu a { text-decoration: none; color: #333; font-weight: 500; padding: 0.5rem 0.8rem; border-radius: 25px; transition: all 0.3s; font-size: 0.9rem; display: flex; align-items: center; gap: 0.3rem; }
         .nav-menu a:hover { background: #667eea; color: white; transform: translateY(-2px); }
         .dropdown-arrow { font-size: 0.7rem; transition: transform 0.3s ease; }
-        .dropdown-menu { position: absolute; top: 100%; left: 0; background: white; box-shadow: 0 8px 25px rgba(0,0,0,0.15); border-radius: 10px; padding: 0.5rem 0; min-width: 220px; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s; z-index: 1001; border: 1px solid rgba(0,0,0,0.1); }
+        /* 드롭다운 메뉴 z-index도 함께 조정 */
+        .dropdown-menu { position: absolute; top: 100%; left: 0; background: white; box-shadow: 0 8px 25px rgba(0,0,0,0.15); border-radius: 10px; padding: 0.5rem 0; min-width: 220px; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s; z-index: 3001; border: 1px solid rgba(0,0,0,0.1); }
         .nav-menu li:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
         .nav-menu li:hover .dropdown-arrow { transform: rotate(180deg); }
         .dropdown-menu a { display: block; padding: 0.7rem 1rem; }
@@ -70,7 +72,9 @@
         .title {
             font-size: 3.5rem; font-weight: 900;
             background: linear-gradient(45deg, #d97706, #db2777, #7c3aed);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; 
+            background-clip: text; 
+            -webkit-text-fill-color: transparent;
             margin-bottom: 16px; text-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
@@ -157,12 +161,16 @@
         .modal-title {
             font-family: 'Orbitron', sans-serif; font-size: 4rem; font-weight: 900;
             background: linear-gradient(to bottom, #3b82f6, #1d4ed8);
-            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; 
+            background-clip: text; 
+            -webkit-text-fill-color: transparent;
             margin-bottom: 20px; text-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
         }
         .modal-overlay.game-over .modal-title {
             background: linear-gradient(to bottom, #ef4444, #991b1b);
-            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; 
+            background-clip: text; 
+            -webkit-text-fill-color: transparent;
         }
         .modal-subtitle { font-size: 1.5rem; color: #e5e7eb; margin-bottom: 40px; text-align: center; }
         
@@ -332,7 +340,7 @@
             gameState.missedCount = 0;
             gameState.gameTime = 60;
             gameState.moles = [];
-            gameState.usedWords.clear(); // 게임 시작 시 초기화
+            gameState.usedWords.clear();
             setupLevel();
             document.getElementById('gameInput').focus();
         }
@@ -360,25 +368,17 @@
         function spawnMole() {
             if (!gameState.isGameActive) return;
             const levelPool = wordData[gameState.language][gameState.currentLevel] || wordData[gameState.language][1];
-            
-            // 아직 나오지 않은 단어들만 필터링
             const availableWords = levelPool.filter(w => !gameState.usedWords.has(w));
-            
-            // 만약 레벨 내 모든 단어를 다 썼다면, usedWords에서 현재 레벨 단어만 삭제하여 재사용 가능하게 함 (무한 루프 방지)
             if (availableWords.length === 0) {
                 levelPool.forEach(w => gameState.usedWords.delete(w));
-                return; // 이번 프레임은 건너뛰고 다음 프레임에 다시 스폰
+                return;
             }
-
             const word = availableWords[Math.floor(Math.random() * availableWords.length)];
             const pos = Math.floor(Math.random() * 12);
-            
             if (gameState.moles.find(m => m.position === pos)) return;
-            
-            gameState.usedWords.add(word); // 단어 사용 등록
+            gameState.usedWords.add(word);
             const mole = { id: ++gameState.moleIdCounter, name: word, position: pos, createdAt: Date.now() };
             gameState.moles.push(mole);
-            
             const moleEl = document.createElement('div');
             moleEl.className = 'mole'; moleEl.dataset.id = mole.id;
             moleEl.style.left = `${15 + (pos % 4) * 23.3}%`; moleEl.style.top = `${20 + Math.floor(pos / 4) * 30}%`;
