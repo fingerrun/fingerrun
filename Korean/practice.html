@@ -23,7 +23,7 @@
 
     <title>핑거런 | 한글 타자연습 - 자음 모음 단어 문장 단계별 학습과 AI 피드백</title>
     
-    <!-- 파비콘 설정: SVG 로고로 확실하게 나타나도록 경로 설정 -->
+    <!-- 파비콘 설정 -->
     <link rel="icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
     <link rel="shortcut icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
     <link rel="apple-touch-icon" href="../images/finger-run-logo.svg">
@@ -74,7 +74,6 @@
             padding: 0 2rem;
         }
 
-        /* 로고 이미지와 텍스트 정렬을 위해 flex 및 정렬 속성 유지 */
         .logo {
             font-size: 1.5rem;
             font-weight: bold;
@@ -84,7 +83,6 @@
             text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
         }
 
-        /* 로고 이미지 크기 지정 */
         .logo img {
             height: 32px;
             width: auto;
@@ -266,6 +264,8 @@
             transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
         .typing-input:focus { border-color: #667eea; box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2); transform: translateY(-2px); }
+        /* 완벽하게 입력했을 때 강조 */
+        .typing-input.completed { border-color: #4caf50; background-color: #f1f8f1; }
 
         .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; background: #f8f9fa; padding: 2rem; border-radius: 15px; margin-bottom: 2rem; border: 2px solid #e2e8f0; }
         .stat-item { text-align: center; padding: 1.5rem; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); }
@@ -276,7 +276,7 @@
             -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; 
         }
 
-        /* Modal Styles Updated */
+        /* Modal Styles */
         .modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.8); display: none;
@@ -361,7 +361,7 @@
             .ai-report-container { padding: 1rem; }
             .stats { grid-template-columns: 1fr; }
         }
-    .ad-sidebar {
+        .ad-sidebar {
             position: fixed;
             width: 240px; 
             top: 155px;   
@@ -410,7 +410,6 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <!-- [수정] 메인으로 이동 및 로고 이미지 삽입 -->
             <a href="../index.html" class="logo">
                 <img src="../images/finger-run-logo.svg" alt=""> FingerRun
             </a>
@@ -506,6 +505,7 @@
                 <!-- Keyboard Area -->
                 <div class="keyboard-area">
                     <div class="keyboard" id="keyboard">
+                        <!-- Keyboard rows -->
                         <div class="keyboard-row">
                             <div class="key" data-key="`" data-ko=""><div class="key-dual"><span class="key-en">`</span><span class="key-ko"></span></div></div>
                             <div class="key" data-key="1" data-ko=""><div class="key-dual"><span class="key-en">1</span><span class="key-ko"></span></div></div>
@@ -581,7 +581,7 @@
                 </div>
 
                 <div class="input-area">
-                    <input type="text" class="typing-input" id="typingInput" placeholder="여기에 타이핑하세요...">
+                    <input type="text" class="typing-input" id="typingInput" placeholder="여기에 타이핑하세요..." autocomplete="off">
                 </div>
             </div>
 
@@ -605,9 +605,7 @@
 
     <!-- Complete Modal -->
     <div class="modal" id="completeModal" style="display: none;">
-        <div class="modal-content" id="modalContent">
-            <!-- Dynamic Content -->
-        </div>
+        <div class="modal-content" id="modalContent"></div>
     </div>
 
     <script>
@@ -623,8 +621,8 @@
                 this.currentJamoSequence = [];
                 this.currentJamoPosition = 0;
                 this.currentProblem = 0;
-                this.totalProblems = 10; // Word mode problem count
-                this.accumulatedChars = 0; // 누적 글자 수 (자음/모음 모드용)
+                this.totalProblems = 10;
+                this.accumulatedChars = 0;
                 this.usedWords = [];
                 this.usedSentences = [];
 
@@ -635,7 +633,6 @@
                 this.sentenceStartTime = null;
                 this.lastKeyTime = null;
                 this.lastKeyPressed = null;
-                this.keyTransitions = []; 
                 this.keyLatencies = {}; 
                 this.speedHistory = []; 
                 this.sentenceStats = [];
@@ -669,17 +666,15 @@
                     'ㅝ': ['n', 'j'], 'ㅞ': ['n', 'p'], 'ㅟ': ['n', 'l'], 'ㅢ': ['m', 'l']
                 };
 
-                // Complex vowel decomposition
                 this.complexVowels = {
                     'ㅘ': ['ㅗ', 'ㅏ'], 'ㅙ': ['ㅗ', 'ㅐ'], 'ㅚ': ['ㅗ', 'ㅣ'],
                     'ㅝ': ['ㅜ', 'ㅓ'], 'ㅞ': ['ㅜ', 'ㅔ'], 'ㅟ': ['ㅜ', 'ㅣ'], 'ㅢ': ['ㅡ', 'ㅣ']
                 };
 
-                // Complex jongseong decomposition
                 this.complexJongs = {
-                    'ㄳ': ['ㄱ', 'ㅅ'], 'ㄵ': ['ㄴ', 'ㅈ'], 'ㄶ': ['ㄴ', 'ㅎ'],
-                    'ㄺ': ['ㄹ', 'ㄱ'], 'ㄻ': ['ㄹ', 'ㅁ'], 'ㄼ': ['ㄹ', 'ㅂ'], 'ㄽ': ['ㄹ', 'ㅅ'],
-                    'ㄾ': ['ㄹ', 'ㅌ'], 'ㄿ': ['ㄹ', 'ㅍ'], 'ㅀ': ['ㄹ', 'ㅎ'], 'ㅄ': ['ㅂ', 'ㅅ']
+                    'ㄳ': ['ㄱ', 'ㅅ'], 'ㄴㅈ': ['ㄴ', 'ㅈ'], 'ㄴㅎ': ['ㄴ', 'ㅎ'],
+                    'ㄹㄱ': ['ㄹ', 'ㄱ'], 'ㄹㅁ': ['ㄹ', 'ㅁ'], 'ㄹㅂ': ['ㄹ', 'ㅂ'], 'ㄹㅅ': ['ㄹ', 'ㅅ'],
+                    'ㄹㅌ': ['ㄹ', 'ㅌ'], 'ㄹㅍ': ['ㄹ', 'ㅍ'], 'ㄹㅎ': ['ㄹ', 'ㅎ'], 'ㅂㅅ': ['ㅂ', 'ㅅ']
                 };
 
                 this.fingerAssignment = {
@@ -696,43 +691,25 @@
                     'backspace': 'Right Pinky'
                 };
 
-                // Enhanced Word Data (~150+ words per difficulty)
                 this.practiceData = {
                     consonant: ['ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅅ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ', 'ㄲ', 'ㄸ', 'ㅃ', 'ㅆ', 'ㅉ'],
                     vowel: ['ㅏ', 'ㅑ', 'ㅓ', 'ㅕ', 'ㅗ', 'ㅛ', 'ㅜ', 'ㅠ', 'ㅡ', 'ㅣ', 'ㅐ', 'ㅒ', 'ㅔ', 'ㅖ', 'ㅘ', 'ㅙ', 'ㅚ', 'ㅝ', 'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ'],
                     word: {
-                        easy: [
-                            '사랑', '우정', '행복', '미래', '희망', '가족', '친구', '학교', '여행', '음악', '하늘', '바다', '구름', '나무', '꽃',
-                            '바람', '햇살', '달빛', '별빛', '소리', '노래', '그림', '사진', '편지', '약속', '선물', '추억', '마음', '생각', '꿈',
-                            '나비', '새', '강', '산', '들', '집', '문', '창', '길', '차', '공', '글', '말', '눈', '비',
-                            '봄', '여름', '가을', '겨울', '아침', '점심', '저녁', '밤', '오늘', '내일', '어제', '시간', '시계', '달력', '날짜'
-                        ],
-                        medium: [
-                            '컴퓨터', '프로그래밍', '알고리즘', '데이터', '네트워크', '보안', '클라우드', '인공지능', '민주주의', '자본주의',
-                            '도서관', '박물관', '미술관', '영화관', '운동장', '지하철', '자동차', '비행기', '자전거', '오토바이',
-                            '선생님', '학생', '의사', '경찰', '소방관', '과학자', '예술가', '작가', '기자', '변호사',
-                            '스마트폰', '텔레비전', '냉장고', '세탁기', '청소기', '에어컨', '선풍기', '드라이기', '다리미', '전자레인지',
-                            '대한민국', '미국', '중국', '일본', '영국', '프랑스', '독일', '이탈리아', '캐나다', '호주'
-                        ],
-                        hard: [
-                            '객체지향', '다형성', '캡슐화', '추상화', '상속', '인터페이스', '프레임워크', '라이브러리', '데이터베이스', '운영체제',
-                            '일석이조', '금상첨화', '대기만성', '새옹지마', '유비무환', '전화위복', '청출어람', '토사구팽', '파죽지세', '환골탈태',
-                            '지속가능성', '환경오염', '기후변화', '탄소중립', '신재생에너지', '재활용', '미세먼지', '지구온난화', '생태계', '자연보호',
-                            '인공지능', '머신러닝', '딥러닝', '빅데이터', '블록체인', '가상현실', '증강현실', '사물인터넷', '메타버스', '자율주행',
-                            '얽히고설키다', '울퉁불퉁하다', '알록달록하다', '뒤죽박죽', '아등바등', '차근차근', '조마조마', '두근두근', '싱글벙글', '방방곡곡'
-                        ]
+                        easy: ['사랑', '우정', '행복', '미래', '희망', '가족', '친구', '학교', '여행', '음악', '하늘', '바다', '구름', '나무', '꽃', '바람', '햇살', '달빛', '별빛', '소리', '노래', '그림', '사진', '편지', '약속', '선물', '추억', '마음', '생각', '꿈', '나비', '새', '강', '산', '들', '집', '문', '창', '길', '차', '공', '글', '말', '눈', '비', '봄', '여름', '가을', '겨울', '아침', '점심', '저녁', '밤', '오늘', '내일', '어제', '시간', '시계', '달력', '날짜'],
+                        medium: ['컴퓨터', '프로그래밍', '알고리즘', '데이터', '네트워크', '보안', '클라우드', '인공지능', '민주주의', '자본주의', '도서관', '박물관', '미술관', '영화관', '운동장', '지하철', '자동차', '비행기', '자전거', '오토바이', '선생님', '학생', '의사', '경찰', '소방관', '과학자', '예술가', '작가', '기자', '변호사', '스마트폰', '텔레비전', '냉장고', '세탁기', '청소기', '에어컨', '선풍기', '드라이기', '다리미', '전자레인지', '대한민국', '미국', '중국', '일본', '영국', '프랑스', '독일', '이탈리아', '캐나다', '호주'],
+                        hard: ['객체지향', '다형성', '캡슐화', '추상화', '상속', '인터페이스', '프레임워크', '라이브러리', '데이터베이스', '운영체제', '일석이조', '금상첨화', '대기만성', '새옹지마', '유비무환', '전화위복', '청출어람', '토사구팽', '파죽지세', '환골탈태', '지속가능성', '환경오염', '기후변화', '탄소중립', '신재생에너지', '재활용', '미세먼지', '지구온난화', '생태계', '자연보호', '인공지능', '머신러닝', '딥러닝', '빅데이터', '블록체인', '가상현실', '증강현실', '사물인터넷', '메타버스', '자율주행', '얽히고설키다', '울퉁불퉁하다', '알록달록하다', '뒤죽박죽', '아등바등', '차근차근', '조마조마', '두근두근', '싱글벙글', '방방곡곡']
                     },
                     sentence: [
-                        '민주주의는 시민의 적극적인 참여로 완성됩니다.',
-                        '금리 인상은 물가 안정을 위한 통화 정책입니다.',
-                        '사회학은 인간 사회의 구조와 변동을 연구합니다.',
-                        '역사를 잊은 민족에게 미래는 없다는 말이 있습니다.',
-                        '나는 생각한다 고로 존재한다는 데카르트의 명언입니다.',
-                        '심리학은 인간의 마음과 행동을 과학적으로 분석합니다.',
-                        '교육은 백년지대계라는 말이 있듯이 중요합니다.',
-                        '법치주의는 모든 사람이 법 앞에 평등함을 의미합니다.',
-                        '언론은 사회의 목탁으로서 진실을 보도해야 합니다.',
-                        '인류학은 인류의 기원과 문화를 연구하는 학문입니다.'
+                        '푸른 바다는 지구 생태계에서 매우 중요한 역할을 담당합니다.',
+                        '규칙적인 운동은 신체 건강뿐만 아니라 정신 건강에도 좋습니다.',
+                        '독서는 새로운 지식을 습득하고 사고력을 넓히는 훌륭한 방법입니다.',
+                        '인공지능 기술의 발전은 우리의 일상생활을 획기적으로 변화시키고 있습니다.',
+                        '환경 보호를 위해 일회용품 사용을 줄이는 습관을 실천해야 합니다.',
+                        '성실한 태도는 꿈을 이루기 위한 가장 기본적인 소양 중 하나입니다.',
+                        '서로를 존중하는 마음은 건강한 사회를 만드는 밑거름이 됩니다.',
+                        '과학적인 탐구는 미지의 세계를 이해하려는 인간의 본능에서 시작됩니다.',
+                        '예술은 인간의 감정을 표현하고 타인과 공감하는 특별한 언어입니다.',
+                        '실패는 성공으로 가는 과정에서 겪게 되는 소중한 경험입니다.'
                     ]
                 };
 
@@ -804,25 +781,43 @@
                 });
 
                 typingInput.addEventListener('keydown', (e) => {
+                    // 문장 모드 기록
                     if (this.currentMode === 'sentence') {
                         this.recordKeyTiming(e.key);
                     }
                     
-                    if ((e.key === ' ' || e.key === 'Enter') && this.currentPosition >= this.currentText.length) {
-                        e.preventDefault();
-                        if (this.currentMode === 'sentence') {
-                            const currentAccuracy = parseInt(document.getElementById('accuracy').textContent.replace('%', ''));
-                            const currentSpeed = parseInt(document.getElementById('speed').textContent);
-                            const alreadyStored = this.sentenceStats.some(stat => stat.sentenceNumber === this.currentProblem + 1);
-                            if (!alreadyStored) {
-                                this.sentenceStats.push({
-                                    sentenceNumber: this.currentProblem + 1,
-                                    accuracy: currentAccuracy,
-                                    speed: currentSpeed
-                                });
+                    // 엔터키 작동: 현재 문장/단어를 모두 입력한 상태일 때만 다음으로 넘어감
+                    if (e.key === 'Enter') {
+                        const inputValue = typingInput.value;
+                        
+                        if (inputValue.length >= this.currentText.length) {
+                            e.preventDefault();
+                            
+                            // 통계 기록 및 단계 진행
+                            if (this.currentMode === 'sentence') {
+                                const currentAccuracy = parseInt(document.getElementById('accuracy').textContent.replace('%', ''));
+                                const currentSpeed = parseInt(document.getElementById('speed').textContent);
+                                const alreadyStored = this.sentenceStats.some(stat => stat.sentenceNumber === this.currentProblem + 1);
+                                if (!alreadyStored) {
+                                    this.sentenceStats.push({
+                                        sentenceNumber: this.currentProblem + 1,
+                                        accuracy: currentAccuracy,
+                                        speed: currentSpeed
+                                    });
+                                }
+                                this.recordSentenceData();
+                            } else if (this.currentMode === 'consonant' || this.currentMode === 'vowel') {
+                                const charCount = this.currentText.replace(/ /g, '').length;
+                                this.accumulatedChars += charCount;
+                            }
+
+                            // 자음/모음 모드에서 100자 완료 체크
+                            if ((this.currentMode === 'consonant' || this.currentMode === 'vowel') && this.accumulatedChars >= 100) {
+                                this.showComplete();
+                            } else {
+                                this.nextProblem();
                             }
                         }
-                        this.nextProblem();
                     }
                 });
             }
@@ -859,13 +854,10 @@
             changeMode(mode) {
                 this.currentMode = mode;
                 this.currentProblem = 0;
-                
-                // Reset finger selection
                 this.currentFinger = 'all'; 
                 document.querySelectorAll('.sub-menu-btn').forEach(btn => btn.classList.remove('active'));
                 document.querySelector('.sub-menu-btn[data-finger="all"]').classList.add('active');
 
-                // Toggle Sub-menu visibility
                 const subMenu = document.getElementById('fingerSubMenu');
                 if (mode === 'consonant' || mode === 'vowel') {
                     subMenu.style.display = 'flex';
@@ -893,6 +885,7 @@
                 this.generateText();
                 this.updateDisplay();
                 document.getElementById('typingInput').value = '';
+                document.getElementById('typingInput').classList.remove('completed');
                 document.getElementById('typingInput').focus();
             }
 
@@ -906,6 +899,7 @@
                 this.generateText();
                 this.updateDisplay();
                 document.getElementById('typingInput').value = '';
+                document.getElementById('typingInput').classList.remove('completed');
                 document.getElementById('typingInput').focus();
             }
 
@@ -925,31 +919,19 @@
                         const easy = this.practiceData.word.easy;
                         const med = this.practiceData.word.medium;
                         const hard = this.practiceData.word.hard;
-                        
-                        // 단어 중복 방지 로직 강화
                         const allWords = [...easy, ...med, ...hard];
                         const availableWords = allWords.filter(w => !this.usedWords.includes(w));
-                        
-                        // 만약 모든 단어를 다 썼다면 usedWords 초기화 (계속 연습 가능하도록)
-                        if (availableWords.length < 3) {
-                             this.usedWords = [];
-                        }
-                        
-                        // 3개의 단어 랜덤 선택
+                        if (availableWords.length < 3) this.usedWords = [];
                         const selectedWords = [];
                         const tempPool = availableWords.length >= 3 ? availableWords : allWords;
-                        
                         for(let i=0; i<3; i++) {
                             const randIdx = Math.floor(Math.random() * tempPool.length);
                             const word = tempPool[randIdx];
                             selectedWords.push(word);
-                            this.usedWords.push(word); // 사용된 단어 기록
+                            this.usedWords.push(word);
                         }
-                        
                         this.currentText = selectedWords.join(' ');
-
                     } else {
-                        // Consonant or Vowel
                         let candidates = data;
                         if (this.currentFinger !== 'all') {
                             candidates = data.filter(char => {
@@ -961,35 +943,27 @@
                             });
                             if (candidates.length === 0) candidates = data;
                         }
-                        
-                        // [수정] 100자 채우기 로직 (한 번에 10자)
                         let remaining = 100 - this.accumulatedChars;
                         let countToGenerate = Math.min(10, remaining); 
-                        
                         if (countToGenerate <= 0) countToGenerate = 1;
-
                         let text = '';
                         for(let i=0; i<countToGenerate; i++) {
                             text += candidates[Math.floor(Math.random()*candidates.length)] + (i < countToGenerate - 1 ? ' ' : '');
                         }
                         this.currentText = text;
                     }
-
                     this.currentPosition = 0;
                     this.startTime = null;
                     this.currentJamoSequence = [];
                     this.currentJamoPosition = 0;
-
                     if (this.currentMode === 'sentence') {
                         this.sentenceStartTime = null;
                         this.lastKeyTime = null;
                         this.sentenceKeyTimings = [];
                         this.lastKeyPressed = null;
                     }
-
                     this.generateJamoSequence();
                     this.updateKeyboardHighlight();
-
                     const textDisplay = document.getElementById('textDisplay');
                     if (this.currentMode === 'sentence') textDisplay.classList.add('sentence-mode');
                     else textDisplay.classList.remove('sentence-mode');
@@ -1013,40 +987,29 @@
                 }
             }
             
-            // [수정] 받침 오타 수정 로직 (Spillover Match)
             isPartialMatch(inputChar, targetChar, nextTargetChar = null) {
                 if (inputChar === targetChar) return true;
                 if (inputChar === ' ' || targetChar === ' ') return false;
-                
                 const inputDecomp = this.decomposeHangul(inputChar);
                 const targetDecomp = this.decomposeHangul(targetChar);
-                
-                // Case 1: Standard Partial
                 if (inputDecomp.length <= targetDecomp.length) {
                     for(let i=0; i<inputDecomp.length; i++) {
                         const inJ = inputDecomp[i];
                         const tgJ = targetDecomp[i];
                         if (inJ === tgJ) continue;
-                        
-                        // 복합 자음(겹받침) 처리 추가
-                        // 예: 타겟 'ㄹ', 입력 'ㄽ' -> 'ㄽ'의 첫번째가 'ㄹ'이면 통과
                         if (this.complexJongs[inJ] && this.complexJongs[inJ][0] === tgJ) {
-                             // spillover check: remainder matches start of next char?
                              if (nextTargetChar) {
                                   const remainder = this.complexJongs[inJ][1];
                                   const nextDecomp = this.decomposeHangul(nextTargetChar);
                                   if (nextDecomp[0] === remainder) continue;
                              }
                         }
-                        
                         if (this.complexVowels[tgJ] && this.complexVowels[tgJ][0] === inJ) continue;
                         if (this.complexJongs[tgJ] && this.complexJongs[tgJ][0] === inJ) continue;
                         return false;
                     }
                     return true;
                 }
-                
-                // Case 2: Spillover Match (Standard)
                 if (nextTargetChar && inputDecomp.length > targetDecomp.length) {
                     for(let i=0; i<targetDecomp.length; i++) {
                         if (inputDecomp[i] !== targetDecomp[i]) return false;
@@ -1128,26 +1091,20 @@
             updateKeyboardHighlight() {
                 const keyEls = document.querySelectorAll('.key');
                 keyEls.forEach(key => key.classList.remove('active'));
-
                 const inputValue = document.getElementById('typingInput').value;
                 let inputJamoCount = this.countJaso(inputValue);
-                
                 let jamoCounter = 0;
                 let targetChar = '';
-                
                 for (let i = 0; i < this.currentText.length; i++) {
                     const char = this.currentText[i];
                     const jamos = (char === ' ') ? [' '] : this.decomposeHangul(char);
-                    
                     if (inputJamoCount < jamoCounter + jamos.length) {
                         targetChar = char;
                         break;
                     }
                     jamoCounter += jamos.length;
                 }
-
                 if (!targetChar) return;
-
                 let vowel = '';
                 if (/[가-힣]/.test(targetChar)) {
                     const code = targetChar.charCodeAt(0) - 0xAC00;
@@ -1157,7 +1114,6 @@
                 } else if (/[ㅏ-ㅣ]/.test(targetChar)) {
                     vowel = targetChar;
                 }
-
                 const complexKeys = this.complexVowelMap[vowel];
                 if (complexKeys) {
                     const relativeIndex = inputJamoCount - jamoCounter;
@@ -1175,10 +1131,7 @@
                 } else {
                     if (this.currentJamoSequence[inputJamoCount]) {
                         const currentJamo = this.currentJamoSequence[inputJamoCount];
-                        let key = '';
-                        if(currentJamo === ' ') key = ' ';
-                        else key = this.getEnglishKey(currentJamo);
-                        
+                        let key = currentJamo === ' ' ? ' ' : this.getEnglishKey(currentJamo);
                         const el = document.querySelector(`.key[data-key="${key}"]`);
                         if(el) el.classList.add('active');
                     }
@@ -1193,8 +1146,6 @@
                         this.lastKeyTime = this.startTime;
                     }
                 }
-                
-                // Sound Effect (Modified: use playKeySound)
                 if (inputValue.length > 0) {
                     const lastIdx = inputValue.length - 1;
                     if (lastIdx < this.currentText.length) {
@@ -1203,65 +1154,38 @@
                         if (inputChar === char) {
                              this.playKeySound(true);
                         } else if (this.isPartialMatch(inputChar, char, this.currentText[lastIdx+1])) {
-                             // partial match is mostly neutral, but let's play correct for progress
                              this.playKeySound(true);
                         } else {
                              this.playKeySound(false);
                         }
                     }
                 }
-                
                 const display = document.getElementById('textDisplay');
+                const inputArea = document.getElementById('typingInput');
                 let html = '';
                 for(let i=0; i<this.currentText.length; i++) {
                     const char = this.currentText[i];
                     let cls = 'char';
                     if(char === ' ') cls += ' space';
-                    
                     if(i < inputValue.length) {
-                        if(inputValue[i] === char) {
-                            cls += ' correct';
-                        } else if (i === inputValue.length - 1 && this.isPartialMatch(inputValue[i], char, this.currentText[i+1])) {
-                            cls += ' current';
-                        } else {
-                            cls += ' incorrect';
-                        }
-                    } else if(i === inputValue.length) {
-                        cls += ' current';
-                    }
+                        if(inputValue[i] === char) cls += ' correct';
+                        else if (i === inputValue.length - 1 && this.isPartialMatch(inputValue[i], char, this.currentText[i+1])) cls += ' current';
+                        else cls += ' incorrect';
+                    } else if(i === inputValue.length) cls += ' current';
                     html += `<span class="${cls}">${char === ' ' ? '&nbsp;' : char}</span>`;
                 }
                 display.innerHTML = html;
-
                 this.currentPosition = inputValue.length;
                 this.updateStats();
                 this.updateKeyboardHighlight();
 
+                // 입력이 완료되었을 때 입력창 스타일 변경 (사용자 가이드)
                 if (inputValue === this.currentText) {
-                    // Update accumulated chars for consonant/vowel mode
-                    if (this.currentMode === 'consonant' || this.currentMode === 'vowel') {
-                        // Count characters without spaces (자음/모음 모드는 공백 제외한 글자 수 기준)
-                        const charCount = this.currentText.replace(/ /g, '').length;
-                        this.accumulatedChars += charCount;
-                    }
-
-                    if (this.currentMode === 'sentence') {
-                        const currentAccuracy = parseInt(document.getElementById('accuracy').textContent.replace('%', ''));
-                        const currentSpeed = parseInt(document.getElementById('speed').textContent);
-                        this.sentenceStats.push({
-                            sentenceNumber: this.currentProblem + 1,
-                            accuracy: currentAccuracy,
-                            speed: currentSpeed
-                        });
-                        this.recordSentenceData();
-                    }
-                    
-                    // Check completion condition for Con/Vowel
-                    if ((this.currentMode === 'consonant' || this.currentMode === 'vowel') && this.accumulatedChars >= 100) {
-                         this.showComplete();
-                    } else if (this.currentMode !== 'word') {
-                        setTimeout(() => this.nextProblem(), 200);
-                    }
+                    inputArea.classList.add('completed');
+                    inputArea.placeholder = "엔터(Enter)를 눌러 다음으로 넘어가세요.";
+                } else {
+                    inputArea.classList.remove('completed');
+                    inputArea.placeholder = "여기에 타이핑하세요...";
                 }
             }
 
@@ -1271,23 +1195,14 @@
                     const currentTextCharCount = this.currentText.length;
                     const inputValue = document.getElementById('typingInput').value;
                     let currentCorrectChars = 0;
-                    
                     for (let i = 0; i < Math.min(inputValue.length, this.currentText.length); i++) {
-                        if (inputValue[i] === this.currentText[i]) {
-                            currentCorrectChars += 1;
-                        }
+                        if (inputValue[i] === this.currentText[i]) currentCorrectChars += 1;
                     }
-                    
                     const accuracy = currentTextCharCount > 0 ? Math.round((currentCorrectChars / currentTextCharCount) * 100) : 100;
                     const cpm = Math.round((currentTextCharCount / (sentenceTime / 1000)) * 60);
-                    
                     this.sentenceTypingData.push({
-                        sentence: this.currentText,
-                        time: sentenceTime,
-                        accuracy: accuracy,
-                        wpm: cpm,
-                        mistakes: [...this.sentenceMistakes],
-                        keyTimings: [...this.sentenceKeyTimings]
+                        sentence: this.currentText, time: sentenceTime, accuracy: accuracy, wpm: cpm,
+                        mistakes: [...this.sentenceMistakes], keyTimings: [...this.sentenceKeyTimings]
                     });
                 }
             }
@@ -1298,39 +1213,40 @@
                 const typedCount = this.countJaso(inputValue);
                 const speed = elapsed > 0 ? Math.round(typedCount / elapsed) : 0;
                 document.getElementById('speed').innerText = speed;
-
                 if (inputValue.length === 0) {
                     document.getElementById('accuracy').innerText = '100%';
                     return;
                 }
-
                 let correctCount = 0;
                 for (let i = 0; i < inputValue.length; i++) {
                     if (i >= this.currentText.length) break; 
                     const char = this.currentText[i];
-                    const inputChar = inputValue[i];
-                    if (inputChar === char) {
-                        correctCount++;
-                    } else if (i === inputValue.length - 1 && this.isPartialMatch(inputChar, char, this.currentText[i+1])) {
-                        correctCount++;
-                    }
+                    if (inputValue[i] === char) correctCount++;
+                    else if (i === inputValue.length - 1 && this.isPartialMatch(inputValue[i], char, this.currentText[i+1])) correctCount++;
                 }
-
                 const accuracy = Math.floor((correctCount / inputValue.length) * 100);
                 document.getElementById('accuracy').innerText = accuracy + '%';
             }
 
             nextProblem() {
                 this.currentProblem++;
-                // Logic check for standard modes (Word/Sentence)
+                const inputEl = document.getElementById('typingInput');
+                
                 if ((this.currentMode === 'word' || this.currentMode === 'sentence') && this.currentProblem >= this.totalProblems) {
                     this.showComplete();
                 } else {
                     this.generateText();
                     this.currentPosition = 0;
-                    document.getElementById('typingInput').value = '';
-                    this.updateDisplay();
-                    this.updateKeyboardHighlight();
+                    
+                    inputEl.value = '';
+                    inputEl.classList.remove('completed');
+                    inputEl.placeholder = "여기에 타이핑하세요...";
+                    inputEl.blur();
+                    setTimeout(() => {
+                        inputEl.focus();
+                        this.updateDisplay();
+                        this.updateKeyboardHighlight();
+                    }, 50);
                 }
             }
 
@@ -1344,7 +1260,6 @@
                     if(!fingerStats[finger]) fingerStats[finger] = [];
                     fingerStats[finger].push(...latencies);
                 }
-                
                 const result = [];
                 for(let [finger, times] of Object.entries(fingerStats)) {
                     const avg = times.reduce((a,b)=>a+b,0) / times.length;
@@ -1358,15 +1273,11 @@
                 const max = Math.max(...data, 100); 
                 const min = 0; 
                 const range = max - min;
-                const width = 100;
-                const height = 40;
-                
                 const points = data.map((val, i) => {
-                    const x = (i / (data.length - 1)) * width;
-                    const y = height - ((val - min) / range) * height;
+                    const x = (i / (data.length - 1)) * 100;
+                    const y = 40 - ((val - min) / range) * 40;
                     return `${x},${y}`;
                 }).join(' ');
-
                 return `<svg viewBox="0 0 100 40" preserveAspectRatio="none" style="width:100%; height:100%; overflow:visible;"><polyline fill="none" stroke="#667eea" stroke-width="2" points="${points}" vector-effect="non-scaling-stroke" /></svg>`;
             }
 
@@ -1384,12 +1295,10 @@
                 const totalAcc = this.sentenceStats.reduce((a,b)=>a+b.accuracy,0) / this.sentenceStats.length;
                 const avgSpeed = Math.round(totalSpeed) || 0;
                 const avgAcc = Math.round(totalAcc) || 0;
-
                 const slowKeys = this.analyzeSlowCharacters(); 
                 const fingerPerf = this.analyzeFingerPerformance(); 
                 const rhythmGraph = this.generateSparkline(this.speedHistory); 
                 const weakestFinger = fingerPerf.length > 0 ? fingerPerf[0] : { finger: '분석 필요', avg: 0 };
-                
                 let grade = "C", gradeColor = "#868e96";
                 if(avgSpeed > 500 && avgAcc > 98) { grade = "S"; gradeColor = "#d63384"; }
                 else if(avgSpeed > 400) { grade = "A"; gradeColor = "#667eea"; }
@@ -1432,7 +1341,6 @@
                 `;
                 document.getElementById('aiRestartBtn').addEventListener('click', () => this.restart());
                 document.getElementById('aiContinueBtn').addEventListener('click', () => this.continuePractice());
-                setTimeout(() => { document.querySelectorAll('.bar-fill').forEach(el => { el.style.width = el.getAttribute('data-width'); }); }, 100);
             }
 
             generateAIAdvice(speed, acc, weakFinger) {
@@ -1463,10 +1371,8 @@
                      const modal = document.getElementById('completeModal');
                      const content = document.getElementById('modalContent');
                      content.className = 'modal-content'; 
-                     
                      const acc = document.getElementById('accuracy').innerText;
                      const spd = document.getElementById('speed').innerText;
-
                      content.innerHTML = `
                         <h2 class="complete-title">연습 완료! 🎉</h2>
                         <h4 class="complete-subtitle">꾸준한 연습이 완벽을 만듭니다.</h4>
@@ -1485,21 +1391,22 @@
                             <button class="continue-btn" id="continueBtn">계속하기</button> 
                         </div>
                      `;
-                     
-                     // Re-bind
                      document.getElementById('restartBtn').addEventListener('click', () => this.restart());
                      document.getElementById('continueBtn').addEventListener('click', () => this.continuePractice());
-
                      modal.style.display = 'flex';
                  }
             }
             
             continuePractice() {
                 this.currentProblem = 0;
+                if ((this.currentMode === 'consonant' || this.currentMode === 'vowel') && this.accumulatedChars >= 100) {
+                    this.accumulatedChars = 0;
+                }
                 document.getElementById('completeModal').style.display = 'none';
                 this.generateText();
                 this.updateDisplay();
                 document.getElementById('typingInput').value = '';
+                document.getElementById('typingInput').classList.remove('completed');
                 document.getElementById('typingInput').focus();
             }
 
@@ -1516,12 +1423,9 @@
                 this.lastKeyPressed = null;
                 this.keyLatencies = {};
                 this.speedHistory = [];
-                
-                this.accumulatedChars = 0; // Reset accumulated chars
-                
+                this.accumulatedChars = 0; 
                 document.getElementById('accuracy').textContent = '100%';
                 document.getElementById('speed').textContent = '0';
-                
                 if (this.currentMode === 'consonant' || this.currentMode === 'vowel') {
                      document.getElementById('progress').textContent = `0/100자`;
                 } else {

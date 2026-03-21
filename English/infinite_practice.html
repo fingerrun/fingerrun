@@ -355,8 +355,8 @@
                     'left-pinky': { label: '왼손 새끼', chars: 'qaz' },
                     'left-ring': { label: '왼손 약지', chars: 'wsx' },
                     'left-middle': { label: '왼손 중지', chars: 'edc' },
-                    'left-index': { label: '왼손 검지', chars: 'rfvtgb' },
-                    'right-index': { label: '오른손 검지', chars: 'yhnujm' },
+                    'left-pinky-ext': { label: '왼손 검지', chars: 'rfvtgb' },
+                    'right-pinky-ext': { label: '오른손 검지', chars: 'yhnujm' },
                     'right-middle': { label: '오른손 중지', chars: 'ik' },
                     'right-ring': { label: '오른손 약지', chars: 'ol' },
                     'right-pinky': { label: '오른손 새끼', chars: 'p' }
@@ -531,7 +531,8 @@
                 const typingInput = document.getElementById('typingInput');
                 typingInput.addEventListener('input', (e) => this.handleInput(e.target.value));
                 typingInput.addEventListener('keydown', (e) => {
-                    if ((e.key === ' ' || e.key === 'Enter') && this.currentPosition >= this.currentText.length) {
+                    // 무조건 엔터키만 허용 (입력이 완료되었을 때만 작동)
+                    if (e.key === 'Enter' && this.currentPosition >= this.currentText.length) {
                         e.preventDefault();
                         this.nextProblem();
                     }
@@ -577,7 +578,8 @@
                 if (this.currentMode === 'alphabet') {
                     const chars = this.fingerSets[this.currentSubMode].chars;
                     let selected = [];
-                    for(let i=0; i<7; i++) selected.push(chars[Math.floor(Math.random()*chars.length)]);
+                    // 알파벳 10개 연습으로 변경
+                    for(let i=0; i<10; i++) selected.push(chars[Math.floor(Math.random()*chars.length)]);
                     this.currentText = selected.join(' ');
                     this.currentTranslation = '';
                 } else if (this.currentMode === 'word') {
@@ -633,7 +635,11 @@
 
                 if (this.currentMode === 'sentence' || this.currentMode === 'word') {
                     const chars = document.querySelectorAll('.char');
-                    chars.forEach(char => { char.style.color = '#8b5cf6'; char.style.background = 'none'; });
+                    chars.forEach(char => { 
+                        if (!char.classList.contains('correct') && !char.classList.contains('incorrect') && !char.classList.contains('current')) {
+                             char.style.color = '#8b5cf6'; char.style.background = 'none'; 
+                        }
+                    });
                 }
                 
                 this.updateKeyboardHighlight();
@@ -643,6 +649,8 @@
             handleInput(val) {
                 if (!this.startTime) this.startTime = Date.now();
                 const lastIdx = val.length - 1;
+                
+                // 마지막 입력된 문자 소리 재생
                 if (lastIdx >= 0 && lastIdx < this.currentText.length) {
                     this.playKeySound(val[lastIdx] === this.currentText[lastIdx]);
                 }
@@ -654,24 +662,38 @@
                 for (let i = 0; i < this.currentText.length; i++) {
                     const char = chars[i];
                     if (!char) continue;
+                    
                     if (this.currentMode === 'alphabet') {
-                        if (i < val.length) char.className = 'char ' + (val[i] === this.currentText[i] ? 'correct' : 'incorrect');
-                        else char.className = 'char' + (i === val.length ? ' current' : '');
-                        if (val[i] === this.currentText[i]) this.correctChars++;
-                    } else {
                         if (i < val.length) {
-                            if (val[i] === this.currentText[i]) { char.style.color = '#000'; this.correctChars++; }
-                            else char.style.color = '#ff4444';
-                        } else char.style.color = (i === val.length) ? '#3b82f6' : '#8b5cf6';
+                            char.className = 'char ' + (val[i] === this.currentText[i] ? 'correct' : 'incorrect');
+                            if (val[i] === this.currentText[i]) this.correctChars++;
+                        } else {
+                            char.className = 'char' + (i === val.length ? ' current' : '');
+                        }
+                    } else {
+                        // 단어/문장 모드 스타일 처리
+                        if (i < val.length) {
+                            if (val[i] === this.currentText[i]) { 
+                                char.style.color = '#000'; 
+                                char.classList.add('correct');
+                                this.correctChars++; 
+                            } else { 
+                                char.style.color = '#ff4444'; 
+                                char.classList.add('incorrect');
+                            }
+                        } else {
+                            char.style.color = (i === val.length) ? '#3b82f6' : '#8b5cf6';
+                            char.classList.remove('correct', 'incorrect');
+                            if(i === val.length) char.classList.add('current');
+                            else char.classList.remove('current');
+                        }
                     }
                 }
                 this.currentPosition = val.length;
                 this.updateStats();
                 this.updateKeyboardHighlight();
-
-                if (this.currentMode !== 'sentence' && val === this.currentText) {
-                    setTimeout(() => this.nextProblem(), 200);
-                }
+                
+                // 기존의 자동 다음 문제 이동 로직을 제거함
             }
 
             updateStats() {
@@ -686,6 +708,7 @@
 
             updateKeyboardHighlight() {
                 document.querySelectorAll('.key').forEach(key => key.classList.remove('active'));
+                
                 if (this.currentPosition < this.currentText.length) {
                     const char = this.currentText[this.currentPosition].toLowerCase();
                     const keyName = this.keyboardMap[char];
@@ -697,6 +720,10 @@
                         const spaceKey = document.querySelector(`[data-key=" "]`);
                         if (spaceKey) spaceKey.classList.add('active');
                     }
+                } else {
+                    // 모든 입력을 마쳤을 때 엔터키 강조
+                    const enterKey = document.querySelector(`[data-key="Enter"]`);
+                    if (enterKey) enterKey.classList.add('active');
                 }
             }
 
