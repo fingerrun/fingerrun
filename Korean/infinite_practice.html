@@ -110,6 +110,8 @@
         .input-area { margin-bottom: 3rem; }
         .typing-input { width: 100%; padding: 18px; font-size: 1.2rem; border: 2px solid #e2e8f0; border-radius: 15px; text-align: center; outline: none; background: white; color: #333; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
         .typing-input:focus { border-color: #667eea; box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2); }
+        /* 완벽하게 입력했을 때 강조 */
+        .typing-input.completed { border-color: #4caf50; background-color: #f1f8f1; }
 
         .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; background: #f8f9fa; padding: 2rem; border-radius: 15px; margin-bottom: 2rem; border: 2px solid #e2e8f0; }
         .stat-item { text-align: center; padding: 1.5rem; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); }
@@ -556,6 +558,7 @@
                 this.generateText();
                 this.updateDisplay();
                 document.getElementById('typingInput').value = '';
+                document.getElementById('typingInput').classList.remove('completed');
                 this.startTime = null;
                 this.lastInputJamoLength = 0;
             }
@@ -672,6 +675,16 @@
                 this.currentPosition = val.length;
                 this.updateStats();
                 this.updateKeyboardHighlight();
+
+                // 입력 길이에 도달했을 때 입력창 스타일 변경 및 가이드
+                const inputArea = document.getElementById('typingInput');
+                if (val.length >= this.currentText.length && val.length > 0) {
+                    inputArea.classList.add('completed');
+                    inputArea.placeholder = "엔터(Enter)를 눌러 다음으로 넘어가세요.";
+                } else {
+                    inputArea.classList.remove('completed');
+                    inputArea.placeholder = "입력을 시작하세요...";
+                }
             }
 
             updateStats() {
@@ -689,6 +702,14 @@
                 document.querySelectorAll('.key').forEach(k => k.classList.remove('active'));
                 const input = document.getElementById('typingInput');
                 const val = input.value;
+
+                // 입력 길이에 도달한 상태라면 엔터키 강조
+                if (val.length >= this.currentText.length && val.length > 0) {
+                    const el = document.querySelector('.key[data-key="Enter"]');
+                    if (el) el.classList.add('active');
+                    return;
+                }
+
                 let jamoIdx = 0;
                 for(let i=0; i<Math.min(val.length, this.currentText.length); i++) {
                     if(this.currentText[i] === ' ') jamoIdx++;
@@ -706,7 +727,10 @@
                 this.problemCount++;
                 this.generateText();
                 this.updateDisplay();
-                document.getElementById('typingInput').value = '';
+                const input = document.getElementById('typingInput');
+                input.value = '';
+                input.classList.remove('completed');
+                input.placeholder = "입력을 시작하세요...";
                 this.startTime = null;
                 this.lastInputJamoLength = 0;
             }
