@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.67, maximum-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5657188598576847" crossorigin="anonymous"></script>
     
     <!-- Google Tag Manager -->
@@ -47,9 +47,20 @@
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; min-height: 100vh; color: #333; line-height: 1.6; }
         
-        /* Navigation - 한글 버전과 완전 동일 구조 및 스타일 */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: #f5f5f5; 
+            min-height: 100vh; 
+            color: #333; 
+            line-height: 1.6; 
+            display: grid;
+            grid-template-columns: 1fr minmax(auto, 1200px) 1fr;
+            gap: 0 60px;
+            align-items: start;
+        }
+        
+        /* Navigation */
         nav {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -61,101 +72,30 @@
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
         }
 
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #667eea;
-            text-decoration: none;
-            display: flex; align-items: center; gap: 0.5rem;
-            text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
-        }
-
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 2rem; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: #667eea; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; text-shadow: 1px 1px 0px rgba(255,255,255,0.5); }
         .logo img { height: 32px; width: auto; }
-
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 1.5rem;
-            align-items: center;
-            margin: 0; padding: 0;
-        }
-
+        .nav-menu { display: flex; list-style: none; gap: 1.5rem; align-items: center; margin: 0; padding: 0; }
         .nav-menu li { position: relative; }
-
-        .nav-menu a {
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-            padding: 0.5rem 0.8rem;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
-        .nav-menu a:hover {
-            background: #667eea;
-            color: white !important;
-            transform: translateY(-2px);
-        }
-
+        .nav-menu a { text-decoration: none; color: #333; font-weight: 500; padding: 0.5rem 0.8rem; border-radius: 25px; transition: all 0.3s ease; font-size: 0.9rem; display: flex; align-items: center; gap: 0.3rem; }
+        .nav-menu a:hover { background: #667eea; color: white !important; transform: translateY(-2px); }
         .dropdown-arrow { font-size: 0.7rem; transition: transform 0.3s ease; }
-        
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%) translateY(10px);
-            background: white;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            border-radius: 10px;
-            padding: 0.5rem 0;
-            min-width: 160px;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 1001;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .nav-menu li:hover .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(0);
-        }
-
+        .dropdown-menu { position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px); background: white; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); border-radius: 10px; padding: 0.5rem 0; min-width: 160px; opacity: 0; visibility: hidden; transition: all 0.3s ease; z-index: 1001; border: 1px solid rgba(0, 0, 0, 0.1); }
+        .nav-menu li:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
         .nav-menu li:hover .dropdown-arrow { transform: rotate(180deg); }
-
-        .dropdown-menu a {
-            display: block;
-            padding: 0.7rem 1rem;
-            color: #333;
-            border-radius: 0;
-            white-space: nowrap;
-            font-weight: 400;
-        }
-
-        .dropdown-menu a:hover {
-            background: #f8f9fa;
-            color: #667eea !important;
-            transform: none;
-        }
+        .dropdown-menu a { display: block; padding: 0.7rem 1rem; color: #333; border-radius: 0; white-space: nowrap; font-weight: 400; }
+        .dropdown-menu a:hover { background: #f8f9fa; color: #667eea !important; transform: none; }
 
         @media (max-width: 900px) { .nav-menu { display: none; } }
         
         /* Main Container */
-        .main-container { margin-top: 80px; padding: 2rem 0; max-width: 1200px; margin-left: auto; margin-right: auto; padding-left: 2rem; padding-right: 2rem; }
+        .main-container { 
+            grid-column: 2;
+            grid-row: 1; 
+            margin-top: 80px; 
+            padding: 2rem 0; 
+            width: 100%;
+        }
         .page-header { text-align: center; margin-bottom: 3rem; }
         .page-title { font-size: 2.5rem; font-weight: 700; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 1rem; }
         .page-description { font-size: 1.2rem; color: #666; max-width: 600px; margin: 0 auto; white-space: nowrap; }
@@ -179,15 +119,10 @@
         .text-display { font-size: 1.8rem; line-height: 1.8; margin-bottom: 2rem; min-height: 120px; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #f8f9fa; border-radius: 15px; padding: 2rem; word-break: keep-all; letter-spacing: 2px; border: 2px solid #e2e8f0; transition: all 0.3s ease; position: relative; }
         .text-display.sentence-mode { letter-spacing: 0.2px; line-height: 1.6; background: white; }
         
-        /* 캐릭터 스타일 - 한글 연습과 동일한 오타 색상 적용 */
+        /* 캐릭터 스타일 */
         .char { margin: 3px; padding: 8px 10px; border-radius: 8px; transition: all 0.3s ease; color: #666; font-weight: 500; }
         .char.correct { color: white; background: linear-gradient(45deg, #4caf50, #45a049); transform: scale(1.1); box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3); }
-        .char.incorrect { 
-            color: white !important; 
-            background: linear-gradient(45deg, #ff6b6b, #ff5252) !important; 
-            transform: scale(1.1) !important; 
-            box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3) !important; 
-        }
+        .char.incorrect { color: white !important; background: linear-gradient(45deg, #ff6b6b, #ff5252) !important; transform: scale(1.1) !important; box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3) !important; }
         .char.current { color: white; background: linear-gradient(45deg, #667eea, #764ba2); animation: pulse 1.5s infinite; transform: scale(1.15); }
         .char.space { display: inline-block; width: 0.5em; transform: none !important; background: transparent !important; box-shadow: none !important; }
         
@@ -202,7 +137,7 @@
         .keyboard { background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); border: 2px solid #e2e8f0; width: 100%; margin: 2rem 0; }
         .keyboard-row { display: flex; justify-content: center; margin-bottom: 0.5rem; gap: 0.3rem; }
         .key { background: linear-gradient(145deg, #f8f9fa, #e9ecef); border: 2px solid #e2e8f0; border-radius: 8px; padding: 0.8rem; min-width: 2.5rem; height: 2.5rem; display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 0.9rem; color: #495057; transition: all 0.3s ease; }
-        .key.active { border: 2px solid #667eea !important; color: #667eea !important; background: white !important; box-shadow: 0 0 15px #667eea; transform: translateY(2px); }
+        .key.active { border: 2px solid #667eea !important; color: #667eea !important; background: white !important; box-shadow: 0 0 15px #667eea; transform: translateY(2px); z-index: 10; }
         .key.wide { min-width: 4rem; }
         .key.space { min-width: 12rem; }
         .key.shift { min-width: 5rem; }
@@ -215,51 +150,95 @@
         .input-area { margin-bottom: 3rem; }
         .typing-input { width: 100%; padding: 18px; font-size: 1.2rem; border: 2px solid #e2e8f0; border-radius: 15px; text-align: center; outline: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
         .typing-input:focus { border-color: #667eea; box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2); }
+        .typing-input.completed { border-color: #4caf50; background-color: #f1f8f1; }
         
         /* Stats */
         .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; background: #f8f9fa; padding: 2rem; border-radius: 15px; border: 2px solid #e2e8f0; }
         .stat-item { text-align: center; padding: 1.5rem; background: white; border-radius: 12px; }
         .stat-value { font-size: 2.2rem; font-weight: 700; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
         
-        /* Modal */
+        /* Modal & UI Feedback Base */
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: none; justify-content: center; align-items: center; z-index: 2000; animation: fadeIn 0.5s ease; }
-        .modal-content { background: white; padding: 3rem; border-radius: 20px; text-align: center; max-width: 500px; width: 90%; }
-        .modal-content.ai-feedback { max-width: 1000px; width: 95%; max-height: 95vh; overflow-y: auto; text-align: left; padding: 0; border-radius: 24px; }
+        .modal-content { background: white; padding: 3rem; border-radius: 20px; text-align: center; max-width: 500px; width: 90%; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); animation: slideUp 0.5s ease; }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         
-        /* AI Report Layout */
+        .complete-title { font-size: 2.8rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(to right, #667eea, #764ba2); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .complete-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 2rem; }
+        .complete-stats { display: flex; justify-content: space-around; margin-bottom: 2rem; gap: 1rem; }
+        .complete-stat { flex: 1; padding: 1.5rem; background: #f8f9fa; border-radius: 16px; border: 1px solid #e9ecef; }
+        .complete-value { font-size: 2rem; font-weight: 800; color: #667eea; margin-bottom: 0.25rem; }
+        .complete-label { font-size: 0.9rem; color: #868e96; font-weight: 600; }
+
+        .modal-buttons { display: flex; gap: 1rem; justify-content: center; padding-top: 1rem; }
+        .restart-btn, .continue-btn { padding: 12px 30px; border-radius: 12px; font-weight: 700; font-size: 1rem; border: none; cursor: pointer; transition: transform 0.2s; flex: 1; max-width: 250px; }
+        .restart-btn { background: #e9ecef; color: #495057; }
+        .continue-btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3); }
+        .restart-btn:hover, .continue-btn:hover { transform: translateY(-2px); }
+
+        /* AI Feedback CSS */
+        .modal-content.ai-feedback { max-width: 1000px; width: 95%; max-height: 95vh; overflow-y: auto; text-align: left; padding: 0; background: #fdfdfd; border-radius: 24px; }
         .ai-report-container { display: grid; grid-template-columns: 300px 1fr; gap: 20px; padding: 2rem; }
         @media (max-width: 800px) { .ai-report-container { grid-template-columns: 1fr; } }
-        .ai-sidebar { background: #f8f9fa; border-radius: 16px; padding: 1.5rem; text-align: center; }
-        .neon-score { font-size: 3.5rem; font-weight: 800; color: #667eea; }
-        .ai-card { background: white; border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; border: 1px solid #eee; }
-        
-        .modal-buttons { display: flex; gap: 1rem; justify-content: center; padding: 2rem; }
-        .restart-btn, .continue-btn { padding: 15px 40px; border: none; border-radius: 25px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; flex: 1; max-width: 200px; }
-        .restart-btn { background: #667eea; color: white; }
-        .continue-btn { background: #28a745; color: white; }
-
-        .loading { width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        
-        .rhythm-graph { height: 60px; width: 100%; display: flex; align-items: flex-end; gap: 2px; }
+        .ai-sidebar { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; align-items: center; text-align: center; }
+        .ai-main-content { display: flex; flex-direction: column; gap: 1.5rem; }
+        .ai-card { background: white; border-radius: 16px; padding: 1.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05); }
+        .ai-card-title { font-size: 1.1rem; font-weight: 700; color: #495057; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
+        .ai-card-title svg { width: 20px; height: 20px; color: #667eea; }
+        .neon-score { font-size: 3.5rem; font-weight: 800; color: #667eea; text-shadow: 0 0 15px rgba(102, 126, 234, 0.4); margin: 0.5rem 0; line-height: 1; }
+        .neon-grade { font-size: 1.5rem; font-weight: 700; background: linear-gradient(90deg, #667eea, #764ba2); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem; }
+        .stat-grid-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+        .stat-box-mini { background: rgba(255, 255, 255, 0.6); border-radius: 12px; padding: 10px; border: 1px solid rgba(0,0,0,0.05); }
+        .stat-box-mini .label { font-size: 0.8rem; color: #868e96; }
+        .stat-box-mini .value { font-size: 1.2rem; font-weight: 700; color: #333; }
+        .bar-chart-container { display: flex; flex-direction: column; gap: 12px; }
+        .bar-row { display: flex; align-items: center; gap: 10px; }
+        .bar-bg { flex: 1; height: 12px; background: #e9ecef; border-radius: 6px; overflow: hidden; }
+        .bar-fill { height: 100%; background: linear-gradient(90deg, #ff6b6b, #ff8787); border-radius: 6px; width: 0%; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
+        .rhythm-graph { height: 60px; width: 100%; display: flex; align-items: flex-end; gap: 4px; padding-top: 10px; }
+        .rhythm-bar { flex: 1; background: rgba(102, 126, 234, 0.3); border-radius: 2px; transition: height 0.5s ease; }
+        .loading { display: inline-block; width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 1rem; }
+        .highlight-badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-weight: 600; font-size: 0.9em; }
+        .badge-red { background: #ffe3e3; color: #e03131; }
+        .badge-blue { background: #dbe4ff; color: #4263eb; }
 
         /* [광고] 사이드바 */
-        .ad-sidebar { position: fixed; width: 240px; top: 155px; bottom: 75px; z-index: 50; visibility: hidden; }
-        @media (min-width: 1800px) {
-            .ad-sidebar { visibility: visible; }
-            .ad-left { left: 75px; }
-            .ad-right { right: 75px; }
+        .ad-sidebar {
+            position: sticky;
+            top: 100px;
+            width: 240px;
+            z-index: 50;
+            grid-row: 1; 
+            height: 900px; 
         }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .ad-left { 
+            grid-column: 1; 
+            justify-self: end; 
+        }
+
+        .ad-right { 
+            grid-column: 3; 
+            justify-self: start; 
+        }
+
+        .ad-sidebar ins {
+            display: inline-block !important;
+            width: 240px !important;
+            height: 900px !important; 
+        }
+
+        @media (max-width: 1700px) {
+            body { grid-template-columns: 1fr; }
+            .ad-sidebar { display: none; }
+            .main-container { grid-column: 1; padding: 2rem 1rem; }
+        }
     </style>
 </head>
 
 <body>
     <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T9HC454Z"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T9HC454Z" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
     <div class="ad-sidebar ad-left">
         <ins class="adsbygoogle" style="display:inline-block; width:240px; height:100%;" data-ad-client="ca-pub-5657188598576847" data-ad-slot="4465825129" data-ad-format="vertical"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -270,7 +249,7 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
-    <!-- Navigation - 한글 버전과 완전 동일하게 통일 -->
+    <!-- Navigation -->
     <nav>
         <div class="nav-container">
             <a href="../index.html" class="logo"><img src="../images/finger-run-logo.svg" alt=""> FingerRun</a>
@@ -419,6 +398,7 @@
             </div>
         </div>
 
+        <!-- 모달 컨테이너 -->
         <div class="modal" id="completeModal">
             <div class="modal-content" id="modalContent"></div>
         </div>
@@ -465,6 +445,18 @@
                     'right-pinky': { label: '오른손 새끼', chars: 'p' }
                 };
 
+                // 영어 키보드 손가락 매핑 (AI 피드백용)
+                this.fingerMap = {
+                    'q': 'left-pinky', 'a': 'left-pinky', 'z': 'left-pinky',
+                    'w': 'left-ring', 's': 'left-ring', 'x': 'left-ring',
+                    'e': 'left-middle', 'd': 'left-middle', 'c': 'left-middle',
+                    'r': 'left-index', 'f': 'left-index', 'v': 'left-index', 't': 'left-index', 'g': 'left-index', 'b': 'left-index',
+                    'y': 'right-index', 'h': 'right-index', 'n': 'right-index', 'u': 'right-index', 'j': 'right-index', 'm': 'right-index',
+                    'i': 'right-middle', 'k': 'right-middle',
+                    'o': 'right-ring', 'l': 'right-ring',
+                    'p': 'right-pinky'
+                };
+
                 this.keyboardMap = {
                     'a': 'a', 'b': 'b', 'c': 'c', 'd': 'd', 'e': 'e', 'f': 'f', 'g': 'g', 'h': 'h', 'i': 'i', 'j': 'j', 'k': 'k', 'l': 'l', 'm': 'm', 'n': 'n', 'o': 'o', 'p': 'p', 'q': 'q', 'r': 'r', 's': 's', 't': 't', 'u': 'u', 'v': 'v', 'w': 'w', 'x': 'x', 'y': 'y', 'z': 'z',
                     'A': 'a', 'B': 'b', 'C': 'c', 'D': 'd', 'E': 'e', 'F': 'f', 'G': 'g', 'H': 'h', 'I': 'i', 'J': 'j', 'K': 'k', 'L': 'l', 'M': 'm', 'N': 'n', 'O': 'o', 'P': 'p', 'Q': 'q', 'R': 'r', 'S': 's', 'T': 't', 'U': 'u', 'V': 'v', 'W': 'w', 'X': 'x', 'Y': 'y', 'Z': 'z',
@@ -472,18 +464,82 @@
                     '.': '.', ',': ',', '?': '/', '!': '1', ';': ';', ':': ';', "'": "'", '"': "'", ' ': ' '
                 };
 
+                // 단어 100개, 문장 50개 대폭 확장 적용
                 this.practiceData = {
                     alphabet: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
                     word: [
                         {en: 'apple', ko: '사과'}, {en: 'book', ko: '책'}, {en: 'computer', ko: '컴퓨터'}, {en: 'dream', ko: '꿈'}, {en: 'effort', ko: '노력'},
                         {en: 'freedom', ko: '자유'}, {en: 'growth', ko: '성장'}, {en: 'history', ko: '역사'}, {en: 'idea', ko: '아이디어'}, {en: 'journey', ko: '여행'},
-                        {en: 'knowledge', ko: '지식'}, {en: 'love', ko: '사랑'}, {en: 'music', ko: '음악'}, {en: 'nature', ko: '자연'}, {en: 'ocean', ko: '바다'}
+                        {en: 'knowledge', ko: '지식'}, {en: 'love', ko: '사랑'}, {en: 'music', ko: '음악'}, {en: 'nature', ko: '자연'}, {en: 'ocean', ko: '바다'},
+                        {en: 'family', ko: '가족'}, {en: 'friend', ko: '친구'}, {en: 'school', ko: '학교'}, {en: 'time', ko: '시간'}, {en: 'money', ko: '돈'},
+                        {en: 'world', ko: '세계'}, {en: 'peace', ko: '평화'}, {en: 'health', ko: '건강'}, {en: 'success', ko: '성공'}, {en: 'future', ko: '미래'},
+                        {en: 'memory', ko: '기억'}, {en: 'science', ko: '과학'}, {en: 'art', ko: '예술'}, {en: 'culture', ko: '문화'}, {en: 'society', ko: '사회'},
+                        {en: 'economy', ko: '경제'}, {en: 'politics', ko: '정치'}, {en: 'language', ko: '언어'}, {en: 'energy', ko: '에너지'}, {en: 'space', ko: '우주'},
+                        {en: 'system', ko: '시스템'}, {en: 'method', ko: '방법'}, {en: 'problem', ko: '문제'}, {en: 'solution', ko: '해결책'}, {en: 'result', ko: '결과'},
+                        {en: 'process', ko: '과정'}, {en: 'reason', ko: '이유'}, {en: 'effect', ko: '효과'}, {en: 'value', ko: '가치'}, {en: 'quality', ko: '품질'},
+                        {en: 'quantity', ko: '수량'}, {en: 'shape', ko: '모양'}, {en: 'size', ko: '크기'}, {en: 'color', ko: '색깔'}, {en: 'sound', ko: '소리'},
+                        {en: 'light', ko: '빛'}, {en: 'temperature', ko: '온도'}, {en: 'weather', ko: '날씨'}, {en: 'season', ko: '계절'}, {en: 'spring', ko: '봄'},
+                        {en: 'summer', ko: '여름'}, {en: 'autumn', ko: '가을'}, {en: 'winter', ko: '겨울'}, {en: 'morning', ko: '아침'}, {en: 'afternoon', ko: '오후'},
+                        {en: 'evening', ko: '저녁'}, {en: 'night', ko: '밤'}, {en: 'today', ko: '오늘'}, {en: 'tomorrow', ko: '내일'}, {en: 'yesterday', ko: '어제'},
+                        {en: 'week', ko: '주'}, {en: 'month', ko: '월'}, {en: 'year', ko: '년'}, {en: 'century', ko: '세기'}, {en: 'person', ko: '사람'},
+                        {en: 'people', ko: '사람들'}, {en: 'child', ko: '아이'}, {en: 'adult', ko: '어른'}, {en: 'man', ko: '남자'}, {en: 'woman', ko: '여자'},
+                        {en: 'animal', ko: '동물'}, {en: 'plant', ko: '식물'}, {en: 'tree', ko: '나무'}, {en: 'flower', ko: '꽃'}, {en: 'fruit', ko: '과일'},
+                        {en: 'food', ko: '음식'}, {en: 'water', ko: '물'}, {en: 'air', ko: '공기'}, {en: 'earth', ko: '지구'}, {en: 'fire', ko: '불'},
+                        {en: 'wind', ko: '바람'}, {en: 'star', ko: '별'}, {en: 'sun', ko: '태양'}, {en: 'moon', ko: '달'}, {en: 'planet', ko: '행성'},
+                        {en: 'galaxy', ko: '은하'}, {en: 'universe', ko: '우주'}, {en: 'mind', ko: '마음'}, {en: 'heart', ko: '심장'}, {en: 'body', ko: '몸'},
+                        {en: 'soul', ko: '영혼'}, {en: 'spirit', ko: '정신'}, {en: 'thought', ko: '생각'}, {en: 'emotion', ko: '감정'}, {en: 'passion', ko: '열정'}
                     ],
                     sentence: [
                         {en: 'Beauty is in the eye of the beholder.', ko: '아름다움은 보는 이의 눈에 달려 있다.'},
                         {en: 'Don\'t count your chickens before they hatch.', ko: '김칫국부터 마시지 마라.'},
                         {en: 'Hope for the best, prepare for the worst.', ko: '최선을 바라되 최악을 대비하라.'},
-                        {en: 'Where there\'s a will, there\'s a way.', ko: '뜻이 있는 곳에 길이 있다.'}
+                        {en: 'Where there\'s a will, there\'s a way.', ko: '뜻이 있는 곳에 길이 있다.'},
+                        {en: 'Practice makes perfect.', ko: '연습이 완벽을 만든다.'},
+                        {en: 'A friend in need is a friend indeed.', ko: '어려울 때 친구가 진정한 친구다.'},
+                        {en: 'Actions speak louder than words.', ko: '말보다 행동이 더 중요하다.'},
+                        {en: 'Every cloud has a silver lining.', ko: '쥐구멍에도 볕 들 날 있다.'},
+                        {en: 'Rome wasn\'t built in a day.', ko: '로마는 하루아침에 이루어지지 않았다.'},
+                        {en: 'The early bird catches the worm.', ko: '일찍 일어나는 새가 벌레를 잡는다.'},
+                        {en: 'Better late than never.', ko: '안 하는 것보다는 늦게라도 하는 것이 낫다.'},
+                        {en: 'Honesty is the best policy.', ko: '정직이 최선책이다.'},
+                        {en: 'Knowledge is power.', ko: '아는 것이 힘이다.'},
+                        {en: 'Time is money.', ko: '시간은 금이다.'},
+                        {en: 'Two heads are better than one.', ko: '백지장도 맞들면 낫다.'},
+                        {en: 'When in Rome, do as the Romans do.', ko: '로마에 가면 로마법을 따르라.'},
+                        {en: 'A picture is worth a thousand words.', ko: '백문이 불여일견이다.'},
+                        {en: 'Ignorance is bliss.', ko: '모르는 게 약이다.'},
+                        {en: 'No pain, no gain.', ko: '고통 없이는 얻는 것도 없다.'},
+                        {en: 'Laughter is the best medicine.', ko: '웃음이 최고의 명약이다.'},
+                        {en: 'The pen is mightier than the sword.', ko: '펜은 칼보다 강하다.'},
+                        {en: 'Birds of a feather flock together.', ko: '유유상종.'},
+                        {en: 'Don\'t judge a book by its cover.', ko: '겉모습만 보고 판단하지 마라.'},
+                        {en: 'All that glitters is not gold.', ko: '반짝인다고 다 금은 아니다.'},
+                        {en: 'Curiosity killed the cat.', ko: '지나친 호기심은 화를 부른다.'},
+                        {en: 'Familiarity breeds contempt.', ko: '너무 친해지면 무례해지기 쉽다.'},
+                        {en: 'Fortune favors the bold.', ko: '행운은 용기 있는 자의 편이다.'},
+                        {en: 'Haste makes waste.', ko: '급할수록 돌아가라.'},
+                        {en: 'It\'s no use crying over spilled milk.', ko: '이미 엎질러진 물이다.'},
+                        {en: 'Let sleeping dogs lie.', ko: '긁어 부스럼 만들지 마라.'},
+                        {en: 'Look before you leap.', ko: '돌다리도 두들겨 보고 건너라.'},
+                        {en: 'Necessity is the mother of invention.', ko: '필요는 발명의 어머니이다.'},
+                        {en: 'Out of sight, out of mind.', ko: '눈에서 멀어지면 마음에서도 멀어진다.'},
+                        {en: 'Slow and steady wins the race.', ko: '천천히 그리고 꾸준히 하는 자가 이긴다.'},
+                        {en: 'Strike while the iron is hot.', ko: '쇠뿔도 단김에 빼라.'},
+                        {en: 'The grass is always greener on the other side.', ko: '남의 떡이 더 커 보인다.'},
+                        {en: 'There is no place like home.', ko: '집만 한 곳이 없다.'},
+                        {en: 'Too many cooks spoil the broth.', ko: '사공이 많으면 배가 산으로 간다.'},
+                        {en: 'You reap what you sow.', ko: '뿌린 대로 거둔다.'},
+                        {en: 'A stitch in time saves nine.', ko: '호미로 막을 것을 가래로 막지 마라.'},
+                        {en: 'Don\'t put all your eggs in one basket.', ko: '계란을 한 바구니에 담지 마라.'},
+                        {en: 'Beggars can\'t be choosers.', ko: '찬밥 더운밥 가릴 처지가 아니다.'},
+                        {en: 'Blood is thicker than water.', ko: '피는 물보다 진하다.'},
+                        {en: 'Cleanliness is next to godliness.', ko: '청결함은 신성함에 버금간다.'},
+                        {en: 'Easier said than done.', ko: '말하기는 쉬워도 행동하기는 어렵다.'},
+                        {en: 'Great minds think alike.', ko: '위대한 사람들의 생각은 비슷하다.'},
+                        {en: 'If you can\'t beat them, join them.', ko: '피할 수 없으면 즐겨라.'},
+                        {en: 'Money doesn\'t grow on trees.', ko: '돈은 쉽게 얻어지는 것이 아니다.'},
+                        {en: 'The show must go on.', ko: '쇼는 계속되어야 한다.'},
+                        {en: 'You can\'t have your cake and eat it too.', ko: '두 마리 토끼를 다 잡을 수는 없다.'}
                     ]
                 };
                 
@@ -552,7 +608,6 @@
                 typingInput.addEventListener('keydown', (e) => {
                     if (this.currentMode === 'sentence') this.recordKeyTiming(e.key);
 
-                    // 엔터 키 작동 수정: 현재 입력창의 길이가 목표 텍스트 길이 이상일 때만 다음으로 넘어감
                     if (e.key === 'Enter') {
                         if (typingInput.value.length >= this.currentText.length) {
                             e.preventDefault();
@@ -569,7 +624,9 @@
                     this.sentenceKeyTimings.push({ key, interval, position: this.currentPosition, timestamp: now - this.sentenceStartTime });
                     if (!this.keyLatencies[key]) this.keyLatencies[key] = [];
                     this.keyLatencies[key].push(interval);
-                    if (interval > 0 && interval < 2000) this.speedHistory.push(Math.round(60000 / interval));
+                    if (interval > 0 && interval < 2000) {
+                        this.speedHistory.push(Math.round(60000 / interval));
+                    }
                 }
                 this.lastKeyTime = now;
                 this.lastKeyPressed = key;
@@ -580,7 +637,7 @@
                 this.currentProblem = 0;
                 this.resetStats();
                 const submenu = document.getElementById('alphabetSubmenu');
-                if (mode === 'sentence') { this.totalProblems = 3; submenu.style.display = 'none'; }
+                if (mode === 'sentence') { this.totalProblems = 5; submenu.style.display = 'none'; }
                 else if (mode === 'word') { this.totalProblems = 5; submenu.style.display = 'none'; }
                 else { this.totalProblems = 10; submenu.style.display = 'flex'; }
 
@@ -589,6 +646,7 @@
                 this.updateDisplay();
                 const input = document.getElementById('typingInput');
                 input.value = '';
+                input.classList.remove('completed');
                 input.focus();
             }
 
@@ -612,6 +670,14 @@
                 this.currentPosition = 0;
                 this.correctChars = 0;
                 this.totalChars = 0;
+                
+                if (this.currentMode === 'sentence') {
+                    this.sentenceStartTime = null;
+                    this.lastKeyTime = null;
+                    this.sentenceKeyTimings = [];
+                    this.lastKeyPressed = null;
+                }
+                
                 this.updateKeyboardHighlight();
                 document.getElementById('textDisplay').classList.toggle('sentence-mode', this.currentMode === 'sentence');
             }
@@ -619,6 +685,13 @@
             updateKeyboardHighlight() {
                 document.querySelectorAll('.key').forEach(key => key.classList.remove('active'));
                 const typingInput = document.getElementById('typingInput');
+                
+                if (typingInput.value.length >= this.currentText.length && typingInput.value.length > 0) {
+                    const enterKey = document.querySelector('.key.enter');
+                    if (enterKey) enterKey.classList.add('active');
+                    return;
+                }
+                
                 if (typingInput.value.length < this.currentText.length) {
                     const currentChar = this.currentText[typingInput.value.length].toLowerCase();
                     if (currentChar !== ' ') {
@@ -626,9 +699,6 @@
                         const targetKey = document.querySelector(`[data-key="${keyName}"]`);
                         if (targetKey) targetKey.classList.add('active');
                     }
-                } else {
-                    const enterKey = document.querySelector('.key.enter');
-                    if (enterKey) enterKey.classList.add('active');
                 }
             }
 
@@ -652,7 +722,7 @@
                         if (inputValue[i] === targetChar) {
                             span.classList.add('correct');
                         } else {
-                            span.classList.add('incorrect'); // 한글 연습과 동일한 빨간 그라데이션 스타일
+                            span.classList.add('incorrect');
                         }
                     } else if (i === inputValue.length) {
                         span.classList.add('current');
@@ -667,11 +737,13 @@
                     display.appendChild(trans);
                 }
                 
-                if (inputValue.length >= this.currentText.length) {
-                    const hint = document.createElement('div');
-                    hint.style.fontSize = '1rem'; hint.style.color = '#667eea'; hint.style.fontWeight = 'bold'; hint.style.marginTop = '15px';
-                    hint.textContent = "엔터(Enter)를 눌러 다음으로 넘어가세요!";
-                    display.appendChild(hint);
+                const inputArea = document.getElementById('typingInput');
+                if (inputValue.length >= this.currentText.length && inputValue.length > 0) {
+                    inputArea.classList.add('completed');
+                    inputArea.placeholder = "엔터(Enter)를 눌러 다음으로 넘어가세요.";
+                } else {
+                    inputArea.classList.remove('completed');
+                    inputArea.placeholder = "여기에 타이핑하세요...";
                 }
 
                 document.getElementById('progress').textContent = `${this.currentProblem + 1}/${this.totalProblems}`;
@@ -681,7 +753,10 @@
             handleInput(inputValue) {
                 if (!this.startTime) {
                     this.startTime = Date.now();
-                    if (this.currentMode === 'sentence') { this.sentenceStartTime = Date.now(); this.lastKeyTime = this.startTime; }
+                    if (this.currentMode === 'sentence') { 
+                        this.sentenceStartTime = Date.now(); 
+                        this.lastKeyTime = this.startTime; 
+                    }
                 }
 
                 if (inputValue.length > 0) {
@@ -702,21 +777,6 @@
                 this.currentPosition = inputValue.length;
                 this.updateStats();
                 this.updateDisplay();
-
-                if (inputValue.length >= this.currentText.length) {
-                    this.recordStats(inputValue);
-                }
-            }
-
-            recordStats(inputValue) {
-                const acc = Math.round((this.correctChars / this.currentText.length) * 100);
-                const elapsed = (Date.now() - this.startTime) / 1000;
-                const cpm = Math.round((this.correctChars / (elapsed || 1)) * 60);
-                this.sessionAccuracies.push(acc);
-                this.sessionSpeeds.push(cpm);
-                if (this.currentMode === 'sentence') {
-                    this.sentenceStats.push({ speed: cpm, accuracy: acc });
-                }
             }
 
             updateStats() {
@@ -730,71 +790,227 @@
             }
 
             nextProblem() {
+                // 문장 연습의 경우 현재 문장의 통계를 배열에 저장
+                if (this.currentMode === 'sentence') {
+                    const currentAccuracy = parseInt(document.getElementById('accuracy').textContent.replace('%', ''));
+                    const currentSpeed = parseInt(document.getElementById('speed').textContent);
+                    this.sentenceStats.push({ speed: currentSpeed, accuracy: currentAccuracy });
+                } else {
+                    const acc = Math.round((this.correctChars / this.currentText.length) * 100);
+                    const elapsed = (Date.now() - this.startTime) / 1000;
+                    const cpm = Math.round((this.correctChars / (elapsed || 1)) * 60);
+                    this.sessionAccuracies.push(acc);
+                    this.sessionSpeeds.push(cpm);
+                }
+
                 this.currentProblem++;
                 const typingInput = document.getElementById('typingInput');
+                
                 if (this.currentProblem >= this.totalProblems) {
                     this.showComplete();
                 } else {
-                    typingInput.value = ''; // 입력창 비우기
+                    typingInput.value = ''; 
+                    typingInput.classList.remove('completed');
+                    typingInput.placeholder = "여기에 타이핑하세요...";
                     this.startTime = null;
                     this.currentPosition = 0;
                     this.generateText();
                     this.updateDisplay();
-                    typingInput.focus(); // 포커스 유지
+                    typingInput.blur();
+                    setTimeout(() => {
+                        typingInput.focus();
+                        this.updateKeyboardHighlight();
+                    }, 50);
                 }
             }
 
             showComplete() {
-                if (this.currentMode === 'sentence') this.showAIFeedback();
-                else {
+                if (this.currentMode === 'sentence') {
+                    this.showAIFeedback();
+                } else {
                     const avgAcc = Math.round(this.sessionAccuracies.reduce((a,b)=>a+b,0)/Math.max(1, this.sessionAccuracies.length)) || 0;
                     const avgSpd = Math.round(this.sessionSpeeds.reduce((a,b)=>a+b,0)/Math.max(1, this.sessionSpeeds.length)) || 0;
+                    
+                    const modal = document.getElementById('completeModal');
                     const content = document.getElementById('modalContent');
+                    content.className = 'modal-content';
                     content.innerHTML = `
-                        <h2 style="font-size:2rem; margin-bottom:1.5rem;">연습 완료! 🎉</h2>
-                        <div style="display:flex; justify-content:space-around; margin-bottom:2.5rem;">
-                            <div><div style="font-size:2.5rem; font-weight:bold; color:#667eea;">${avgAcc}%</div><div>정확도</div></div>
-                            <div><div style="font-size:2.5rem; font-weight:bold; color:#764ba2;">${avgSpd}</div><div>평균 속도</div></div>
+                        <h2 class="complete-title">연습 완료! 🎉</h2>
+                        <h4 class="complete-subtitle">꾸준한 연습이 완벽을 만듭니다.</h4>
+                        <div class="complete-stats">
+                            <div class="complete-stat">
+                                <div class="complete-value">${avgAcc}%</div>
+                                <div class="complete-label">최종 정확도</div>
+                            </div>
+                            <div class="complete-stat">
+                                <div class="complete-value">${avgSpd}</div>
+                                <div class="complete-label">평균 속도</div>
+                            </div>
                         </div>
-                        <button class="restart-btn" onclick="location.reload()">다시 시작</button>
+                        <div class="modal-buttons">
+                            <button class="restart-btn" onclick="location.reload()">다시 시작</button>
+                            <button class="continue-btn" id="simpleContinueBtn">더 연습하기</button>
+                        </div>
                     `;
-                    document.getElementById('completeModal').style.display = 'flex';
+                    
+                    setTimeout(() => {
+                        const btn = document.getElementById('simpleContinueBtn');
+                        if(btn) btn.addEventListener('click', () => {
+                            document.getElementById('completeModal').style.display = 'none';
+                            this.currentProblem = 0;
+                            this.generateText();
+                            this.updateDisplay();
+                            const input = document.getElementById('typingInput');
+                            input.value = '';
+                            input.focus();
+                        });
+                    }, 0);
+                    
+                    modal.style.display = 'flex';
                 }
+            }
+
+            // AI 피드백을 위한 분석 함수들
+            analyzeFingerPerformance() {
+                const fingerStats = {};
+                for (let [key, latencies] of Object.entries(this.keyLatencies)) {
+                    let k = key.toLowerCase();
+                    let finger = this.fingerMap[k];
+                    if(!finger) continue;
+                    if(!fingerStats[finger]) fingerStats[finger] = [];
+                    fingerStats[finger].push(...latencies);
+                }
+                const result = [];
+                for(let [finger, times] of Object.entries(fingerStats)) {
+                    const avg = times.reduce((a,b)=>a+b,0) / times.length;
+                    result.push({ finger, avg });
+                }
+                return result.sort((a,b) => b.avg - a.avg);
+            }
+
+            analyzeSlowCharacters() {
+                const avgLatencies = [];
+                for (let key in this.keyLatencies) {
+                    if(key === 'Process' || key === 'Unidentified' || key === 'Enter' || key === 'Backspace' || key === ' ' || key.length > 1) continue;
+                    const times = this.keyLatencies[key];
+                    if (times.length > 0) {
+                        const avg = times.reduce((a,b)=>a+b,0) / times.length;
+                        avgLatencies.push({ key: key.toLowerCase(), time: avg });
+                    }
+                }
+                avgLatencies.sort((a,b) => b.time - a.time);
+                return avgLatencies.slice(0, 3);
+            }
+
+            generateSparkline(data) {
+                if(!data || data.length < 2) return '';
+                const max = Math.max(...data, 100); 
+                const min = 0; 
+                const range = max - min;
+                const points = data.map((val, i) => {
+                    const x = (i / (data.length - 1)) * 100;
+                    const y = 40 - ((val - min) / range) * 40;
+                    return `${x},${y}`;
+                }).join(' ');
+                return `<svg viewBox="0 0 100 40" preserveAspectRatio="none" style="width:100%; height:100%; overflow:visible;"><polyline fill="none" stroke="#667eea" stroke-width="2" points="${points}" vector-effect="non-scaling-stroke" /></svg>`;
+            }
+
+            generateAIAdvice(speed, acc, weakFingerKo) {
+                if (acc < 95) return `정확도가 ${acc}%로 불안정합니다. 속도를 조금 늦추더라도 오타를 줄이는 연습이 최우선입니다.`;
+                if (weakFingerKo === '데이터 부족' || weakFingerKo === '전체 (A-Z)') {
+                    return `전체적으로 안정적입니다. 지금처럼 꾸준히 연습하여 속도를 높여보세요!`;
+                }
+                return `분석 결과, **${weakFingerKo}**의 반응이 가장 느립니다. [느린 손가락 연습] 버튼을 눌러 맞춤형 알파벳 연습을 시작해 보세요!`;
             }
 
             async showAIFeedback() {
                 const modal = document.getElementById('completeModal');
                 const content = document.getElementById('modalContent');
                 content.className = 'modal-content ai-feedback';
-                content.innerHTML = `<div style="text-align:center; padding:3rem;"><div class="loading"></div><h2>AI 타이핑 분석 중...</h2></div>`;
+                content.innerHTML = `<div style="text-align:center; padding:3rem;"><div class="loading"></div><h2 style="font-size:1.5rem; margin-bottom:10px;">AI 타이핑 분석 중...</h2><p style="color:#666;">입력 패턴, 리듬, 손가락 밸런스를 분석하고 있습니다.</p></div>`;
                 modal.style.display = 'flex';
                 setTimeout(() => this.renderAIReport(content), 1500);
             }
 
             renderAIReport(content) {
-                const avgSpeed = Math.round(this.sentenceStats.reduce((a,b)=>a+b.speed,0)/Math.max(1, this.sentenceStats.length)) || 0;
-                const avgAcc = Math.round(this.sentenceStats.reduce((a,b)=>a+b.accuracy,0)/Math.max(1, this.sentenceStats.length)) || 0;
+                const totalSpeed = this.sentenceStats.reduce((a, b) => a + b.speed, 0) / Math.max(1, this.sentenceStats.length);
+                const totalAcc = this.sentenceStats.reduce((a, b) => a + b.accuracy, 0) / Math.max(1, this.sentenceStats.length);
+                const avgSpeed = Math.round(totalSpeed) || 0;
+                const avgAcc = Math.round(totalAcc) || 0;
+                const slowKeys = this.analyzeSlowCharacters();
+                const fingerPerf = this.analyzeFingerPerformance();
+                const rhythmGraph = this.generateSparkline(this.speedHistory);
+
+                const weakestFingerRaw = fingerPerf.length > 0 ? fingerPerf[0].finger : 'all';
+                const displayFingerName = weakestFingerRaw !== 'all' ? this.fingerSets[weakestFingerRaw].label : '데이터 부족';
+
+                let grade = "C", gradeColor = "#868e96";
+                if (avgSpeed > 400 && avgAcc > 98) { grade = "S"; gradeColor = "#d63384"; }
+                else if (avgSpeed > 300) { grade = "A"; gradeColor = "#667eea"; }
+                else if (avgSpeed > 200) { grade = "B"; gradeColor = "#40c057"; }
+
                 content.innerHTML = `
                     <div class="ai-report-container">
                         <div class="ai-sidebar">
-                            <h2>종합 분석</h2>
+                            <h2 style="margin:0; color:#333;">종합 분석</h2>
                             <div class="neon-score">${avgSpeed}</div>
-                            <p style="font-size:1.2rem; font-weight:600; color:#666;">정확도 ${avgAcc}%</p>
+                            <div class="neon-grade" style="color:${gradeColor}">Grade ${grade}</div>
+                            <div class="stat-grid-mini">
+                                <div class="stat-box-mini"><div class="label">평균 속도</div><div class="value">${avgSpeed} <span style="font-size:0.8rem">타/분</span></div></div>
+                                <div class="stat-box-mini"><div class="label">정확도</div><div class="value">${avgAcc}%</div></div>
+                            </div>
                         </div>
+                        
                         <div class="ai-main-content">
-                            <div class="ai-card"><h3>타이핑 리듬 분석</h3><div class="rhythm-graph">${this.generateSparkline(this.speedHistory)}</div></div>
-                            <div class="ai-card" style="border-left:4px solid #667eea;"><h3>AI 맞춤 솔루션</h3><p>전반적으로 안정적인 타건 리듬을 보여줍니다. 정확도를 유지하면서 조금씩 속도를 높이는 연습을 추천합니다.</p></div>
+                            <div class="ai-card">
+                                <div class="ai-card-title"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>타이핑 리듬 분석 (Consistency)</div>
+                                <div class="rhythm-graph">${rhythmGraph}</div>
+                                <p style="font-size:0.9rem; color:#666; margin-top:10px;">그래프의 굴곡이 적을수록 안정적인 타건 리듬을 유지하고 있다는 뜻입니다.</p>
+                            </div>
+                            
+                            <div class="ai-card">
+                                <div class="ai-card-title"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>취약점 정밀 진단</div>
+                                <div class="bar-chart-container">
+                                    <div class="bar-row">
+                                        <strong>가장 망설인 키:</strong> ${slowKeys.map(k => `<span class="highlight-badge badge-red" style="margin-left:5px;">${k.key.toUpperCase()}</span>`).join('') || '없음'}
+                                    </div>
+                                    <div class="bar-row" style="margin-top:10px;">
+                                        <strong>가장 느린 손가락:</strong> 
+                                        <span class="highlight-badge badge-blue" style="margin-left:5px; white-space: nowrap;">${displayFingerName}</span>
+                                    </div>
+                                </div>
+                            </div> 
+                            
+                            <div class="ai-card" style="border-left: 4px solid #667eea;">
+                                <div class="ai-card-title"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>AI 맞춤형 솔루션</div>
+                                <div class="feedback-text">${this.generateAIAdvice(avgSpeed, avgAcc, displayFingerName)}</div>
+                            </div>
                         </div>
+                    </div> 
+                    
+                    <div class="modal-buttons">
+                        <button class="restart-btn" id="slowFingerPracticeBtn">느린 손가락 연습</button>
+                        <button class="continue-btn" id="aiContinueBtn">더 연습하기</button>
                     </div>
-                    <div class="modal-buttons"><button class="restart-btn" onclick="location.reload()">다시 시작</button></div>
                 `;
-            }
 
-            generateSparkline(data) {
-                if(!data || data.length < 2) return '';
-                const max = Math.max(...data, 100);
-                const points = data.map((v, i) => `${(i/(data.length-1))*100},${40 - (v/max)*40}`).join(' ');
-                return `<svg viewBox="0 0 100 40" style="width:100%; height:60px;"><polyline fill="none" stroke="#667eea" stroke-width="2" points="${points}"/></svg>`;
+                // '느린 손가락 연습' 클릭 시
+                document.getElementById('slowFingerPracticeBtn').addEventListener('click', () => {
+                    this.changeMode('alphabet');
+                    this.changeSubMode(weakestFingerRaw);
+                    document.getElementById('completeModal').style.display = 'none';
+                });
+
+                // '더 연습하기' 클릭 시
+                document.getElementById('aiContinueBtn').addEventListener('click', () => {
+                    document.getElementById('completeModal').style.display = 'none';
+                    this.currentProblem = 0;
+                    this.generateText();
+                    this.updateDisplay();
+                    const input = document.getElementById('typingInput');
+                    input.value = '';
+                    input.focus();
+                });
             }
 
             resetStats() {

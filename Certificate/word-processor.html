@@ -207,9 +207,23 @@
         }
 
         .panel-subtitle {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: #8b95a1;
             font-weight: 400;
+            line-height: 1.8;
+        }
+
+        /* -------------------------------------
+           추가된 형광펜 하이라이트 스타일
+        -------------------------------------- */
+        .highlight-red {
+            background-color: #ffe4e6; /* 연한 빨간/핑크색 배경 */
+            color: #e11d48;            /* 글씨를 진한 빨간색으로 변경 */
+            font-weight: 700;          /* 글씨를 굵게 */
+            padding: 2px 6px;          /* 좌우 여백 */
+            border-radius: 4px;        /* 모서리 둥글게 */
+            display: inline-block;
+            margin: 2px 0;
         }
 
         .original-text {
@@ -554,7 +568,15 @@
             <div class="left-panel">
                 <div class="panel-header">
                     <h2 class="panel-title">📄 원본 텍스트</h2>
-                    <p class="panel-subtitle">본 텍스트는 AI로 창작한 것입니다.<br>표와 캡션은 작성 안해도 진행률과 오타에 영향이 가지 않습니다.<br>오타는 빨간색 형광펜으로 칠해집니다.</p>
+                    
+                    <!-- 수정된 안내 문구 영역 -->
+                    <p class="panel-subtitle">
+                        <br>본 텍스트는 AI로 창작한 것입니다.<br>
+                        <span class="highlight-red">표와 캡션은 작성하지 않아야 진행률과 채점에 영향이 가지 않습니다.</span><br>
+                        <span class="highlight-red">표 작성 채점은 타자연습으로 구현하기가 어려운 점 양해 부탁드립니다.</span><br>
+                        오타는 빨간색 형광펜으로 칠해집니다.
+                    </p>
+
                 </div>
                 <div class="original-text" id="originalText">
                     <h3>개요</h3>
@@ -586,7 +608,7 @@
             <div class="right-panel">
                 <div class="panel-header">
                     <h2 class="panel-title">⌨️ 타이핑 연습</h2>
-                    <p class="panel-subtitle">왼쪽 텍스트를 보고 동일하게 타이핑해보세요</p>
+                    <p class="panel-subtitle"><br>왼쪽 텍스트를 보고 동일하게 타이핑해보세요</p>
                 </div>
                 
                 <div class="progress-container">
