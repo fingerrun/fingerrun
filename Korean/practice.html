@@ -892,59 +892,36 @@
 
                 <li><a href="../notices.html">공지사항</a></li>
 
-                
+<!-- 수정 후 -->
+<li>
+    <!-- 부모 링크 클릭 시 기본값인 자음 연습으로 가도록 추가 -->
+    <a href="practice.html?mode=consonant">
+        한글 타자연습
+        <span class="dropdown-arrow">▼</span>
+    </a>
+<div class="dropdown-menu">
+    <a href="practice.html?mode=consonant">자음 연습</a>
+    <a href="practice.html?mode=vowel">모음 연습</a>
+    <a href="practice.html?mode=word">단어 연습</a>
+    <a href="practice.html?mode=sentence">문장 연습</a>
+    <a href="infinite_practice.html">무한 연습</a>
+</div>
+</li>
 
-                <li>
-
-                    <a href="practice.html">
-
-                        한글 타자연습
-
-                        <span class="dropdown-arrow">▼</span>
-
-                    </a>
-
-                    <div class="dropdown-menu">
-
-                        <a href="../Korean/practice.html">자음 연습</a>
-
-                        <a href="../Korean/practice.html">모음 연습</a>
-
-                        <a href="../Korean/practice.html">단어 연습</a>
-
-                        <a href="../Korean/practice.html">문장 연습</a>
-
-                        <a href="../Korean/infinite_practice.html">무한 연습</a>
-
-                    </div>
-
-                </li>
-
-                
-
-                <li>
-
-                    <a href="../English/practice.html">
-
-                        영어 타자연습
-
-                        <span class="dropdown-arrow">▼</span>
-
-                    </a>
-
-                    <div class="dropdown-menu">
-
-                        <a href="../English/practice.html">알파벳 연습</a>
-
-                        <a href="../English/practice.html">단어 연습</a>
-
-                        <a href="../English/practice.html">문장 연습</a>
-
-                        <a href="../English/infinite_practice.html">무한 연습</a>
-
-                    </div>
-
-                </li>
+<li>
+    <!-- 영어 부모 링크도 기본값(alphabet) 추가 -->
+    <a href="../English/practice.html?mode=alphabet">
+        영어 타자연습
+        <span class="dropdown-arrow">▼</span>
+    </a>
+    <div class="dropdown-menu">
+        <!-- 영어 하위 링크들에 각각 맞는 파라미터 추가 -->
+        <a href="../English/practice.html?mode=alphabet">알파벳 연습</a>
+        <a href="../English/practice.html?mode=word">단어 연습</a>
+        <a href="../English/practice.html?mode=sentence">문장 연습</a>
+        <a href="../English/infinite_practice.html">무한 연습</a>
+    </div>
+</li>
 
                 
 
@@ -1520,33 +1497,55 @@ this.fingerMap = {
 
 
 
-            init() {
+init() {
+    // 1. URL 파라미터에서 모드 읽어오기
+    const urlParams = new URLSearchParams(window.location.search);
+    const modeParam = urlParams.get('mode');
 
-                this.bindEvents();
+    // 2. 전달받은 모드가 있으면 해당 모드로 설정
+    if (modeParam && this.practiceData[modeParam]) {
+        this.currentMode = modeParam;
+    }
 
-                this.generateText();
+    // 3. UI 업데이트 (현재 모드 버튼에 'active' 클래스 부여)
+    this.updateMenuUI(this.currentMode);
 
-                this.updateDisplay();
+    this.bindEvents();
+    this.generateText();
+    this.updateDisplay();
 
-                setTimeout(() => {
+    // 초기 로딩 보정
+    setTimeout(() => {
+        const display = document.getElementById('textDisplay');
+        if (!display.innerHTML || display.innerHTML.trim() === '' || !this.currentText) {
+            this.generateJamoSequence();
+            this.updateDisplay();
+        }
+    }, 100);
+}
 
-                    const display = document.getElementById('textDisplay');
+// 4. UI 상태를 동기화하는 새 메서드 추가 (클래스 내부에 추가)
+updateMenuUI(mode) {
+    // 메인 메뉴 버튼 활성화 상태 변경
+    document.querySelectorAll('.menu-btn').forEach(btn => {
+        if (btn.dataset.mode === mode) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
 
-                    if (!display.innerHTML || display.innerHTML.trim() === '' || !this.currentText) {
+    // 자음/모음이 아니면 손가락 서브메뉴 숨기기
+    const subMenu = document.getElementById('fingerSubMenu');
+    if (subMenu) {
+        subMenu.style.display = (mode === 'consonant' || mode === 'vowel') ? 'flex' : 'none';
+    }
 
-                        this.currentText = 'ㄱ ㄴ ㄷ ㄹ ㅁ ㅂ ㅅ';
-
-                        this.currentPosition = 0;
-
-                        this.generateJamoSequence();
-
-                        this.updateDisplay();
-
-                    }
-
-                }, 100);
-
-            }
+    // 문장 모드일 경우 특수 설정 (선택 사항)
+    if (mode === 'sentence') {
+        this.totalProblems = 5;
+    }
+}
 
 
 
