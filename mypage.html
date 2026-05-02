@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>핑거런 - 마이페이지</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f9fafb; color: #191f28; }
+    </style>
+</head>
+<body class="pb-20">
+
+    <!-- 상단 네비게이션 바 -->
+    <nav class="bg-white border-b border-gray-200 py-4 px-6 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-xl font-bold text-blue-600 flex items-center gap-2">
+                <i class="fas fa-keyboard"></i> FingerRun
+            </a>
+            <a href="index.html" class="text-gray-500 hover:text-gray-900 font-medium text-sm transition">
+                메인으로 돌아가기 <i class="fas fa-arrow-right ml-1"></i>
+            </a>
+        </div>
+    </nav>
+
+    <div class="max-w-4xl mx-auto mt-12 px-6">
+        <div class="flex items-end gap-3 mb-8">
+            <h1 class="text-3xl font-bold">마이페이지</h1>
+            <span id="welcome-message" class="text-gray-500 mb-1">사용자 정보를 불러오는 중...</span>
+        </div>
+
+        <!-- [1] 타자 통계 대시보드 (문장 연습 기록 기반) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <!-- 평균 타수 -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col items-center justify-center">
+                <span class="text-gray-500 text-sm font-medium mb-2">문장연습 평균 타수</span>
+                <div class="text-3xl font-bold text-gray-900"><span id="avg-speed">-</span> <span class="text-base font-normal text-gray-500">타/분</span></div>
+            </div>
+            
+            <!-- 최고 타수 (그라데이션 선 제거됨) -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col items-center justify-center">
+                <span class="text-gray-500 text-sm font-medium mb-2">문장연습 최고 타수</span>
+                <div class="text-3xl font-bold text-blue-600"><span id="max-speed">-</span> <span class="text-base font-normal text-gray-500">타/분</span></div>
+            </div>
+
+            <!-- 평균 타수 기준 전체 랭킹 -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col items-center justify-center relative">
+                <i class="fas fa-crown text-yellow-400 absolute top-4 right-4 text-xl opacity-20"></i>
+                <span class="text-gray-500 text-sm font-medium mb-2">평균 타수 기준 랭킹</span>
+                <div class="text-3xl font-bold text-gray-900"><span id="user-ranking">-</span> <span class="text-base font-normal text-gray-500">위</span></div>
+                <div class="text-xs text-gray-400 font-medium mt-1">실시간 갱신 중</div>
+            </div>
+        </div>
+
+        <!-- [2] 개인정보 리스트 -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-8">
+            <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center">
+                <h2 class="text-lg font-bold text-gray-900">회원 정보</h2>
+                <span id="login-provider" class="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded">연동 정보</span>
+            </div>
+            
+            <div class="px-8">
+                <!-- 이메일 -->
+                <div class="flex items-center py-6 border-b border-gray-100">
+                    <div class="w-32 text-gray-500 font-medium text-sm">이메일</div>
+                    <div id="user-email" class="flex-1 text-gray-700 font-mono text-sm">정보 없음</div>
+                </div>
+
+                <!-- 닉네임 -->
+                <div class="flex items-center py-6 border-b border-gray-100">
+                    <div class="w-32 text-gray-500 font-medium text-sm">닉네임</div>
+                    <div class="flex-1 text-gray-900 font-medium flex items-center gap-2">
+                        <span id="user-nickname">정보 없음</span>
+                        <button onclick="editProfile('nickname')" class="text-gray-400 hover:text-blue-600 transition">
+                            <i class="fas fa-pencil-alt text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 생년월일 -->
+                <div class="flex items-center py-6 border-b border-gray-100">
+                    <div class="w-32 text-gray-500 font-medium text-sm">생년월일</div>
+                    <div class="flex-1 text-gray-900 font-medium flex items-center gap-2">
+                        <span id="user-birthdate">미등록</span>
+                        <button onclick="editProfile('birthdate')" class="text-gray-400 hover:text-blue-600 transition">
+                            <i class="fas fa-pencil-alt text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 가입일 -->
+                <div class="flex items-center py-6">
+                    <div class="w-32 text-gray-500 font-medium text-sm">가입일</div>
+                    <div id="user-joindate" class="flex-1 text-gray-700">정보 없음</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- [3] 로그아웃 버튼 (회원탈퇴 삭제, 로그아웃 우측 정렬) -->
+        <div class="flex justify-end">
+            <button onclick="handleLogout()" class="px-6 py-2.5 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition text-sm">
+                로그아웃
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 화면에 정보 뿌려주는 로직
+document.addEventListener('DOMContentLoaded', () => {
+            const savedUser = localStorage.getItem('fingerRunUser');
+
+            if (savedUser) {
+                const userData = JSON.parse(savedUser);
+
+                // --- [여기부터 3줄 추가] ---
+                // 1. 연습 기록 표시 (값이 없으면 0으로 표시)
+                document.getElementById('avg-speed').innerText = userData.avgSpeed || 0;
+                document.getElementById('max-speed').innerText = userData.maxSpeed || 0;
+
+                // 2. 랭킹 표시 (현재는 로컬이므로 임시 등수 혹은 '분석 중' 표시)
+                document.getElementById('user-ranking').innerText = userData.avgSpeed > 0 ? "계산 중" : "-";
+                // --- [여기까지 추가] ---
+
+                document.getElementById('welcome-message').innerText = userData.nickname + "님, 환영합니다!";
+                document.getElementById('user-email').innerText = userData.email || "이메일 정보 제공 미동의";
+                // ... (이하 기존 코드 동일)
+                document.getElementById('user-nickname').innerText = userData.nickname;
+                document.getElementById('user-joindate').innerText = userData.joinDate || "정보 없음";
+                
+                document.getElementById('login-provider').innerText = userData.provider === 'google' ? 'Google 연동' : 'Kakao 연동';
+                document.getElementById('login-provider').className = userData.provider === 'google' 
+                    ? 'text-xs px-2 py-1 bg-white border border-gray-300 text-gray-600 rounded font-medium'
+                    : 'text-xs px-2 py-1 bg-[#FEE500] text-[#191919] rounded font-medium';
+            } else {
+                alert("로그인이 필요한 페이지입니다.");
+                window.location.href = "login.html";
+            }
+        });
+
+        // 닉네임/생일 수정 기능 (DB 및 로컬스토리지 업데이트 포함)
+        async function editProfile(type) {
+            const savedUser = localStorage.getItem('fingerRunUser');
+            if (!savedUser) return;
+            const userData = JSON.parse(savedUser);
+
+            let isChanged = false;
+
+            if (type === 'nickname') {
+                const newName = prompt("새로운 닉네임을 입력하세요:", userData.nickname);
+                if (newName && newName.trim() !== "" && newName !== userData.nickname) {
+                    userData.nickname = newName;
+                    document.getElementById('user-nickname').innerText = newName;
+                    isChanged = true;
+                }
+            } else if (type === 'birthdate') {
+                const newDate = prompt("생년월일을 입력하세요 (YYYY/MM/DD):", userData.birthdate || "2000/01/01");
+                if (newDate && newDate !== userData.birthdate) {
+                    userData.birthdate = newDate;
+                    document.getElementById('user-birthdate').innerText = newDate;
+                    isChanged = true;
+                }
+            }
+
+            // 변경된 사항이 있으면 로컬스토리지와 파이어베이스 DB에 저장
+            if (isChanged) {
+                // 1. 로컬 스토리지 업데이트
+                localStorage.setItem('fingerRunUser', JSON.stringify(userData));
+                
+                // 2. 파이어베이스 DB 업데이트 (동적 임포트 활용)
+                try {
+                    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js");
+                    const { getFirestore, doc, updateDoc } = await import("https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js");
+                    
+                    const firebaseConfig = {
+                        apiKey: "AIzaSyDKOS6QVMn6fhsIu1Sj2JSrEfOpq1lR1vU",
+                        projectId: "fingerrun-fe27d",
+                    };
+                    
+                    const app = initializeApp(firebaseConfig);
+                    const db = getFirestore(app);
+                    const userRef = doc(db, "users", userData.uid);
+                    
+                    await updateDoc(userRef, {
+                        nickname: userData.nickname,
+                        birthdate: userData.birthdate || ""
+                    });
+                    
+                    alert("정보가 성공적으로 변경되었습니다.");
+                } catch (error) {
+                    console.error("DB 업데이트 실패:", error);
+                    alert("화면에는 반영되었으나, 서버 저장에 실패했습니다.");
+                }
+            }
+        }
+
+        // 로그아웃 기능
+        function handleLogout() {
+            if (confirm("정말 로그아웃 하시겠습니까?")) {
+                localStorage.removeItem('fingerRunUser');
+                localStorage.removeItem('isLoggedIn');
+                alert("로그아웃 되었습니다.");
+                window.location.href = "index.html"; 
+            }
+        }
+    </script>
+</body>
+</html>

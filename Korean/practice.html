@@ -2686,19 +2686,20 @@ updateMenuUI(mode) {
 
 
 renderAIReport(content) {
-
                 const totalSpeed = this.sentenceStats.reduce((a, b) => a + b.speed, 0) / this.sentenceStats.length;
-
                 const totalAcc = this.sentenceStats.reduce((a, b) => a + b.accuracy, 0) / this.sentenceStats.length;
-
                 const avgSpeed = Math.round(totalSpeed) || 0;
-
                 const avgAcc = Math.round(totalAcc) || 0;
+                
+                // --- [여기부터 새로 추가된 부분입니다] ---
+                // 문장 연습 모드라면, 계산된 평균 타수(avgSpeed)를 프로필에 저장!
+                if (this.currentMode === 'sentence') {
+                    this.saveRecordToProfile(avgSpeed);
+                }
+                // --- [새로 추가된 부분 끝] ---
 
                 const slowKeys = this.analyzeSlowCharacters();
-
                 const fingerPerf = this.analyzeFingerPerformance();
-
                 const rhythmGraph = this.generateSparkline(this.speedHistory);
 
 
@@ -2981,41 +2982,74 @@ renderAIReport(content) {
 
 
 
-            resetStats() {
-
+resetStats() {
                 this.currentPosition = 0;
-
                 this.startTime = null;
-
                 this.sentenceStartTime = null;
-
                 this.lastKeyTime = null;
-
                 this.lastKeyPressed = null;
-
                 this.keyLatencies = {};
-
                 this.speedHistory = [];
-
                 this.accumulatedChars = 0; 
-
                 document.getElementById('accuracy').textContent = '100%';
-
                 document.getElementById('speed').textContent = '0';
-
                 if (this.currentMode === 'consonant' || this.currentMode === 'vowel') {
-
                      document.getElementById('progress').textContent = `0/100자`;
-
                 } else {
-
                      document.getElementById('progress').textContent = `1/${this.totalProblems}`;
-
                 }
-
             }
 
-        }
+// --- [여기부터 덮어쓰기] ---
+            async saveRecordToProfile(sessionSpeed) {
+                // 1. 로그인을 안 했으면 무시
+                if (localStorage.getItem('isLoggedIn') !== 'true') return;
+
+                const savedUser = localStorage.getItem('fingerRunUser');
+                if (!savedUser) return;
+
+                const userData = JSON.parse(savedUser);
+
+                // 2. 새로운 기록 누적 및 갱신 로직
+                userData.totalSessions = (userData.totalSessions || 0) + 1; 
+                userData.cumulativeSpeed = (userData.cumulativeSpeed || 0) + sessionSpeed; 
+                userData.avgSpeed = Math.round(userData.cumulativeSpeed / userData.totalSessions);
+
+                if (sessionSpeed > (userData.maxSpeed || 0)) {
+                    userData.maxSpeed = sessionSpeed;
+                }
+
+                // 3. [로컬 저장] 내 컴퓨터에 먼저 업데이트
+                localStorage.setItem('fingerRunUser', JSON.stringify(userData));
+                console.log("1단계: 로컬 기록 갱신 완료", userData);
+
+                // 4. [DB 서버 저장] Firebase Firestore에 데이터 쏘기
+                try {
+                    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js");
+                    const { getFirestore, doc, updateDoc } = await import("https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js");
+                    
+                    const firebaseConfig = {
+                        apiKey: "AIzaSyDKOS6QVMn6fhsIu1Sj2JSrEfOpq1lR1vU",
+                        projectId: "fingerrun-fe27d",
+                    };
+                    
+                    const app = initializeApp(firebaseConfig);
+                    const db = getFirestore(app);
+                    const userRef = doc(db, "users", userData.uid);
+                    
+                    // DB에 있는 내 문서(row)의 타수 정보만 싹 업데이트!
+                    await updateDoc(userRef, {
+                        avgSpeed: userData.avgSpeed,
+                        maxSpeed: userData.maxSpeed,
+                        totalSessions: userData.totalSessions,
+                        cumulativeSpeed: userData.cumulativeSpeed
+                    });
+                    console.log("2단계: 🔥 Firebase DB 동기화 완벽 성공!");
+                } catch (error) {
+                    console.error("DB 저장 실패 (하지만 로컬에는 저장됨):", error);
+                }
+            }
+            // --- [여기까지 덮어쓰기 완료] ---
 
 
 
