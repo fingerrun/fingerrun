@@ -147,28 +147,21 @@
 /* --- [광고] 사이드 광고 위치 및 크기 수정 --- */
 .ad-sidebar {
     position: fixed;
-    /* 가로 길이를 기존 480px에서 절반인 240px로 축소 */
     width: 240px; 
-    /* 상단 여백: 내비게이션(약 80px) + 2cm 여백(75px) = 155px */
     top: 155px;   
-    /* 하단 여백: 바닥에서 2cm(75px) 띄움 */
     bottom: 75px; 
     z-index: 50;
-    /* 화면이 좁을 때는 숨김 처리 */
     left: -5000px; 
     visibility: hidden;
     height: 900px;
 }
 
-/* 화면 너비가 1800px 이상인 넓은 모니터에서만 광고를 보여줍니다 */
 @media (min-width: 1800px) {
     .ad-sidebar { visibility: visible; }
-    /* 내비게이션 옆 가장자리로부터 2cm(75px) 띄움 */
     .ad-left { left: 75px; } 
     .ad-right { right: 75px; left: auto; }
 }
 
-/* 구글 광고 자체가 박스 안을 가득 채우도록 설정 */
 .ad-sidebar ins {
     display: inline-block !important;
     width: 240px !important;
@@ -441,14 +434,9 @@
         }
     </style>
     <script type="module">
-  // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   const firebaseConfig = {
     apiKey: "AIzaSyDKOS6QVMn6fhsIu1Sj2JSrEfOpq1lR1vU",
     authDomain: "fingerrun-fe27d.firebaseapp.com",
@@ -459,7 +447,6 @@
     measurementId: "G-EQSEGCJTEX"
   };
 
-  // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
 </script>
@@ -501,7 +488,6 @@
             </a>
             <ul class="nav-menu">
                 <li><a href="notices.html">공지사항</a></li>
-<!-- 수정 후 -->
 <li>
     <a href="Korean/practice.html?mode=consonant">
         한글 타자연습
@@ -551,8 +537,9 @@
                 </li>
 <li><a href="contact.html">문의하기</a></li>
                 
-                <li class="ml-2">
-    <a href="javascript:void(0)" id="profile-link" title="로그인" style="padding: 0.5rem 0.6rem; border-radius: 50%;">
+<li class="ml-2">
+    <!-- 여기가 완벽하게 수정된 프로필 클릭 부분입니다 -->
+    <a href="#" onclick="goProfile(event)" title="프로필" style="padding: 0.5rem 0.6rem; border-radius: 50%;">
         <i class="far fa-user text-[1.2rem] m-0"></i>
     </a>
 </li>
@@ -1007,7 +994,18 @@
             const engWrapper = document.getElementById('english-keyboard-wrapper');
             if (korWrapper) typingObserver.observe(korWrapper);
             if (engWrapper) typingObserver.observe(engWrapper);
-        });
+        }); // DOMContentLoaded 종료
+
+        // [치트키] 어떤 상황에서도 실행되는 전역 함수
+        function goProfile(e) {
+            e.preventDefault(); // 화면 위로 튕김 방지
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (isLoggedIn === 'true') {
+                window.location.href = "mypage.html";
+            } else {
+                window.location.href = "login.html";
+            }
+        }
     </script>
 </body>
 </html>
