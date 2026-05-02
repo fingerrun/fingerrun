@@ -13,10 +13,11 @@
         body { font-family: 'Noto Sans KR', sans-serif; background-color: #f9fafb; }
     </style>
 
-    <!-- [1] 파이어베이스 SDK (구글 로그인용) -->
+<!-- [1] 파이어베이스 SDK 및 DB 연동 스크립트 -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDKOS6QVMn6fhsIu1Sj2JSrEfOpq1lR1vU",
@@ -29,16 +30,45 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
 
-        // 구글 로그인 실행 함수
+        // 💡 [핵심] 로그인 성공 시 DB에 데이터를 넣는 공통 함수
+        window.handleUserLogin = async function(user, providerName) {
+            const userRef = doc(db, "users", user.uid);
+            const userSnap = await getDoc(userRef);
+
+            let userData;
+            if (!userSnap.exists()) {
+                // 첫 로그인 (회원가입) - DB에 초기 데이터 세팅
+                userData = {
+                    uid: user.uid,
+                    email: user.email || "",
+                    nickname: user.displayName || "익명",
+                    joinDate: new Date().toLocaleDateString(),
+                    provider: providerName,
+                    avgSpeed: 0,
+                    maxSpeed: 0,
+                    totalSessions: 0,
+                    cumulativeSpeed: 0
+                };
+                await setDoc(userRef, userData);
+            } else {
+                // 기존 회원 - DB에서 정보 불러오기
+                userData = userSnap.data();
+            }
+
+            // 로컬 스토리지에 저장 후 메인으로 이동
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('fingerRunUser', JSON.stringify(userData));
+            
+            alert(userData.nickname + "님, 핑거런에 오신 것을 환영합니다!");
+            window.location.href = "index.html";
+        };
+
         window.loginWithGoogle = function() {
             signInWithPopup(auth, provider)
-                .then((result) => {
-                    const user = result.user;
-                    alert(user.displayName + "님, 핑거런에 오신 것을 환영합니다!");
-                    window.location.href = "index.html"; // 로그인 성공 시 메인으로 이동
-                })
+                .then((result) => window.handleUserLogin(result.user, 'google'))
                 .catch((error) => {
                     console.error("구글 로그인 에러:", error);
                     alert("구글 로그인에 실패했습니다.");
@@ -46,11 +76,10 @@
         };
     </script>
 
-<!-- [2] 카카오 SDK (카카오 로그인용) -->
-    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" integrity="sha384-TiCmbV0X04/KpzjtO41jsq+s1E8Oofv7aB41A5R0jZk2A9X7n8v15R41bX/0kY2P" crossorigin="anonymous"></script>
+    <!-- [2] 카카오 SDK -->
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"></script>
     <script>
-        // 주석을 해제하고 서준님의 실제 카카오 키를 활성화했습니다.
-        Kakao.init('2cb9737bee37e4400e3e72503b3db932');
+        Kakao.init('7b63627546de886d4d770279e23ed775');
         
         window.loginWithKakao = function() {
             Kakao.Auth.login({
@@ -58,17 +87,18 @@
                     Kakao.API.request({
                         url: '/v2/user/me',
                         success: function(res) {
-                            alert(res.kakao_account.profile.nickname + "님, 핑거런에 오신 것을 환영합니다!");
-                            window.location.href = "index.html"; // 로그인 성공 시 메인으로 이동
+                            // 카카오 정보를 구글 정보 형식과 비슷하게 맞춤
+                            const kakaoUser = {
+                                uid: "kakao_" + res.id,
+                                email: res.kakao_account.email || "",
+                                displayName: res.kakao_account.profile.nickname
+                            };
+                            window.handleUserLogin(kakaoUser, 'kakao'); // 💡 아까 만든 공통 함수 실행
                         },
-                        fail: function(error) {
-                            console.error('사용자 정보 요청 에러', error);
-                        }
+                        fail: function(error) { console.error('정보 요청 에러', error); }
                     });
                 },
-                fail: function(err) {
-                    console.error('카카오 로그인 에러', err);
-                }
+                fail: function(err) { console.error('로그인 에러', err); }
             });
         }
     </script>
