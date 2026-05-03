@@ -21,48 +21,201 @@
       gtag('config', 'G-7QSEYCFK83');
     </script>
 
-    <title>핑거런 | 한글 타자연습 - 마이페이지</title>
+    <title>핑거런 - 마이페이지</title>
     
     <!-- 파비콘 설정 -->
-    <link rel="icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
-    <link rel="shortcut icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
-    <link rel="apple-touch-icon" href="../images/finger-run-logo.svg">
+    <link rel="icon" type="image/svg+xml" href="images/finger-run-logo.svg">
+    <link rel="shortcut icon" type="image/svg+xml" href="images/finger-run-logo.svg">
+    <link rel="apple-touch-icon" href="images/finger-run-logo.svg">
     
-    <!-- SEO 메타태그 -->
-    <meta name="description" content="한글 타자연습으로 타이핑 실력을 향상시키세요. 자음, 모음, 단어, 문장 순서의 체계적인 학습 시스템과 실시간 정확도 및 타자속도 측정을 제공합니다.">
-    <meta name="keywords" content="한글타자연습, 한글자판연습, 타자연습, 한글타자속도, 핑거런">
-    <meta name="author" content="FingerRun">
-    <meta name="robots" content="index, follow">
-
-    <!-- Open Graph -->
-    <meta property="og:title" content="핑거런 | 한글타자연습">
-    <meta property="og:description" content="압도적인 디자인과 성능의 타자연습 사이트로 타이핑 속도와 정확도를 향상시키세요.">
-    <meta property="og:url" content="https://fingerrun.com/Korean/practice.html">
-    <meta property="og:type" content="website">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- 그래프를 그리기 위한 Chart.js 라이브러리 추가 -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
-        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f9fafb; color: #191f28; }
+        
+        body { 
+            font-family: 'Noto Sans KR', sans-serif; 
+            background-color: #f9fafb; 
+            color: #191f28; 
+        }
+
+        /* --- 네비게이션 바 전용 CSS (메인 페이지와 동일하게 적용) --- */
+        nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
+            display: flex; align-items: center; gap: 0.5rem;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            align-items: center;
+            margin: 0; padding: 0;
+        }
+
+        .nav-menu li { position: relative; }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 0.5rem 0.8rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .nav-menu a:hover {
+            background: #667eea;
+            color: white !important;
+            transform: translateY(-2px);
+        }
+
+        .dropdown-arrow { font-size: 0.7rem; transition: transform 0.3s ease; }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: white;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            padding: 0.5rem 0;
+            min-width: 160px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-menu li:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .nav-menu li:hover .dropdown-arrow { transform: rotate(180deg); }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 0.7rem 1rem;
+            color: #333;
+            border-radius: 0;
+            white-space: nowrap;
+            font-weight: 400;
+        }
+
+        .dropdown-menu a:hover {
+            background: #f8f9fa;
+            color: #667eea !important;
+            transform: none;
+        }
+        
+        @media (max-width: 900px) {
+            .nav-menu { display: none; } 
+        }
     </style>
 </head>
-<body class="pb-20">
+<body class="pb-20 pt-20"> <!-- 네비게이션 바 높이만큼 pt-20 추가 -->
 
-    <!-- 상단 네비게이션 바 -->
-    <nav class="bg-white border-b border-gray-200 py-4 px-6 sticky top-0 z-50">
-        <div class="max-w-4xl mx-auto flex justify-between items-center">
-            <a href="index.html" class="text-xl font-bold text-blue-600 flex items-center gap-2">
-                <i class="fas fa-keyboard"></i> FingerRun
+    <!-- 메인 페이지와 완벽하게 동일한 Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo" aria-label="핑거런 홈페이지 메인으로 이동">
+                <img src="images/finger-run-logo.svg" alt="" class="h-8 w-auto"> 
+                FingerRun
             </a>
-            <a href="index.html" class="text-gray-500 hover:text-gray-900 font-medium text-sm transition">
-                메인으로 돌아가기 <i class="fas fa-arrow-right ml-1"></i>
-            </a>
+            <ul class="nav-menu">
+                <li><a href="notices.html">공지사항</a></li>
+                <li>
+                    <a href="Korean/practice.html?mode=consonant">
+                        한글 타자연습
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="Korean/practice.html?mode=consonant">자음 연습</a>
+                        <a href="Korean/practice.html?mode=vowel">모음 연습</a>
+                        <a href="Korean/practice.html?mode=word">단어 연습</a>
+                        <a href="Korean/practice.html?mode=sentence">문장 연습</a>
+                        <a href="Korean/infinite_practice.html">무한 연습</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="English/practice.html?mode=alphabet">
+                        영어 타자연습
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="English/practice.html?mode=alphabet">알파벳 연습</a>
+                        <a href="English/practice.html?mode=word">단어 연습</a>
+                        <a href="English/practice.html?mode=sentence">문장 연습</a>
+                        <a href="English/infinite_practice.html">무한 연습</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="Game/delivery.html">
+                        타자게임
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="Game/tank.html">탱크 폭격</a>
+                        <a href="Game/delivery.html">택배 분류</a>
+                        <a href="Game/mole.html">두더지 잡기</a>
+                        <a href="Game/plane.html">비행기 조종</a>
+                    </div>
+                </li>
+                <li><a href="writing.html">필사</a></li>
+                <li>
+                    <a href="Certificate/word-processor.html">
+                        자격증
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="Certificate/word-processor.html">워드프로세서</a>
+                    </div>
+                </li>
+                <li><a href="contact.html">문의하기</a></li>
+                <li class="ml-2">
+                    <a href="#" onclick="goProfile(event)" title="프로필" style="padding: 0.5rem 0.6rem; border-radius: 50%;">
+                        <i class="far fa-user text-[1.2rem] m-0"></i>
+                    </a>
+                </li>
+            </ul>
         </div>
     </nav>
 
+    <!-- 마이페이지 메인 컨텐츠 시작 -->
     <div class="max-w-4xl mx-auto mt-12 px-6">
         <div class="flex items-end gap-3 mb-8">
             <h1 class="text-3xl font-bold">마이페이지</h1>
@@ -89,7 +242,7 @@
         </div>
 
         <!-- [2] 성장 그래프 섹션 -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-12">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 pb-14 mb-12">
             <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
                 <h2 class="text-lg font-bold text-gray-900">나의 타자 성장 기록</h2>
                 
@@ -108,7 +261,7 @@
             </div>
 
             <!-- 그래프 구분선 (점선) -->
-            <hr class="border-t-2 border-dashed border-gray-200 my-10">
+            <hr class="border-t-2 border-dashed border-gray-200 mt-14 mb-10">
 
             <!-- 정확도 그래프 -->
             <div class="relative w-full" style="height: 300px;">
@@ -165,6 +318,12 @@
     </div>
 
     <script>
+        // 상단 프로필 버튼 기능 연결
+        function goProfile(e) {
+            e.preventDefault();
+            window.location.reload();
+        }
+
         // 차트 인스턴스를 저장할 전역 변수
         let speedChartInstance = null;
         let accuracyChartInstance = null;
@@ -189,11 +348,8 @@
                     ? 'text-xs px-2 py-1 bg-white border border-gray-300 text-gray-600 rounded font-medium'
                     : 'text-xs px-2 py-1 bg-[#FEE500] text-[#191919] rounded font-medium';
 
-                // ==========================================
-                // 🔥 가짜 데이터 삭제 완료! 오직 진짜 데이터만 담깁니다.
-                // ==========================================
                 if (!userData.dailyRecords) {
-                    userData.dailyRecords = []; // 가짜 데이터를 생성하지 않고 빈 배열 생성
+                    userData.dailyRecords = [];
                     localStorage.setItem('fingerRunUser', JSON.stringify(userData));
                 }
 
@@ -279,11 +435,12 @@
             if (speedChartInstance) speedChartInstance.destroy();
             if (accuracyChartInstance) accuracyChartInstance.destroy();
 
+            // 공통 옵션 설정 (여백 확장)
             const commonOptions = {
                 responsive: true,
                 maintainAspectRatio: false,
                 layout: {
-                    padding: { top: 15, right: 10, left: 10 } // 상단 및 좌우 여백 추가
+                    padding: { top: 20, right: 15, left: 15, bottom: 5 } // 여백을 더 넉넉하게 추가
                 },
                 plugins: { legend: { display: false } },
                 elements: {
@@ -303,7 +460,8 @@
                         borderColor: '#3b82f6',
                         backgroundColor: 'rgba(59, 130, 246, 0.1)',
                         borderWidth: 3,
-                        fill: true
+                        fill: true,
+                        clip: false // 🔥 선과 점이 잘리지 않도록 보호 (타수 그래프)
                     }]
                 },
                 options: {
@@ -329,7 +487,8 @@
                         borderColor: '#10b981',
                         backgroundColor: 'rgba(16, 185, 129, 0.1)',
                         borderWidth: 3,
-                        fill: true
+                        fill: true,
+                        clip: false // 🔥 선과 점이 잘리지 않도록 보호 (정확도 그래프)
                     }]
                 },
                 options: {
