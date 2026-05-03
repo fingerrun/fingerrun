@@ -7,6 +7,8 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- 그래프를 그리기 위한 Chart.js 라이브러리 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
         body { font-family: 'Noto Sans KR', sans-serif; background-color: #f9fafb; color: #191f28; }
@@ -33,25 +35,51 @@
         </div>
 
         <!-- [1] 타자 통계 대시보드 (문장 연습 기록 기반) -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <!-- 평균 타수 -->
             <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col items-center justify-center">
                 <span class="text-gray-500 text-sm font-medium mb-2">문장연습 평균 타수</span>
                 <div class="text-3xl font-bold text-gray-900"><span id="avg-speed">-</span> <span class="text-base font-normal text-gray-500">타/분</span></div>
             </div>
             
-            <!-- 최고 타수 (그라데이션 선 제거됨) -->
+            <!-- 최고 타수 -->
             <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col items-center justify-center">
                 <span class="text-gray-500 text-sm font-medium mb-2">문장연습 최고 타수</span>
                 <div class="text-3xl font-bold text-blue-600"><span id="max-speed">-</span> <span class="text-base font-normal text-gray-500">타/분</span></div>
             </div>
 
-            <!-- 평균 타수 기준 전체 랭킹 -->
+            <!-- 전체 문장 연습 횟수 -->
             <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col items-center justify-center relative">
-                <i class="fas fa-crown text-yellow-400 absolute top-4 right-4 text-xl opacity-20"></i>
-                <span class="text-gray-500 text-sm font-medium mb-2">평균 타수 기준 랭킹</span>
-                <div class="text-3xl font-bold text-gray-900"><span id="user-ranking">-</span> <span class="text-base font-normal text-gray-500">위</span></div>
-                <div class="text-xs text-gray-400 font-medium mt-1">실시간 갱신 중</div>
+                <i class="fas fa-history text-blue-100 absolute top-4 right-4 text-2xl"></i>
+                <span class="text-gray-500 text-sm font-medium mb-2">전체 문장 연습 횟수</span>
+                <div class="text-3xl font-bold text-gray-900"><span id="total-sessions">-</span> <span class="text-base font-normal text-gray-500">회</span></div>
+            </div>
+        </div>
+
+        <!-- [NEW] 성장 그래프 섹션 -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-12">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+                <h2 class="text-lg font-bold text-gray-900">나의 타자 성장 기록</h2>
+                
+                <!-- 기간 필터링 버튼 (data-days 값을 일수로 설정) -->
+                <div class="flex gap-1 bg-gray-100 p-1 rounded-lg">
+                    <button class="filter-btn px-4 py-1.5 text-sm rounded-md text-gray-500 hover:text-gray-700 font-medium transition" data-days="1">1일</button>
+                    <button class="filter-btn px-4 py-1.5 text-sm rounded-md bg-white shadow-sm text-blue-600 font-bold transition active" data-days="10">10일</button>
+                    <button class="filter-btn px-4 py-1.5 text-sm rounded-md text-gray-500 hover:text-gray-700 font-medium transition" data-days="30">1달</button>
+                    <button class="filter-btn px-4 py-1.5 text-sm rounded-md text-gray-500 hover:text-gray-700 font-medium transition" data-days="365">1년</button>
+                </div>
+            </div>
+
+            <!-- 타수 그래프 -->
+            <div class="mb-10 relative h-64">
+                <h3 class="text-sm font-medium text-gray-500 mb-2">일별 평균 타수 변화 (타/분)</h3>
+                <canvas id="speedChart"></canvas>
+            </div>
+
+            <!-- 정확도 그래프 -->
+            <div class="relative h-64">
+                <h3 class="text-sm font-medium text-gray-500 mb-2">일별 정확도 변화 (%)</h3>
+                <canvas id="accuracyChart"></canvas>
             </div>
         </div>
 
@@ -99,7 +127,7 @@
             </div>
         </div>
 
-        <!-- [3] 로그아웃 버튼 (회원탈퇴 삭제, 로그아웃 우측 정렬) -->
+        <!-- [3] 로그아웃 버튼 -->
         <div class="flex justify-end">
             <button onclick="handleLogout()" class="px-6 py-2.5 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition text-sm">
                 로그아웃
@@ -108,25 +136,24 @@
     </div>
 
     <script>
-        // 화면에 정보 뿌려주는 로직
-document.addEventListener('DOMContentLoaded', () => {
+        // 차트 인스턴스를 저장할 전역 변수
+        let speedChartInstance = null;
+        let accuracyChartInstance = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
             const savedUser = localStorage.getItem('fingerRunUser');
 
             if (savedUser) {
                 const userData = JSON.parse(savedUser);
 
-                // --- [여기부터 3줄 추가] ---
-                // 1. 연습 기록 표시 (값이 없으면 0으로 표시)
+                // 1. 연습 기록 및 횟수 표시
                 document.getElementById('avg-speed').innerText = userData.avgSpeed || 0;
                 document.getElementById('max-speed').innerText = userData.maxSpeed || 0;
+                document.getElementById('total-sessions').innerText = userData.totalSessions || 0;
 
-                // 2. 랭킹 표시 (현재는 로컬이므로 임시 등수 혹은 '분석 중' 표시)
-                document.getElementById('user-ranking').innerText = userData.avgSpeed > 0 ? "계산 중" : "-";
-                // --- [여기까지 추가] ---
-
+                // 개인정보 표시
                 document.getElementById('welcome-message').innerText = userData.nickname + "님, 환영합니다!";
                 document.getElementById('user-email').innerText = userData.email || "이메일 정보 제공 미동의";
-                // ... (이하 기존 코드 동일)
                 document.getElementById('user-nickname').innerText = userData.nickname;
                 document.getElementById('user-joindate').innerText = userData.joinDate || "정보 없음";
                 
@@ -134,18 +161,169 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('login-provider').className = userData.provider === 'google' 
                     ? 'text-xs px-2 py-1 bg-white border border-gray-300 text-gray-600 rounded font-medium'
                     : 'text-xs px-2 py-1 bg-[#FEE500] text-[#191919] rounded font-medium';
-            } else {
-                alert("로그인이 필요한 페이지입니다.");
-                window.location.href = "login.html";
-            }
-        });
 
-        // 닉네임/생일 수정 기능 (DB 및 로컬스토리지 업데이트 포함)
+                // ==========================================
+                // 📊 [그래프 데이터 생성] 
+                // userData.dailyRecords가 없으면 가상의 1년치 기록을 만듭니다.
+                // ==========================================
+                if (!userData.dailyRecords) {
+                    const today = new Date();
+                    const mockRecords = [];
+                    let baseSpd = userData.avgSpeed > 50 ? userData.avgSpeed - 50 : 200;
+                    let baseAcc = 85;
+                    
+                    // 과거 365일부터 오늘까지 띄엄띄엄(연습 안 한 날 제외) 데이터 생성
+                    for(let i = 365; i >= 1; i -= Math.floor(Math.random() * 5 + 1)) {
+                        const d = new Date(today);
+                        d.setDate(d.getDate() - i);
+                        
+                        // 날짜 텍스트 안전하게 변환 (YYYY-MM-DD 형식)
+                        const month = String(d.getMonth() + 1).padStart(2, '0');
+                        const day = String(d.getDate()).padStart(2, '0');
+                        const dateStr = `${d.getFullYear()}-${month}-${day}`;
+
+                        mockRecords.push({
+                            date: dateStr,
+                            speed: Math.floor(baseSpd + Math.random() * 40),
+                            accuracy: Math.floor(Math.min(100, baseAcc + Math.random() * 10))
+                        });
+                        baseSpd += 0.5; 
+                        baseAcc += 0.05;
+                    }
+                    
+                    // 오늘 날짜 무조건 추가
+                    const tMonth = String(today.getMonth() + 1).padStart(2, '0');
+                    const tDay = String(today.getDate()).padStart(2, '0');
+                    mockRecords.push({
+                        date: `${today.getFullYear()}-${tMonth}-${tDay}`,
+                        speed: userData.avgSpeed || 300,
+                        accuracy: 98
+                    });
+
+                    userData.dailyRecords = mockRecords;
+                    localStorage.setItem('fingerRunUser', JSON.stringify(userData));
+                }
+
+                // 2. 차트 초기 렌더링 (기본 10일 설정)
+                renderCharts(userData.dailyRecords, 10);
+
+            } else {
+                alert("로그인이 필요한 페이지입니다.");
+                window.location.href = "login.html";
+            }
+
+            // 필터 버튼(1일, 10일, 1달, 1년) 이벤트 연결
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    // 이벤트 발생 대상을 현재 클릭된 버튼으로 정확히 한정 (안전성)
+                    const targetBtn = e.currentTarget;
+
+                    // 전체 버튼 스타일 초기화
+                    document.querySelectorAll('.filter-btn').forEach(b => {
+                        b.classList.remove('bg-white', 'shadow-sm', 'text-blue-600', 'font-bold', 'active');
+                        b.classList.add('text-gray-500', 'font-medium');
+                    });
+
+                    // 클릭된 버튼만 스타일 활성화
+                    targetBtn.classList.remove('text-gray-500', 'font-medium');
+                    targetBtn.classList.add('bg-white', 'shadow-sm', 'text-blue-600', 'font-bold', 'active');
+                    
+                    // 필터링 적용 후 다시 그리기
+                    const days = parseInt(targetBtn.dataset.days);
+                    const userData = JSON.parse(localStorage.getItem('fingerRunUser'));
+                    renderCharts(userData.dailyRecords, days);
+                });
+            });
+        });
+
+        // 차트를 그려주는 핵심 함수
+        function renderCharts(records, daysFilter) {
+            if (!records || records.length === 0) return;
+
+            // 1. 기간에 맞춰 데이터 필터링 (가장 안전한 날짜 텍스트 비교)
+            const today = new Date();
+            const cutoffDate = new Date(today);
+            cutoffDate.setDate(today.getDate() - daysFilter + 1); // 지정한 날짜만큼 뒤로 (오늘 포함)
+            
+            const month = String(cutoffDate.getMonth() + 1).padStart(2, '0');
+            const day = String(cutoffDate.getDate()).padStart(2, '0');
+            const cutoffStr = `${cutoffDate.getFullYear()}-${month}-${day}`;
+
+            // 기준 날짜 이후(최근)의 데이터만 남김
+            const filtered = records.filter(r => r.date >= cutoffStr);
+
+            // 데이터가 아예 없을 경우를 대비한 안전 장치
+            const finalData = filtered.length > 0 ? filtered : records.slice(-1);
+
+            // 2. X, Y축 데이터 매핑 (연습을 안 한 날짜는 배열에 없으므로 자동 생략됨)
+            // 'YYYY-MM-DD' 에서 'MM-DD'로 잘라서 표시
+            const labels = finalData.map(r => r.date.substring(5)); 
+            const speedData = finalData.map(r => r.speed);
+            const accuracyData = finalData.map(r => r.accuracy);
+
+            // 3. 기존 차트 파괴 (메모리 누수 방지 및 그래프 겹침 방지)
+            if (speedChartInstance) speedChartInstance.destroy();
+            if (accuracyChartInstance) accuracyChartInstance.destroy();
+
+            // 공통 차트 옵션 설정
+            const commonOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                elements: {
+                    line: { tension: 0.4 }, // 부드러운 곡선
+                    point: { radius: labels.length > 30 ? 1 : 4, hoverRadius: 6 } // 데이터 많으면 점 작게
+                }
+            };
+
+            // 4. 평균 타수(속도) 그래프 그리기
+            const ctxSpeed = document.getElementById('speedChart').getContext('2d');
+            speedChartInstance = new Chart(ctxSpeed, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '평균 타수',
+                        data: speedData,
+                        borderColor: '#3b82f6', // 파란색 선
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)', // 파란색 그림자
+                        borderWidth: 3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    ...commonOptions,
+                    scales: { y: { suggestedMin: 0 } }
+                }
+            });
+
+            // 5. 정확도 그래프 그리기
+            const ctxAccuracy = document.getElementById('accuracyChart').getContext('2d');
+            accuracyChartInstance = new Chart(ctxAccuracy, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '정확도 (%)',
+                        data: accuracyData,
+                        borderColor: '#10b981', // 초록색 선
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)', // 초록색 그림자
+                        borderWidth: 3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    ...commonOptions,
+                    scales: { y: { min: 40, max: 100 } } // 정확도는 보통 40% 밑으로 잘 안 떨어지므로 범위 고정
+                }
+            });
+        }
+
+        // 닉네임/생일 수정 및 파이어베이스 저장 기능
         async function editProfile(type) {
             const savedUser = localStorage.getItem('fingerRunUser');
             if (!savedUser) return;
             const userData = JSON.parse(savedUser);
-
             let isChanged = false;
 
             if (type === 'nickname') {
@@ -164,22 +342,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // 변경된 사항이 있으면 로컬스토리지와 파이어베이스 DB에 저장
             if (isChanged) {
-                // 1. 로컬 스토리지 업데이트
+                // 1. 로컬 저장
                 localStorage.setItem('fingerRunUser', JSON.stringify(userData));
                 
-                // 2. 파이어베이스 DB 업데이트 (동적 임포트 활용)
+                // 2. 파이어베이스 DB 전송
                 try {
-                    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js");
+                    const { initializeApp, getApps, getApp } = await import("https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js");
                     const { getFirestore, doc, updateDoc } = await import("https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js");
                     
+                    // 서준님의 전체 Firebase 접속 정보 원복 완료
                     const firebaseConfig = {
                         apiKey: "AIzaSyDKOS6QVMn6fhsIu1Sj2JSrEfOpq1lR1vU",
+                        authDomain: "fingerrun-fe27d.firebaseapp.com",
                         projectId: "fingerrun-fe27d",
+                        storageBucket: "fingerrun-fe27d.firebasestorage.app",
+                        messagingSenderId: "431093218250",
+                        appId: "1:431093218250:web:6c1d4c07202bd661412d33",
+                        measurementId: "G-EQSEGCJTEX"
                     };
                     
-                    const app = initializeApp(firebaseConfig);
+                    // 앱 중복 초기화 에러 방지
+                    const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
                     const db = getFirestore(app);
                     const userRef = doc(db, "users", userData.uid);
                     
@@ -196,8 +380,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // 로그아웃 기능
-        function handleLogout() {
+        // 로그아웃 기능
+        function handleLogout() {
             if (confirm("정말 로그아웃 하시겠습니까?")) {
                 localStorage.removeItem('fingerRunUser');
                 localStorage.removeItem('isLoggedIn');
