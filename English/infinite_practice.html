@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <meta charset="UTF-8">
+
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -8,7 +10,6 @@
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-T9HC454Z');</script>
     <!-- End Google Tag Manager -->
-    <meta charset="UTF-8">
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7QSEYCFK83"></script>
@@ -36,73 +37,418 @@
     <meta name="author" content="FingerRun">
     <meta name="robots" content="index, follow">
 
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; min-height: 100vh; color: #333; line-height: 1.6; }
-        
-        /* Navigation */
-        nav { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 1rem 0; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1); }
-        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 2rem; }
-        
-        .logo { font-size: 1.8rem; font-weight: bold; color: #667eea; text-decoration: none; display: flex; align-items: center; gap: 10px; text-shadow: 1px 1px 0px rgba(255,255,255,0.5); }
-        .logo img { height: 32px; width: auto; }
+    <!-- Tailwind & FontAwesome 추가 (마이페이지에서 가져옴) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
-        .nav-menu { display: flex; list-style: none; gap: 1.5rem; flex-wrap: nowrap; white-space: nowrap; }
-        .nav-menu li { position: relative; }
-        .nav-menu a { text-decoration: none; color: #333; font-weight: 500; padding: 0.5rem 0.8rem; border-radius: 25px; transition: all 0.3s ease; font-size: 0.9rem; display: flex; align-items: center; gap: 0.3rem; }
-        .nav-menu a:hover { background: #667eea; color: white; transform: translateY(-2px); }
-        .dropdown-arrow { font-size: 0.7rem; transition: transform 0.3s ease; }
-        .dropdown-menu { position: absolute; top: 100%; left: 0; background: white; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); border-radius: 10px; padding: 0.5rem 0; min-width: 180px; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s ease; z-index: 1001; border: 1px solid rgba(0, 0, 0, 0.1); }
-        .nav-menu li:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
-        .nav-menu li:hover .dropdown-arrow { transform: rotate(180deg); }
-        .dropdown-menu a { display: block; padding: 0.7rem 1rem; color: #333; border-radius: 0; font-weight: 400; transition: all 0.2s ease; }
-        .dropdown-menu a:hover { background: #f8f9fa; color: #667eea; transform: none; padding-left: 1.2rem; }
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
         
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: #f5f5f5; 
+            min-height: 100vh; 
+            color: #333; 
+            line-height: 1.6; 
+        }
+        
+        /* --- 마이페이지와 동일한 네비게이션 바 전용 CSS 시작 --- */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
+        }
+
+        .logo img {
+            height: 32px;
+            width: auto;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            align-items: center;
+            margin: 0; 
+            padding: 0;
+            flex-wrap: nowrap; 
+            white-space: nowrap;
+        }
+
+        .nav-menu li {
+            position: relative;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 0.5rem 0.8rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .nav-menu a:hover {
+            background: #667eea;
+            color: white !important;
+            transform: translateY(-2px);
+        }
+
+        .dropdown-arrow {
+            font-size: 0.7rem;
+            transition: transform 0.3s ease;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: white;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            padding: 0.5rem 0;
+            min-width: 160px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-menu li:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .nav-menu li:hover .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 0.7rem 1rem;
+            color: #333;
+            border-radius: 0;
+            white-space: nowrap;
+            font-weight: 400;
+        }
+
+        .dropdown-menu a:hover {
+            background: #f8f9fa;
+            color: #667eea !important;
+            transform: none;
+        }
+
+        @media (max-width: 900px) {
+            .nav-menu { display: none; } 
+        }
+        /* --- 네비게이션 바 전용 CSS 끝 --- */
+
         /* Main Container */
-        .main-container { margin-top: 80px; padding: 2rem 0; max-width: 1200px; margin-left: auto; margin-right: auto; padding-left: 2rem; padding-right: 2rem; }
-        .page-header { text-align: center; margin-bottom: 3rem; }
-        .page-title { font-size: 2.5rem; font-weight: 700; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 1rem; position: relative; display: inline-block; }
+        .main-container { 
+            margin-top: 80px; /* 네비게이션 바 공간 확보 */
+            padding: 2rem 0; 
+            max-width: 1200px; 
+            margin-left: auto; 
+            margin-right: auto; 
+            padding-left: 2rem; 
+            padding-right: 2rem; 
+        }
         
-        .version-badge { font-size: 0.5em; color: #667eea; margin-left: 12px; font-weight: 800; vertical-align: middle; -webkit-text-fill-color: #667eea; letter-spacing: -0.5px; opacity: 0.9; }
+        .page-header { 
+            text-align: center; 
+            margin-bottom: 3rem; 
+        }
         
-        .page-description { font-size: 1.2rem; color: #666; max-width: 600px; margin: 0 auto; white-space: nowrap; }
+        .page-title { 
+            font-size: 2.5rem; 
+            font-weight: 700; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            background-clip: text; 
+            margin-bottom: 1rem; 
+            position: relative; 
+            display: inline-block; 
+        }
+        
+        .version-badge { 
+            font-size: 0.5em; 
+            color: #667eea; 
+            margin-left: 12px; 
+            font-weight: 800; 
+            vertical-align: middle; 
+            -webkit-text-fill-color: #667eea; 
+            letter-spacing: -0.5px; 
+            opacity: 0.9; 
+        }
+        
+        .page-description { 
+            font-size: 1.2rem; 
+            color: #666; 
+            max-width: 600px; 
+            margin: 0 auto; 
+            white-space: nowrap; 
+        }
         
         /* Practice Container */
-        .practice-container { background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); padding: 3rem; margin-bottom: 2rem; transition: all 0.3s ease; }
-        .practice-menu { display: flex; justify-content: center; gap: 15px; margin-bottom: 1.5rem; flex-wrap: wrap; }
-        .menu-btn { padding: 12px 25px; border: none; border-radius: 25px; font-size: 1rem; font-weight: 500; cursor: pointer; background: #f8f9fa; color: #667eea; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); border: 2px solid transparent; }
-        .menu-btn:hover { background: linear-gradient(45deg, #667eea, #764ba2); color: white; transform: translateY(-3px); box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3); }
-        .menu-btn.active { background: linear-gradient(45deg, #667eea, #764ba2); color: white; transform: scale(1.05); box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4); }
+        .practice-container { 
+            background: white; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); 
+            padding: 3rem; 
+            margin-bottom: 2rem; 
+            transition: all 0.3s ease; 
+        }
         
-        .submenu-area { display: flex; justify-content: center; gap: 8px; margin-bottom: 2rem; flex-wrap: wrap; padding: 10px; background: #f8f9fa; border-radius: 15px; border: 1px solid #e9ecef; }
-        .submenu-btn { padding: 8px 16px; border: 1px solid #e2e8f0; border-radius: 20px; font-size: 0.9rem; font-weight: 500; cursor: pointer; background: white; color: #666; transition: all 0.2s ease; }
-        .submenu-btn:hover { background: #e9ecef; color: #333; }
-        .submenu-btn.active { background: #667eea; color: white; border-color: #667eea; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3); }
+        .practice-menu { 
+            display: flex; 
+            justify-content: center; 
+            gap: 15px; 
+            margin-bottom: 1.5rem; 
+            flex-wrap: wrap; 
+        }
+        
+        .menu-btn { 
+            padding: 12px 25px; 
+            border: none; 
+            border-radius: 25px; 
+            font-size: 1rem; 
+            font-weight: 500; 
+            cursor: pointer; 
+            background: #f8f9fa; 
+            color: #667eea; 
+            transition: all 0.3s ease; 
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
+            border: 2px solid transparent; 
+        }
+        
+        .menu-btn:hover { 
+            background: linear-gradient(45deg, #667eea, #764ba2); 
+            color: white; 
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3); 
+        }
+        
+        .menu-btn.active { 
+            background: linear-gradient(45deg, #667eea, #764ba2); 
+            color: white; 
+            transform: scale(1.05); 
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4); 
+        }
+        
+        .submenu-area { 
+            display: flex; 
+            justify-content: center; 
+            gap: 8px; 
+            margin-bottom: 2rem; 
+            flex-wrap: wrap; 
+            padding: 10px; 
+            background: #f8f9fa; 
+            border-radius: 15px; 
+            border: 1px solid #e9ecef; 
+        }
+        
+        .submenu-btn { 
+            padding: 8px 16px; 
+            border: 1px solid #e2e8f0; 
+            border-radius: 20px; 
+            font-size: 0.9rem; 
+            font-weight: 500; 
+            cursor: pointer; 
+            background: white; 
+            color: #666; 
+            transition: all 0.2s ease; 
+        }
+        
+        .submenu-btn:hover { 
+            background: #e9ecef; 
+            color: #333; 
+        }
+        
+        .submenu-btn.active { 
+            background: #667eea; 
+            color: white; 
+            border-color: #667eea; 
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3); 
+        }
 
         /* Practice Area */
-        .practice-area { text-align: center; margin-bottom: 3rem; }
-        .text-display { font-size: 1.8rem; line-height: 1.8; margin-bottom: 2rem; min-height: 120px; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #f8f9fa; border-radius: 15px; padding: 2rem; word-break: keep-all; letter-spacing: 2px; border: 2px solid #e2e8f0; transition: all 0.3s ease; }
-        .text-display.sentence-mode { letter-spacing: 0.2px; line-height: 1.6; background: white; border: 2px solid #e2e8f0; }
+        .practice-area { 
+            text-align: center; 
+            margin-bottom: 3rem; 
+        }
         
-        .char { margin: 3px; padding: 8px 10px; border-radius: 8px; transition: all 0.3s ease; color: #666; font-weight: 500; }
-        .char.correct { color: white; background: linear-gradient(45deg, #4caf50, #45a049); box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3); }
-        .char.incorrect { color: white; background: linear-gradient(45deg, #ff6b6b, #ff5252); box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3); }
-        .char.current { color: white; background: linear-gradient(45deg, #667eea, #764ba2); animation: pulse 1.5s infinite; transform: scale(1.15); }
-        .char.space { background: transparent !important; color: transparent; border: none; margin: 0 0.2em; display: inline-block; width: 0.5em; }
+        .text-display { 
+            font-size: 1.8rem; 
+            line-height: 1.8; 
+            margin-bottom: 2rem; 
+            min-height: 120px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            background: #f8f9fa; 
+            border-radius: 15px; 
+            padding: 2rem; 
+            word-break: keep-all; 
+            letter-spacing: 2px; 
+            border: 2px solid #e2e8f0; 
+            transition: all 0.3s ease; 
+        }
         
-        .text-display.sentence-mode .char { margin: 0; padding: 0; background: none !important; border-radius: 0; transition: color 0.2s ease; color: #8b5cf6; font-weight: 500; box-shadow: none !important; transform: none !important; animation: none !important; }
+        .text-display.sentence-mode { 
+            letter-spacing: 0.2px; 
+            line-height: 1.6; 
+            background: white; 
+            border: 2px solid #e2e8f0; 
+        }
+        
+        .char { 
+            margin: 3px; 
+            padding: 8px 10px; 
+            border-radius: 8px; 
+            transition: all 0.3s ease; 
+            color: #666; 
+            font-weight: 500; 
+        }
+        
+        .char.correct { 
+            color: white; 
+            background: linear-gradient(45deg, #4caf50, #45a049); 
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3); 
+        }
+        
+        .char.incorrect { 
+            color: white; 
+            background: linear-gradient(45deg, #ff6b6b, #ff5252); 
+            box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3); 
+        }
+        
+        .char.current { 
+            color: white; 
+            background: linear-gradient(45deg, #667eea, #764ba2); 
+            animation: pulse 1.5s infinite; 
+            transform: scale(1.15); 
+        }
+        
+        .char.space { 
+            background: transparent !important; 
+            color: transparent; 
+            border: none; 
+            margin: 0 0.2em; 
+            display: inline-block; 
+            width: 0.5em; 
+        }
+        
+        .text-display.sentence-mode .char { 
+            margin: 0; 
+            padding: 0; 
+            background: none !important; 
+            border-radius: 0; 
+            transition: color 0.2s ease; 
+            color: #8b5cf6; 
+            font-weight: 500; 
+            box-shadow: none !important; 
+            transform: none !important; 
+            animation: none !important; 
+        }
+        
         .text-display.sentence-mode .char.correct { color: #000000; }
         .text-display.sentence-mode .char.incorrect { color: #ff4444; }
         .text-display.sentence-mode .char.current { color: #3b82f6; background: none !important; }
         
-        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1.15); } 50% { opacity: 0.7; transform: scale(1.2); } }
+        @keyframes pulse { 
+            0%, 100% { opacity: 1; transform: scale(1.15); } 
+            50% { opacity: 0.7; transform: scale(1.2); } 
+        }
         
         /* Keyboard Area */
-        .keyboard-area { margin: 2rem 0; display: flex; justify-content: center; }
-        .keyboard { background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); border: 2px solid #e2e8f0; width: 100%; }
-        .keyboard-row { display: flex; justify-content: center; margin-bottom: 0.5rem; gap: 0.3rem; }
-        .key { background: linear-gradient(145deg, #f8f9fa, #e9ecef); border: 2px solid #e2e8f0; border-radius: 8px; padding: 0.8rem; min-width: 2.5rem; height: 2.5rem; display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 0.9rem; color: #495057; transition: all 0.3s ease; cursor: pointer; position: relative; }
-        .key.active { transform: translateY(4px); box-shadow: 0 0 0 #cbd3da, 0 0 15px #667eea, inset 0 0 10px rgba(102, 126, 234, 0.2); border: 2px solid #667eea !important; color: #667eea !important; background: white !important; z-index: 10; }
+        .keyboard-area { 
+            margin: 2rem 0; 
+            display: flex; 
+            justify-content: center; 
+        }
+        
+        .keyboard { 
+            background: white; 
+            border-radius: 20px; 
+            padding: 2rem; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); 
+            border: 2px solid #e2e8f0; 
+            width: 100%; 
+        }
+        
+        .keyboard-row { 
+            display: flex; 
+            justify-content: center; 
+            margin-bottom: 0.5rem; 
+            gap: 0.3rem; 
+        }
+        
+        .key { 
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef); 
+            border: 2px solid #e2e8f0; 
+            border-radius: 8px; 
+            padding: 0.8rem; 
+            min-width: 2.5rem; 
+            height: 2.5rem; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-weight: 500; 
+            font-size: 0.9rem; 
+            color: #495057; 
+            transition: all 0.3s ease; 
+            cursor: pointer; 
+            position: relative; 
+        }
+        
+        .key.active { 
+            transform: translateY(4px); 
+            box-shadow: 0 0 0 #cbd3da, 0 0 15px #667eea, inset 0 0 10px rgba(102, 126, 234, 0.2); 
+            border: 2px solid #667eea !important; 
+            color: #667eea !important; 
+            background: white !important; 
+            z-index: 10; 
+        }
+        
         .key.wide { min-width: 4rem; }
         .key.space { min-width: 12rem; }
         .key.shift { min-width: 5rem; }
@@ -110,18 +456,94 @@
         .key.caps { min-width: 4.5rem; }
         .key.enter { min-width: 5.5rem; }
         .key.backspace { min-width: 4.5rem; }
-        .key-dual { display: flex; flex-direction: column; align-items: center; line-height: 1.1; }
+        
+        .key-dual { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            line-height: 1.1; 
+        }
+        
         .key-en { font-size: 0.8rem; color: #495057; font-weight: 600; }
         .key-ko { font-size: 0.7rem; color: #6c757d; }
         
         .input-area { margin-bottom: 3rem; }
-        .typing-input { width: 100%; padding: 18px; font-size: 1.2rem; border: 2px solid #e2e8f0; border-radius: 15px; text-align: center; outline: none; background: white; color: #333; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
-        .typing-input:focus { border-color: #667eea; box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2); }
         
-        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; background: #f8f9fa; padding: 2rem; border-radius: 15px; margin-bottom: 2rem; border: 2px solid #e2e8f0; }
-        .stat-item { text-align: center; padding: 1.5rem; background: white; border-radius: 12px; }
-        .stat-value { font-size: 2.2rem; font-weight: 700; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; }
-        .stat-label { color: #666; font-size: 1rem; font-weight: 500; }
+        .typing-input { 
+            width: 100%; 
+            padding: 18px; 
+            font-size: 1.2rem; 
+            border: 2px solid #e2e8f0; 
+            border-radius: 15px; 
+            text-align: center; 
+            outline: none; 
+            background: white; 
+            color: #333; 
+            transition: all 0.3s ease; 
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
+        }
+        
+        .typing-input:focus { 
+            border-color: #667eea; 
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2); 
+        }
+        
+        .stats { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 20px; 
+            background: #f8f9fa; 
+            padding: 2rem; 
+            border-radius: 15px; 
+            margin-bottom: 2rem; 
+            border: 2px solid #e2e8f0; 
+        }
+        
+        .stat-item { 
+            text-align: center; 
+            padding: 1.5rem; 
+            background: white; 
+            border-radius: 12px; 
+        }
+        
+        .stat-value { 
+            font-size: 2.2rem; 
+            font-weight: 700; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            -webkit-background-clip: text; 
+            background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            margin-bottom: 0.5rem; 
+        }
+        
+        .stat-label { 
+            color: #666; 
+            font-size: 1rem; 
+            font-weight: 500; 
+        }
+
+        /* --- [광고] 사이드 광고 위치 및 크기 설정 --- */
+        .ad-sidebar {
+            position: fixed;
+            width: 240px; 
+            top: 155px;   
+            bottom: 75px; 
+            z-index: 50;
+            left: -5000px; 
+            visibility: hidden;
+        }
+
+        @media (min-width: 1800px) {
+            .ad-sidebar { visibility: visible; }
+            .ad-left { left: 75px; }  
+            .ad-right { right: 75px; left: auto; } 
+        }
+
+        .ad-sidebar ins {
+            display: inline-block !important;
+            width: 240px !important;
+            height: 100% !important;
+        }
 
         @media (max-width: 768px) {
             .nav-menu { flex-wrap: wrap; gap: 0.5rem; }
@@ -130,33 +552,76 @@
             .stats { grid-template-columns: 1fr; }
             .keyboard { display: none; }
         }
-        /* --- [광고] 사이드 광고 위치 및 크기 수정 --- */
-        .ad-sidebar {
-            position: fixed;
-            width: 240px; /* 가로폭 축소 */
-            top: 155px;   /* 내비게이션 여백 포함 상단 2cm */
-            bottom: 75px; /* 하단 2cm 여백 */
-            z-index: 50;
-            left: -5000px; 
-            visibility: hidden;
-        }
-
-        /* 화면 너비가 1800px 이상일 때만 표시 */
-        @media (min-width: 1800px) {
-            .ad-sidebar { visibility: visible; }
-            .ad-left { left: 75px; }  /* 왼쪽 2cm 여백 */
-            .ad-right { right: 75px; left: auto; } /* 오른쪽 2cm 여백 */
-        }
-
-        .ad-sidebar ins {
-            display: inline-block !important;
-            width: 240px !important;
-            height: 100% !important;
-        }
     </style>
 </head>
 
 <body>
+    <!-- [수정완료] 마이페이지와 완벽하게 동일한 Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="../index.html" class="logo" aria-label="핑거런 홈페이지 메인으로 이동">
+                <img src="../images/finger-run-logo.svg" alt="" class="h-8 w-auto"> 
+                FingerRun
+            </a>
+            <ul class="nav-menu">
+                <li><a href="../notices.html">공지사항</a></li>
+                <li>
+                    <a href="../Korean/practice.html?mode=consonant">
+                        한글 타자연습
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="../Korean/practice.html?mode=consonant">자음 연습</a>
+                        <a href="../Korean/practice.html?mode=vowel">모음 연습</a>
+                        <a href="../Korean/practice.html?mode=word">단어 연습</a>
+                        <a href="../Korean/practice.html?mode=sentence">문장 연습</a>
+                        <a href="../Korean/infinite_practice.html">무한 연습</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="practice.html?mode=alphabet">
+                        영어 타자연습
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="practice.html?mode=alphabet">알파벳 연습</a>
+                        <a href="practice.html?mode=word">단어 연습</a>
+                        <a href="practice.html?mode=sentence">문장 연습</a>
+                        <a href="infinite_practice.html">무한 연습</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="../Game/delivery.html">
+                        타자게임
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="../Game/tank.html">탱크 폭격</a>
+                        <a href="../Game/delivery.html">택배 분류</a>
+                        <a href="../Game/mole.html">두더지 잡기</a>
+                        <a href="../Game/plane.html">비행기 조종</a>
+                    </div>
+                </li>
+                <li><a href="../writing.html">필사</a></li>
+                <li>
+                    <a href="../Certificate/word-processor.html">
+                        자격증
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="../Certificate/word-processor.html">워드프로세서</a>
+                    </div>
+                </li>
+                <li><a href="../contact.html">문의하기</a></li>
+                <li class="ml-2">
+                    <a href="#" onclick="goProfile(event)" title="프로필" style="padding: 0.5rem 0.6rem; border-radius: 50%;">
+                        <i class="far fa-user text-[1.2rem] m-0"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
     <div class="ad-sidebar ad-left">
         <ins class="adsbygoogle"
              style="display:inline-block; width:240px; height:100%;"
@@ -178,57 +643,6 @@
              (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
     </div>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T9HC454Z"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-
-    <nav>
-        <div class="nav-container">
-            <a href="../index.html" class="logo">
-                <img src="../images/finger-run-logo.svg" alt=""> FingerRun
-            </a>
-            <ul class="nav-menu">
-                <li><a href="../notices.html">공지사항</a></li>
-                <li>
-    <a href="../Korean/practice.html?mode=consonant">한글 타자연습 <span class="dropdown-arrow">▼</span></a>
-    <div class="dropdown-menu">
-        <a href="../Korean/practice.html?mode=consonant">자음 연습</a>
-        <a href="../Korean/practice.html?mode=vowel">모음 연습</a>
-        <a href="../Korean/practice.html?mode=word">단어 연습</a>
-        <a href="../Korean/practice.html?mode=sentence">문장 연습</a>
-        <a href="../Korean/infinite_practice.html">무한 연습</a>
-    </div>
-</li>
-<li>
-    <a href="../English/practice.html?mode=alphabet">영어 타자연습 <span class="dropdown-arrow">▼</span></a>
-    <div class="dropdown-menu">
-        <a href="../English/practice.html?mode=alphabet">알파벳 연습</a>
-        <a href="../English/practice.html?mode=word">단어 연습</a>
-        <a href="../English/practice.html?mode=sentence">문장 연습</a>
-        <a href="../English/infinite_practice.html">무한 연습</a>
-    </div>
-</li>
-                <li>
-                    <a href="../Game/delivery.html">타자게임 <span class="dropdown-arrow">▼</span></a>
-                    <div class="dropdown-menu">
-                        <a href="../Game/tank.html">탱크 폭격</a>
-                        <a href="../Game/delivery.html">택배 분류</a>
-                        <a href="../Game/mole.html">두더지 잡기</a>
-                        <a href="../Game/plane.html">비행기 조종</a>
-                    </div>
-                </li>
-                <li><a href="../writing.html">필사</a></li>
-                <li>
-                    <a href="../Certificate/word-processor.html">자격증 <span class="dropdown-arrow">▼</span></a>
-                    <div class="dropdown-menu">
-                        <a href="../Certificate/word-processor.html">워드프로세서</a>
-                    </div>
-                </li>
-                <li><a href="../contact.html">문의하기</a></li>
-            </ul>
-        </div>
-    </nav>
 
     <div class="main-container">
         <div class="page-header">
@@ -336,6 +750,17 @@
     </div>
 
     <script>
+        // 상단 프로필 버튼 기능 연결 (마이페이지로 이동)
+        window.goProfile = function(e) {
+            e.preventDefault();
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (isLoggedIn === 'true') {
+                window.location.href = "../mypage.html";
+            } else {
+                window.location.href = "../login.html";
+            }
+        }
+
         class EnglishInfinitePractice {
             constructor() {
                 this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -578,7 +1003,6 @@
                 if (this.currentMode === 'alphabet') {
                     const chars = this.fingerSets[this.currentSubMode].chars;
                     let selected = [];
-                    // 알파벳 10개 연습으로 변경
                     for(let i=0; i<10; i++) selected.push(chars[Math.floor(Math.random()*chars.length)]);
                     this.currentText = selected.join(' ');
                     this.currentTranslation = '';
@@ -692,8 +1116,6 @@
                 this.currentPosition = val.length;
                 this.updateStats();
                 this.updateKeyboardHighlight();
-                
-                // 기존의 자동 다음 문제 이동 로직을 제거함
             }
 
             updateStats() {

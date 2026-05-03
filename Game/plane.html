@@ -37,26 +37,127 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Noto Sans KR', sans-serif; background: #0f172a; overflow: hidden; height: 100vh; padding-top: 80px; user-select: none; }
 
-        /* --- Navigation (FingerRun Standard) --- */
-        /* [수정] z-index를 3000으로 높여 모달창(2000)보다 위에 오도록 설정 */
-        nav { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 1rem 0; position: fixed; width: 100%; top: 0; z-index: 3000; box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1); height: 80px; }
-        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 2rem; height: 100%; }
-        .logo { font-size: 1.5rem; font-weight: bold; color: #667eea; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; } 
-        .logo img { height: 32px; width: auto; }
-        .nav-menu { display: flex; list-style: none; gap: 1.5rem; align-items: center; }
+        /* --- 마이페이지와 완벽하게 동일한 네비게이션 바 CSS --- */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 3000;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            height: 80px;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            height: 100%;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
+        }
+
+        .logo img {
+            height: 32px;
+            width: auto;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            align-items: center;
+            margin: 0; 
+            padding: 0;
+            flex-wrap: nowrap;
+            white-space: nowrap;
+        }
+
         .nav-menu li { position: relative; }
-        .nav-menu a { text-decoration: none; color: #333; font-weight: 500; padding: 0.5rem 0.8rem; border-radius: 25px; transition: all 0.3s; font-size: 0.9rem; display: flex; align-items: center; gap: 0.3rem; }
-        .nav-menu a:hover { background: #667eea; color: white !important; transform: translateY(-2px); }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 0.5rem 0.8rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .nav-menu a:hover {
+            background: #667eea;
+            color: white !important;
+            transform: translateY(-2px);
+        }
+
         .dropdown-arrow { font-size: 0.7rem; transition: transform 0.3s ease; }
-        /* [참고] 드롭다운 메뉴도 nav 하위에 있으므로 z-index 3000 영향권 안에서 정상 작동 */
-        .dropdown-menu { position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px); background: white; box-shadow: 0 8px 25px rgba(0,0,0,0.15); border-radius: 10px; padding: 0.5rem 0; min-width: 160px; opacity: 0; visibility: hidden; transition: all 0.3s; z-index: 3001; border: 1px solid rgba(0,0,0,0.1); }
-        .nav-menu li:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: white;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            padding: 0.5rem 0;
+            min-width: 160px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 3001;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-menu li:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
         .nav-menu li:hover .dropdown-arrow { transform: rotate(180deg); }
-        .dropdown-menu a { display: block; padding: 0.7rem 1rem; color: #333; border-radius: 0; white-space: nowrap; font-weight: 400; }
-        .dropdown-menu a:hover { background: #f8f9fa; color: #667eea !important; transform: none; }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 0.7rem 1rem;
+            color: #333;
+            border-radius: 0;
+            white-space: nowrap;
+            font-weight: 400;
+        }
+
+        .dropdown-menu a:hover {
+            background: #f8f9fa;
+            color: #667eea !important;
+            transform: none;
+        }
+
+        @media (max-width: 900px) {
+            .nav-menu { display: none; } 
+        }
+        /* --- 네비게이션 바 CSS 끝 --- */
 
         /* --- Game Container --- */
-        #gameContainer { position: relative; width: 100vw; height: calc(100vh - 80px); overflow: hidden; background: #0f172a; }
+        .game-container-wrap { position: relative; width: 100vw; height: calc(100vh - 80px); overflow: hidden; background: #0f172a; }
         #gameCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
         /* --- Plane (CSS Art) --- */
@@ -86,7 +187,8 @@
         #userInput { font-size: 24px; padding: 15px; border: 3px solid #ef4444; border-radius: 15px; text-align: center; width: 350px; background: rgba(0,0,0,0.5); color: #fff; outline: none; margin-top: 15px; }
 
         /* --- Modal Screens --- */
-        .modal-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
+        /* 🔥 z-index 4000으로 조정 (네비게이션 3000보다 위) */
+        .modal-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 4000; padding: 20px; }
         .modal-title { 
             font-family: 'Orbitron', sans-serif; font-size: 4rem; font-weight: 900; 
             background: linear-gradient(to bottom, #3b82f6, #1d4ed8); 
@@ -110,7 +212,6 @@
         @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
         
         @media (max-width: 900px) {
-            .nav-menu { display: none; } 
             .modal-title { font-size: 2.5rem; }
             #wordDisplay { min-width: 90%; padding: 15px; }
             #userInput { width: 100%; }
@@ -123,35 +224,45 @@
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
-    <!-- Navigation -->
+    <!-- [수정완료] 마이페이지와 완벽하게 동일한 Navigation -->
     <nav>
         <div class="nav-container">
-            <a href="../index.html" class="logo">
-                <img src="../images/finger-run-logo.svg" alt=""> FingerRun
+            <a href="../index.html" class="logo" aria-label="핑거런 홈페이지 메인으로 이동">
+                <img src="../images/finger-run-logo.svg" alt="" class="h-8 w-auto"> 
+                FingerRun
             </a>
             <ul class="nav-menu">
                 <li><a href="../notices.html">공지사항</a></li>
                 <li>
-    <a href="../Korean/practice.html?mode=consonant">한글 타자연습 <span class="dropdown-arrow">▼</span></a>
-    <div class="dropdown-menu">
-        <a href="../Korean/practice.html?mode=consonant">자음 연습</a>
-        <a href="../Korean/practice.html?mode=vowel">모음 연습</a>
-        <a href="../Korean/practice.html?mode=word">단어 연습</a>
-        <a href="../Korean/practice.html?mode=sentence">문장 연습</a>
-        <a href="../Korean/infinite_practice.html">무한 연습</a>
-    </div>
-</li>
-<li>
-    <a href="../English/practice.html?mode=alphabet">영어 타자연습 <span class="dropdown-arrow">▼</span></a>
-    <div class="dropdown-menu">
-        <a href="../English/practice.html?mode=alphabet">알파벳 연습</a>
-        <a href="../English/practice.html?mode=word">단어 연습</a>
-        <a href="../English/practice.html?mode=sentence">문장 연습</a>
-        <a href="../English/infinite_practice.html">무한 연습</a>
-    </div>
-</li>
+                    <a href="../Korean/practice.html?mode=consonant">
+                        한글 타자연습
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="../Korean/practice.html?mode=consonant">자음 연습</a>
+                        <a href="../Korean/practice.html?mode=vowel">모음 연습</a>
+                        <a href="../Korean/practice.html?mode=word">단어 연습</a>
+                        <a href="../Korean/practice.html?mode=sentence">문장 연습</a>
+                        <a href="../Korean/infinite_practice.html">무한 연습</a>
+                    </div>
+                </li>
                 <li>
-                    <a href="delivery.html">타자게임 <span class="dropdown-arrow">▼</span></a>
+                    <a href="../English/practice.html?mode=alphabet">
+                        영어 타자연습
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="../English/practice.html?mode=alphabet">알파벳 연습</a>
+                        <a href="../English/practice.html?mode=word">단어 연습</a>
+                        <a href="../English/practice.html?mode=sentence">문장 연습</a>
+                        <a href="../English/infinite_practice.html">무한 연습</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="delivery.html">
+                        타자게임
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
                     <div class="dropdown-menu">
                         <a href="tank.html">탱크 폭격</a>
                         <a href="delivery.html">택배 분류</a>
@@ -161,17 +272,26 @@
                 </li>
                 <li><a href="../writing.html">필사</a></li>
                 <li>
-                    <a href="../Certificate/word-processor.html">자격증 <span class="dropdown-arrow">▼</span></a>
+                    <a href="../Certificate/word-processor.html">
+                        자격증
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
                     <div class="dropdown-menu">
                         <a href="../Certificate/word-processor.html">워드프로세서</a>
                     </div>
                 </li>
                 <li><a href="../contact.html">문의하기</a></li>
+                <li class="ml-2">
+                    <a href="#" onclick="goProfile(event)" title="프로필" style="padding: 0.5rem 0.6rem; border-radius: 50%;">
+                        <i class="far fa-user text-[1.2rem] m-0"></i>
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>
 
-    <div id="gameContainer">
+    <!-- Game Container Wrap -->
+    <div class="game-container-wrap">
         <canvas id="gameCanvas"></canvas>
         <button id="langSwitchBtn">Language: Korean</button>
         
@@ -198,7 +318,6 @@
         <!-- Game Over Screen -->
         <div id="gameOverModal" class="modal-screen game-over hidden">
             <h1 class="modal-title">MISSION FAILED</h1>
-            <!-- [수정] 텍스트가 표시될 곳 -->
             <p id="gameOverText" class="modal-subtitle"></p>
             
             <!-- Checkpoint Options (Visible only if Level >= 4) -->
@@ -227,6 +346,17 @@
     </div>
 
     <script>
+        // 프로필 클릭 시 이동하는 함수 추가
+        window.goProfile = function(e) {
+            e.preventDefault();
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (isLoggedIn === 'true') {
+                window.location.href = "../mypage.html";
+            } else {
+                window.location.href = "../login.html";
+            }
+        }
+
         const WORD_DATA = {
             KO: {
                 level1_3: ["국어", "수학", "영어", "과학", "사회", "역사", "도덕", "미술", "체육", "음악", "물리", "화학", "생물", "지리", "경제", "공부", "학습", "수업", "숙제", "시험", "사과", "포도", "배", "감", "귤", "밤", "망고", "키위", "레몬", "자몽", "체리", "앵두", "석류", "유자", "밥", "빵", "떡", "면", "국", "죽", "꿀", "물", "마음", "감정", "심리", "성격", "태도", "불안", "우울", "긍정", "부정", "자아", "공감", "위로", "사랑", "우정", "희망", "용기", "행복", "기쁨", "슬픔", "분노", "돈", "주식", "투자", "저축", "은행", "이자", "환율", "물가", "소비", "소득", "자산", "부채", "세금", "창업", "경영", "무역", "시장", "회사", "하늘", "바다", "구름", "바람", "나무", "꽃", "잔디", "호수", "우주", "지구", "태양", "달", "별", "여행", "캠핑", "등산", "낚시", "영화", "게임", "쇼핑", "건강", "운동", "과일", "채소", "학교", "의자", "책상", "필통", "가방", "안경", "시계", "반지"],
@@ -284,9 +414,8 @@
                 window.addEventListener('resize', () => this.resize());
                 this.langSwitchBtn.onclick = () => this.toggleLanguage();
                 this.userInput.addEventListener('keydown', (e) => {
-                    // 엔터 또는 스페이스바를 누를 때 입력 처리
                     if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault(); // 스페이스바의 기본 공백 입력 동작 방지
+                        e.preventDefault(); 
                         this.handleEnter();
                     }
                 });
@@ -334,9 +463,8 @@
                 const wordsObj = this.language === 'KO' ? WORD_DATA.KO : WORD_DATA.EN;
                 let list = this.level <= 3 ? wordsObj.level1_3 : (this.level <= 6 ? wordsObj.level4_6 : wordsObj.level7_10);
                 
-                // 단어 중복 방지 로직 (No-Repeat)
                 let available = list.filter(w => !this.usedWords.has(w));
-                if (available.length < 5) { // 단어가 거의 다 소진되면 초기화
+                if (available.length < 5) {
                     this.usedWords.clear();
                     available = [...list];
                 }
@@ -359,7 +487,7 @@
                 if (!this.gameRunning) return;
                 const val = this.userInput.value.trim().toLowerCase();
                 if (val === this.currentWordUp.toLowerCase()) {
-                    this.targetY -= 140; // 상승폭 살짝 증가
+                    this.targetY -= 140;
                     this.generateWords();
                 } else if (val === this.currentWordDown.toLowerCase()) {
                     this.targetY += 120;
@@ -392,7 +520,6 @@
                     o.x -= speed * dt;
                     if (o.x + o.w < 0) this.obstacles.splice(i, 1);
                     
-                    // Collision check
                     const px = 110, py = this.planeY - 10, pw = 70, ph = 20;
                     if (px < o.x + o.w && px + pw > o.x && py < o.y + o.h && py + ph > o.y) this.explode();
                 }
@@ -402,7 +529,6 @@
                     if (c.x + c.size < 0) { c.x = this.canvas.width + c.size; c.y = Math.random() * this.canvas.height; }
                 });
 
-                // 자연스러운 하강 효과
                 this.targetY += this.fallSpeed * dt;
                 this.planeY += (this.targetY - this.planeY) * 4.5 * dt;
                 this.plane.style.top = `${this.planeY}px`;
@@ -443,7 +569,6 @@
                 const def = document.getElementById('defaultOptions');
                 const text = document.getElementById('gameOverText');
 
-                // [수정] 감성적인 문구 제거 및 도달 레벨 정보만 표시
                 if (this.level >= 4) {
                     cp.classList.remove('hidden');
                     def.classList.add('hidden');
@@ -467,7 +592,6 @@
             draw() {
                 this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
                 
-                // 배경 구름
                 this.ctx.fillStyle = 'rgba(255,255,255,0.2)';
                 this.clouds.forEach(c => { 
                     this.ctx.beginPath(); 
@@ -475,14 +599,12 @@
                     this.ctx.fill(); 
                 });
                 
-                // 장애물 (기둥)
                 this.obstacles.forEach(o => {
                     const g = this.ctx.createLinearGradient(o.x, 0, o.x + o.w, 0);
                     g.addColorStop(0, '#1e293b'); g.addColorStop(0.5, '#334155'); g.addColorStop(1, '#1e293b');
                     this.ctx.fillStyle = g;
                     this.ctx.fillRect(o.x, o.y, o.w, o.h);
                     
-                    // 네온 효과 테두리
                     this.ctx.strokeStyle = '#3b82f6'; 
                     this.ctx.lineWidth = 3;
                     this.ctx.shadowBlur = 10;
@@ -491,7 +613,6 @@
                     this.ctx.shadowBlur = 0;
                 });
 
-                // 폭발 파티클
                 this.particles.forEach(p => {
                     this.ctx.globalAlpha = p.life; 
                     this.ctx.fillStyle = p.color;

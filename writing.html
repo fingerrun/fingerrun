@@ -6,15 +6,38 @@
 <meta name="description" content="핑거런 타자연습 사이트 내 필사 서비스. 문학작품과 명언을 타이핑하며 문해력과 사고력을 기르세요.">
 <title>핑거런 | 문학 필사 - 마음을 옮겨 적다</title>
 
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-T9HC454Z');</script>
+<!-- End Google Tag Manager -->
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7QSEYCFK83"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-7QSEYCFK83');
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5657188598576847" crossorigin="anonymous"></script>
+
 <!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 
-<!-- 파비콘 설정: 모든 설정을 SVG 파일로 통일하여 확실하게 나타나도록 함 -->
+<!-- 파비콘 설정 -->
 <link rel="icon" type="image/svg+xml" href="images/finger-run-logo.svg">
 <link rel="shortcut icon" type="image/svg+xml" href="images/finger-run-logo.svg">
 <link rel="apple-touch-icon" href="images/finger-run-logo.svg">
+
+<!-- Tailwind & FontAwesome -->
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
 <style>
     :root {
@@ -57,8 +80,6 @@
 
     body {
         font-family: 'Noto Sans KR', sans-serif;
-        
-        /* 배경 설정: 단색 배경으로 변경 */
         background-color: var(--bg-color);
         background-image: none; /* 이미지 제거 */
         min-height: 100vh;
@@ -71,23 +92,21 @@
         overflow-x: hidden;
     }
 
-    body.dark-mode {
-        /* 다크 모드 배경 이미지 제거 */
-        background-image: none;
-    }
-
-    /* --- Navigation Styles (Updated) --- */
+    /* --- 마이페이지와 완벽하게 동일한 네비게이션 바 CSS 시작 --- */
     nav {
-        background: rgba(255, 255, 255, 0.85);
+        background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(10px);
         padding: 1rem 0;
         width: 100%;
         position: fixed;
         top: 0;
-        z-index: 1000;
+        z-index: 3000;
         border-bottom: 1px solid rgba(0,0,0,0.1);
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        height: 80px;
     }
-    body.dark-mode nav { background: rgba(37, 38, 43, 0.85); border-bottom: 1px solid rgba(255,255,255,0.1); }
+    
+    body.dark-mode nav { background: rgba(37, 38, 43, 0.95); border-bottom: 1px solid rgba(255,255,255,0.1); }
 
     .nav-container {
         max-width: 1200px;
@@ -96,19 +115,20 @@
         justify-content: space-between;
         align-items: center;
         padding: 0 2rem;
+        height: 100%;
     }
 
-    /* 로고 이미지 정렬을 위해 flex 및 정렬 속성 유지 */
     .logo {
         font-size: 1.5rem;
         font-weight: bold;
         color: #667eea;
         text-decoration: none;
-        display: flex; align-items: center; gap: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
         text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
     }
 
-    /* 로고 이미지 크기 지정 */
     .logo img {
         height: 32px;
         width: auto;
@@ -119,7 +139,10 @@
         list-style: none;
         gap: 1.5rem;
         align-items: center;
-        margin: 0; padding: 0;
+        margin: 0; 
+        padding: 0;
+        flex-wrap: nowrap;
+        white-space: nowrap;
     }
 
     .nav-menu li { position: relative; }
@@ -136,13 +159,9 @@
         align-items: center;
         gap: 0.3rem;
     }
-    
-    /* 다크모드 메뉴 글자색 */
-    body.dark-mode .nav-menu > li > a { color: #e4e5e7; }
-    body.dark-mode .dropdown-menu { background: #2b2b2b; border-color: #444; }
-    body.dark-mode .dropdown-menu a { color: #e4e5e7; }
-    body.dark-mode .dropdown-menu a:hover { background: #333; }
 
+    body.dark-mode .nav-menu > li > a { color: #e4e5e7; }
+    
     .nav-menu a:hover {
         background: #667eea;
         color: white !important;
@@ -164,9 +183,13 @@
         opacity: 0;
         visibility: hidden;
         transition: all 0.3s ease;
-        z-index: 1001;
+        z-index: 3001;
         border: 1px solid rgba(0, 0, 0, 0.1);
     }
+
+    body.dark-mode .dropdown-menu { background: #2b2b2b; border-color: #444; }
+    body.dark-mode .dropdown-menu a { color: #e4e5e7; }
+    body.dark-mode .dropdown-menu a:hover { background: #333; color: #667eea !important; }
 
     .nav-menu li:hover .dropdown-menu {
         opacity: 1;
@@ -190,11 +213,11 @@
         color: #667eea !important;
         transform: none;
     }
-    
-    /* 모바일 반응형 */
+
     @media (max-width: 900px) {
-        .nav-menu { display: none; } /* 모바일에서 메뉴 숨김 처리 (추후 햄버거 메뉴 구현 권장) */
+        .nav-menu { display: none; } 
     }
+    /* --- 네비게이션 바 CSS 끝 --- */
 
     /* Main Area - Holds the book */
     .main-wrapper {
@@ -251,7 +274,7 @@
         perspective: 1500px;
     }
 
-    /* Bookmarks (Tabs) - 뒤로 숨기기 위한 스타일 수정 */
+    /* Bookmarks (Tabs) */
     .bookmarks {
         position: absolute;
         top: -38px; /* 위치 조정 */
@@ -486,11 +509,12 @@
     .action-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4); }
 
     /* Complete Modal */
+    /* 🔥 네비게이션(3000)보다 높게 4000으로 설정 */
     .modal {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background: var(--modal-overlay);
         display: none; justify-content: center; align-items: center;
-        z-index: 2000;
+        z-index: 4000; 
         backdrop-filter: blur(5px);
     }
     .modal.active { display: flex; animation: fadeIn 0.3s ease-out; }
@@ -541,46 +565,43 @@
 </style>
 </head>
 <body>
-
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T9HC454Z" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+    <!-- [수정완료] 마이페이지와 완벽하게 동일한 Navigation (루트 경로 적용) -->
     <nav>
         <div class="nav-container">
-            <!-- 로고 이미지 및 텍스트 삽입 -->
-            <a href="index.html" class="logo">
-                <img src="images/finger-run-logo.svg" alt=""> FingerRun
+            <a href="index.html" class="logo" aria-label="핑거런 홈페이지 메인으로 이동">
+                <img src="images/finger-run-logo.svg" alt="" class="h-8 w-auto"> 
+                FingerRun
             </a>
-            
-            <!-- 메뉴 목록 -->
             <ul class="nav-menu">
                 <li><a href="notices.html">공지사항</a></li>
-                
                 <li>
-    <a href="Korean/practice.html?mode=consonant">
-        한글 타자연습
-        <span class="dropdown-arrow">▼</span>
-    </a>
-    <div class="dropdown-menu">
-        <a href="Korean/practice.html?mode=consonant">자음 연습</a>
-        <a href="Korean/practice.html?mode=vowel">모음 연습</a>
-        <a href="Korean/practice.html?mode=word">단어 연습</a>
-        <a href="Korean/practice.html?mode=sentence">문장 연습</a>
-        <a href="Korean/infinite_practice.html">무한 연습</a>
-    </div>
-</li>
-
-<li>
-    <a href="English/practice.html?mode=alphabet">
-        영어 타자연습
-        <span class="dropdown-arrow">▼</span>
-    </a>
-    <div class="dropdown-menu">
-        <a href="English/practice.html?mode=alphabet">알파벳 연습</a>
-        <a href="English/practice.html?mode=word">단어 연습</a>
-        <a href="English/practice.html?mode=sentence">문장 연습</a>
-        <a href="English/infinite_practice.html">무한 연습</a>
-    </div>
-</li>
-                
-                <!-- 게임 경로 설정 (Game 폴더 바로 진입) -->
+                    <a href="Korean/practice.html?mode=consonant">
+                        한글 타자연습
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="Korean/practice.html?mode=consonant">자음 연습</a>
+                        <a href="Korean/practice.html?mode=vowel">모음 연습</a>
+                        <a href="Korean/practice.html?mode=word">단어 연습</a>
+                        <a href="Korean/practice.html?mode=sentence">문장 연습</a>
+                        <a href="Korean/infinite_practice.html">무한 연습</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="English/practice.html?mode=alphabet">
+                        영어 타자연습
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="English/practice.html?mode=alphabet">알파벳 연습</a>
+                        <a href="English/practice.html?mode=word">단어 연습</a>
+                        <a href="English/practice.html?mode=sentence">문장 연습</a>
+                        <a href="English/infinite_practice.html">무한 연습</a>
+                    </div>
+                </li>
                 <li>
                     <a href="Game/delivery.html">
                         타자게임
@@ -593,9 +614,7 @@
                         <a href="Game/plane.html">비행기 조종</a>
                     </div>
                 </li>
-                
                 <li><a href="writing.html">필사</a></li>
-                
                 <li>
                     <a href="Certificate/word-processor.html">
                         자격증
@@ -605,8 +624,12 @@
                         <a href="Certificate/word-processor.html">워드프로세서</a>
                     </div>
                 </li>
-                
                 <li><a href="contact.html">문의하기</a></li>
+                <li class="ml-2">
+                    <a href="#" onclick="goProfile(event)" title="프로필" style="padding: 0.5rem 0.6rem; border-radius: 50%;">
+                        <i class="far fa-user text-[1.2rem] m-0"></i>
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>
@@ -696,6 +719,17 @@
     </div>
 
 <script>
+    // 상단 프로필 버튼 기능 연결 (루트 경로에 위치하므로 mypage.html)
+    window.goProfile = function(e) {
+        e.preventDefault();
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+        if (isLoggedIn === 'true') {
+            window.location.href = "mypage.html";
+        } else {
+            window.location.href = "login.html";
+        }
+    }
+
     // --- 데이터 ---
     const literatureData = [
         { title: '봄', author: '윤동주', content: '봄은 고양이로다\n나비처럼 가볍고\n씨앗처럼 작고\n꽃잎처럼 부드럽다\n\n봄은 고양이로다\n새들이 지저귀고\n바람이 속삭이고\n햇살이 춤춘다' },

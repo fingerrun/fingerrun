@@ -13,6 +13,14 @@
       gtag('config', 'G-7QSEYCFK83');
     </script>
 
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-T9HC454Z');</script>
+    <!-- End Google Tag Manager -->
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>핑거런 | 통합 두더지 잡기 타자게임</title>
     
@@ -20,6 +28,10 @@
     <link rel="icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
     <link rel="shortcut icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
     <link rel="apple-touch-icon" href="../images/finger-run-logo.svg">
+
+    <!-- Tailwind & FontAwesome 추가 (통일된 네비게이션 바용) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -28,27 +40,125 @@
             min-height: 100vh;
             background: linear-gradient(135deg, #e0f2fe, #f5d0fe, #fbcfe8);
             overflow-x: hidden;
-            padding-top: 80px;
+            padding-top: 80px; /* 네비게이션 바 높이만큼 여백 확보 */
             zoom: 0.765;
         }
 
-        /* --- Navigation (FingerRun Standard) --- */
-        /* z-index를 3000으로 높여 모달(2000)보다 위에 오도록 설정 */
-        nav { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 1rem 0; position: fixed; width: 100%; top: 0; z-index: 3000; box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1); height: 80px; }
-        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 2rem; height: 100%; }
-        .logo { font-size: 1.8rem; font-weight: bold; color: #667eea; text-decoration: none; display: flex; align-items: center; gap: 10px; } 
-        .logo img { height: 32px; width: auto; }
-        .nav-menu { display: flex; list-style: none; gap: 1rem; }
+        /* --- 마이페이지와 완벽하게 동일한 네비게이션 바 CSS --- */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
+        }
+
+        .logo img {
+            height: 32px;
+            width: auto;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            align-items: center;
+            margin: 0; 
+            padding: 0;
+            flex-wrap: nowrap;
+            white-space: nowrap;
+        }
+
         .nav-menu li { position: relative; }
-        .nav-menu a { text-decoration: none; color: #333; font-weight: 500; padding: 0.5rem 0.8rem; border-radius: 25px; transition: all 0.3s; font-size: 0.9rem; display: flex; align-items: center; gap: 0.3rem; }
-        .nav-menu a:hover { background: #667eea; color: white; transform: translateY(-2px); }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 0.5rem 0.8rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .nav-menu a:hover {
+            background: #667eea;
+            color: white !important;
+            transform: translateY(-2px);
+        }
+
         .dropdown-arrow { font-size: 0.7rem; transition: transform 0.3s ease; }
-        /* 드롭다운 메뉴 z-index도 함께 조정 */
-        .dropdown-menu { position: absolute; top: 100%; left: 0; background: white; box-shadow: 0 8px 25px rgba(0,0,0,0.15); border-radius: 10px; padding: 0.5rem 0; min-width: 220px; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s; z-index: 3001; border: 1px solid rgba(0,0,0,0.1); }
-        .nav-menu li:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: white;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            padding: 0.5rem 0;
+            min-width: 160px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-menu li:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
         .nav-menu li:hover .dropdown-arrow { transform: rotate(180deg); }
-        .dropdown-menu a { display: block; padding: 0.7rem 1rem; }
-        .dropdown-menu a:hover { background: #f8f9fa; color: #667eea; padding-left: 1.2rem; }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 0.7rem 1rem;
+            color: #333;
+            border-radius: 0;
+            font-weight: 400;
+        }
+
+        .dropdown-menu a:hover {
+            background: #f8f9fa;
+            color: #667eea !important;
+            transform: none;
+        }
+
+        @media (max-width: 900px) {
+            .nav-menu { display: none; } 
+        }
+        /* --- 네비게이션 바 CSS 끝 --- */
 
         .container {
             min-height: calc(100vh - 80px);
@@ -156,7 +266,7 @@
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(15, 23, 42, 0.95); display: flex; flex-direction: column;
-            align-items: center; justify-content: center; z-index: 2000;
+            align-items: center; justify-content: center; z-index: 4000; /* 🔥 모달이 최상단이 되도록 4000으로 세팅 */
         }
         .modal-title {
             font-family: 'Orbitron', sans-serif; font-size: 4rem; font-weight: 900;
@@ -192,32 +302,48 @@
 </head>
 
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T9HC454Z" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+    <!-- [수정완료] 마이페이지와 완벽하게 동일한 Navigation (상대 경로 적용) -->
     <nav>
         <div class="nav-container">
-            <a href="../index.html" class="logo"><img src="../images/finger-run-logo.svg" alt=""> FingerRun</a>
+            <a href="../index.html" class="logo" aria-label="핑거런 홈페이지 메인으로 이동">
+                <img src="../images/finger-run-logo.svg" alt="" class="h-8 w-auto"> 
+                FingerRun
+            </a>
             <ul class="nav-menu">
                 <li><a href="../notices.html">공지사항</a></li>
                 <li>
-    <a href="../Korean/practice.html?mode=consonant">한글 타자연습 <span class="dropdown-arrow">▼</span></a>
-    <div class="dropdown-menu">
-        <a href="../Korean/practice.html?mode=consonant">자음 연습</a>
-        <a href="../Korean/practice.html?mode=vowel">모음 연습</a>
-        <a href="../Korean/practice.html?mode=word">단어 연습</a>
-        <a href="../Korean/practice.html?mode=sentence">문장 연습</a>
-        <a href="../Korean/infinite_practice.html">무한 연습</a>
-    </div>
-</li>
-<li>
-    <a href="../English/practice.html?mode=alphabet">영어 타자연습 <span class="dropdown-arrow">▼</span></a>
-    <div class="dropdown-menu">
-        <a href="../English/practice.html?mode=alphabet">알파벳 연습</a>
-        <a href="../English/practice.html?mode=word">단어 연습</a>
-        <a href="../English/practice.html?mode=sentence">문장 연습</a>
-        <a href="../English/infinite_practice.html">무한 연습</a>
-    </div>
-</li>
+                    <a href="../Korean/practice.html?mode=consonant">
+                        한글 타자연습
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="../Korean/practice.html?mode=consonant">자음 연습</a>
+                        <a href="../Korean/practice.html?mode=vowel">모음 연습</a>
+                        <a href="../Korean/practice.html?mode=word">단어 연습</a>
+                        <a href="../Korean/practice.html?mode=sentence">문장 연습</a>
+                        <a href="../Korean/infinite_practice.html">무한 연습</a>
+                    </div>
+                </li>
                 <li>
-                    <a href="delivery.html">타자게임 <span class="dropdown-arrow">▼</span></a>
+                    <a href="../English/practice.html?mode=alphabet">
+                        영어 타자연습
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="../English/practice.html?mode=alphabet">알파벳 연습</a>
+                        <a href="../English/practice.html?mode=word">단어 연습</a>
+                        <a href="../English/practice.html?mode=sentence">문장 연습</a>
+                        <a href="../English/infinite_practice.html">무한 연습</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="delivery.html">
+                        타자게임
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
                     <div class="dropdown-menu">
                         <a href="tank.html">탱크 폭격</a>
                         <a href="delivery.html">택배 분류</a>
@@ -226,13 +352,47 @@
                     </div>
                 </li>
                 <li><a href="../writing.html">필사</a></li>
-                <li><a href="../Certificate/word-processor.html">자격증 <span class="dropdown-arrow">▼</span></a>
-                    <div class="dropdown-menu"><a href="../Certificate/word-processor.html">워드프로세서</a></div>
+                <li>
+                    <a href="../Certificate/word-processor.html">
+                        자격증
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="../Certificate/word-processor.html">워드프로세서</a>
+                    </div>
                 </li>
                 <li><a href="../contact.html">문의하기</a></li>
+                <li class="ml-2">
+                    <a href="#" onclick="goProfile(event)" title="프로필" style="padding: 0.5rem 0.6rem; border-radius: 50%;">
+                        <i class="far fa-user text-[1.2rem] m-0"></i>
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>
+
+    <!-- Start Modal -->
+    <div id="startModal" class="modal-overlay">
+        <h1 class="modal-title">MOLE COMMANDER</h1>
+        <p class="modal-subtitle">나타나는 두더지의 이름을 타이핑하고 <br><kbd class="instruction-kbd">Space</kbd>를 누르세요!</p>
+        <button class="game-btn btn-primary" onclick="startGame(1)">게임 시작</button>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="gameOverModal" class="modal-overlay game-over hidden">
+        <h1 class="modal-title">MISSION FAILED</h1>
+        <p class="modal-subtitle">작전에 실패했습니다. <br><span id="finalScoreText" style="color:#fbbf24">최종 점수: 0</span></p>
+        <div id="checkpointOptions" class="hidden">
+            <div style="display:flex; gap:20px; margin-bottom:20px;">
+                <button class="game-btn btn-primary" onclick="startGame(1)">1레벨부터</button>
+                <button class="game-btn btn-warning" onclick="startGame(4)">4레벨부터</button>
+            </div>
+        </div>
+        <div id="defaultOptions" style="display:flex; gap:20px;">
+            <button class="game-btn btn-primary" onclick="startGame(1)">다시하기</button>
+            <button class="game-btn btn-danger" onclick="location.reload()">나가기</button>
+        </div>
+    </div>
 
     <div class="container">
         <div class="background-animation">
@@ -267,30 +427,18 @@
         </div>
     </div>
 
-    <!-- Start Modal -->
-    <div id="startModal" class="modal-overlay">
-        <h1 class="modal-title">MOLE COMMANDER</h1>
-        <p class="modal-subtitle">나타나는 두더지의 이름을 타이핑하고 <br><kbd class="instruction-kbd">Space</kbd>를 누르세요!</p>
-        <button class="game-btn btn-primary" onclick="startGame(1)">게임 시작</button>
-    </div>
-
-    <!-- Game Over Modal -->
-    <div id="gameOverModal" class="modal-overlay game-over hidden">
-        <h1 class="modal-title">MISSION FAILED</h1>
-        <p class="modal-subtitle">작전에 실패했습니다. <br><span id="finalScoreText" style="color:#fbbf24">최종 점수: 0</span></p>
-        <div id="checkpointOptions" class="hidden">
-            <div style="display:flex; gap:20px; margin-bottom:20px;">
-                <button class="game-btn btn-primary" onclick="startGame(1)">1레벨부터</button>
-                <button class="game-btn btn-warning" onclick="startGame(4)">4레벨부터</button>
-            </div>
-        </div>
-        <div id="defaultOptions" style="display:flex; gap:20px;">
-            <button class="game-btn btn-primary" onclick="startGame(1)">다시하기</button>
-            <button class="game-btn btn-danger" onclick="location.reload()">나가기</button>
-        </div>
-    </div>
-
     <script>
+        // 프로필 클릭 시 이동하는 함수 추가
+        window.goProfile = function(e) {
+            e.preventDefault();
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (isLoggedIn === 'true') {
+                window.location.href = "../mypage.html";
+            } else {
+                window.location.href = "../login.html";
+            }
+        }
+
         const wordData = {
             english: {
                 1: ['cat', 'dog', 'sun', 'car', 'run', 'fun', 'big', 'red', 'yes', 'top', 'hot', 'pop', 'mom', 'dad', 'bag', 'hat', 'pan', 'can', 'man', 'fan', 'bat', 'mat', 'rat', 'fat', 'sat', 'map', 'tap', 'gap', 'cup', 'bus', 'sky', 'sea', 'ice', 'oil', 'low', 'zip', 'fox', 'jam', 'box', 'fly'],

@@ -30,22 +30,37 @@
     <meta property="og:description" content="택배 이름을 정확하게 타이핑해서 택배를 올바르게 분류하는 타자게임! 한글/영어 모드 지원.">
     <meta property="og:type" content="website">
 
+    <!-- Tailwind & FontAwesome (통일성 유지) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Orbitron:wght@500;700&display=swap');
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* Navigation */
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            /* 네비게이션 메뉴에 가려지지 않도록 패딩 추가 */
+            padding-top: 80px; 
+        }
+
+        /* --- 마이페이지와 동일한 네비게이션 바 전용 CSS 시작 --- */
         nav {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             padding: 1rem 0;
-            position: fixed;
             width: 100%;
+            position: fixed;
             top: 0;
-            z-index: 3000;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-            height: 80px;
         }
 
         .nav-container {
@@ -55,17 +70,17 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 2rem;
-            height: 100%;
         }
 
         .logo {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: bold;
             color: #667eea;
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 0.5rem;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
         }
 
         .logo img {
@@ -77,9 +92,11 @@
             display: flex;
             list-style: none;
             gap: 1.5rem;
+            align-items: center;
+            margin: 0; 
+            padding: 0;
             flex-wrap: nowrap;
             white-space: nowrap;
-            align-items: center;
         }
 
         .nav-menu li { position: relative; }
@@ -99,7 +116,7 @@
 
         .nav-menu a:hover {
             background: #667eea;
-            color: white;
+            color: white !important;
             transform: translateY(-2px);
         }
 
@@ -114,11 +131,11 @@
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
             border-radius: 10px;
             padding: 0.5rem 0;
-            min-width: 180px;
+            min-width: 160px;
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
-            z-index: 3001;
+            z-index: 1001;
             border: 1px solid rgba(0, 0, 0, 0.1);
         }
 
@@ -136,37 +153,28 @@
             color: #333;
             border-radius: 0;
             font-weight: 400;
-            transition: all 0.2s ease;
         }
 
         .dropdown-menu a:hover {
             background: #f8f9fa;
-            color: #667eea;
+            color: #667eea !important;
             transform: none;
-            padding-left: 1.2rem;
         }
 
         @media (max-width: 900px) {
             .nav-menu { display: none; } 
         }
+        /* --- 네비게이션 바 전용 CSS 끝 --- */
 
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
-            padding-top: 80px;
-        }
-
-        /* Main Content */
+        /* Main Content (게임 화면) */
         .main-content {
             flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 2rem;
+            /* 네비게이션 바를 피하기 위해 상단 패딩 추가 */
+            margin-top: 20px;
         }
 
         .game-container {
@@ -178,7 +186,6 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
             position: relative;
-            /* overflow: hidden; 삭제하여 내부 요소가 밖으로 나갈 수 있게 함 */
         }
 
         .game-header {
@@ -198,13 +205,11 @@
             display: flex;
             justify-content: center;
             gap: 10px;
-            margin: 15px 0 25px 0;
+            margin: 15px auto 25px auto;
             background: #f1f5f9;
             padding: 5px;
             border-radius: 30px;
             width: fit-content;
-            margin-left: auto;
-            margin-right: auto;
         }
 
         .mode-btn {
@@ -368,8 +373,7 @@
             white-space: nowrap;
         }
 
-        /* --- Start Modal (Sky Pilot Style) --- */
-        /* [수정] position을 fixed로 변경하고 창 전체를 덮도록 설정 */
+        /* --- Start Modal --- */
         .modal-screen {
             position: fixed;
             top: 0;
@@ -381,7 +385,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 4000; /* 네비게이션(3000)보다 높게 설정 */
+            z-index: 4000;
             padding: 20px;
         }
 
@@ -425,7 +429,7 @@
 
         .hidden { display: none !important; }
 
-        /* Game Over Modal (Standard Style) */
+        /* Game Over Modal */
         .game-over-modal {
             display: none;
             position: fixed;
@@ -460,9 +464,9 @@
         }
     </style>
 </head>
-
 <body>
-    <!-- [수정] 시작 모달을 body의 직계 자식으로 이동하여 전체를 덮게 함 -->
+
+    <!-- 시작 모달 -->
     <div id="startModal" class="modal-screen">
         <h1 class="modal-title-main">PACKAGE SORT</h1>
         <p class="modal-subtitle-main">
@@ -472,35 +476,45 @@
         <button class="game-btn btn-primary" onclick="startGame(1)">업무 시작</button>
     </div>
 
-    <!-- Navigation -->
+    <!-- [수정완료] 마이페이지와 완벽하게 동일한 Navigation (상대 경로 적용) -->
     <nav>
         <div class="nav-container">
-            <a href="../index.html" class="logo">
-                <img src="../images/finger-run-logo.svg" alt=""> FingerRun
+            <a href="../index.html" class="logo" aria-label="핑거런 홈페이지 메인으로 이동">
+                <img src="../images/finger-run-logo.svg" alt="" class="h-8 w-auto"> 
+                FingerRun
             </a>
             <ul class="nav-menu">
                 <li><a href="../notices.html">공지사항</a></li>
                 <li>
-    <a href="../Korean/practice.html?mode=consonant">한글 타자연습 <span class="dropdown-arrow">▼</span></a>
-    <div class="dropdown-menu">
-        <a href="../Korean/practice.html?mode=consonant">자음 연습</a>
-        <a href="../Korean/practice.html?mode=vowel">모음 연습</a>
-        <a href="../Korean/practice.html?mode=word">단어 연습</a>
-        <a href="../Korean/practice.html?mode=sentence">문장 연습</a>
-        <a href="../Korean/infinite_practice.html">무한 연습</a>
-    </div>
-</li>
-<li>
-    <a href="../English/practice.html?mode=alphabet">영어 타자연습 <span class="dropdown-arrow">▼</span></a>
-    <div class="dropdown-menu">
-        <a href="../English/practice.html?mode=alphabet">알파벳 연습</a>
-        <a href="../English/practice.html?mode=word">단어 연습</a>
-        <a href="../English/practice.html?mode=sentence">문장 연습</a>
-        <a href="../English/infinite_practice.html">무한 연습</a>
-    </div>
-</li>
+                    <a href="../Korean/practice.html?mode=consonant">
+                        한글 타자연습
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="../Korean/practice.html?mode=consonant">자음 연습</a>
+                        <a href="../Korean/practice.html?mode=vowel">모음 연습</a>
+                        <a href="../Korean/practice.html?mode=word">단어 연습</a>
+                        <a href="../Korean/practice.html?mode=sentence">문장 연습</a>
+                        <a href="../Korean/infinite_practice.html">무한 연습</a>
+                    </div>
+                </li>
                 <li>
-                    <a href="delivery.html">타자게임 <span class="dropdown-arrow">▼</span></a>
+                    <a href="../English/practice.html?mode=alphabet">
+                        영어 타자연습
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="../English/practice.html?mode=alphabet">알파벳 연습</a>
+                        <a href="../English/practice.html?mode=word">단어 연습</a>
+                        <a href="../English/practice.html?mode=sentence">문장 연습</a>
+                        <a href="../English/infinite_practice.html">무한 연습</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="delivery.html">
+                        타자게임
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
                     <div class="dropdown-menu">
                         <a href="tank.html">탱크 폭격</a>
                         <a href="delivery.html">택배 분류</a>
@@ -510,12 +524,20 @@
                 </li>
                 <li><a href="../writing.html">필사</a></li>
                 <li>
-                    <a href="../Certificate/word-processor.html">자격증 <span class="dropdown-arrow">▼</span></a>
+                    <a href="../Certificate/word-processor.html">
+                        자격증
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
                     <div class="dropdown-menu">
                         <a href="../Certificate/word-processor.html">워드프로세서</a>
                     </div>
                 </li>
                 <li><a href="../contact.html">문의하기</a></li>
+                <li class="ml-2">
+                    <a href="#" onclick="goProfile(event)" title="프로필" style="padding: 0.5rem 0.6rem; border-radius: 50%;">
+                        <i class="far fa-user text-[1.2rem] m-0"></i>
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>
@@ -551,17 +573,17 @@
             <div class="conveyor-belt" id="conveyor"></div>
 
             <div class="input-container">
-                <input type="text" class="word-input" id="wordInput" 
-                       placeholder="택배의 단어를 입력하세요... (스페이스바로 처리)" disabled>
+                <input type="text" class="word-input" id="wordInput" placeholder="택배의 단어를 입력하세요... (스페이스바로 처리)" disabled>
                 <button class="submit-btn" id="submitBtn" onclick="checkWord()">처리</button>
             </div>
 
-            <div class="game-controls">
-                <button class="control-btn reset-btn" id="btn-reset" onclick="resetGame()">초기화</button>
+            <div class="game-controls" style="text-align: center;">
+                <button class="control-btn reset-btn" id="btn-reset" onclick="resetGame()" style="padding: 10px 20px; border-radius: 10px; border: none; background: #e2e8f0; color: #475569; font-weight: bold; cursor: pointer;">초기화</button>
             </div>
         </div>
     </div>
 
+    <!-- 게임 오버 모달 -->
     <div class="game-over-modal" id="gameOverModal">
         <div class="modal-content">
             <h2 class="modal-title">GAME OVER</h2>
@@ -571,6 +593,17 @@
     </div>
 
     <script>
+        // 프로필 클릭 시 이동하는 함수 추가
+        window.goProfile = function(e) {
+            e.preventDefault();
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (isLoggedIn === 'true') {
+                window.location.href = "../mypage.html";
+            } else {
+                window.location.href = "../login.html";
+            }
+        }
+
         // --- Game Configuration & State ---
         let currentMode = 'Korean';
 
@@ -679,6 +712,7 @@
             pkg.element = packageElement;
             gameState.packages.push(pkg);
             updateQueue();
+            
             setTimeout(() => {
                 if (pkg.element && pkg.element.parentNode && gameState.isPlaying) {
                     removePackage(pkg.id);
@@ -804,6 +838,7 @@
             title.textContent = t.modalTitleOver;
             title.style.color = '#ef4444';
             scoreText.innerHTML = `${t.modalScoreOver} ${gameState.level}<br>3 ${t.msgMissedSuffix}`;
+            
             let buttonsHtml = "";
             if (gameState.level >= 4) {
                 buttonsHtml = `

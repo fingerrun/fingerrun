@@ -51,6 +51,7 @@
             line-height: 1.6;
         }
 
+        /* --- 마이페이지와 동일한 네비게이션 바 전용 CSS 시작 --- */
         nav {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -59,7 +60,7 @@
             width: 100%;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
         }
 
         .nav-container {
@@ -71,19 +72,17 @@
             padding: 0 2rem;
         }
 
-        /* 로고 이미지 정렬을 위해 flex 및 정렬 속성 추가 */
         .logo {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: bold;
             color: #667eea;
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 0.5rem;
             text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
         }
 
-        /* 로고 이미지 크기 지정 */
         .logo img {
             height: 32px;
             width: auto;
@@ -93,6 +92,9 @@
             display: flex;
             list-style: none;
             gap: 1.5rem;
+            align-items: center;
+            margin: 0; 
+            padding: 0;
         }
 
         .nav-menu li {
@@ -114,7 +116,7 @@
 
         .nav-menu a:hover {
             background: #667eea;
-            color: white;
+            color: white !important;
             transform: translateY(-2px);
         }
 
@@ -126,15 +128,15 @@
         .dropdown-menu {
             position: absolute;
             top: 100%;
-            left: 0;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
             background: white;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
             border-radius: 10px;
             padding: 0.5rem 0;
-            min-width: 180px;
+            min-width: 160px;
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-10px);
             transition: all 0.3s ease;
             z-index: 1001;
             border: 1px solid rgba(0, 0, 0, 0.1);
@@ -143,7 +145,7 @@
         .nav-menu li:hover .dropdown-menu {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0);
+            transform: translateX(-50%) translateY(0);
         }
 
         .nav-menu li:hover .dropdown-arrow {
@@ -155,19 +157,23 @@
             padding: 0.7rem 1rem;
             color: #333;
             border-radius: 0;
+            white-space: nowrap;
             font-weight: 400;
-            transition: all 0.2s ease;
         }
 
         .dropdown-menu a:hover {
             background: #f8f9fa;
-            color: #667eea;
+            color: #667eea !important;
             transform: none;
-            padding-left: 1.2rem;
         }
 
+        @media (max-width: 900px) {
+            .nav-menu { display: none; } 
+        }
+        /* --- 네비게이션 바 전용 CSS 끝 --- */
+
         .main-content {
-            margin-top: 0;
+            margin-top: 80px; /* 네비게이션 바가 가리지 않도록 여백 추가 */
             min-height: calc(100vh - 80px);
             display: flex;
         }
@@ -494,49 +500,45 @@
             }
         }
     </style>
+    <!-- Tailwind & FontAwesome 추가 (마이페이지에서 가져옴) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Navigation -->
+    <!-- [수정완료] 마이페이지와 완벽하게 동일한 Navigation -->
     <nav>
         <div class="nav-container">
-            <!-- 메인으로 이동 및 로고 이미지 삽입 -->
-            <a href="../index.html" class="logo">
-                <img src="../images/finger-run-logo.svg" alt=""> FingerRun
+            <a href="../index.html" class="logo" aria-label="핑거런 홈페이지 메인으로 이동">
+                <img src="../images/finger-run-logo.svg" alt="" class="h-8 w-auto"> 
+                FingerRun
             </a>
             <ul class="nav-menu">
                 <li><a href="../notices.html">공지사항</a></li>
-                
                 <li>
-    <!-- 부모 링크에 기본 파라미터(consonant) 추가 -->
-    <a href="../Korean/practice.html?mode=consonant">
-        한글 타자연습
-        <span class="dropdown-arrow">▼</span>
-    </a>
-    <div class="dropdown-menu">
-        <!-- 하위 링크들에 모드별 파라미터 추가 -->
-        <a href="../Korean/practice.html?mode=consonant">자음 연습</a>
-        <a href="../Korean/practice.html?mode=vowel">모음 연습</a>
-        <a href="../Korean/practice.html?mode=word">단어 연습</a>
-        <a href="../Korean/practice.html?mode=sentence">문장 연습</a>
-        <a href="../Korean/infinite_practice.html">무한 연습</a>
-    </div>
-</li>
-
-<li>
-    <!-- 영어 부모 링크에 기본 파라미터(alphabet) 추가 -->
-    <a href="../English/practice.html?mode=alphabet">
-        영어 타자연습
-        <span class="dropdown-arrow">▼</span>
-    </a>
-    <div class="dropdown-menu">
-        <!-- 영어 하위 링크들에 모드별 파라미터 추가 -->
-        <a href="../English/practice.html?mode=alphabet">알파벳 연습</a>
-        <a href="../English/practice.html?mode=word">단어 연습</a>
-        <a href="../English/practice.html?mode=sentence">문장 연습</a>
-        <a href="../English/infinite_practice.html">무한 연습</a>
-    </div>
-</li>
-                
+                    <a href="../Korean/practice.html?mode=consonant">
+                        한글 타자연습
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="../Korean/practice.html?mode=consonant">자음 연습</a>
+                        <a href="../Korean/practice.html?mode=vowel">모음 연습</a>
+                        <a href="../Korean/practice.html?mode=word">단어 연습</a>
+                        <a href="../Korean/practice.html?mode=sentence">문장 연습</a>
+                        <a href="../Korean/infinite_practice.html">무한 연습</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="../English/practice.html?mode=alphabet">
+                        영어 타자연습
+                        <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="../English/practice.html?mode=alphabet">알파벳 연습</a>
+                        <a href="../English/practice.html?mode=word">단어 연습</a>
+                        <a href="../English/practice.html?mode=sentence">문장 연습</a>
+                        <a href="../English/infinite_practice.html">무한 연습</a>
+                    </div>
+                </li>
                 <li>
                     <a href="../Game/delivery.html">
                         타자게임
@@ -549,9 +551,7 @@
                         <a href="../Game/plane.html">비행기 조종</a>
                     </div>
                 </li>
-                
                 <li><a href="../writing.html">필사</a></li>
-                
                 <li>
                     <a href="word-processor.html">
                         자격증
@@ -561,8 +561,12 @@
                         <a href="word-processor.html">워드프로세서</a>
                     </div>
                 </li>
-                
                 <li><a href="../contact.html">문의하기</a></li>
+                <li class="ml-2">
+                    <a href="#" onclick="goProfile(event)" title="프로필" style="padding: 0.5rem 0.6rem; border-radius: 50%;">
+                        <i class="far fa-user text-[1.2rem] m-0"></i>
+                    </a>
+                </li>
             </ul>
         </div>
     </nav> 
@@ -846,47 +850,15 @@ window.morePractice = function() {
     if (modal) modal.style.display = 'none';
 }
 
-window.switchKoreanMode = function(mode) {
-    const modeNames = {
-        'consonant': '자음',
-        'vowel': '모음',
-        'word': '단어',
-        'sentence': '문장'
-    };
-    alert('한글 ' + modeNames[mode] + ' 연습을 시작합니다!');
-}
-
-window.switchEnglishMode = function(mode) {
-    const modeNames = {
-        'alphabet': '알파벳',
-        'word': '단어',
-        'sentence': '문장'
-    };
-    alert('영어 ' + modeNames[mode] + ' 연습을 시작합니다!');
-}
-
-window.playKoreanMoleGame = function() {
-    alert('한글 두더지 잡기 게임을 시작합니다!');
-}
-
-window.playEnglishMoleGame = function() {
-    alert('영어 두더지 잡기 게임을 시작합니다!');
-}
-
-window.playKoreanPlaneGame = function() {
-    alert('한글 비행기 조종 게임을 시작합니다!');
-}
-
-window.playEnglishPlaneGame = function() {
-    alert('영어 비행기 조종 게임을 시작합니다!');
-}
-
-window.playKoreanDeliveryGame = function() {
-    alert('한글 택배 분류 게임을 시작합니다!');
-}
-
-window.playEnglishDeliveryGame = function() {
-    alert('영어 택배 분류 게임을 시작합니다!');
+// 상단 프로필 버튼 (마이페이지 이동) 기능 추가
+window.goProfile = function(e) {
+    e.preventDefault();
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (isLoggedIn === 'true') {
+        window.location.href = "../mypage.html";
+    } else {
+        window.location.href = "../login.html";
+    }
 }
 </script>
 </body>

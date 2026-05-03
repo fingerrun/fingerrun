@@ -24,13 +24,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 <title>핑거런 | 문의하기 - 고객지원 및 제안사항 접수</title>
 
-<!-- 파비콘 설정: index.html, notices.html과 동일하게 설정 -->
+<!-- 파비콘 설정 -->
 <link rel="icon" type="image/svg+xml" href="images/finger-run-logo.svg">
 <link rel="shortcut icon" type="image/svg+xml" href="images/finger-run-logo.svg">
 <link rel="apple-touch-icon" href="images/finger-run-logo.svg">
 
 <!-- EmailJS SDK - HEAD에서 먼저 로드 -->
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<!-- 통일된 네비게이션 바를 위한 Tailwind & FontAwesome 추가 -->
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
 <!-- SEO 메타태그 -->
 <meta name="description" content="핑거런 타자연습 사이트 문의하기 페이지에서 고객지원, 기술 문의, 제안사항을 빠르고 정확하게 접수받습니다. 버그 신고, 제휴 문의, 기타 궁금한 사항까지 친절한 답변을 제공하는 핑거런 타자연습 사이트 내 전용 문의 페이지입니다.">
@@ -61,123 +65,124 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         line-height: 1.6; 
     } 
     
-    /* Navigation */ 
-    nav { 
-        background: rgba(255, 255, 255, 0.95); 
-        backdrop-filter: blur(10px); 
-        padding: 1rem 0; 
-        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1); 
-        position: relative; 
-        z-index: 1000; 
-    } 
-    
-    .nav-container { 
-        max-width: 1200px; 
-        margin: 0 auto; 
-        display: flex; 
-        justify-content: space-between; 
-        align-items: center; 
-        padding: 0 2rem; 
-    } 
-    
-    /* 로고 이미지와 텍스트 정렬을 위해 flex 및 정렬 속성 추가 */
-    .logo { 
-        font-size: 1.8rem; 
-        font-weight: bold; 
-        color: #667eea; 
-        text-decoration: none; 
+    /* --- 마이페이지와 완벽하게 동일한 네비게이션 바 CSS 시작 --- */
+    nav {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 1rem 0;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        z-index: 3000;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        height: 80px;
+    }
+
+    .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 2rem;
+        height: 100%;
+    }
+
+    .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #667eea;
+        text-decoration: none;
         display: flex;
         align-items: center;
-        gap: 10px;
-    } 
+        gap: 0.5rem;
+        text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
+    }
 
-    /* 로고 이미지 크기 지정 */
     .logo img {
         height: 32px;
         width: auto;
     }
+
+    .nav-menu {
+        display: flex;
+        list-style: none;
+        gap: 1.5rem;
+        align-items: center;
+        margin: 0; 
+        padding: 0;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+    }
+
+    .nav-menu li { position: relative; }
+
+    .nav-menu a {
+        text-decoration: none;
+        color: #333;
+        font-weight: 500;
+        padding: 0.5rem 0.8rem;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    .nav-menu a:hover {
+        background: #667eea;
+        color: white !important;
+        transform: translateY(-2px);
+    }
+
+    .dropdown-arrow { font-size: 0.7rem; transition: transform 0.3s ease; }
     
-    .nav-menu { 
-        display: flex; 
-        list-style: none; 
-        gap: 1.5rem; 
-    } 
-    
-    .nav-menu li { 
-        position: relative; 
-    } 
-    
-    .nav-menu a { 
-        text-decoration: none; 
-        color: #333; 
-        font-weight: 500; 
-        padding: 0.5rem 0.8rem; 
-        border-radius: 25px; 
-        transition: all 0.3s ease; 
-        font-size: 0.9rem; 
-        display: flex; 
-        align-items: center; 
-        gap: 0.3rem; 
-    } 
-    
-    .nav-menu a:hover { 
-        background: #667eea; 
-        color: white; 
-        transform: translateY(-2px); 
-    } 
-    
-    .nav-menu a.active { 
-        background: #667eea; 
-        color: white; 
-    } 
-    
-    .dropdown-arrow { 
-        font-size: 0.7rem; 
-        transition: transform 0.3s ease; 
-    } 
-    
-    .dropdown-menu { 
-        position: absolute; 
-        top: 100%; 
-        left: 0; 
-        background: white; 
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); 
-        border-radius: 10px; 
-        padding: 0.5rem 0; 
-        min-width: 180px; 
-        opacity: 0; 
-        visibility: hidden; 
-        transform: translateY(-10px); 
-        transition: all 0.3s ease; 
-        z-index: 1010; 
-        border: 1px solid rgba(0, 0, 0, 0.1); 
-    } 
-    
-    .nav-menu li:hover .dropdown-menu { 
-        opacity: 1; 
-        visibility: visible; 
-        transform: translateY(0); 
-    } 
-    
-    .nav-menu li:hover .dropdown-arrow { 
-        transform: rotate(180deg); 
-    } 
-    
-    .dropdown-menu a { 
-        display: block; 
-        padding: 0.7rem 1rem; 
-        color: #333; 
-        border-radius: 0; 
-        font-weight: 400; 
-        transition: all 0.2s ease; 
-    } 
-    
-    .dropdown-menu a:hover { 
-        background: #f8f9fa; 
-        color: #667eea; 
-        transform: none; 
-        padding-left: 1.2rem; 
-    } 
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+        background: white;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        border-radius: 10px;
+        padding: 0.5rem 0;
+        min-width: 160px;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 3001;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-menu li:hover .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    .nav-menu li:hover .dropdown-arrow { transform: rotate(180deg); }
+
+    .dropdown-menu a {
+        display: block;
+        padding: 0.7rem 1rem;
+        color: #333;
+        border-radius: 0;
+        white-space: nowrap;
+        font-weight: 400;
+    }
+
+    .dropdown-menu a:hover {
+        background: #f8f9fa;
+        color: #667eea !important;
+        transform: none;
+    }
+
+    @media (max-width: 900px) {
+        .nav-menu { display: none; } 
+    }
+    /* --- 네비게이션 바 CSS 끝 --- */
     
     .container { 
         max-width: 1200px; 
@@ -187,9 +192,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     } 
     
     .content { 
-        padding: 80px 20px 24px 20px; 
+        margin-top: 80px; /* 네비게이션 바 공간 확보 */
+        padding: 40px 20px 24px 20px; 
         max-width: 800px; 
-        margin: 0 auto; 
+        margin-left: auto;
+        margin-right: auto;
     } 
     
     .page-title { 
@@ -463,7 +470,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         display: none; 
         align-items: center; 
         justify-content: center; 
-        z-index: 2000; 
+        z-index: 4000; /* 네비게이션바(3000)보다 높게 설정 */
     } 
     
     .success-modal-content { 
@@ -515,7 +522,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     /* Loading state */
     .loading { 
         position: relative; 
-        color: transparent; 
+        color: transparent !important; 
     } 
     
     .loading::after { 
@@ -538,18 +545,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     }
     
     @media (max-width: 768px) { 
-        .nav-container { 
-            padding: 0 1rem; 
-        } 
-        
-        .nav-menu { 
-            gap: 1rem; 
-        } 
-        
-        .container { 
-            max-width: 100%; 
-        } 
-        
         .content { 
             padding: 20px 16px; 
         } 
@@ -562,72 +557,71 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
-<!-- Navigation --> 
-    <nav>
-        <div class="nav-container">
-            <!-- [수정] 메인으로 이동 및 로고 이미지 삽입 -->
-            <a href="../index.html" class="logo">
-                <img src="../images/finger-run-logo.svg" alt=""> FingerRun
-            </a>
-            <ul class="nav-menu">
-                <li><a href="../notices.html">공지사항</a></li>
-                
-                <li>
-    <a href="Korean/practice.html?mode=consonant">
-        한글 타자연습
-        <span class="dropdown-arrow">▼</span>
-    </a>
-    <div class="dropdown-menu">
-        <a href="Korean/practice.html?mode=consonant">자음 연습</a>
-        <a href="Korean/practice.html?mode=vowel">모음 연습</a>
-        <a href="Korean/practice.html?mode=word">단어 연습</a>
-        <a href="Korean/practice.html?mode=sentence">문장 연습</a>
-        <a href="Korean/infinite_practice.html">무한 연습</a>
+<!-- [수정완료] 마이페이지와 완벽하게 동일한 Navigation (루트 경로 적용) -->
+<nav>
+    <div class="nav-container">
+        <a href="index.html" class="logo" aria-label="핑거런 홈페이지 메인으로 이동">
+            <img src="images/finger-run-logo.svg" alt="" class="h-8 w-auto"> 
+            FingerRun
+        </a>
+        <ul class="nav-menu">
+            <li><a href="notices.html">공지사항</a></li>
+            <li>
+                <a href="Korean/practice.html?mode=consonant">
+                    한글 타자연습
+                    <span class="dropdown-arrow">▼</span>
+                </a>
+                <div class="dropdown-menu">
+                    <a href="Korean/practice.html?mode=consonant">자음 연습</a>
+                    <a href="Korean/practice.html?mode=vowel">모음 연습</a>
+                    <a href="Korean/practice.html?mode=word">단어 연습</a>
+                    <a href="Korean/practice.html?mode=sentence">문장 연습</a>
+                    <a href="Korean/infinite_practice.html">무한 연습</a>
+                </div>
+            </li>
+            <li>
+                <a href="English/practice.html?mode=alphabet">
+                    영어 타자연습
+                    <span class="dropdown-arrow">▼</span>
+                </a>
+                <div class="dropdown-menu">
+                    <a href="English/practice.html?mode=alphabet">알파벳 연습</a>
+                    <a href="English/practice.html?mode=word">단어 연습</a>
+                    <a href="English/practice.html?mode=sentence">문장 연습</a>
+                    <a href="English/infinite_practice.html">무한 연습</a>
+                </div>
+            </li>
+            <li>
+                <a href="Game/delivery.html">
+                    타자게임
+                    <span class="dropdown-arrow">▼</span>
+                </a>
+                <div class="dropdown-menu">
+                    <a href="Game/tank.html">탱크 폭격</a>
+                    <a href="Game/delivery.html">택배 분류</a>
+                    <a href="Game/mole.html">두더지 잡기</a>
+                    <a href="Game/plane.html">비행기 조종</a>
+                </div>
+            </li>
+            <li><a href="writing.html">필사</a></li>
+            <li>
+                <a href="Certificate/word-processor.html">
+                    자격증
+                    <span class="dropdown-arrow">▼</span>
+                </a>
+                <div class="dropdown-menu">
+                    <a href="Certificate/word-processor.html">워드프로세서</a>
+                </div>
+            </li>
+            <li><a href="contact.html">문의하기</a></li>
+            <li class="ml-2">
+                <a href="#" onclick="goProfile(event)" title="프로필" style="padding: 0.5rem 0.6rem; border-radius: 50%;">
+                    <i class="far fa-user text-[1.2rem] m-0"></i>
+                </a>
+            </li>
+        </ul>
     </div>
-</li>
-
-<li>
-    <a href="English/practice.html?mode=alphabet">
-        영어 타자연습
-        <span class="dropdown-arrow">▼</span>
-    </a>
-    <div class="dropdown-menu">
-        <a href="English/practice.html?mode=alphabet">알파벳 연습</a>
-        <a href="English/practice.html?mode=word">단어 연습</a>
-        <a href="English/practice.html?mode=sentence">문장 연습</a>
-        <a href="English/infinite_practice.html">무한 연습</a>
-    </div>
-</li>
-                
-                <li>
-                    <a href="../Game/delivery.html">
-                        타자게임
-                        <span class="dropdown-arrow">▼</span>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="../Game/tank.html">탱크 폭격</a>
-                        <a href="../Game/delivery.html">택배 분류</a>
-                        <a href="../Game/mole.html">두더지 잡기</a>
-                        <a href="../Game/plane.html">비행기 조종</a>
-                    </div>
-                </li>
-                
-                <li><a href="../writing.html">필사</a></li>
-                
-                <li>
-                    <a href="../Certificate/word-processor.html">
-                        자격증
-                        <span class="dropdown-arrow">▼</span>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="../Certificate/word-processor.html">워드프로세서</a>
-                    </div>
-                </li>
-                
-                <li><a href="../contact.html">문의하기</a></li>
-            </ul>
-        </div>
-    </nav>
+</nav>
 
 <header style="display: none; background: #f8f9fa; padding: 1.5rem 0; border-bottom: 1px solid #e9ecef;">
     <div style="max-width: 1200px; margin: 0 auto; text-align: center; padding: 0 2rem;">
@@ -638,7 +632,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="container">
     <div class="content"> 
         <div class="section"> 
-            <h2 class="section-title">문의 유형</h2> 
+            <h2 class="page-title">문의 유형</h2> 
             <div class="inquiry-types"> 
                 <div class="inquiry-type" data-type="bug"> 
                     <div class="inquiry-type-title">버그 및 신고</div> 
@@ -733,6 +727,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div> 
 
 <script>
+// 상단 프로필 버튼 (마이페이지 이동) 기능 추가
+window.goProfile = function(e) {
+    e.preventDefault();
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (isLoggedIn === 'true') {
+        window.location.href = "mypage.html";
+    } else {
+        window.location.href = "login.html";
+    }
+}
+
 // 전역 변수
 let selectedInquiryType = null;
 let emailjsReady = false;
@@ -886,25 +891,6 @@ function sendEmail() {
             resetForm();
             resetSubmitButton();
         });
-}
-
-// 네비게이션 모드 설정 함수들
-function setKoreanMode(mode) {
-    try {
-        localStorage.setItem('koreanMode', mode);
-    } catch(e) {
-        console.warn('localStorage 사용 불가');
-    }
-    window.location.href = './Korean/practice.html';
-}
-
-function setEnglishMode(mode) {
-    try {
-        localStorage.setItem('englishMode', mode);
-    } catch(e) {
-        console.warn('localStorage 사용 불가');
-    }
-    window.location.href = './English/practice.html';
 }
 
 function showSuccessModal() {
