@@ -42,6 +42,12 @@
             overflow-x: hidden;
             padding-top: 80px; /* 네비게이션 바 높이만큼 여백 확보 */
             zoom: 0.765;
+            
+            /* 🔥 가운데 정렬 및 사이드 광고 배치를 위한 Grid 설정 추가 */
+            display: grid;
+            grid-template-columns: 1fr minmax(auto, 1200px) 1fr;
+            gap: 0 60px;
+            align-items: start;
         }
 
         /* --- 마이페이지와 완벽하게 동일한 네비게이션 바 CSS --- */
@@ -52,9 +58,10 @@
             width: 100%;
             position: fixed;
             top: 0;
-            z-index: 1000;
+            z-index: 3000;
             border-bottom: 1px solid rgba(0,0,0,0.1);
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            height: 80px;
         }
 
         .nav-container {
@@ -64,6 +71,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 2rem;
+            height: 100%;
         }
 
         .logo {
@@ -147,36 +155,54 @@
             color: #333;
             border-radius: 0;
             font-weight: 400;
+            transition: all 0.2s ease;
         }
 
         .dropdown-menu a:hover {
             background: #f8f9fa;
             color: #667eea !important;
             transform: none;
+            padding-left: 1.2rem;
         }
 
         @media (max-width: 900px) {
             .nav-menu { display: none; } 
         }
-        /* --- 네비게이션 바 CSS 끝 --- */
 
+        /* --- 레이아웃 구조 (가운데 정렬 핵심) --- */
         .container {
+            grid-column: 2; /* 1200px 중앙 영역 차지 */
+            grid-row: 1;
+            width: 100%;
             min-height: calc(100vh - 80px);
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: center; /* 수평 가운데 정렬 */
             justify-content: flex-start;
-            padding: 20px 20px 0 20px;
+            padding: 20px 0;
             position: relative;
         }
 
-        .background-animation { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+        .background-animation { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
         .bg-blob { position: absolute; width: 320px; height: 320px; border-radius: 50%; filter: blur(60px); opacity: 0.4; animation: pulse 4s ease-in-out infinite; }
         .bg-blob:nth-child(1) { top: -160px; left: -160px; background: #60a5fa; }
         .bg-blob:nth-child(2) { bottom: -160px; right: -160px; background: #f472b6; animation-delay: -2s; }
         .bg-blob:nth-child(3) { top: 160px; left: 50%; transform: translateX(-50%); background: #a78bfa; animation-delay: -4s; }
 
-        .main-content { max-width: 1200px; width: 100%; position: relative; z-index: 10; display: flex; flex-direction: column; }
+        .main-content { 
+            max-width: 900px; /* 🔥 1200px에서 900px로 줄여 시각적인 밸런스와 완벽한 가운데 정렬 보장 */
+            width: 100%; 
+            margin: 0 auto; /* 🔥 마진으로 한 번 더 가운데 정렬 */
+            position: relative; 
+            z-index: 10; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; /* 내부 요소 센터 정렬 */
+        }
+
+        .header, .stats-container, .game-field, .typing-area {
+            width: 100%; /* 부모(main-content)에 꽉 차게 설정 */
+        }
 
         .header { text-align: center; margin-bottom: 48px; }
         .title {
@@ -264,9 +290,10 @@
 
         /* --- Modal System --- */
         .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed; /* 🔥 상단 전체를 덮도록 absolute에서 fixed로 변경 */
+            top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(15, 23, 42, 0.95); display: flex; flex-direction: column;
-            align-items: center; justify-content: center; z-index: 4000; /* 🔥 모달이 최상단이 되도록 4000으로 세팅 */
+            align-items: center; justify-content: center; z-index: 4000; /* 🔥 네비게이션(3000)보다 높게 설정 */
         }
         .modal-title {
             font-family: 'Orbitron', sans-serif; font-size: 4rem; font-weight: 900;
@@ -282,7 +309,7 @@
             background-clip: text; 
             -webkit-text-fill-color: transparent;
         }
-        .modal-subtitle { font-size: 1.5rem; color: #e5e7eb; margin-bottom: 40px; text-align: center; }
+        .modal-subtitle { font-size: 1.5rem; color: #e5e7eb; margin-bottom: 40px; text-align: center; line-height: 1.6;}
         
         .game-btn {
             padding: 15px 40px; font-size: 1.2rem; font-weight: bold; color: white;
@@ -298,27 +325,58 @@
         @keyframes pulse { 0%, 100% { opacity: 0.6; transform: scale(1); } 50% { opacity: 1; transform: scale(1.1); } }
         @keyframes mole-appear { 0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
         @keyframes mole-hit { 0% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -30%) scale(1.2); } 100% { transform: translate(-50%, -30%) scale(0.75); } }
+
+        /* [광고] 사이드바 설정 추가 */
+        .ad-sidebar {
+            position: sticky;
+            top: 100px;
+            width: 240px;
+            z-index: 50;
+            grid-row: 1; 
+            height: 900px; 
+        }
+        .ad-left { grid-column: 1; justify-self: end; }
+        .ad-right { grid-column: 3; justify-self: start; }
+        .ad-sidebar ins { display: inline-block !important; width: 240px !important; height: 900px !important; }
+
+        @media (max-width: 1700px) {
+            body { grid-template-columns: 1fr; }
+            .ad-sidebar { display: none; }
+            .container { grid-column: 1; padding: 20px; }
+        }
     </style>
 </head>
 
 <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T9HC454Z" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    
-    <!-- [수정완료] 마이페이지와 완벽하게 동일한 Navigation (상대 경로 적용) -->
+    <!-- 광고 삽입 -->
+    <div class="ad-sidebar ad-left">
+        <ins class="adsbygoogle"
+             style="display:inline-block; width:240px; height:100%;"
+             data-ad-client="ca-pub-5657188598576847"
+             data-ad-slot="4465825129"
+             data-ad-format="vertical"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <div class="ad-sidebar ad-right">
+        <ins class="adsbygoogle"
+             style="display:inline-block; width:240px; height:100%;"
+             data-ad-client="ca-pub-5657188598576847"
+             data-ad-slot="4465825129"
+             data-ad-format="vertical"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <!-- 네비게이션 바 -->
     <nav>
         <div class="nav-container">
-            <a href="../index.html" class="logo" aria-label="핑거런 홈페이지 메인으로 이동">
-                <img src="../images/finger-run-logo.svg" alt="" class="h-8 w-auto"> 
-                FingerRun
+            <a href="../index.html" class="logo">
+                <img src="../images/finger-run-logo.svg" alt=""> FingerRun
             </a>
             <ul class="nav-menu">
                 <li><a href="../notices.html">공지사항</a></li>
                 <li>
-                    <a href="../Korean/practice.html?mode=consonant">
-                        한글 타자연습
-                        <span class="dropdown-arrow">▼</span>
-                    </a>
+                    <a href="../Korean/practice.html?mode=consonant">한글 타자연습 <span class="dropdown-arrow">▼</span></a>
                     <div class="dropdown-menu">
                         <a href="../Korean/practice.html?mode=consonant">자음 연습</a>
                         <a href="../Korean/practice.html?mode=vowel">모음 연습</a>
@@ -328,10 +386,7 @@
                     </div>
                 </li>
                 <li>
-                    <a href="../English/practice.html?mode=alphabet">
-                        영어 타자연습
-                        <span class="dropdown-arrow">▼</span>
-                    </a>
+                    <a href="../English/practice.html?mode=alphabet">영어 타자연습 <span class="dropdown-arrow">▼</span></a>
                     <div class="dropdown-menu">
                         <a href="../English/practice.html?mode=alphabet">알파벳 연습</a>
                         <a href="../English/practice.html?mode=word">단어 연습</a>
@@ -340,10 +395,7 @@
                     </div>
                 </li>
                 <li>
-                    <a href="delivery.html">
-                        타자게임
-                        <span class="dropdown-arrow">▼</span>
-                    </a>
+                    <a href="delivery.html">타자게임 <span class="dropdown-arrow">▼</span></a>
                     <div class="dropdown-menu">
                         <a href="tank.html">탱크 폭격</a>
                         <a href="delivery.html">택배 분류</a>
@@ -353,10 +405,7 @@
                 </li>
                 <li><a href="../writing.html">필사</a></li>
                 <li>
-                    <a href="../Certificate/word-processor.html">
-                        자격증
-                        <span class="dropdown-arrow">▼</span>
-                    </a>
+                    <a href="../Certificate/word-processor.html">자격증 <span class="dropdown-arrow">▼</span></a>
                     <div class="dropdown-menu">
                         <a href="../Certificate/word-processor.html">워드프로세서</a>
                     </div>
@@ -428,7 +477,7 @@
     </div>
 
     <script>
-        // 프로필 클릭 시 이동하는 함수 추가
+        // 프로필 메뉴 연결 스크립트 추가
         window.goProfile = function(e) {
             e.preventDefault();
             const isLoggedIn = localStorage.getItem('isLoggedIn');

@@ -250,19 +250,19 @@
         .key-ko { font-size: 0.7rem; color: #6c757d; }
         
         /* Input Area */
-        .input-area { margin-bottom: 3rem; }
+        .input-area { margin-bottom: 1rem; } /* 마진 조정 */
         .typing-input { width: 100%; padding: 18px; font-size: 1.2rem; border: 2px solid #e2e8f0; border-radius: 15px; text-align: center; outline: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
         .typing-input:focus { border-color: #667eea; box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2); }
         .typing-input.completed { border-color: #4caf50; background-color: #f1f8f1; }
         
         /* Stats */
-        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; background: #f8f9fa; padding: 2rem; border-radius: 15px; border: 2px solid #e2e8f0; }
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; background: #f8f9fa; padding: 2rem; border-radius: 15px; border: 2px solid #e2e8f0; margin-top: 2rem; }
         .stat-item { text-align: center; padding: 1.5rem; background: white; border-radius: 12px; }
         .stat-value { font-size: 2.2rem; font-weight: 700; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
         .stat-label { color: #666; font-size: 1rem; font-weight: 500; }
         
         /* Modal & UI Feedback Base */
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: none; justify-content: center; align-items: center; z-index: 2000; animation: fadeIn 0.5s ease; }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: none; justify-content: center; align-items: center; z-index: 4000; animation: fadeIn 0.5s ease; }
         .modal-content { background: white; padding: 3rem; border-radius: 20px; text-align: center; max-width: 500px; width: 90%; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); animation: slideUp 0.5s ease; }
         @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         
@@ -328,7 +328,7 @@
         .ad-sidebar ins {
             display: inline-block !important;
             width: 240px !important;
-            height: 900px !important; 
+            height: 100% !important;
         }
 
         @media (max-width: 1700px) {
@@ -353,7 +353,7 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
-    <!-- [수정완료] 마이페이지와 완벽하게 동일한 Navigation (경로 최적화) -->
+    <!-- [수정완료] 마이페이지와 완벽하게 동일한 Navigation -->
     <nav>
         <div class="nav-container">
             <a href="../index.html" class="logo" aria-label="핑거런 홈페이지 메인으로 이동">
@@ -363,28 +363,28 @@
             <ul class="nav-menu">
                 <li><a href="../notices.html">공지사항</a></li>
                 <li>
-                    <a href="../Korean/practice.html?mode=consonant">
+                    <a href="practice.html?mode=consonant">
                         한글 타자연습
                         <span class="dropdown-arrow">▼</span>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="../Korean/practice.html?mode=consonant">자음 연습</a>
-                        <a href="../Korean/practice.html?mode=vowel">모음 연습</a>
-                        <a href="../Korean/practice.html?mode=word">단어 연습</a>
-                        <a href="../Korean/practice.html?mode=sentence">문장 연습</a>
-                        <a href="../Korean/infinite_practice.html">무한 연습</a>
+                        <a href="practice.html?mode=consonant">자음 연습</a>
+                        <a href="practice.html?mode=vowel">모음 연습</a>
+                        <a href="practice.html?mode=word">단어 연습</a>
+                        <a href="practice.html?mode=sentence">문장 연습</a>
+                        <a href="infinite_practice.html">무한 연습</a>
                     </div>
                 </li>
                 <li>
-                    <a href="practice.html?mode=alphabet">
+                    <a href="../English/practice.html?mode=alphabet">
                         영어 타자연습
                         <span class="dropdown-arrow">▼</span>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="practice.html?mode=alphabet">알파벳 연습</a>
-                        <a href="practice.html?mode=word">단어 연습</a>
-                        <a href="practice.html?mode=sentence">문장 연습</a>
-                        <a href="infinite_practice.html">무한 연습</a>
+                        <a href="../English/practice.html?mode=alphabet">알파벳 연습</a>
+                        <a href="../English/practice.html?mode=word">단어 연습</a>
+                        <a href="../English/practice.html?mode=sentence">문장 연습</a>
+                        <a href="../English/infinite_practice.html">무한 연습</a>
                     </div>
                 </li>
                 <li>
@@ -503,22 +503,24 @@
                         <div class="key space" data-key=" ">Space</div>
                     </div>
                 </div>
+                
+                <div class="input-area">
+                    <input type="text" class="typing-input" id="typingInput" placeholder="여기에 타이핑하세요..." autocomplete="off">
+                </div>
             </div>
-
-            <div class="input-area">
-                <input type="text" class="typing-input" id="typingInput" placeholder="여기에 타이핑하세요..." autocomplete="off">
+            
+            <!-- 🔥 구조 변경: stats 영역을 practice-container 내부 최하단으로 이동 -->
+            <div class="stats">
+                <div class="stat-item"><div class="stat-value" id="accuracy">100%</div><div class="stat-label">정확도</div></div>
+                <div class="stat-item"><div class="stat-value" id="speed">0</div><div class="stat-label">타자/분</div></div>
+                <div class="stat-item"><div class="stat-value" id="progress">1/10</div><div class="stat-label">진행률</div></div>
             </div>
-        </div>
-        
-        <div class="stats">
-            <div class="stat-item"><div class="stat-value" id="accuracy">100%</div><div class="stat-label">정확도</div></div>
-            <div class="stat-item"><div class="stat-value" id="speed">0</div><div class="stat-label">타자/분</div></div>
-            <div class="stat-item"><div class="stat-value" id="progress">0/10</div><div class="stat-label">진행률</div></div>
+            
         </div>
     </div>
 
-    <!-- 모달 컨테이너 -->
-    <div class="modal" id="completeModal">
+    <!-- Complete Modal -->
+    <div class="modal" id="completeModal" style="display: none;">
         <div class="modal-content" id="modalContent"></div>
     </div>
 
@@ -782,19 +784,26 @@
             generateText() {
                 if (this.currentMode === 'alphabet') {
                     const charsString = this.fingerSets[this.currentSubMode].chars;
-                    const selected = Array.from({length: 10}, () => charsString[Math.floor(Math.random() * charsString.length)]);
+                    let selected = [];
+                    for(let i=0; i<10; i++) selected.push(charsString[Math.floor(Math.random()*charsString.length)]);
                     this.currentText = selected.join(' ');
                     this.currentTranslation = '';
                 } else if (this.currentMode === 'word') {
-                    const data = this.practiceData.word;
-                    const selected = Array.from({length: 2}, () => data[Math.floor(Math.random() * data.length)]);
+                    const pool = this.practiceData.word;
+                    let selected = [];
+                    for(let i=0; i<2; i++) selected.push(pool[Math.floor(Math.random()*pool.length)]);
                     this.currentText = selected.map(w => w.en).join(' ');
                     this.currentTranslation = selected.map(w => w.ko).join(' / ');
                 } else {
-                    const data = this.practiceData.sentence;
-                    const selected = data[Math.floor(Math.random() * data.length)];
+                    let available = this.practiceData.sentence.filter(s => !this.usedSentences.includes(s.en));
+                    if (available.length === 0) {
+                        this.usedSentences = [];
+                        available = this.practiceData.sentence;
+                    }
+                    const selected = available[Math.floor(Math.random()*available.length)];
                     this.currentText = selected.en;
                     this.currentTranslation = selected.ko;
+                    this.usedSentences.push(selected.en);
                 }
                 this.currentPosition = 0;
                 this.correctChars = 0;
@@ -919,7 +928,6 @@
             }
 
             nextProblem() {
-                // 문장 연습의 경우 현재 문장의 통계를 배열에 저장
                 if (this.currentMode === 'sentence') {
                     const currentAccuracy = parseInt(document.getElementById('accuracy').textContent.replace('%', ''));
                     const currentSpeed = parseInt(document.getElementById('speed').textContent);
@@ -999,7 +1007,6 @@
                 }
             }
 
-            // AI 피드백을 위한 분석 함수들
             analyzeFingerPerformance() {
                 const fingerStats = {};
                 for (let [key, latencies] of Object.entries(this.keyLatencies)) {
@@ -1144,14 +1151,14 @@
 
             resetStats() {
                 this.currentPosition = 0; this.startTime = null; this.totalChars = 0; this.correctChars = 0;
-                this.sessionAccuracies = []; this.sessionSpeeds = [];
                 document.getElementById('accuracy').textContent = '100%';
                 document.getElementById('speed').textContent = '0';
+                document.getElementById('progress').textContent = '1';
             }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            window.englishTypingPractice = new EnglishTypingPractice();
+            window.infinitePractice = new EnglishInfinitePractice();
         });
     </script>
 </body>
