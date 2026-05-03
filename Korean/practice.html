@@ -757,7 +757,7 @@ this.fingerMap = {
                         '푸른 바다는 지구 생태계에서 매우 중요한 역할을 담당합니다.',
                         '규칙적인 운동은 신체 건강뿐만 아니라 정신 건강에도 좋습니다.',
                         '독서는 새로운 지식을 습득하고 사고력을 넓히는 훌륭한 방법입니다.',
-                        '인공지능 기술의 발전은 우리의 일상생활을 획기적으로 변화시키고 있습니다.',
+                        '인공지능 기술의 발전으로 우리의 일상생활을 획기적으로 변화하고 있습니다.',
                         '환경 보호를 위해 일회용품 사용을 줄이는 습관을 실천해야 합니다.',
                         '성실한 태도는 꿈을 이루기 위한 가장 기본적인 소양 중 하나입니다.',
                         '서로를 존중하는 마음은 건강한 사회를 만드는 밑거름이 됩니다.',
@@ -800,10 +800,10 @@ this.fingerMap = {
                         '사소한 것에도 감사할 줄 아는 마음이 일상을 더욱 행복하게 만듭니다.',
                         '정보의 홍수 속에서 내게 필요한 지식을 선별하는 능력이 중요해졌습니다.',
                         '진정한 행복은 물질적인 풍요가 아니라 마음의 평화에서 비롯됩니다.',
-                        '과거의 실수에 얽매이지 않고 미래를 향해 나아가는 긍정적인 자세가 필요합니다.',
+                        '과거의 실수에 얽매이지 않고 미래로 나아가는 긍정적인 자세가 필요합니다.',
                         '규칙적인 생활 습관은 몸과 마음의 균형을 유지하는 데 큰 도움이 됩니다.',
-                        '자신의 재능과 능력을 사회를 위해 기여할 때 삶의 진정한 의미를 찾을 수 있습니다.',
-                        '끊임없는 자기 성찰과 반성을 통해 우리는 어제보다 더 나은 오늘을 만들 수 있습니다.'
+                        '자신의 능력을 사회를 위해 기여할 때 삶의 진정한 의미를 찾을 수 있습니다.',
+                        '끊임없는 성찰과 반성을 통해 어제보다 더 나은 오늘을 만들 수 있습니다.'
                     ]
                 };
 
@@ -1443,14 +1443,15 @@ updateMenuUI(mode) {
                 setTimeout(() => this.renderAIReport(content), 1500);
             }
 
-            renderAIReport(content) {
+renderAIReport(content) {
                 const totalSpeed = this.sentenceStats.reduce((a, b) => a + b.speed, 0) / this.sentenceStats.length;
                 const totalAcc = this.sentenceStats.reduce((a, b) => a + b.accuracy, 0) / this.sentenceStats.length;
                 const avgSpeed = Math.round(totalSpeed) || 0;
                 const avgAcc = Math.round(totalAcc) || 0;
                 
                 if (this.currentMode === 'sentence') {
-                    this.saveRecordToProfile(avgSpeed);
+                    // 🔥 정확도(avgAcc)도 함께 넘기도록 수정했습니다.
+                    this.saveRecordToProfile(avgSpeed, avgAcc);
                 }
 
                 const slowKeys = this.analyzeSlowCharacters();
@@ -1611,8 +1612,8 @@ updateMenuUI(mode) {
                 }
             }
 
-            // --- [수정된 파이어베이스 저장 로직] ---
-            async saveRecordToProfile(sessionSpeed) {
+// --- [완벽 연동 완료된 파이어베이스 저장 로직] ---
+            async saveRecordToProfile(sessionSpeed, sessionAccuracy) {
                 if (localStorage.getItem('isLoggedIn') !== 'true') return;
 
                 const savedUser = localStorage.getItem('fingerRunUser');
@@ -1620,6 +1621,7 @@ updateMenuUI(mode) {
 
                 const userData = JSON.parse(savedUser);
 
+                // 전체 통계 계산
                 userData.totalSessions = (userData.totalSessions || 0) + 1; 
                 userData.cumulativeSpeed = (userData.cumulativeSpeed || 0) + sessionSpeed; 
                 userData.avgSpeed = Math.round(userData.cumulativeSpeed / userData.totalSessions);
@@ -1628,11 +1630,26 @@ updateMenuUI(mode) {
                     userData.maxSpeed = sessionSpeed;
                 }
 
+                // 🔥 [새로 추가됨] 오늘 날짜의 진짜 기록을 그래프용 데이터로 저장
+                if (!userData.dailyRecords) {
+                    userData.dailyRecords = []; 
+                }
+                
+                const today = new Date();
+                const dateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+                
+                userData.dailyRecords.push({
+                    date: dateStr,
+                    speed: sessionSpeed,
+                    accuracy: sessionAccuracy
+                });
+
+                // 내 컴퓨터에 저장
                 localStorage.setItem('fingerRunUser', JSON.stringify(userData));
                 console.log("1단계: 로컬 기록 갱신 완료", userData);
 
+                // 파이어베이스 DB에 쏘기
                 try {
-                    // getApps, getApp을 추가로 import
                     const { initializeApp, getApps, getApp } = await import("https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js");
                     const { getFirestore, doc, updateDoc } = await import("https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js");
                     
@@ -1641,18 +1658,19 @@ updateMenuUI(mode) {
                         projectId: "fingerrun-fe27d",
                     };
                     
-                    // 파이어베이스 중복 초기화 방지 로직
                     const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
                     const db = getFirestore(app);
                     const userRef = doc(db, "users", userData.uid);
                     
+                    // 🔥 dailyRecords도 서버에 함께 넘겨주기
                     await updateDoc(userRef, {
                         avgSpeed: userData.avgSpeed,
                         maxSpeed: userData.maxSpeed,
                         totalSessions: userData.totalSessions,
-                        cumulativeSpeed: userData.cumulativeSpeed
+                        cumulativeSpeed: userData.cumulativeSpeed,
+                        dailyRecords: userData.dailyRecords
                     });
-                    console.log("2단계: 🔥 Firebase DB 동기화 완벽 성공!");
+                    console.log("2단계: 🔥 Firebase DB(그래프 기록 포함) 동기화 완벽 성공!");
                 } catch (error) {
                     console.error("DB 저장 실패 (하지만 로컬에는 저장됨):", error);
                 }
