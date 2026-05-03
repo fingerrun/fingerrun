@@ -3,8 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>핑거런 - 마이페이지</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5657188598576847" crossorigin="anonymous"></script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-T9HC454Z');</script>
+    <!-- End Google Tag Manager -->
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7QSEYCFK83"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-7QSEYCFK83');
+    </script>
+
+    <title>핑거런 | 한글 타자연습 - 마이페이지</title>
     
+    <!-- 파비콘 설정 -->
+    <link rel="icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
+    <link rel="shortcut icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
+    <link rel="apple-touch-icon" href="../images/finger-run-logo.svg">
+    
+    <!-- SEO 메타태그 -->
+    <meta name="description" content="한글 타자연습으로 타이핑 실력을 향상시키세요. 자음, 모음, 단어, 문장 순서의 체계적인 학습 시스템과 실시간 정확도 및 타자속도 측정을 제공합니다.">
+    <meta name="keywords" content="한글타자연습, 한글자판연습, 타자연습, 한글타자속도, 핑거런">
+    <meta name="author" content="FingerRun">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="핑거런 | 한글타자연습">
+    <meta property="og:description" content="압도적인 디자인과 성능의 타자연습 사이트로 타이핑 속도와 정확도를 향상시키세요.">
+    <meta property="og:url" content="https://fingerrun.com/Korean/practice.html">
+    <meta property="og:type" content="website">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- 그래프를 그리기 위한 Chart.js 라이브러리 추가 -->
@@ -67,10 +102,13 @@
             </div>
 
             <!-- 타수 그래프 -->
-            <div class="mb-10 relative w-full" style="height: 400px;">
+            <div class="relative w-full" style="height: 400px;">
                 <h3 class="text-sm font-medium text-gray-500 mb-2">평균 타수 변화 (타/분)</h3>
                 <canvas id="speedChart"></canvas>
             </div>
+
+            <!-- 그래프 구분선 (점선) -->
+            <hr class="border-t-2 border-dashed border-gray-200 my-10">
 
             <!-- 정확도 그래프 -->
             <div class="relative w-full" style="height: 300px;">
@@ -152,10 +190,10 @@
                     : 'text-xs px-2 py-1 bg-[#FEE500] text-[#191919] rounded font-medium';
 
                 // ==========================================
-                // 🔥 가짜 데이터 삭제! 오직 진짜 데이터만 담기도록 수정 완료 🔥
+                // 🔥 가짜 데이터 삭제 완료! 오직 진짜 데이터만 담깁니다.
                 // ==========================================
                 if (!userData.dailyRecords) {
-                    userData.dailyRecords = []; // 가짜 데이터를 생성하지 않고 깨끗한 빈 배열만 만들어둡니다.
+                    userData.dailyRecords = []; // 가짜 데이터를 생성하지 않고 빈 배열 생성
                     localStorage.setItem('fingerRunUser', JSON.stringify(userData));
                 }
 
@@ -189,7 +227,7 @@
 
         // 차트를 그려주는 핵심 함수
         function renderCharts(records, unit) {
-            const safeRecords = records || []; // 데이터가 아예 없을 때 에러 방지
+            const safeRecords = records || []; 
             const grouped = {};
             
             safeRecords.forEach(r => {
@@ -244,6 +282,9 @@
             const commonOptions = {
                 responsive: true,
                 maintainAspectRatio: false,
+                layout: {
+                    padding: { top: 15, right: 10, left: 10 } // 상단 및 좌우 여백 추가
+                },
                 plugins: { legend: { display: false } },
                 elements: {
                     line: { tension: 0.4 },
