@@ -2,6 +2,8 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5657188598576847" crossorigin="anonymous"></script>
     
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -17,13 +19,9 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-7QSEYCFK83');
     </script>
 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5657188598576847" crossorigin="anonymous"></script>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>핑거런 | 영어 타자연습 - 알파벳 단어 문장 단계별 학습과 AI 피드백</title>
     
     <!-- 파비콘 설정 -->
@@ -44,18 +42,17 @@
     <meta property="og:type" content="website">
 
     <link rel="canonical" href="https://fingerrun.com/English/practice.html">
+    
+    <!-- 폰트 및 아이콘 -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     
     <style>
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: 'Pretendard', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             background: #f5f5f5; 
             min-height: 100vh; 
             color: #333; 
@@ -66,9 +63,9 @@
             align-items: start;
         }
         
-        /* --- 마이페이지와 동일한 네비게이션 바 전용 CSS 시작 --- */
+        /* Navigation */
         nav {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(10px);
             padding: 1rem 0;
             width: 100%;
@@ -76,210 +73,159 @@
             top: 0;
             z-index: 1000;
             border-bottom: 1px solid rgba(0,0,0,0.1);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
         }
 
-        .nav-container { 
-            max-width: 1200px; 
-            margin: 0 auto; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 0 2rem; 
-        }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 2rem; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: #667eea; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; text-shadow: 1px 1px 0px rgba(255,255,255,0.5); }
+        .logo img { height: 32px; width: auto; }
+        .nav-menu { display: flex; list-style: none; gap: 1.5rem; align-items: center; margin: 0; padding: 0; }
+        .nav-menu li { position: relative; }
+        .nav-menu a { text-decoration: none; color: #333; font-weight: 500; padding: 0.5rem 0.8rem; border-radius: 25px; transition: all 0.3s ease; font-size: 0.9rem; display: flex; align-items: center; gap: 0.3rem; }
+        .nav-menu a:hover { background: #667eea; color: white !important; transform: translateY(-2px); }
+        .dropdown-arrow { font-size: 0.7rem; transition: transform 0.3s ease; }
+        .dropdown-menu { position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px); background: white; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); border-radius: 10px; padding: 0.5rem 0; min-width: 160px; opacity: 0; visibility: hidden; transition: all 0.3s ease; z-index: 1001; border: 1px solid rgba(0, 0, 0, 0.1); }
+        .nav-menu li:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .nav-menu li:hover .dropdown-arrow { transform: rotate(180deg); }
+        .dropdown-menu a { display: block; padding: 0.7rem 1rem; color: #333; border-radius: 0; white-space: nowrap; font-weight: 400; }
+        .dropdown-menu a:hover { background: #f8f9fa; color: #667eea !important; transform: none; }
 
-        .logo { 
-            font-size: 1.5rem; 
-            font-weight: bold; 
-            color: #667eea; 
-            text-decoration: none; 
-            display: flex; 
-            align-items: center; 
-            gap: 0.5rem; 
-            text-shadow: 1px 1px 0px rgba(255,255,255,0.5); 
-        }
-
-        .logo img { 
-            height: 32px; 
-            width: auto; 
-        }
-
-        .nav-menu { 
-            display: flex; 
-            list-style: none; 
-            gap: 1.5rem; 
-            align-items: center; 
-            margin: 0; 
-            padding: 0; 
-            flex-wrap: nowrap; 
-            white-space: nowrap; 
-        }
-
-        .nav-menu li { 
-            position: relative; 
-        }
-
-        .nav-menu a { 
-            text-decoration: none; 
-            color: #333; 
-            font-weight: 500; 
-            padding: 0.5rem 0.8rem; 
-            border-radius: 25px; 
-            transition: all 0.3s ease; 
-            font-size: 0.9rem; 
-            display: flex; 
-            align-items: center; 
-            gap: 0.3rem; 
-        }
-
-        .nav-menu a:hover { 
-            background: #667eea; 
-            color: white !important; 
-            transform: translateY(-2px); 
-        }
-
-        .dropdown-arrow { 
-            font-size: 0.7rem; 
-            transition: transform 0.3s ease; 
-        }
-
-        .dropdown-menu { 
-            position: absolute; 
-            top: 100%; 
-            left: 50%; 
-            transform: translateX(-50%) translateY(10px); 
-            background: white; 
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); 
-            border-radius: 10px; 
-            padding: 0.5rem 0; 
-            min-width: 160px; 
-            opacity: 0; 
-            visibility: hidden; 
-            transition: all 0.3s ease; 
-            z-index: 1001; 
-            border: 1px solid rgba(0, 0, 0, 0.1); 
-        }
-
-        .nav-menu li:hover .dropdown-menu { 
-            opacity: 1; 
-            visibility: visible; 
-            transform: translateX(-50%) translateY(0); 
-        }
-
-        .nav-menu li:hover .dropdown-arrow { 
-            transform: rotate(180deg); 
-        }
-
-        .dropdown-menu a { 
-            display: block; 
-            padding: 0.7rem 1rem; 
-            color: #333; 
-            border-radius: 0; 
-            white-space: nowrap; 
-            font-weight: 400; 
-        }
-
-        .dropdown-menu a:hover { 
-            background: #f8f9fa; 
-            color: #667eea !important; 
-            transform: none; 
-        }
-
-        @media (max-width: 900px) { 
-            .nav-menu { display: none; } 
-        }
-        /* --- 네비게이션 바 전용 CSS 끝 --- */
+        @media (max-width: 900px) { .nav-menu { display: none; } }
         
         /* Main Container */
-        .main-container {
+        .main-container { 
             grid-column: 2;
             grid-row: 1; 
-            margin-top: 80px;
-            padding: 2rem 0;
+            margin-top: 80px; 
+            padding: 2rem 0; 
             width: 100%;
         }
-        
         .page-header { text-align: center; margin-bottom: 3rem; }
         .page-title { font-size: 2.5rem; font-weight: 700; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 1rem; }
         .page-description { font-size: 1.2rem; color: #666; max-width: 600px; margin: 0 auto; white-space: nowrap; }
         
         /* Practice Container */
-        .practice-container { background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); padding: 3rem; margin-bottom: 2rem; transition: all 0.3s ease; }
-        .practice-container:hover { transform: translateY(-5px); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15); }
-        .practice-menu { display: flex; justify-content: center; gap: 15px; margin-bottom: 1.5rem; flex-wrap: wrap; }
-        .menu-btn { padding: 12px 25px; border: none; border-radius: 25px; font-size: 1rem; font-weight: 500; cursor: pointer; background: #f8f9fa; color: #667eea; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); border: 2px solid transparent; }
+        .practice-container { background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08); padding: 4rem; margin-bottom: 2rem; transition: all 0.3s ease; }
+        .practice-menu { display: flex; justify-content: center; gap: 15px; margin-bottom: 2rem; flex-wrap: wrap; }
+        .menu-btn { padding: 12px 25px; border: none; border-radius: 25px; font-size: 1rem; font-weight: 600; cursor: pointer; background: #f8f9fa; color: #667eea; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); }
         .menu-btn:hover { background: linear-gradient(45deg, #667eea, #764ba2); color: white; transform: translateY(-3px); }
-        .menu-btn.active { background: linear-gradient(45deg, #667eea, #764ba2); color: white; transform: scale(1.05); }
+        .menu-btn.active { background: linear-gradient(45deg, #667eea, #764ba2); color: white; transform: scale(1.05); box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3); }
         
-        /* Submenu */
-        .submenu-area { display: flex; justify-content: center; gap: 8px; margin-bottom: 2rem; flex-wrap: wrap; padding: 15px; background: #f8f9fa; border-radius: 15px; border: 1px solid #eee; }
-        .submenu-btn { padding: 8px 16px; border: 1px solid #e2e8f0; border-radius: 20px; font-size: 0.9rem; font-weight: 500; cursor: pointer; background: white; color: #666; transition: all 0.2s ease; }
-        .submenu-btn:hover { background: #f0f4ff; color: #667eea; border-color: #667eea; }
-        .submenu-btn.active { background: #667eea; color: white; border-color: #667eea; font-weight: 600; }
+        /* Submenu (한글 버전 디자인 반영) */
+        .sub-menu-wrapper { text-align: center; margin-bottom: 2.5rem; margin-top: 2rem; }
+        .sub-menu { display: inline-flex; justify-content: center; gap: 5px; background: #f1f5f9; padding: 6px; border-radius: 30px; animation: fadeIn 0.3s ease; flex-wrap: wrap; }
+        .sub-menu-btn { padding: 8px 20px; border: none; border-radius: 25px; font-size: 0.95rem; cursor: pointer; background: transparent; color: #495057; font-weight: 500; transition: all 0.2s ease; }
+        .sub-menu-btn:hover { background: rgba(102, 126, 234, 0.1); color: #667eea; }
+        .sub-menu-btn.active { background: white; color: #667eea; font-weight: 700; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
 
         /* Practice Area */
         .practice-area { text-align: center; margin-bottom: 3rem; }
-        .text-display { font-size: 1.8rem; line-height: 1.8; margin-bottom: 2rem; min-height: 120px; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #f8f9fa; border-radius: 15px; padding: 2rem; word-break: keep-all; letter-spacing: 2px; border: 2px solid #e2e8f0; transition: all 0.3s ease; position: relative; }
-        .text-display.sentence-mode { letter-spacing: 0.2px; line-height: 1.6; background: white; }
         
-        /* 캐릭터 스타일 */
-        .char { margin: 3px; padding: 8px 10px; border-radius: 8px; transition: all 0.3s ease; color: #666; font-weight: 500; }
-        .char.correct { color: white; background: linear-gradient(45deg, #4caf50, #45a049); transform: scale(1.1); box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3); }
-        .char.incorrect { color: white !important; background: linear-gradient(45deg, #ff6b6b, #ff5252) !important; transform: scale(1.1) !important; box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3) !important; }
-        .char.current { color: white; background: linear-gradient(45deg, #667eea, #764ba2); animation: pulse 1.5s infinite; transform: scale(1.15); }
-        .char.space { display: inline-block; width: 0.5em; transform: none !important; background: transparent !important; box-shadow: none !important; }
+        .text-display {
+            font-size: 1.8rem; line-height: 1.8; margin-top: 2rem; margin-bottom: 3rem; min-height: 160px;
+            display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+            background: transparent; padding: 1rem 2rem; font-weight: 600;
+            word-break: keep-all; letter-spacing: 2px; border: none; transition: all 0.3s ease;
+            position: relative;
+        }
         
-        .text-display.sentence-mode .char { margin: 0; padding: 0; background: none !important; border-radius: 0; box-shadow: none !important; transform: none !important; animation: none !important; color: #8b5cf6; }
-        .text-display.sentence-mode .char.correct { color: #000000; }
-        .text-display.sentence-mode .char.incorrect { color: #ff4444 !important; }
-        .text-display.sentence-mode .char.current { color: #3b82f6; }
+        .text-display.sentence-mode { 
+            letter-spacing: 0.2px; line-height: 1.6; background: #ffffff; border: 2px solid #e2e8f0; 
+            border-radius: 15px; margin-top: 1rem; margin-bottom: 2.5rem; min-height: auto;
+            padding: 2rem; flex-direction: row;
+        }
+
+        /* 캐릭터 스타일 (한글 자음/모음 원근감 디자인 반영) */
+        .char { display: inline-flex; justify-content: center; align-items: center; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-weight: 700; font-family: 'Pretendard', sans-serif; }
+
+        .char.distance-0, .char.current { width: 100px; height: 100px; font-size: 52px; background: #9370fa !important; color: #ffffff !important; border: none !important; border-radius: 20px !important; box-shadow: 0 12px 30px rgba(147, 112, 250, 0.4) !important; transform: translateY(-2px); z-index: 10; margin: 0 20px; }
+        .char.distance-1 { width: 76px; height: 76px; font-size: 36px; background: #fafafc; border: 2px solid #e2e8f0; border-radius: 16px; color: #64748b; margin: 0 15px; }
+        .char.distance-2 { width: 64px; height: 64px; font-size: 28px; background: #fafafc; border: 2px solid #e2e8f0; border-radius: 14px; color: #94a3b8; margin: 0 12px; }
+        .char.distance-3 { width: 54px; height: 54px; font-size: 22px; background: #fafafc; border: 2px solid #e2e8f0; border-radius: 12px; color: #cbd5e1; margin: 0 10px; }
+        .char.distance-4 { width: 44px; height: 44px; font-size: 18px; background: #fafafc; border: 2px solid #e2e8f0; border-radius: 10px; color: #cbd5e1; margin: 0 8px; }
+
+        .char.distance-0.incorrect, .char.current.incorrect { background: #ef4444 !important; box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4) !important; animation: shake 0.3s cubic-bezier(.36,.07,.19,.97) both; }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-2px, 0, 0); }
+            20%, 80% { transform: translate3d(4px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-8px, 0, 0); }
+            40%, 60% { transform: translate3d(8px, 0, 0); }
+        }
+
+        .text-display.sentence-mode .char { width: auto; height: auto; margin: 0; padding: 0; background: none !important; border: none !important; border-radius: 0; box-shadow: none !important; transform: none !important; animation: none !important; font-size: inherit; display: inline; color: #666; opacity: 1; }
+        .text-display.sentence-mode .char.current, .text-display.sentence-mode .char.distance-0 { color: #3b82f6 !important; }
+        .text-display.sentence-mode .char.distance-0.incorrect, .text-display.sentence-mode .char.current.incorrect { color: #ef4444 !important; }
+        .text-display.sentence-mode .char.distance-1, .text-display.sentence-mode .char.distance-2, .text-display.sentence-mode .char.distance-3, .text-display.sentence-mode .char.distance-4 { color: #666 !important; }
+        .text-display.sentence-mode .char.space { display: inline-block; width: 0.5em !important; }
         
-        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1.15); } 50% { opacity: 0.7; transform: scale(1.2); } }
-        
-        /* Keyboard Area */
-        .keyboard { background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); border: 2px solid #e2e8f0; width: 100%; margin: 2rem 0; }
-        .keyboard-row { display: flex; justify-content: center; margin-bottom: 0.5rem; gap: 0.3rem; }
-        .key { background: linear-gradient(145deg, #f8f9fa, #e9ecef); border: 2px solid #e2e8f0; border-radius: 8px; padding: 0.8rem; min-width: 2.5rem; height: 2.5rem; display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 0.9rem; color: #495057; transition: all 0.3s ease; cursor: pointer; position: relative; }
-        .key.active { border: 2px solid #667eea !important; color: #667eea !important; background: white !important; box-shadow: 0 0 15px #667eea; transform: translateY(2px); z-index: 10; }
-        .key.wide { min-width: 4rem; }
-        .key.space { min-width: 12rem; }
-        .key.shift { min-width: 5rem; }
-        .key.enter { min-width: 5.5rem; }
-        .key-dual { display: flex; flex-direction: column; align-items: center; line-height: 1.1; }
-        .key-en { font-size: 0.8rem; font-weight: 600; }
-        .key-ko { font-size: 0.7rem; color: #6c757d; }
-        
+        .translation-text { width: 100%; text-align: center; font-size: 1.1rem; color: #868e96; margin-top: 1.5rem; font-weight: 500; }
+
         /* Input Area */
-        .input-area { margin-bottom: 1rem; }
-        .typing-input { width: 100%; padding: 18px; font-size: 1.2rem; border: 2px solid #e2e8f0; border-radius: 15px; text-align: center; outline: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
-        .typing-input:focus { border-color: #667eea; box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2); }
-        .typing-input.completed { border-color: #4caf50; background-color: #f1f8f1; }
+        .input-area { margin-bottom: 2.5rem; text-align: center; }
+        .typing-input { width: 100%; padding: 18px; font-size: 1.2rem; font-weight: 600; border: 2px solid #e2e8f0; border-radius: 15px; text-align: center; outline: none; background: white; color: #333; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); }
+        .typing-input:focus { border-color: #667eea; box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15); transform: translateY(-2px); }
+        .typing-input.completed { border-color: #4caf50; background-color: #f1f8f1; color: #2e7d32; }
+
+        .keyboard-controls { display: flex; justify-content: flex-end; margin-bottom: 0.5rem; }
+        .toggle-btn { background: #fff; border: 1px solid #e2e8f0; color: #64748b; padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px; font-weight: 600; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .toggle-btn:hover { background: #f8fafc; color: #667eea; border-color: #cbd5e1; }
+
+        /* Keyboard Area */
+        .keyboard-area { margin: 0; display: flex; justify-content: center; transition: opacity 0.3s ease, height 0.3s ease; overflow: hidden; }
+        .keyboard-area.hidden { display: none; }
         
-        /* Stats - 🔥 practice-container 내부에 위치함에 따라 여백 구조 유지 */
-        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; background: #f8f9fa; padding: 2rem; border-radius: 15px; border: 2px solid #e2e8f0; margin-top: 2rem; }
-        .stat-item { text-align: center; padding: 1.5rem; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); }
-        .stat-value { font-size: 2.2rem; font-weight: 700; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-        .stat-label { color: #666; font-size: 1rem; font-weight: 500; }
+        .keyboard { background: #f8fafc; border-radius: 16px; padding: 1.5rem; border: 1px solid #e2e8f0; width: 100%; }
+        .keyboard-row { display: flex; justify-content: center; margin-bottom: 0.5rem; gap: 0.4rem; }
+        .keyboard-row:last-child { margin-bottom: 0; }
         
-        /* Modal & UI Feedback Base */
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: none; justify-content: center; align-items: center; z-index: 4000; animation: fadeIn 0.5s ease; }
+        .key { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 0.5rem; min-width: 2.8rem; height: 3.2rem; display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 0.85rem; color: #64748b; transition: all 0.1s ease; box-shadow: 0 2px 0px rgba(226, 232, 240, 1); }
+        .key.active { transform: translateY(2px); box-shadow: none !important; border: 2px solid #9370fa !important; background: #f4f0ff !important; color: #9370fa !important; z-index: 10; }
+        .key.active .key-ko, .key.active .key-en { color: #9370fa !important; }
+        
+        .key.wide { min-width: 3.5rem; }
+        .key.space { min-width: 16rem; }
+        .key.shift { min-width: 5.5rem; }
+        .key.enter { min-width: 5rem; }
+        .key.tab { min-width: 4rem; }
+        .key.caps { min-width: 4.5rem; }
+        .key.backspace { min-width: 4rem; }
+        
+        .key-dual { display: flex; flex-direction: column; align-items: center; line-height: 1.2; pointer-events: none; }
+        .key-en { font-size: 0.8rem; font-weight: 600; color: #475569; pointer-events: none; }
+        .key-ko { font-size: 0.7rem; color: #94a3b8; pointer-events: none; }
+        
+        /* Stats */
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; background: #f8f9fa; padding: 2rem; border-radius: 15px; border: 2px solid #e2e8f0; margin-bottom: 2rem; }
+        .stat-item { text-align: center; padding: 1.5rem; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03); }
+        .stat-value { font-size: 2.2rem; font-weight: 800; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; }
+        .stat-label { font-weight: 600; color: #6c757d; }
+
+        @media (max-width: 768px) {
+            .nav-menu { flex-wrap: wrap; gap: 0.5rem; }
+            .nav-menu a { padding: 0.4rem 0.6rem; font-size: 0.8rem; }
+            .key { min-width: 30px; height: 40px; font-size: 0.8rem; }
+            .practice-container { padding: 1.5rem; }
+            .stats { grid-template-columns: 1fr; }
+        }
+
+        /* AI Feedback / Modal Styles */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: none; justify-content: center; align-items: center; z-index: 2000; animation: fadeIn 0.5s ease; }
         .modal-content { background: white; padding: 3rem; border-radius: 20px; text-align: center; max-width: 500px; width: 90%; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); animation: slideUp 0.5s ease; }
         @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         
-        .complete-title { font-size: 2.8rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(to right, #667eea, #764ba2); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-        .complete-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 2rem; }
+        .complete-title { font-size: 2.8rem; font-weight: 800; margin-bottom: 0.5rem; background: linear-gradient(to right, #667eea, #764ba2); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .complete-subtitle { font-size: 1.1rem; color: #666; margin-bottom: 2rem; font-weight: 500; }
         .complete-stats { display: flex; justify-content: space-around; margin-bottom: 2rem; gap: 1rem; }
         .complete-stat { flex: 1; padding: 1.5rem; background: #f8f9fa; border-radius: 16px; border: 1px solid #e9ecef; }
         .complete-value { font-size: 2rem; font-weight: 800; color: #667eea; margin-bottom: 0.25rem; }
         .complete-label { font-size: 0.9rem; color: #868e96; font-weight: 600; }
 
-        .modal-buttons { display: flex; gap: 1rem; justify-content: center; padding-top: 1rem; }
-        .restart-btn, .continue-btn { padding: 12px 30px; border-radius: 12px; font-weight: 700; font-size: 1rem; border: none; cursor: pointer; transition: transform 0.2s; flex: 1; max-width: 250px; }
+        .modal-buttons { display: flex; gap: 1rem; justify-content: center; }
+        .restart-btn, .continue-btn { padding: 12px 30px; border-radius: 12px; font-weight: 700; font-size: 1rem; border: none; cursor: pointer; transition: transform 0.2s; flex: 1; }
         .restart-btn { background: #e9ecef; color: #495057; }
         .continue-btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3); }
         .restart-btn:hover, .continue-btn:hover { transform: translateY(-2px); }
 
-        /* AI Feedback CSS */
         .modal-content.ai-feedback { max-width: 1000px; width: 95%; max-height: 95vh; overflow-y: auto; text-align: left; padding: 0; background: #fdfdfd; border-radius: 24px; }
         .ai-report-container { display: grid; grid-template-columns: 300px 1fr; gap: 20px; padding: 2rem; }
         @media (max-width: 800px) { .ai-report-container { grid-template-columns: 1fr; } }
@@ -296,25 +242,14 @@
         .stat-box-mini .value { font-size: 1.2rem; font-weight: 700; color: #333; }
         .bar-chart-container { display: flex; flex-direction: column; gap: 12px; }
         .bar-row { display: flex; align-items: center; gap: 10px; }
-        .bar-bg { flex: 1; height: 12px; background: #e9ecef; border-radius: 6px; overflow: hidden; }
-        .bar-fill { height: 100%; background: linear-gradient(90deg, #ff6b6b, #ff8787); border-radius: 6px; width: 0%; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
         .rhythm-graph { height: 60px; width: 100%; display: flex; align-items: flex-end; gap: 4px; padding-top: 10px; }
-        .rhythm-bar { flex: 1; background: rgba(102, 126, 234, 0.3); border-radius: 2px; transition: height 0.5s ease; }
         .loading { display: inline-block; width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 1rem; }
         .highlight-badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-weight: 600; font-size: 0.9em; }
         .badge-red { background: #ffe3e3; color: #e03131; }
         .badge-blue { background: #dbe4ff; color: #4263eb; }
 
         /* [광고] 사이드바 */
-        .ad-sidebar {
-            position: sticky;
-            top: 100px;
-            width: 240px;
-            z-index: 50;
-            grid-row: 1; 
-            height: 900px; 
-        }
-
+        .ad-sidebar { position: sticky; top: 100px; width: 240px; z-index: 50; grid-row: 1; height: 900px; }
         .ad-left { grid-column: 1; justify-self: end; }
         .ad-right { grid-column: 3; justify-self: start; }
         .ad-sidebar ins { display: inline-block !important; width: 240px !important; height: 900px !important; }
@@ -324,19 +259,16 @@
             .ad-sidebar { display: none; }
             .main-container { grid-column: 1; padding: 2rem 1rem; }
         }
-
-        @media (max-width: 768px) {
-            .nav-menu { flex-wrap: wrap; gap: 0.5rem; }
-            .nav-menu a { padding: 0.4rem 0.6rem; font-size: 0.8rem; }
-            .key { min-width: 30px; height: 40px; font-size: 0.8rem; }
-            .practice-container { padding: 1.5rem; }
-            .ai-report-container { padding: 1rem; }
-            .stats { grid-template-columns: 1fr; }
-        }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T9HC454Z" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
     <div class="ad-sidebar ad-left">
         <ins class="adsbygoogle" style="display:inline-block; width:240px; height:100%;" data-ad-client="ca-pub-5657188598576847" data-ad-slot="4465825129" data-ad-format="vertical"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -347,12 +279,11 @@
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
-    <!-- 네비게이션 바 -->
+    <!-- Navigation -->
     <nav>
         <div class="nav-container">
             <a href="../index.html" class="logo" aria-label="핑거런 홈페이지 메인으로 이동">
-                <img src="../images/finger-run-logo.svg" alt="" class="h-8 w-auto"> 
-                FingerRun
+                <img src="../images/finger-run-logo.svg" alt="" class="h-8 w-auto"> FingerRun
             </a>
             <ul class="nav-menu">
                 <li><a href="../notices.html">공지사항</a></li>
@@ -393,7 +324,7 @@
                 </li>
                 <li><a href="../contact.html">문의하기</a></li>
                 <li class="ml-2">
-                    <a href="#" onclick="goProfile(event)" title="프로필" style="padding: 0.5rem 0.6rem; border-radius: 50%;">
+                    <a href="../mypage.html" title="프로필" style="padding: 0.5rem 0.6rem; border-radius: 50%;">
                         <i class="far fa-user text-[1.2rem] m-0"></i>
                     </a>
                 </li>
@@ -401,7 +332,6 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <div class="main-container">
         <div class="page-header">
             <h1 class="page-title">영어 타자 연습</h1>
@@ -415,109 +345,114 @@
                 <button class="menu-btn" data-mode="sentence">문장연습</button>
             </div>
             
-            <div class="submenu-area" id="alphabetSubmenu" style="display:none;"></div>
+            <div class="sub-menu-wrapper" id="alphabetSubmenuWrapper" style="display:block;">
+                <div class="sub-menu" id="alphabetSubmenu"></div>
+            </div>
 
             <div class="practice-area">
                 <div class="text-display" id="textDisplay"></div>
                 
-                <div class="keyboard" id="keyboard">
-                    <div class="keyboard-row">
-                        <div class="key" data-key="`"><div class="key-dual"><span class="key-en">`</span><span class="key-ko">~</span></div></div>
-                        <div class="key" data-key="1"><div class="key-dual"><span class="key-en">1</span><span class="key-ko">!</span></div></div>
-                        <div class="key" data-key="2"><div class="key-dual"><span class="key-en">2</span><span class="key-ko">@</span></div></div>
-                        <div class="key" data-key="3"><div class="key-dual"><span class="key-en">3</span><span class="key-ko">#</span></div></div>
-                        <div class="key" data-key="4"><div class="key-dual"><span class="key-en">4</span><span class="key-ko">$</span></div></div>
-                        <div class="key" data-key="5"><div class="key-dual"><span class="key-en">5</span><span class="key-ko">%</span></div></div>
-                        <div class="key" data-key="6"><div class="key-dual"><span class="key-en">6</span><span class="key-ko">^</span></div></div>
-                        <div class="key" data-key="7"><div class="key-dual"><span class="key-en">7</span><span class="key-ko">&</span></div></div>
-                        <div class="key" data-key="8"><div class="key-dual"><span class="key-en">8</span><span class="key-ko">*</span></div></div>
-                        <div class="key" data-key="9"><div class="key-dual"><span class="key-en">9</span><span class="key-ko">(</span></div></div>
-                        <div class="key" data-key="0"><div class="key-dual"><span class="key-en">0</span><span class="key-ko">)</span></div></div>
-                        <div class="key" data-key="-"><div class="key-dual"><span class="key-en">-</span><span class="key-ko">_</span></div></div>
-                        <div class="key" data-key="="><div class="key-dual"><span class="key-en">=</span><span class="key-ko">+</span></div></div>
-                        <div class="key backspace" data-key="Backspace">←</div>
-                    </div>
-                    <div class="keyboard-row">
-                        <div class="key tab" data-key="Tab">Tab</div>
-                        <div class="key" data-key="q"><div class="key-dual"><span class="key-en">Q</span><span class="key-ko">q</span></div></div>
-                        <div class="key" data-key="w"><div class="key-dual"><span class="key-en">W</span><span class="key-ko">w</span></div></div>
-                        <div class="key" data-key="e"><div class="key-dual"><span class="key-en">E</span><span class="key-ko">e</span></div></div>
-                        <div class="key" data-key="r"><div class="key-dual"><span class="key-en">R</span><span class="key-ko">r</span></div></div>
-                        <div class="key" data-key="t"><div class="key-dual"><span class="key-en">T</span><span class="key-ko">t</span></div></div>
-                        <div class="key" data-key="y"><div class="key-dual"><span class="key-en">Y</span><span class="key-ko">y</span></div></div>
-                        <div class="key" data-key="u"><div class="key-dual"><span class="key-en">U</span><span class="key-ko">u</span></div></div>
-                        <div class="key" data-key="i"><div class="key-dual"><span class="key-en">I</span><span class="key-ko">i</span></div></div>
-                        <div class="key" data-key="o"><div class="key-dual"><span class="key-en">O</span><span class="key-ko">o</span></div></div>
-                        <div class="key" data-key="p"><div class="key-dual"><span class="key-en">P</span><span class="key-ko">p</span></div></div>
-                        <div class="key" data-key="["><div class="key-dual"><span class="key-en">[</span><span class="key-ko">{</span></div></div>
-                        <div class="key" data-key="]"><div class="key-dual"><span class="key-en">]</span><span class="key-ko">}</span></div></div>
-                        <div class="key" data-key="\\"><div class="key-dual"><span class="key-en">\\</span><span class="key-ko">|</span></div></div>
-                    </div>
-                    <div class="keyboard-row">
-                        <div class="key caps" data-key="CapsLock">Caps</div>
-                        <div class="key" data-key="a"><div class="key-dual"><span class="key-en">A</span><span class="key-ko">a</span></div></div>
-                        <div class="key" data-key="s"><div class="key-dual"><span class="key-en">S</span><span class="key-ko">s</span></div></div>
-                        <div class="key" data-key="d"><div class="key-dual"><span class="key-en">D</span><span class="key-ko">d</span></div></div>
-                        <div class="key" data-key="f"><div class="key-dual"><span class="key-en">F</span><span class="key-ko">f</span></div></div>
-                        <div class="key" data-key="g"><div class="key-dual"><span class="key-en">G</span><span class="key-ko">g</span></div></div>
-                        <div class="key" data-key="h"><div class="key-dual"><span class="key-en">H</span><span class="key-ko">h</span></div></div>
-                        <div class="key" data-key="j"><div class="key-dual"><span class="key-en">J</span><span class="key-ko">j</span></div></div>
-                        <div class="key" data-key="k"><div class="key-dual"><span class="key-en">K</span><span class="key-ko">k</span></div></div>
-                        <div class="key" data-key="l"><div class="key-dual"><span class="key-en">L</span><span class="key-ko">l</span></div></div>
-                        <div class="key" data-key=";"><div class="key-dual"><span class="key-en">;</span><span class="key-ko">:</span></div></div>
-                        <div class="key" data-key="'"><div class="key-dual"><span class="key-en">'</span><span class="key-ko">"</span></div></div>
-                        <div class="key enter" data-key="Enter">Enter</div>
-                    </div>
-                    <div class="keyboard-row">
-                        <div class="key shift" data-key="ShiftLeft">Shift</div>
-                        <div class="key" data-key="z"><div class="key-dual"><span class="key-en">Z</span><span class="key-ko">z</span></div></div>
-                        <div class="key" data-key="x"><div class="key-dual"><span class="key-en">X</span><span class="key-ko">x</span></div></div>
-                        <div class="key" data-key="c"><div class="key-dual"><span class="key-en">C</span><span class="key-ko">c</span></div></div>
-                        <div class="key" data-key="v"><div class="key-dual"><span class="key-en">V</span><span class="key-ko">v</span></div></div>
-                        <div class="key" data-key="b"><div class="key-dual"><span class="key-en">B</span><span class="key-ko">b</span></div></div>
-                        <div class="key" data-key="n"><div class="key-dual"><span class="key-en">N</span><span class="key-ko">n</span></div></div>
-                        <div class="key" data-key="m"><div class="key-dual"><span class="key-en">M</span><span class="key-ko">m</span></div></div>
-                        <div class="key" data-key=","><div class="key-dual"><span class="key-en">,</span><span class="key-ko"><</span></div></div>
-                        <div class="key" data-key="."><div class="key-dual"><span class="key-en">.</span><span class="key-ko">></span></div></div>
-                        <div class="key" data-key="/"><div class="key-dual"><span class="key-en">/</span><span class="key-ko">?</span></div></div>
-                        <div class="key shift" data-key="ShiftRight">Shift</div>
-                    </div>
-                    <div class="keyboard-row">
-                        <div class="key space" data-key=" ">Space</div>
-                    </div>
-                </div>
-                
                 <div class="input-area">
                     <input type="text" class="typing-input" id="typingInput" placeholder="여기에 타이핑하세요..." autocomplete="off">
+                </div>
+
+                <div class="keyboard-controls">
+                    <button id="toggleKeyboardBtn" class="toggle-btn" tabindex="-1" title="화상 키보드를 숨기거나 엽니다">
+                        <i class="fas fa-eye-slash"></i> 키보드 숨기기
+                    </button>
+                </div>
+
+                <div class="keyboard-area">
+                    <div class="keyboard" id="keyboard">
+                        <div class="keyboard-row">
+                            <div class="key" data-key="`"><div class="key-dual"><span class="key-en">`</span><span class="key-ko">~</span></div></div>
+                            <div class="key" data-key="1"><div class="key-dual"><span class="key-en">1</span><span class="key-ko">!</span></div></div>
+                            <div class="key" data-key="2"><div class="key-dual"><span class="key-en">2</span><span class="key-ko">@</span></div></div>
+                            <div class="key" data-key="3"><div class="key-dual"><span class="key-en">3</span><span class="key-ko">#</span></div></div>
+                            <div class="key" data-key="4"><div class="key-dual"><span class="key-en">4</span><span class="key-ko">$</span></div></div>
+                            <div class="key" data-key="5"><div class="key-dual"><span class="key-en">5</span><span class="key-ko">%</span></div></div>
+                            <div class="key" data-key="6"><div class="key-dual"><span class="key-en">6</span><span class="key-ko">^</span></div></div>
+                            <div class="key" data-key="7"><div class="key-dual"><span class="key-en">7</span><span class="key-ko">&</span></div></div>
+                            <div class="key" data-key="8"><div class="key-dual"><span class="key-en">8</span><span class="key-ko">*</span></div></div>
+                            <div class="key" data-key="9"><div class="key-dual"><span class="key-en">9</span><span class="key-ko">(</span></div></div>
+                            <div class="key" data-key="0"><div class="key-dual"><span class="key-en">0</span><span class="key-ko">)</span></div></div>
+                            <div class="key" data-key="-"><div class="key-dual"><span class="key-en">-</span><span class="key-ko">_</span></div></div>
+                            <div class="key" data-key="="><div class="key-dual"><span class="key-en">=</span><span class="key-ko">+</span></div></div>
+                            <div class="key backspace" data-key="Backspace">←</div>
+                        </div>
+                        <div class="keyboard-row">
+                            <div class="key tab" data-key="Tab">Tab</div>
+                            <div class="key" data-key="q"><div class="key-dual"><span class="key-en">Q</span><span class="key-ko">q</span></div></div>
+                            <div class="key" data-key="w"><div class="key-dual"><span class="key-en">W</span><span class="key-ko">w</span></div></div>
+                            <div class="key" data-key="e"><div class="key-dual"><span class="key-en">E</span><span class="key-ko">e</span></div></div>
+                            <div class="key" data-key="r"><div class="key-dual"><span class="key-en">R</span><span class="key-ko">r</span></div></div>
+                            <div class="key" data-key="t"><div class="key-dual"><span class="key-en">T</span><span class="key-ko">t</span></div></div>
+                            <div class="key" data-key="y"><div class="key-dual"><span class="key-en">Y</span><span class="key-ko">y</span></div></div>
+                            <div class="key" data-key="u"><div class="key-dual"><span class="key-en">U</span><span class="key-ko">u</span></div></div>
+                            <div class="key" data-key="i"><div class="key-dual"><span class="key-en">I</span><span class="key-ko">i</span></div></div>
+                            <div class="key" data-key="o"><div class="key-dual"><span class="key-en">O</span><span class="key-ko">o</span></div></div>
+                            <div class="key" data-key="p"><div class="key-dual"><span class="key-en">P</span><span class="key-ko">p</span></div></div>
+                            <div class="key" data-key="["><div class="key-dual"><span class="key-en">[</span><span class="key-ko">{</span></div></div>
+                            <div class="key" data-key="]"><div class="key-dual"><span class="key-en">]</span><span class="key-ko">}</span></div></div>
+                            <div class="key" data-key="\\"><div class="key-dual"><span class="key-en">\\</span><span class="key-ko">|</span></div></div>
+                        </div>
+                        <div class="keyboard-row">
+                            <div class="key caps" data-key="CapsLock">Caps</div>
+                            <div class="key" data-key="a"><div class="key-dual"><span class="key-en">A</span><span class="key-ko">a</span></div></div>
+                            <div class="key" data-key="s"><div class="key-dual"><span class="key-en">S</span><span class="key-ko">s</span></div></div>
+                            <div class="key" data-key="d"><div class="key-dual"><span class="key-en">D</span><span class="key-ko">d</span></div></div>
+                            <div class="key" data-key="f"><div class="key-dual"><span class="key-en">F</span><span class="key-ko">f</span></div></div>
+                            <div class="key" data-key="g"><div class="key-dual"><span class="key-en">G</span><span class="key-ko">g</span></div></div>
+                            <div class="key" data-key="h"><div class="key-dual"><span class="key-en">H</span><span class="key-ko">h</span></div></div>
+                            <div class="key" data-key="j"><div class="key-dual"><span class="key-en">J</span><span class="key-ko">j</span></div></div>
+                            <div class="key" data-key="k"><div class="key-dual"><span class="key-en">K</span><span class="key-ko">k</span></div></div>
+                            <div class="key" data-key="l"><div class="key-dual"><span class="key-en">L</span><span class="key-ko">l</span></div></div>
+                            <div class="key" data-key=";"><div class="key-dual"><span class="key-en">;</span><span class="key-ko">:</span></div></div>
+                            <div class="key" data-key="'"><div class="key-dual"><span class="key-en">'</span><span class="key-ko">"</span></div></div>
+                            <div class="key enter" data-key="Enter">Enter</div>
+                        </div>
+                        <div class="keyboard-row">
+                            <div class="key shift" data-key="ShiftLeft">Shift</div>
+                            <div class="key" data-key="z"><div class="key-dual"><span class="key-en">Z</span><span class="key-ko">z</span></div></div>
+                            <div class="key" data-key="x"><div class="key-dual"><span class="key-en">X</span><span class="key-ko">x</span></div></div>
+                            <div class="key" data-key="c"><div class="key-dual"><span class="key-en">C</span><span class="key-ko">c</span></div></div>
+                            <div class="key" data-key="v"><div class="key-dual"><span class="key-en">V</span><span class="key-ko">v</span></div></div>
+                            <div class="key" data-key="b"><div class="key-dual"><span class="key-en">B</span><span class="key-ko">b</span></div></div>
+                            <div class="key" data-key="n"><div class="key-dual"><span class="key-en">N</span><span class="key-ko">n</span></div></div>
+                            <div class="key" data-key="m"><div class="key-dual"><span class="key-en">M</span><span class="key-ko">m</span></div></div>
+                            <div class="key" data-key=","><div class="key-dual"><span class="key-en">,</span><span class="key-ko"><</span></div></div>
+                            <div class="key" data-key="."><div class="key-dual"><span class="key-en">.</span><span class="key-ko">></span></div></div>
+                            <div class="key" data-key="/"><div class="key-dual"><span class="key-en">/</span><span class="key-ko">?</span></div></div>
+                            <div class="key shift" data-key="ShiftRight">Shift</div>
+                        </div>
+                        <div class="keyboard-row">
+                            <div class="key wide" data-key="ControlLeft">Ctrl</div>
+                            <div class="key wide" data-key="MetaLeft">Win</div>
+                            <div class="key wide" data-key="AltLeft">Alt</div>
+                            <div class="key space" data-key=" ">Space</div>
+                            <div class="key wide" data-key="AltRight">Alt</div>
+                            <div class="key wide" data-key="MetaRight">Win</div>
+                            <div class="key wide" data-key="ContextMenu">Menu</div>
+                            <div class="key wide" data-key="ControlRight">Ctrl</div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
             <div class="stats">
                 <div class="stat-item"><div class="stat-value" id="accuracy">100%</div><div class="stat-label">정확도</div></div>
                 <div class="stat-item"><div class="stat-value" id="speed">0</div><div class="stat-label">타자/분</div></div>
-                <div class="stat-item"><div class="stat-value" id="progress">1/10</div><div class="stat-label">진행률</div></div>
+                <div class="stat-item"><div class="stat-value" id="progress">0/100자</div><div class="stat-label">진행률</div></div>
             </div>
-            
+        </div>
+
+        <!-- 모달 컨테이너 -->
+        <div class="modal" id="completeModal">
+            <div class="modal-content" id="modalContent"></div>
         </div>
     </div>
 
-    <!-- Complete Modal -->
-    <div class="modal" id="completeModal" style="display: none;">
-        <div class="modal-content" id="modalContent"></div>
-    </div>
-
     <script>
-        // 상단 프로필 버튼 (마이페이지 이동) 기능 추가
-        window.goProfile = function(e) {
-            e.preventDefault();
-            const isLoggedIn = localStorage.getItem('isLoggedIn');
-            if (isLoggedIn === 'true') {
-                window.location.href = "../mypage.html";
-            } else {
-                window.location.href = "../login.html";
-            }
-        }
-
         class EnglishTypingPractice {
             constructor() {
                 this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -531,6 +466,10 @@
                 this.correctChars = 0;
                 this.currentProblem = 0;
                 this.totalProblems = 10;
+                
+                this.cvCurrentIndex = 0;
+                this.accumulatedChars = 0;
+
                 this.usedWords = [];
                 this.usedSentences = [];
                 this.sessionSpeeds = [];
@@ -558,7 +497,6 @@
                     'right-pinky': { label: '오른손 새끼', chars: 'p' }
                 };
 
-                // 영어 키보드 손가락 매핑 (AI 피드백용)
                 this.fingerMap = {
                     'q': 'left-pinky', 'a': 'left-pinky', 'z': 'left-pinky',
                     'w': 'left-ring', 's': 'left-ring', 'x': 'left-ring',
@@ -577,7 +515,6 @@
                     '.': '.', ',': ',', '?': '/', '!': '1', ';': ';', ':': ';', "'": "'", '"': "'", ' ': ' '
                 };
 
-                // 단어 100개, 문장 50개 
                 this.practiceData = {
                     alphabet: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
                     word: [
@@ -660,10 +597,16 @@
             }
 
             init() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const modeParam = urlParams.get('mode');
+
+                if (modeParam && this.practiceData[modeParam]) {
+                    this.currentMode = modeParam;
+                }
+
                 this.bindEvents();
                 this.renderSubmenu();
-                this.generateText();
-                this.updateDisplay();
+                this.changeMode(this.currentMode);
             }
 
             renderSubmenu() {
@@ -671,7 +614,7 @@
                 container.innerHTML = '';
                 Object.keys(this.fingerSets).forEach(key => {
                     const btn = document.createElement('button');
-                    btn.className = 'submenu-btn' + (this.currentSubMode === key ? ' active' : '');
+                    btn.className = 'sub-menu-btn' + (this.currentSubMode === key ? ' active' : '');
                     btn.textContent = this.fingerSets[key].label;
                     btn.dataset.submode = key;
                     btn.addEventListener('click', () => this.changeSubMode(key));
@@ -682,8 +625,9 @@
             changeSubMode(subMode) {
                 this.currentSubMode = subMode;
                 this.currentProblem = 0;
+                this.accumulatedChars = 0;
                 this.resetStats();
-                document.querySelectorAll('.submenu-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.submode === subMode));
+                document.querySelectorAll('.sub-menu-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.submode === subMode));
                 this.generateText();
                 this.updateDisplay();
                 const input = document.getElementById('typingInput');
@@ -698,16 +642,22 @@
                 if (isCorrect) {
                     osc.type = 'sine';
                     osc.frequency.setValueAtTime(600, this.audioCtx.currentTime);
-                    gain.gain.setValueAtTime(0.05, this.audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(300, this.audioCtx.currentTime + 0.03);
+                    gain.gain.setValueAtTime(0.1, this.audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, this.audioCtx.currentTime + 0.03);
+                    osc.start();
+                    osc.stop(this.audioCtx.currentTime + 0.05);
                 } else {
                     osc.type = 'sawtooth';
                     osc.frequency.setValueAtTime(200, this.audioCtx.currentTime);
-                    gain.gain.setValueAtTime(0.05, this.audioCtx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(100, this.audioCtx.currentTime + 0.1);
+                    gain.gain.setValueAtTime(0.08, this.audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, this.audioCtx.currentTime + 0.1);
+                    osc.start();
+                    osc.stop(this.audioCtx.currentTime + 0.1);
                 }
                 osc.connect(gain);
                 gain.connect(this.audioCtx.destination);
-                osc.start();
-                osc.stop(this.audioCtx.currentTime + 0.05);
             }
 
             bindEvents() {
@@ -715,16 +665,109 @@
                     btn.addEventListener('click', (e) => this.changeMode(e.target.dataset.mode));
                 });
 
+                const toggleKeyboardBtn = document.getElementById('toggleKeyboardBtn');
+                const keyboardArea = document.querySelector('.keyboard-area');
+
+                toggleKeyboardBtn.addEventListener('click', () => {
+                    keyboardArea.classList.toggle('hidden');
+                    if (keyboardArea.classList.contains('hidden')) {
+                        toggleKeyboardBtn.innerHTML = '<i class="fas fa-eye"></i> 키보드 보기';
+                    } else {
+                        toggleKeyboardBtn.innerHTML = '<i class="fas fa-eye-slash"></i> 키보드 숨기기';
+                    }
+                    document.getElementById('typingInput').focus();
+                });
+
                 const typingInput = document.getElementById('typingInput');
-                typingInput.addEventListener('input', (e) => this.handleInput(e.target.value));
+                
+                typingInput.addEventListener('input', (e) => {
+                    if (this.currentMode !== 'alphabet') {
+                        this.handleInput(e.target.value);
+                    } else {
+                        // 알파벳 모드의 입력 처리는 keydown 스페이스바와 input 혼합 처리
+                        if (e.target.value.length > 1) {
+                            e.target.value = e.target.value.substring(e.target.value.length - 1);
+                        }
+                        const char = e.target.value.trim().toLowerCase();
+                        const targetChar = this.currentText[this.cvCurrentIndex].toLowerCase();
+
+                        if (char) {
+                            if (char === targetChar) {
+                                typingInput.placeholder = "스페이스바를 누르세요";
+                            } else {
+                                typingInput.placeholder = "여기에 타이핑하세요...";
+                                this.playKeySound(false);
+                            }
+                        } else {
+                            typingInput.placeholder = "여기에 타이핑하세요...";
+                        }
+                        this.updateDisplay();
+                    }
+                });
 
                 typingInput.addEventListener('keydown', (e) => {
                     if (this.currentMode === 'sentence') this.recordKeyTiming(e.key);
 
-                    if (e.key === 'Enter') {
+                    // 알파벳 모드 - 스페이스바 처리 (원근감 애니메이션 디자인 적용을 위해)
+                    if (this.currentMode === 'alphabet' && e.key === ' ') {
+                        e.preventDefault();
+                        const inputValue = typingInput.value.trim().toLowerCase();
+                        const targetChar = this.currentText[this.cvCurrentIndex].toLowerCase();
+
+                        if (inputValue === targetChar) {
+                            this.cvCurrentIndex++;
+                            this.accumulatedChars++;
+                            typingInput.value = ''; 
+                            this.playKeySound(true);
+
+                            if (this.cvCurrentIndex >= this.currentText.length) {
+                                if (this.accumulatedChars >= 100) {
+                                    this.showComplete();
+                                } else {
+                                    this.nextProblem();
+                                }
+                            } else {
+                                this.updateDisplay();
+                                this.updateStats();
+                            }
+                        } else if (inputValue.length > 0) {
+                             this.playKeySound(false);
+                        }
+                        return;
+                    }
+
+                    // 단어/문장 모드 - 엔터 처리
+                    if ((this.currentMode === 'word' || this.currentMode === 'sentence') && e.key === 'Enter') {
                         if (typingInput.value.length >= this.currentText.length) {
-                            e.preventDefault();
-                            this.nextProblem();
+                            let isComplete = true;
+                            for (let i = 0; i < this.currentText.length; i++) {
+                                if (typingInput.value[i] !== this.currentText[i]) {
+                                    isComplete = false;
+                                    break;
+                                }
+                            }
+                            if (isComplete) {
+                                e.preventDefault();
+                                
+                                if (this.currentMode === 'sentence') {
+                                    const currentAccuracy = parseInt(document.getElementById('accuracy').textContent.replace('%', ''));
+                                    const currentSpeed = parseInt(document.getElementById('speed').textContent);
+                                    this.sentenceStats.push({ speed: currentSpeed, accuracy: currentAccuracy });
+                                } else {
+                                    const acc = Math.round((this.correctChars / this.currentText.length) * 100);
+                                    const elapsed = (Date.now() - this.startTime) / 1000;
+                                    const cpm = Math.round((this.correctChars / (elapsed || 1)) * 60);
+                                    this.sessionAccuracies.push(acc);
+                                    this.sessionSpeeds.push(cpm);
+                                }
+
+                                this.currentProblem++;
+                                if (this.currentProblem >= this.totalProblems) {
+                                    this.showComplete();
+                                } else {
+                                    this.nextProblem();
+                                }
+                            }
                         }
                     }
                 });
@@ -748,15 +791,27 @@
             changeMode(mode) {
                 this.currentMode = mode;
                 this.currentProblem = 0;
+                this.accumulatedChars = 0;
+                this.cvCurrentIndex = 0;
                 this.resetStats();
-                const submenu = document.getElementById('alphabetSubmenu');
-                if (mode === 'sentence') { this.totalProblems = 5; submenu.style.display = 'none'; }
-                else if (mode === 'word') { this.totalProblems = 5; submenu.style.display = 'none'; }
-                else { this.totalProblems = 10; submenu.style.display = 'flex'; }
+                
+                const submenuWrapper = document.getElementById('alphabetSubmenuWrapper');
+                if (mode === 'sentence' || mode === 'word') {
+                    this.totalProblems = 5; 
+                    submenuWrapper.style.display = 'none'; 
+                } else {
+                    this.totalProblems = 100; // 알파벳은 100자 달성 시 종료
+                    submenuWrapper.style.display = 'block'; 
+                }
+
+                if (mode === 'sentence') this.usedSentences = [];
+                else if (mode === 'word') this.usedWords = [];
 
                 document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.mode === mode));
+                
                 this.generateText();
                 this.updateDisplay();
+                
                 const input = document.getElementById('typingInput');
                 input.value = '';
                 input.classList.remove('completed');
@@ -766,27 +821,42 @@
             generateText() {
                 if (this.currentMode === 'alphabet') {
                     const charsString = this.fingerSets[this.currentSubMode].chars;
-                    let selected = [];
-                    for(let i=0; i<10; i++) selected.push(charsString[Math.floor(Math.random()*charsString.length)]);
-                    this.currentText = selected.join(' ');
+                    const selected = Array.from({length: 10}, () => charsString[Math.floor(Math.random() * charsString.length)]);
+                    this.currentText = selected.join('');
                     this.currentTranslation = '';
+                    this.cvCurrentIndex = 0;
                 } else if (this.currentMode === 'word') {
-                    const pool = this.practiceData.word;
-                    let selected = [];
-                    for(let i=0; i<2; i++) selected.push(pool[Math.floor(Math.random()*pool.length)]);
+                    const data = this.practiceData.word;
+                    let availableWords = data.filter(w => !this.usedWords.includes(w.en));
+                    if (availableWords.length < 2) {
+                        this.usedWords = [];
+                        availableWords = data;
+                    }
+                    
+                    const tempPool = availableWords;
+                    const selected = [];
+                    for(let i=0; i<2; i++) {
+                        const randIdx = Math.floor(Math.random() * tempPool.length);
+                        const wordObj = tempPool[randIdx];
+                        selected.push(wordObj);
+                        this.usedWords.push(wordObj.en);
+                        tempPool.splice(randIdx, 1);
+                    }
                     this.currentText = selected.map(w => w.en).join(' ');
                     this.currentTranslation = selected.map(w => w.ko).join(' / ');
                 } else {
-                    let available = this.practiceData.sentence.filter(s => !this.usedSentences.includes(s.en));
-                    if (available.length === 0) {
+                    const data = this.practiceData.sentence;
+                    let candidates = data.filter(s => !this.usedSentences.includes(s.en));
+                    if (candidates.length === 0) {
                         this.usedSentences = [];
-                        available = this.practiceData.sentence;
+                        candidates = data;
                     }
-                    const selected = available[Math.floor(Math.random()*available.length)];
+                    const selected = candidates[Math.floor(Math.random() * candidates.length)];
                     this.currentText = selected.en;
                     this.currentTranslation = selected.ko;
                     this.usedSentences.push(selected.en);
                 }
+                
                 this.currentPosition = 0;
                 this.correctChars = 0;
                 this.totalChars = 0;
@@ -799,74 +869,154 @@
                 }
                 
                 this.updateKeyboardHighlight();
-                document.getElementById('textDisplay').classList.toggle('sentence-mode', this.currentMode === 'sentence');
+                const display = document.getElementById('textDisplay');
+                if (this.currentMode === 'sentence' || this.currentMode === 'word') {
+                    display.classList.add('sentence-mode');
+                } else {
+                    display.classList.remove('sentence-mode');
+                }
             }
 
             updateKeyboardHighlight() {
                 document.querySelectorAll('.key').forEach(key => key.classList.remove('active'));
                 const typingInput = document.getElementById('typingInput');
+                let targetChar = '';
                 
-                if (typingInput.value.length >= this.currentText.length && typingInput.value.length > 0) {
-                    const enterKey = document.querySelector('.key.enter');
-                    if (enterKey) enterKey.classList.add('active');
-                    return;
+                if (this.currentMode === 'alphabet') {
+                    if (this.cvCurrentIndex >= this.currentText.length) return;
+                    const inputValue = typingInput.value.trim().toLowerCase();
+                    targetChar = this.currentText[this.cvCurrentIndex];
+                    
+                    if (inputValue === targetChar.toLowerCase()) {
+                        const spaceKey = document.querySelector('.key.space');
+                        if (spaceKey) spaceKey.classList.add('active');
+                        return;
+                    }
+                } else {
+                    if (typingInput.value.length >= this.currentText.length && typingInput.value.length > 0) {
+                        const enterKey = document.querySelector('.key.enter');
+                        if (enterKey) enterKey.classList.add('active');
+                        return;
+                    }
+                    if (typingInput.value.length < this.currentText.length) {
+                        targetChar = this.currentText[typingInput.value.length];
+                    }
                 }
                 
-                if (typingInput.value.length < this.currentText.length) {
-                    const currentChar = this.currentText[typingInput.value.length].toLowerCase();
-                    if (currentChar !== ' ') {
-                        const keyName = this.keyboardMap[currentChar];
+                if (targetChar) {
+                    const keyChar = targetChar.toLowerCase();
+                    if (keyChar !== ' ') {
+                        const keyName = this.keyboardMap[keyChar] || keyChar;
                         const targetKey = document.querySelector(`[data-key="${keyName}"]`);
                         if (targetKey) targetKey.classList.add('active');
+                        
+                        // 대문자나 특수문자 입력 시 Shift 키 하이라이트
+                        const isUpperCase = targetChar >= 'A' && targetChar <= 'Z';
+                        const isShiftSymbol = ['~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '{', '}', '|', ':', '"', '<', '>', '?'].includes(targetChar);
+                        
+                        if (isUpperCase || isShiftSymbol) {
+                            const shiftLeft = document.querySelector('.key[data-key="ShiftLeft"]');
+                            const shiftRight = document.querySelector('.key[data-key="ShiftRight"]');
+                            if (shiftLeft) shiftLeft.classList.add('active');
+                            if (shiftRight) shiftRight.classList.add('active');
+                        }
+                    } else {
+                        const spaceKey = document.querySelector('.key.space');
+                        if (spaceKey) spaceKey.classList.add('active');
                     }
                 }
             }
 
             updateDisplay() {
                 const display = document.getElementById('textDisplay');
-                const inputValue = document.getElementById('typingInput').value;
+                const typingInput = document.getElementById('typingInput');
+                const rawValue = typingInput ? typingInput.value.trim() : '';
                 display.innerHTML = '';
-                const textContainer = document.createElement('div');
-                for (let i = 0; i < this.currentText.length; i++) {
-                    const span = document.createElement('span');
-                    span.className = 'char';
-                    const targetChar = this.currentText[i];
-                    if (targetChar === ' ') { 
-                        span.innerHTML = '&nbsp;'; 
-                        span.classList.add('space'); 
-                    } else {
-                        span.textContent = targetChar;
+                
+                if (this.currentMode === 'alphabet') {
+                    let displayCount = 0;
+                    for (let i = this.cvCurrentIndex; i < this.currentText.length && displayCount < 5; i++) {
+                        const span = document.createElement('span');
+                        const char = this.currentText[i];
+                        let cls = 'char';
+                        
+                        span.textContent = char;
+                        
+                        if (i === this.cvCurrentIndex) {
+                            cls += ' current distance-0';
+                            if (rawValue.length > 0 && rawValue.toLowerCase() !== char.toLowerCase()) {
+                                cls += ' incorrect';
+                            }
+                        } else {
+                            cls += ` distance-${displayCount}`;
+                        }
+                        
+                        span.className = cls;
+                        display.appendChild(span);
+                        displayCount++;
+                    }
+                    document.getElementById('progress').textContent = `${this.accumulatedChars}/100자`;
+                } else {
+                    const inputValue = typingInput.value;
+                    let displayIndex = 0;
+                    for (let i = 0; i < inputValue.length; i++) {
+                        if (inputValue[i] === this.currentText[i]) {
+                            displayIndex = i + 1;
+                        } else {
+                            displayIndex = i;
+                            break;
+                        }
+                    }
+
+                    for (let i = 0; i < this.currentText.length; i++) {
+                        const span = document.createElement('span');
+                        const char = this.currentText[i];
+                        let cls = 'char';
+                        
+                        if (char === ' ') {
+                            span.innerHTML = '&nbsp;';
+                            cls += ' space';
+                        } else {
+                            span.textContent = char;
+                        }
+                        
+                        if (i < displayIndex) {
+                            cls += ' correct';
+                        } else if (i === displayIndex) {
+                            cls += ' current distance-0';
+                            if (i < inputValue.length && inputValue[i] !== char) {
+                                cls += ' incorrect';
+                            }
+                        } else {
+                            cls += ' distance-1';
+                        }
+                        
+                        span.className = cls;
+                        display.appendChild(span);
                     }
                     
-                    if (i < inputValue.length) {
-                        if (inputValue[i] === targetChar) {
-                            span.classList.add('correct');
-                        } else {
-                            span.classList.add('incorrect');
-                        }
-                    } else if (i === inputValue.length) {
-                        span.classList.add('current');
+                    // 초기 보라색 적용
+                    const chars = display.querySelectorAll('.char.distance-1');
+                    chars.forEach(char => char.style.color = '#8b5cf6');
+                    
+                    if (this.currentTranslation) {
+                        const trans = document.createElement('div');
+                        trans.className = 'translation-text';
+                        trans.textContent = this.currentTranslation;
+                        display.appendChild(trans);
                     }
-                    textContainer.appendChild(span);
-                }
-                display.appendChild(textContainer);
-                if (this.currentTranslation) {
-                    const trans = document.createElement('div');
-                    trans.style.fontSize = '1.1rem'; trans.style.color = '#666'; trans.style.marginTop = '1rem';
-                    trans.textContent = this.currentTranslation;
-                    display.appendChild(trans);
-                }
-                
-                const inputArea = document.getElementById('typingInput');
-                if (inputValue.length >= this.currentText.length && inputValue.length > 0) {
-                    inputArea.classList.add('completed');
-                    inputArea.placeholder = "엔터(Enter)를 눌러 다음으로 넘어가세요.";
-                } else {
-                    inputArea.classList.remove('completed');
-                    inputArea.placeholder = "여기에 타이핑하세요...";
+
+                    if (inputValue.length >= this.currentText.length && inputValue.length > 0) {
+                        typingInput.classList.add('completed');
+                        typingInput.placeholder = "엔터(Enter)를 눌러 다음으로 넘어가세요.";
+                    } else {
+                        typingInput.classList.remove('completed');
+                        typingInput.placeholder = "여기에 타이핑하세요...";
+                    }
+                    
+                    document.getElementById('progress').textContent = `${this.currentProblem + 1}/${this.totalProblems}`;
                 }
 
-                document.getElementById('progress').textContent = `${this.currentProblem + 1}/${this.totalProblems}`;
                 this.updateKeyboardHighlight();
             }
 
@@ -900,55 +1050,61 @@
             }
 
             updateStats() {
-                const accuracy = this.totalChars > 0 ? Math.round((this.correctChars / this.totalChars) * 100) : 100;
-                document.getElementById('accuracy').textContent = `${accuracy}%`;
-                if (this.startTime) {
-                    const elapsed = (Date.now() - this.startTime) / 1000;
-                    const cpm = Math.round((this.correctChars / (elapsed || 1)) * 60);
-                    document.getElementById('speed').textContent = cpm || 0;
+                let typedCount = 0;
+                let correctCount = 0;
+                let totalLength = 0;
+
+                if (this.currentMode === 'alphabet') {
+                    typedCount = this.accumulatedChars;
+                    correctCount = this.accumulatedChars;
+                    totalLength = this.accumulatedChars;
+                } else {
+                    const inputValue = document.getElementById('typingInput').value;
+                    typedCount = inputValue.length;
+                    totalLength = inputValue.length;
+
+                    for (let i = 0; i < inputValue.length; i++) {
+                        if (i >= this.currentText.length) break; 
+                        if (inputValue[i] === this.currentText[i]) correctCount++;
+                    }
+                }
+
+                const elapsed = (Date.now() - this.startTime) / 1000 / 60; 
+                const speed = elapsed > 0 ? Math.round(typedCount / elapsed) : 0;
+                document.getElementById('speed').innerText = speed;
+                
+                if (totalLength === 0) {
+                    document.getElementById('accuracy').innerText = '100%';
+                } else {
+                    const accuracy = Math.floor((correctCount / totalLength) * 100);
+                    document.getElementById('accuracy').innerText = accuracy + '%';
                 }
             }
 
             nextProblem() {
-                if (this.currentMode === 'sentence') {
-                    const currentAccuracy = parseInt(document.getElementById('accuracy').textContent.replace('%', ''));
-                    const currentSpeed = parseInt(document.getElementById('speed').textContent);
-                    this.sentenceStats.push({ speed: currentSpeed, accuracy: currentAccuracy });
-                } else {
-                    const acc = Math.round((this.correctChars / this.currentText.length) * 100);
-                    const elapsed = (Date.now() - this.startTime) / 1000;
-                    const cpm = Math.round((this.correctChars / (elapsed || 1)) * 60);
-                    this.sessionAccuracies.push(acc);
-                    this.sessionSpeeds.push(cpm);
-                }
-
-                this.currentProblem++;
                 const typingInput = document.getElementById('typingInput');
                 
-                if (this.currentProblem >= this.totalProblems) {
-                    this.showComplete();
-                } else {
-                    typingInput.value = ''; 
-                    typingInput.classList.remove('completed');
-                    typingInput.placeholder = "여기에 타이핑하세요...";
-                    this.startTime = null;
-                    this.currentPosition = 0;
-                    this.generateText();
-                    this.updateDisplay();
-                    typingInput.blur();
-                    setTimeout(() => {
-                        typingInput.focus();
-                        this.updateKeyboardHighlight();
-                    }, 50);
-                }
+                typingInput.value = ''; 
+                typingInput.classList.remove('completed');
+                typingInput.placeholder = "여기에 타이핑하세요...";
+                
+                this.currentPosition = 0;
+                this.generateText();
+                this.updateDisplay();
+                typingInput.blur();
+                
+                setTimeout(() => {
+                    typingInput.focus();
+                    this.updateKeyboardHighlight();
+                }, 50);
             }
 
             showComplete() {
                 if (this.currentMode === 'sentence') {
                     this.showAIFeedback();
                 } else {
-                    const avgAcc = Math.round(this.sessionAccuracies.reduce((a,b)=>a+b,0)/Math.max(1, this.sessionAccuracies.length)) || 0;
-                    const avgSpd = Math.round(this.sessionSpeeds.reduce((a,b)=>a+b,0)/Math.max(1, this.sessionSpeeds.length)) || 0;
+                    const avgAcc = this.currentMode === 'alphabet' ? parseInt(document.getElementById('accuracy').textContent) : Math.round(this.sessionAccuracies.reduce((a,b)=>a+b,0)/Math.max(1, this.sessionAccuracies.length)) || 0;
+                    const avgSpd = this.currentMode === 'alphabet' ? parseInt(document.getElementById('speed').textContent) : Math.round(this.sessionSpeeds.reduce((a,b)=>a+b,0)/Math.max(1, this.sessionSpeeds.length)) || 0;
                     
                     const modal = document.getElementById('completeModal');
                     const content = document.getElementById('modalContent');
@@ -977,6 +1133,8 @@
                         if(btn) btn.addEventListener('click', () => {
                             document.getElementById('completeModal').style.display = 'none';
                             this.currentProblem = 0;
+                            if (this.currentMode === 'alphabet') this.accumulatedChars = 0;
+                            this.resetStats();
                             this.generateText();
                             this.updateDisplay();
                             const input = document.getElementById('typingInput');
@@ -989,6 +1147,7 @@
                 }
             }
 
+            // AI 피드백 분석 함수
             analyzeFingerPerformance() {
                 const fingerStats = {};
                 for (let [key, latencies] of Object.entries(this.keyLatencies)) {
@@ -1055,30 +1214,23 @@
                 const totalAcc = this.sentenceStats.reduce((a, b) => a + b.accuracy, 0) / Math.max(1, this.sentenceStats.length);
                 const avgSpeed = Math.round(totalSpeed) || 0;
                 const avgAcc = Math.round(totalAcc) || 0;
-                
-                if (this.currentMode === 'sentence') {
-                    // 🔥 정확도(avgAcc)도 함께 넘기도록 수정했습니다.
-                    this.saveRecordToProfile(avgSpeed, avgAcc);
-                }
-
                 const slowKeys = this.analyzeSlowCharacters();
                 const fingerPerf = this.analyzeFingerPerformance();
                 const rhythmGraph = this.generateSparkline(this.speedHistory);
 
-                const weakestFingerRaw = fingerPerf.length > 0 ? fingerPerf[0].finger : 'Thumb';
-                const fingerInfo = this.fingerMap[weakestFingerRaw] || { ko: '분석 필요', filter: 'all' };
-                const displayFingerName = fingerInfo.ko;
+                const weakestFingerRaw = fingerPerf.length > 0 ? fingerPerf[0].finger : 'all';
+                const displayFingerName = weakestFingerRaw !== 'all' ? this.fingerSets[weakestFingerRaw].label : '데이터 부족';
 
                 let grade = "C", gradeColor = "#868e96";
-                if (avgSpeed > 500 && avgAcc > 98) { grade = "S"; gradeColor = "#d63384"; }
-                else if (avgSpeed > 400) { grade = "A"; gradeColor = "#667eea"; }
-                else if (avgSpeed > 300) { grade = "B"; gradeColor = "#40c057"; }
+                if (avgSpeed > 400 && avgAcc > 98) { grade = "S"; gradeColor = "#d63384"; }
+                else if (avgSpeed > 300) { grade = "A"; gradeColor = "#667eea"; }
+                else if (avgSpeed > 200) { grade = "B"; gradeColor = "#40c057"; }
 
                 content.innerHTML = `
                     <div class="ai-report-container">
                         <div class="ai-sidebar">
                             <h2 style="margin:0; color:#333;">종합 분석</h2>
-                            <div class="neon-score">${Math.round((avgSpeed + avgAcc) / 2)}</div>
+                            <div class="neon-score">${avgSpeed}</div>
                             <div class="neon-grade" style="color:${gradeColor}">Grade ${grade}</div>
                             <div class="stat-grid-mini">
                                 <div class="stat-box-mini"><div class="label">평균 속도</div><div class="value">${avgSpeed} <span style="font-size:0.8rem">타/분</span></div></div>
@@ -1097,7 +1249,7 @@
                                 <div class="ai-card-title"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>취약점 정밀 진단</div>
                                 <div class="bar-chart-container">
                                     <div class="bar-row">
-                                        <strong>가장 망설인 키:</strong> ${slowKeys.map(k => `<span class="highlight-badge badge-red" style="margin-left:5px;">${k.key}</span>`).join('') || '없음'}
+                                        <strong>가장 망설인 키:</strong> ${slowKeys.map(k => `<span class="highlight-badge badge-red" style="margin-left:5px;">${k.key.toUpperCase()}</span>`).join('') || '없음'}
                                     </div>
                                     <div class="bar-row" style="margin-top:10px;">
                                         <strong>가장 느린 손가락:</strong> 
@@ -1122,7 +1274,7 @@
                 // '느린 손가락 연습' 클릭 시
                 document.getElementById('slowFingerPracticeBtn').addEventListener('click', () => {
                     this.changeMode('alphabet');
-                    this.changeSubMode(fingerInfo.filter);
+                    this.changeSubMode(weakestFingerRaw);
                     document.getElementById('completeModal').style.display = 'none';
                 });
 
@@ -1130,6 +1282,7 @@
                 document.getElementById('aiContinueBtn').addEventListener('click', () => {
                     document.getElementById('completeModal').style.display = 'none';
                     this.currentProblem = 0;
+                    this.resetStats();
                     this.generateText();
                     this.updateDisplay();
                     const input = document.getElementById('typingInput');
@@ -1139,11 +1292,18 @@
             }
 
             resetStats() {
-                this.currentPosition = 0; this.startTime = null; this.totalChars = 0; this.correctChars = 0;
-                this.sessionAccuracies = []; this.sessionSpeeds = [];
+                this.currentPosition = 0; 
+                this.startTime = null; 
+                this.totalChars = 0; 
+                this.correctChars = 0;
+                this.sessionAccuracies = []; 
+                this.sessionSpeeds = [];
+                this.sentenceKeyTimings = [];
+                this.keyLatencies = {};
+                this.speedHistory = [];
+                this.sentenceStats = [];
                 document.getElementById('accuracy').textContent = '100%';
                 document.getElementById('speed').textContent = '0';
-                document.getElementById('progress').textContent = '1';
             }
         }
 
