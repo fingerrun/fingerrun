@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5657188598576847" crossorigin="anonymous"></script>
     
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -137,11 +136,12 @@
         /* 캐릭터 스타일 (한글 자음/모음 원근감 디자인 반영) */
         .char { display: inline-flex; justify-content: center; align-items: center; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-weight: 700; font-family: 'Pretendard', sans-serif; }
 
-        .char.distance-0, .char.current { width: 100px; height: 100px; font-size: 52px; background: #9370fa !important; color: #ffffff !important; border: none !important; border-radius: 20px !important; box-shadow: 0 12px 30px rgba(147, 112, 250, 0.4) !important; transform: translateY(-2px); z-index: 10; margin: 0 20px; }
-        .char.distance-1 { width: 76px; height: 76px; font-size: 36px; background: #fafafc; border: 2px solid #e2e8f0; border-radius: 16px; color: #64748b; margin: 0 15px; }
-        .char.distance-2 { width: 64px; height: 64px; font-size: 28px; background: #fafafc; border: 2px solid #e2e8f0; border-radius: 14px; color: #94a3b8; margin: 0 12px; }
-        .char.distance-3 { width: 54px; height: 54px; font-size: 22px; background: #fafafc; border: 2px solid #e2e8f0; border-radius: 12px; color: #cbd5e1; margin: 0 10px; }
-        .char.distance-4 { width: 44px; height: 44px; font-size: 18px; background: #fafafc; border: 2px solid #e2e8f0; border-radius: 10px; color: #cbd5e1; margin: 0 8px; }
+/* 캐릭터 스타일 (1.5배 확대) */
+.char.distance-0, .char.current { width: 150px; height: 150px; font-size: 78px; background: #9370fa !important; color: #ffffff !important; border: none !important; border-radius: 30px !important; box-shadow: 0 12px 30px rgba(147, 112, 250, 0.4) !important; transform: translateY(-2px); z-index: 10; margin: 0 20px; }
+.char.distance-1 { width: 114px; height: 114px; font-size: 54px; background: #fafafc; border: 2px solid #e2e8f0; border-radius: 24px; color: #64748b; margin: 0 15px; }
+.char.distance-2 { width: 96px; height: 96px; font-size: 42px; background: #fafafc; border: 2px solid #e2e8f0; border-radius: 21px; color: #94a3b8; margin: 0 12px; }
+.char.distance-3 { width: 81px; height: 81px; font-size: 33px; background: #fafafc; border: 2px solid #e2e8f0; border-radius: 18px; color: #cbd5e1; margin: 0 10px; }
+.char.distance-4 { width: 66px; height: 66px; font-size: 27px; background: #fafafc; border: 2px solid #e2e8f0; border-radius: 15px; color: #cbd5e1; margin: 0 8px; }
 
         .char.distance-0.incorrect, .char.current.incorrect { background: #ef4444 !important; box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4) !important; animation: shake 0.3s cubic-bezier(.36,.07,.19,.97) both; }
 
@@ -248,15 +248,8 @@
         .badge-red { background: #ffe3e3; color: #e03131; }
         .badge-blue { background: #dbe4ff; color: #4263eb; }
 
-        /* [광고] 사이드바 */
-        .ad-sidebar { position: sticky; top: 100px; width: 240px; z-index: 50; grid-row: 1; height: 900px; }
-        .ad-left { grid-column: 1; justify-self: end; }
-        .ad-right { grid-column: 3; justify-self: start; }
-        .ad-sidebar ins { display: inline-block !important; width: 240px !important; height: 900px !important; }
-
         @media (max-width: 1700px) {
             body { grid-template-columns: 1fr; }
-            .ad-sidebar { display: none; }
             .main-container { grid-column: 1; padding: 2rem 1rem; }
         }
         
@@ -269,16 +262,6 @@
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T9HC454Z" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     
-    <div class="ad-sidebar ad-left">
-        <ins class="adsbygoogle" style="display:inline-block; width:240px; height:100%;" data-ad-client="ca-pub-5657188598576847" data-ad-slot="4465825129" data-ad-format="vertical"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
-    <div class="ad-sidebar ad-right">
-        <ins class="adsbygoogle" style="display:inline-block; width:240px; height:100%;" data-ad-client="ca-pub-5657188598576847" data-ad-slot="4465825129" data-ad-format="vertical"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
     <!-- Navigation -->
     <nav>
         <div class="nav-container">

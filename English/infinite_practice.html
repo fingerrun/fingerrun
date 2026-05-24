@@ -3,17 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5657188598576847" crossorigin="anonymous"></script>
     
-    <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-T9HC454Z');</script>
-    <!-- End Google Tag Manager -->
-
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7QSEYCFK83"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -24,18 +19,15 @@
 
     <title>핑거런 | 영어 타자연습 - 무한 연습</title>
     
-    <!-- 파비콘 설정 -->
     <link rel="icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
     <link rel="shortcut icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
     <link rel="apple-touch-icon" href="../images/finger-run-logo.svg">
     
-    <!-- SEO 메타태그 -->
     <meta name="description" content="핑거런 영어타자 무한 연습으로 타이핑 한계에 도전하세요. 끊기지 않는 무한 연습 시스템과 실시간 정확도 측정을 제공합니다.">
     <meta name="keywords" content="영어타자연습, 무한타자, English typing, 영어타자 무한, 영타연습, 핑거런">
     <meta name="author" content="FingerRun">
     <meta name="robots" content="index, follow">
 
-    <!-- Open Graph -->
     <meta property="og:title" content="핑거런 | 영어 타자연습 - 무한 연습">
     <meta property="og:description" content="AI 피드백 기능 없이 끊임 없는 문제들을 도전해보세요!">
     <meta property="og:url" content="https://fingerrun.com/English/infinite_practice.html">
@@ -115,11 +107,44 @@
 
         /* Practice Area */
         .practice-area { text-align: center; margin-bottom: 3rem; }
-        .text-display { font-size: 1.8rem; line-height: 1.8; margin-bottom: 2rem; min-height: 120px; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #f8f9fa; border-radius: 15px; padding: 2rem; word-break: keep-all; letter-spacing: 2px; border: 2px solid #e2e8f0; transition: all 0.3s ease; position: relative; }
-        .text-display.sentence-mode { letter-spacing: 0.2px; line-height: 1.6; background: white; }
         
-        /* 캐릭터 스타일 */
-        .char { margin: 3px; padding: 8px 10px; border-radius: 8px; transition: all 0.3s ease; color: #666; font-weight: 500; }
+        /* 텍스트 박스 기본 설정 (알파벳 모드 1.5배 적용) */
+        .text-display { 
+            font-size: 2.7rem; /* 기존 1.8rem의 1.5배 */
+            line-height: 1.8; 
+            margin-bottom: 2rem; 
+            min-height: 140px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            background: #f8f9fa; 
+            border-radius: 15px; 
+            padding: 2rem; 
+            word-break: keep-all; 
+            letter-spacing: 2px; 
+            border: 2px solid #e2e8f0; 
+            transition: all 0.3s ease; 
+            position: relative; 
+        }
+        
+        /* 문장/단어 모드일 때는 원래 크기로 복구 */
+        .text-display.sentence-mode { 
+            font-size: 1.8rem; 
+            letter-spacing: 0.2px; 
+            line-height: 1.6; 
+            background: white; 
+        }
+        
+        /* 캐릭터 스타일 (알파벳 모드 박스 1.5배 확대 적용) */
+        .char { 
+            margin: 5px; 
+            padding: 12px 15px; 
+            border-radius: 12px; 
+            transition: all 0.3s ease; 
+            color: #666; 
+            font-weight: 500; 
+        }
         .char.correct { color: white; background: linear-gradient(45deg, #4caf50, #45a049); transform: scale(1.1); box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3); }
         .char.incorrect { color: white !important; background: linear-gradient(45deg, #ff6b6b, #ff5252) !important; transform: scale(1.1) !important; box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3) !important; }
         .char.current { color: white; background: linear-gradient(45deg, #667eea, #764ba2); animation: pulse 1.5s infinite; transform: scale(1.15); }
@@ -178,22 +203,8 @@
             .stats { grid-template-columns: 1fr; }
         }
 
-        /* [광고] 사이드바 */
-        .ad-sidebar {
-            position: sticky;
-            top: 100px;
-            width: 240px;
-            z-index: 50;
-            grid-row: 1; 
-            height: 900px; 
-        }
-        .ad-left { grid-column: 1; justify-self: end; }
-        .ad-right { grid-column: 3; justify-self: start; }
-        .ad-sidebar ins { display: inline-block !important; width: 240px !important; height: 900px !important; }
-
         @media (max-width: 1700px) {
             body { grid-template-columns: 1fr; }
-            .ad-sidebar { display: none; }
             .main-container { grid-column: 1; padding: 2rem 1rem; }
         }
         
@@ -202,20 +213,8 @@
 </head>
 
 <body>
-    <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T9HC454Z" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     
-    <div class="ad-sidebar ad-left">
-        <ins class="adsbygoogle" style="display:inline-block; width:240px; height:100%;" data-ad-client="ca-pub-5657188598576847" data-ad-slot="4465825129" data-ad-format="vertical"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
-    <div class="ad-sidebar ad-right">
-        <ins class="adsbygoogle" style="display:inline-block; width:240px; height:100%;" data-ad-client="ca-pub-5657188598576847" data-ad-slot="4465825129" data-ad-format="vertical"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
-    <!-- Navigation -->
     <nav>
         <div class="nav-container">
             <a href="../index.html" class="logo" aria-label="핑거런 홈페이지 메인으로 이동">

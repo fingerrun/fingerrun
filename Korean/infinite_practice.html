@@ -297,14 +297,8 @@
             .stats { grid-template-columns: 1fr; }
         }
 
-        .ad-sidebar { position: sticky; top: 100px; width: 240px; z-index: 50; grid-row: 1; height: 900px; }
-        .ad-left { grid-column: 1; justify-self: end; }
-        .ad-right { grid-column: 3; justify-self: start; }
-        .ad-sidebar ins { display: inline-block !important; width: 240px !important; height: 900px !important; }
-        
         @media (max-width: 1700px) {
             body { grid-template-columns: 1fr; }
-            .ad-sidebar { display: none; }
             .main-container { grid-column: 1; padding: 2rem 1rem; }
         }
 
@@ -313,30 +307,6 @@
 </head>
 
 <body>
-    <!-- 광고 영역 -->
-    <div class="ad-sidebar ad-left">
-        <ins class="adsbygoogle"
-             style="display:inline-block; width:240px; height:100%;"
-             data-ad-client="ca-pub-5657188598576847"
-             data-ad-slot="4465825129"
-             data-ad-format="vertical"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
-
-    <div class="ad-sidebar ad-right">
-        <ins class="adsbygoogle"
-             style="display:inline-block; width:240px; height:100%;"
-             data-ad-client="ca-pub-5657188598576847"
-             data-ad-slot="4465825129"
-             data-ad-format="vertical"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
-
-    <!-- 네비게이션바 -->
     <nav>
         <div class="nav-container">
             <a href="../index.html" class="logo" aria-label="핑거런 홈페이지 메인으로 이동">
@@ -466,7 +436,7 @@
                             <div class="key" data-key="t" data-ko="ㅅ"><div class="key-dual"><span class="key-en">T</span><span class="key-ko">ㅅ</span></div></div>
                             <div class="key" data-key="y" data-ko="ㅛ"><div class="key-dual"><span class="key-en">Y</span><span class="key-ko">ㅛ</span></div></div>
                             <div class="key" data-key="u" data-ko="ㅕ"><div class="key-dual"><span class="key-en">U</span><span class="key-ko">ㅕ</span></div></div>
-                            <div class="key" data-key="i" data-ko="ㅑ"><div class="key-dual"><span class="key-en">I</span><span class="key-ko">ㅑ</span></div></div>
+                            <div class="key" data-key="i" data-ko="ᅣ"><div class="key-dual"><span class="key-en">I</span><span class="key-ko">ㅑ</span></div></div>
                             <div class="key" data-key="o" data-ko="ㅐ"><div class="key-dual"><span class="key-en">O</span><span class="key-ko">ㅐ</span></div></div>
                             <div class="key" data-key="p" data-ko="ㅔ"><div class="key-dual"><span class="key-en">P</span><span class="key-ko">ㅔ</span></div></div>
                             <div class="key" data-key="[" data-ko=""><div class="key-dual"><span class="key-en">[</span><span class="key-ko"></span></div></div>
@@ -1077,7 +1047,7 @@
                     const jong = base % 28;
                     const choArr = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
                     const jungArr = ['ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ', 'ㅖ', 'ㅗ', 'ㅘ', 'ㅙ', 'ㅚ', 'ㅛ', 'ㅜ', 'ㅝ', 'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ'];
-                    const jongArr = ['', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ', 'ㄷ', 'ㄹ', 'ㄺ', 'ㄻ', 'ㄼ', 'ㄽ', 'ㄾ', 'ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
+                    const jongArr = ['', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄴㅈ', 'ㄴㅎ', 'ㄷ', 'ㄹ', 'ㄹㄱ', 'ㄹㅁ', 'ㄹㅂ', 'ㄹㅅ', 'ㄹㅌ', 'ㄹㅍ', 'ㄹㅎ', 'ㅁ', 'ㅂ', 'ㅂㅅ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
                     let res = [choArr[cho], jungArr[jung]];
                     if(jongArr[jong]) res.push(jongArr[jong]);
                     return res;
