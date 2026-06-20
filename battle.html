@@ -523,7 +523,7 @@
                     '블로그에 기록된 일상들은 훗날 소중한 자서전이 됩니다.'
                 ];
                 
-                this.totalRaceChars = this.sentences.join('').length;
+                this.totalRaceChars = this.sentences.slice(0, 10).join('').length;
                 this.myStage = 0; this.oppStage = 0;
                 this.myCompletedChars = 0; this.oppCompletedChars = 0;
 
