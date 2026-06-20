@@ -4,15 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5657188598576847" crossorigin="anonymous"></script>
-    <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-T9HC454Z');</script>
-    <!-- End Google Tag Manager -->
-
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7QSEYCFK83"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -23,14 +19,12 @@
 
     <title>핑거런 - 마이페이지</title>
     
-    <!-- 파비콘 설정 -->
     <link rel="icon" type="image/svg+xml" href="images/finger-run-logo.svg">
     <link rel="shortcut icon" type="image/svg+xml" href="images/finger-run-logo.svg">
     <link rel="apple-touch-icon" href="images/finger-run-logo.svg">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- 그래프를 그리기 위한 Chart.js 라이브러리 추가 -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
@@ -145,11 +139,39 @@
         @media (max-width: 900px) {
             .nav-menu { display: none; } 
         }
+
+        /* --- 모달 디자인 (도전장 전용) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        
+        .modal-box {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            border: 3px solid #f97316; 
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
     </style>
 </head>
-<body class="pb-20 pt-20"> <!-- 네비게이션 바 높이만큼 pt-20 추가 -->
+<body class="pb-20 pt-20">
 
-    <!-- 메인 페이지와 완벽하게 동일한 Navigation -->
     <nav>
         <div class="nav-container">
             <a href="index.html" class="logo" aria-label="핑거런 홈페이지 메인으로 이동">
@@ -205,6 +227,7 @@
                         <a href="Certificate/word-processor.html">워드프로세서</a>
                     </div>
                 </li>
+                <li><a href="battle.html">타자 배틀</a></li>
                 <li><a href="contact.html">문의하기</a></li>
                 <li class="ml-2">
                     <a href="#" onclick="goProfile(event)" title="프로필" style="padding: 0.5rem 0.6rem; border-radius: 50%;">
@@ -215,14 +238,40 @@
         </div>
     </nav>
 
-    <!-- 마이페이지 메인 컨텐츠 시작 -->
+    <div id="inviteModal" class="modal-overlay">
+        <div class="modal-box relative">
+            <button onclick="closeInviteModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+
+            <div class="w-20 h-20 bg-orange-100 text-orange-500 rounded-full flex items-center justify-center text-4xl mx-auto mb-4 animate-bounce">
+                <i class="fas fa-envelope-open-text"></i>
+            </div>
+            
+            <h2 class="text-2xl font-black text-gray-900 mb-2">도전장이 도착했습니다!</h2>
+            <p id="inviteModalDesc" class="text-gray-600 text-sm leading-relaxed mb-6 bg-gray-50 p-4 rounded-xl border border-gray-100">
+                <strong class="text-orange-500 text-lg" id="inviteHostName">누군가</strong>님이 엄청난 기록을 세웠습니다.<br>
+                <span class="font-mono text-gray-800 font-bold mt-2 inline-block">평균 속도 <span id="inviteSpeed">0</span>타 / 정확도 <span id="inviteAcc">0</span>%</span><br>
+                이 기록을 깨고 살아남을 자신이 있습니까?
+            </p>
+            
+            <div class="flex flex-col gap-2">
+                <button id="acceptBattleBtn" class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-3.5 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1">
+                    🔥 배틀 수락하기
+                </button>
+                <button onclick="closeInviteModal()" class="w-full bg-gray-100 text-gray-600 font-medium py-3 rounded-xl hover:bg-gray-200 transition">
+                    다음에 하기
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="max-w-4xl mx-auto mt-12 px-6">
         <div class="flex items-end gap-3 mb-8">
             <h1 class="text-3xl font-bold">마이페이지</h1>
             <span id="welcome-message" class="text-gray-500 mb-1">사용자 정보를 불러오는 중...</span>
         </div>
 
-        <!-- [1] 타자 통계 대시보드 -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col items-center justify-center">
                 <span class="text-gray-500 text-sm font-medium mb-2">문장연습 평균 타수</span>
@@ -241,12 +290,10 @@
             </div>
         </div>
 
-        <!-- [2] 성장 그래프 섹션 -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 pb-14 mb-12">
             <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
                 <h2 class="text-lg font-bold text-gray-900">나의 타자 성장 기록</h2>
                 
-                <!-- 기간 필터링 버튼 -->
                 <div class="flex gap-1 bg-gray-100 p-1 rounded-lg">
                     <button class="filter-btn px-4 py-1.5 text-sm rounded-md bg-white shadow-sm text-blue-600 font-bold transition active" data-unit="day">1일</button>
                     <button class="filter-btn px-4 py-1.5 text-sm rounded-md text-gray-500 hover:text-gray-700 font-medium transition" data-unit="month">1달</button>
@@ -254,23 +301,19 @@
                 </div>
             </div>
 
-            <!-- 타수 그래프 -->
             <div class="relative w-full" style="height: 400px;">
                 <h3 class="text-sm font-medium text-gray-500 mb-2">평균 타수 변화 (타/분)</h3>
                 <canvas id="speedChart"></canvas>
             </div>
 
-            <!-- 그래프 구분선 (점선) -->
             <hr class="border-t-2 border-dashed border-gray-200 mt-14 mb-10">
 
-            <!-- 정확도 그래프 -->
             <div class="relative w-full" style="height: 300px;">
                 <h3 class="text-sm font-medium text-gray-500 mb-2">정확도 변화 (%)</h3>
                 <canvas id="accuracyChart"></canvas>
             </div>
         </div>
 
-        <!-- [3] 개인정보 리스트 -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-8">
             <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center">
                 <h2 class="text-lg font-bold text-gray-900">회원 정보</h2>
@@ -318,48 +361,75 @@
     </div>
 
     <script>
-        // 상단 프로필 버튼 기능 연결
         function goProfile(e) {
             e.preventDefault();
             window.location.reload();
         }
 
-        // 차트 인스턴스를 저장할 전역 변수
+        function closeInviteModal() {
+            document.getElementById('inviteModal').style.display = 'none';
+        }
+
         let speedChartInstance = null;
         let accuracyChartInstance = null;
 
         document.addEventListener('DOMContentLoaded', () => {
             const savedUser = localStorage.getItem('fingerRunUser');
 
-            if (savedUser) {
-                const userData = JSON.parse(savedUser);
-
-                document.getElementById('avg-speed').innerText = userData.avgSpeed || 0;
-                document.getElementById('max-speed').innerText = userData.maxSpeed || 0;
-                document.getElementById('total-sessions').innerText = userData.totalSessions || 0;
-
-                document.getElementById('welcome-message').innerText = userData.nickname + "님, 환영합니다!";
-                document.getElementById('user-email').innerText = userData.email || "이메일 정보 제공 미동의";
-                document.getElementById('user-nickname').innerText = userData.nickname;
-                document.getElementById('user-joindate').innerText = userData.joinDate || "정보 없음";
-                
-                document.getElementById('login-provider').innerText = userData.provider === 'google' ? 'Google 연동' : 'Kakao 연동';
-                document.getElementById('login-provider').className = userData.provider === 'google' 
-                    ? 'text-xs px-2 py-1 bg-white border border-gray-300 text-gray-600 rounded font-medium'
-                    : 'text-xs px-2 py-1 bg-[#FEE500] text-[#191919] rounded font-medium';
-
-                if (!userData.dailyRecords) {
-                    userData.dailyRecords = [];
-                    localStorage.setItem('fingerRunUser', JSON.stringify(userData));
-                }
-
-                // 초기 차트 렌더링 (1일 단위 기준)
-                renderCharts(userData.dailyRecords, 'day');
-
-            } else {
+            // 1. 비로그인 유저 접근 시 로그인 창으로 리다이렉트 (파라미터 보존)
+            if (!savedUser) {
                 alert("로그인이 필요한 페이지입니다.");
-                window.location.href = "login.html";
+                window.location.href = "login.html" + window.location.search;
+                return;
             }
+
+            // 2. 로그인된 상태에서만 URL 파라미터를 읽어 도전장 팝업 띄움
+            const urlParams = new URLSearchParams(window.location.search);
+            const isInvite = urlParams.get('invite') === 'true';
+
+            if (isInvite) {
+                const hostName = decodeURIComponent(urlParams.get('host') || '누군가');
+                const speed = urlParams.get('speed') || '0';
+                const acc = urlParams.get('acc') || '0';
+
+                // 모달창 텍스트 주입
+                document.getElementById('inviteHostName').innerText = hostName;
+                document.getElementById('inviteSpeed').innerText = speed;
+                document.getElementById('inviteAcc').innerText = acc;
+                
+                // 모달 띄우기
+                document.getElementById('inviteModal').style.display = 'flex';
+
+                // 수락 버튼 클릭 시 battle.html로 이동
+                document.getElementById('acceptBattleBtn').onclick = function() {
+                    window.location.href = `battle.html?host=${encodeURIComponent(hostName)}&speed=${speed}&acc=${acc}`;
+                };
+            }
+
+            // --- 기존 마이페이지 데이터 렌더링 로직 ---
+            const userData = JSON.parse(savedUser);
+
+            document.getElementById('avg-speed').innerText = userData.avgSpeed || 0;
+            document.getElementById('max-speed').innerText = userData.maxSpeed || 0;
+            document.getElementById('total-sessions').innerText = userData.totalSessions || 0;
+
+            document.getElementById('welcome-message').innerText = userData.nickname + "님, 환영합니다!";
+            document.getElementById('user-email').innerText = userData.email || "이메일 정보 제공 미동의";
+            document.getElementById('user-nickname').innerText = userData.nickname;
+            document.getElementById('user-joindate').innerText = userData.joinDate || "정보 없음";
+            
+            document.getElementById('login-provider').innerText = userData.provider === 'google' ? 'Google 연동' : 'Kakao 연동';
+            document.getElementById('login-provider').className = userData.provider === 'google' 
+                ? 'text-xs px-2 py-1 bg-white border border-gray-300 text-gray-600 rounded font-medium'
+                : 'text-xs px-2 py-1 bg-[#FEE500] text-[#191919] rounded font-medium';
+
+            if (!userData.dailyRecords) {
+                userData.dailyRecords = [];
+                localStorage.setItem('fingerRunUser', JSON.stringify(userData));
+            }
+
+            // 초기 차트 렌더링
+            renderCharts(userData.dailyRecords, 'day');
 
             // 필터 버튼 이벤트
             document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -435,12 +505,11 @@
             if (speedChartInstance) speedChartInstance.destroy();
             if (accuracyChartInstance) accuracyChartInstance.destroy();
 
-            // 공통 옵션 설정 (여백 확장)
             const commonOptions = {
                 responsive: true,
                 maintainAspectRatio: false,
                 layout: {
-                    padding: { top: 20, right: 15, left: 15, bottom: 5 } // 여백을 더 넉넉하게 추가
+                    padding: { top: 20, right: 15, left: 15, bottom: 5 } 
                 },
                 plugins: { legend: { display: false } },
                 elements: {
@@ -461,7 +530,7 @@
                         backgroundColor: 'rgba(59, 130, 246, 0.1)',
                         borderWidth: 3,
                         fill: true,
-                        clip: false // 🔥 선과 점이 잘리지 않도록 보호 (타수 그래프)
+                        clip: false
                     }]
                 },
                 options: {
@@ -488,7 +557,7 @@
                         backgroundColor: 'rgba(16, 185, 129, 0.1)',
                         borderWidth: 3,
                         fill: true,
-                        clip: false // 🔥 선과 점이 잘리지 않도록 보호 (정확도 그래프)
+                        clip: false
                     }]
                 },
                 options: {

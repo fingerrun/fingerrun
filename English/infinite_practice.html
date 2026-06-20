@@ -257,9 +257,10 @@
                         <a href="../Certificate/word-processor.html">워드프로세서</a>
                     </div>
                 </li>
+                <li><a href="../battle.html">타자 배틀</a></li>
                 <li><a href="../contact.html">문의하기</a></li>
                 <li class="ml-2">
-                    <a href="../mypage.html" title="프로필" style="padding: 0.5rem 0.6rem; border-radius: 50%;">
+                    <a href="#" onclick="goProfile(event)" title="프로필" style="padding: 0.5rem 0.6rem; border-radius: 50%;">
                         <i class="far fa-user text-[1.2rem] m-0"></i>
                     </a>
                 </li>
@@ -822,6 +823,17 @@
         document.addEventListener('DOMContentLoaded', () => {
             window.englishTypingPractice = new InfiniteEnglishTypingPractice();
         });
+
+        // 프로필 내비게이션용 클릭 이벤트 (battle.html에서 이식됨)
+        function goProfile(e) {
+            e.preventDefault(); // 화면 위로 튕김 방지
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (isLoggedIn === 'true') {
+                window.location.href = "../mypage.html";
+            } else {
+                window.location.href = "../login.html";
+            }
+        }
     </script>
 </body>
 </html>
