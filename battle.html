@@ -196,7 +196,7 @@
         }
         .runner i { display: inline-block; animation: sprint-motion 0.23s infinite linear; transform-origin: bottom center; }
 
-        /* [신규] 기절한 고스트 상태 CSS */
+        /* 기절한 고스트 상태 CSS */
         .runner.knocked-out i {
             animation: none !important;
             opacity: 0.5;
@@ -396,15 +396,16 @@
                         <span><i class="fas fa-flag-checkered mr-2"></i>새로운 도전장 만들기</span>
                         <i class="fas fa-chevron-right opacity-0 group-hover:opacity-100 transition"></i>
                     </div>
-                    <p class="text-slate-400 text-xs leading-relaxed">상대방 없이 홀로 10문장 정밀 완주 코스를 달립니다. 완료 후 도전장 링크가 생성됩니다.</p>
+                    <p class="text-slate-400 text-xs leading-relaxed">상대방 없이 홀로 10문장 정밀 완주 코스를 달립니다. 완료 후 도전장 링크가 생성됩니다. 그 링크를 경쟁자에게 보내세요!</p>
                 </button>
                 <button id="btnChallengeMode" class="w-full bg-slate-800 border-2 border-orange-500 hover:bg-slate-700 text-left p-5 rounded-xl transition group">
                     <div class="text-orange-400 font-bold text-xl mb-1 flex items-center justify-between">
-                        <span id="challengeTitleText"><i class="fas fa-fire mr-2"></i>도전장 수락하기</span>
+                        <span id="challengeTitleText"><i class="fas fa-fire mr-2"></i>AI 훈련봇과 대결</span>
                         <i class="fas fa-chevron-right opacity-0 group-hover:opacity-100 transition"></i>
                     </div>
-                    <p class="text-slate-400 text-xs leading-relaxed">경쟁자의 평균 타수 페이스 시뮬레이터와 실시간 순위 싸움을 벌입니다.</p>
+                    <p class="text-slate-400 text-xs leading-relaxed">받은 초대장이 없다면, 훈련된 AI 타자 봇과 한판 하세요!</p>
                 </button>
+                <p class="text-white text-sm font-semibold mt-2 text-center">직접 사람과 1 vs 1 매치를 하고 싶다면, 초대장을 보내거나 초대장을 받으세요!</p>
             </div>
         </div>
     </div>
@@ -424,7 +425,8 @@
     <script>
         class FingerRunMarathonEngine {
             constructor() {
-                this.sentences = [
+                // 전체 100개의 문장 풀
+                this.sentencePool = [
                     '끝까지 포기하지 않는 자가 결국 승리합니다.',
                     '오늘의 작은 노력이 내일의 기적을 만듭니다.',
                     '실패를 두려워하지 말고 끊임없이 도전하세요.',
@@ -476,7 +478,6 @@
                     '작은 성공을 축하하며 더 큰 무대를 준비하세요.',
                     '인생의 마라톤에서 가장 중요한 것은 나만의 페이스입니다.',
 
-                    // [다양한 주제: 일상, 데이터, 과학, 취미, 건강 등 50문장]
                     '맛있는 식사 한 끼는 하루의 피로를 싹 씻어줍니다.',
                     '정확한 데이터 분석은 올바른 의사결정의 핵심입니다.',
                     '푸른 하늘과 맑은 공기는 우리에게 주는 자연의 선물입니다.',
@@ -529,7 +530,9 @@
                     '블로그에 기록된 일상들은 훗날 소중한 자서전이 됩니다.'
                 ];
                 
-                this.totalRaceChars = this.sentences.slice(0, 10).join('').length;
+                this.sentences = [];
+                this.loadRandomSentences(); // 100문장 중 랜덤 10문장 세팅
+
                 this.myStage = 0; this.oppStage = 0;
                 this.myCompletedChars = 0; this.oppCompletedChars = 0;
 
@@ -541,7 +544,6 @@
                 this.hostSpeed = 420; 
                 this.hostAccuracy = 96; 
                 
-                // 패널티가 적용된 고스트의 실제 달리기 페이스 (음수면 0으로 고정)
                 this.ghostPace = Math.max(0, this.hostSpeed - (100 - this.hostAccuracy) * 30);
                 
                 this.myNickname = '도전자';
@@ -551,6 +553,17 @@
                 this.battleMode = null; 
 
                 this.evaluateQueryString();
+            }
+
+            // 100문장 중 랜덤하게 10문장 추출하는 메서드
+            loadRandomSentences() {
+                const shuffled = [...this.sentencePool];
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+                this.sentences = shuffled.slice(0, 10);
+                this.totalRaceChars = this.sentences.join('').length;
             }
 
             evaluateQueryString() {
@@ -564,7 +577,6 @@
                     this.hostSpeed = isNaN(parsedSpeed) ? 420 : parsedSpeed;
                     this.hostAccuracy = isNaN(parsedAcc) ? 96 : parsedAcc;
                     
-                    // 상대방 최종 점수(페이스) 계산
                     this.ghostPace = Math.max(0, this.hostSpeed - (100 - this.hostAccuracy) * 30);
                     
                     document.getElementById('challengeTitleText').innerHTML = `<i class="fas fa-fire mr-2"></i>도전장 수락 (상대: ${this.hostName})`;
@@ -601,7 +613,6 @@
                 document.getElementById('btnChallengeMode').addEventListener('click', () => {
                     this.battleMode = 'challenge';
                     
-                    // 버튼 클릭 시 봇의 페이스도 패널티를 한 번 더 갱신해 줍니다.
                     this.ghostPace = Math.max(0, this.hostSpeed - (100 - this.hostAccuracy) * 30);
                     
                     document.getElementById('modeSelectModal').style.display = 'none';
@@ -653,6 +664,9 @@
             resetGame() {
                 document.getElementById('battleResultModal').style.display = 'none';
                 
+                // 재도전 시 문장을 새로 뽑아 10문장 환경 리셋
+                this.loadRandomSentences();
+                
                 this.myStage = 0; 
                 this.oppStage = 0;
                 this.myCompletedChars = 0; 
@@ -678,7 +692,6 @@
                 document.getElementById('myRunner').style.left = '0%';
                 document.getElementById('oppRunner').style.left = '0%';
 
-                // 기절 상태 초기화 (재도전 시 고스트 상태를 원래대로 복구)
                 document.getElementById('oppRunner').classList.remove('knocked-out');
                 document.querySelector('#oppRunner i').className = 'fas fa-person-running';
 
@@ -686,7 +699,6 @@
                 myInput.value = '';
                 myInput.className = 'typing-input hidden'; 
                 
-                // 모드에 맞춰 고스트 상태 텍스트 재정비
                 if (this.battleMode === 'challenge' && this.ghostPace <= 0) {
                     document.getElementById('oppRunner').classList.add('knocked-out');
                     document.querySelector('#oppRunner i').className = 'fas fa-dizzy';
@@ -721,7 +733,6 @@
             }
 
             startOpponentMarathon() {
-                // 최종 점수가 0 이하면 고스트를 정지 상태로 둡니다.
                 if (this.ghostPace <= 0) {
                     return;
                 }
