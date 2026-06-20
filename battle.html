@@ -977,7 +977,7 @@
                 const message = `[${nickname}]님이 [${payload.speed}타 / 정확도 ${payload.acc}%]의 엄청난 기록으로 당신에게 도전장을 던졌습니다!\n👉 배틀 수락하기: ${inviteUrl}`;
                 
                 navigator.clipboard.writeText(message).then(() => {
-                    alert('🚀 배틀 초대 링크가 닉네임 및 스코어 메시지와 함께 클립보드에 복사되었습니다! 카톡이나 커뮤니티에 바로 붙여넣기(Ctrl+V) 하세요.');
+                    alert('🚀 배틀 초대 링크가 닉네임 및 스코어 메시지와 함께 클립보드에 복사되었습니다! 커뮤니티나 메일로 붙여넣기(Ctrl+V)해서 경쟁상대에게 보내세요!');
                 }).catch(err => {
                     alert('클립보드 복사에 실패했습니다. 수동으로 복사해주세요.\n' + message);
                 });
