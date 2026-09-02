@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html lang="ko"> 
 <head> 
-    <!-- Google Tag Manager -->
+<meta charset="UTF-8">
+
+<!-- 외부 리소스 조기 연결 (LCP 개선, 화면 변화 없음) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://cdn.tailwindcss.com">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+
+<!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-T9HC454Z');</script>
 <!-- End Google Tag Manager -->
-
-<meta charset="UTF-8">
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-7QSEYCFK83"></script>
@@ -22,7 +29,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </script>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-<title>핑거런 | 문의하기 - 고객지원 및 제안사항 접수</title>
+<title>문의하기 - 버그 신고·제휴·고객지원 | 핑거런</title>
 
 <!-- 파비콘 설정 -->
 <link rel="icon" type="image/svg+xml" href="images/finger-run-logo.svg">
@@ -37,19 +44,96 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
 <!-- SEO 메타태그 -->
-<meta name="description" content="핑거런 타자연습 사이트 문의하기 페이지에서 고객지원, 기술 문의, 제안사항을 빠르고 정확하게 접수받습니다. 버그 신고, 제휴 문의, 기타 궁금한 사항까지 친절한 답변을 제공하는 핑거런 타자연습 사이트 내 전용 문의 페이지입니다.">
-<meta name="keywords" content="핑거런 문의, 타자연습 문의, 고객지원, 기술지원, 문의하기, 연락처, fingerrun 문의">
+<meta name="description" content="핑거런 문의하기. 버그 신고, 제휴 문의, 기능 제안 등을 이메일로 접수합니다. 답변은 입력하신 메일로 보내드립니다.">
+<meta name="keywords" content="핑거런 문의, 타자연습 문의, 고객지원, 버그 신고, 제휴 문의, 문의하기, 연락처, fingerrun 문의">
 <meta name="author" content="FingerRun">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="theme-color" content="#3182f6">
 
-<!-- Open Graph (SNS 공유) -->
-<meta property="og:title" content="문의하기 | 핑거런">
-<meta property="og:description" content="핑거런 타자연습 사이트 문의하기 페이지.">
+<!-- Open Graph (네이버 / 카카오 / 페이스북 공유 카드) -->
+<meta property="og:site_name" content="핑거런 FingerRun">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:title" content="문의하기 - 버그 신고·제휴·고객지원 | 핑거런">
+<meta property="og:description" content="핑거런 문의하기. 버그 신고, 제휴 문의, 기능 제안을 이메일로 접수합니다.">
 <meta property="og:url" content="https://fingerrun.com/contact.html">
 <meta property="og:type" content="website">
+<!-- ※ images/og-image.png (1200x630 PNG) 파일을 올려야 썸네일이 표시됩니다. -->
+<meta property="og:image" content="https://fingerrun.com/images/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="핑거런 문의하기">
+
+<!-- Twitter / X 카드 (빙 크롤러도 참조) -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="문의하기 - 버그 신고·제휴·고객지원 | 핑거런">
+<meta name="twitter:description" content="핑거런 문의하기. 버그 신고, 제휴 문의, 기능 제안을 이메일로 접수합니다.">
+<meta name="twitter:image" content="https://fingerrun.com/images/og-image.png">
 
 <!-- 추가 SEO -->
 <link rel="canonical" href="https://fingerrun.com/contact.html">
+<link rel="sitemap" type="application/xml" href="https://fingerrun.com/sitemap.xml">
+
+<!-- 구조화 데이터 (구글 리치 결과 / 빙 지원) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ContactPage",
+      "@id": "https://fingerrun.com/contact.html#webpage",
+      "url": "https://fingerrun.com/contact.html",
+      "name": "문의하기 - 버그 신고·제휴·고객지원 | 핑거런",
+      "description": "핑거런 문의하기 페이지입니다. 버그 및 신고, 제휴 문의, 기타 문의를 이메일로 접수합니다.",
+      "inLanguage": "ko-KR",
+      "isPartOf": { "@id": "https://fingerrun.com/#website" },
+      "breadcrumb": { "@id": "https://fingerrun.com/contact.html#breadcrumb" },
+      "about": { "@id": "https://fingerrun.com/#organization" }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://fingerrun.com/#website",
+      "url": "https://fingerrun.com/",
+      "name": "핑거런",
+      "alternateName": "FingerRun",
+      "inLanguage": "ko-KR",
+      "publisher": { "@id": "https://fingerrun.com/#organization" }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://fingerrun.com/#organization",
+      "name": "핑거런",
+      "alternateName": "FingerRun",
+      "url": "https://fingerrun.com/",
+      "logo": "https://fingerrun.com/images/finger-run-logo.svg",
+      "email": "fingerrun@naver.com",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "fingerrun@naver.com",
+        "availableLanguage": ["ko", "en"],
+        "url": "https://fingerrun.com/contact.html"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://fingerrun.com/contact.html#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "핑거런 홈",
+          "item": "https://fingerrun.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "문의하기"
+        }
+      ]
+    }
+  ]
+}
+</script>
 
 <style> 
     * { 
@@ -561,7 +645,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <nav>
     <div class="nav-container">
         <a href="index.html" class="logo" aria-label="핑거런 홈페이지 메인으로 이동">
-            <img src="images/finger-run-logo.svg" alt="" class="h-8 w-auto"> 
+            <img src="images/finger-run-logo.svg" alt="핑거런 로고" width="32" height="32" class="h-8 w-auto"> 
             FingerRun
         </a>
         <ul class="nav-menu">
@@ -616,24 +700,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <li><a href="battle.html">타자 배틀</a></li>
             <li><a href="contact.html">문의하기</a></li>
             <li class="ml-2">
-                <a href="#" onclick="goProfile(event)" title="프로필" style="padding: 0.5rem 0.6rem; border-radius: 50%;">
-                    <i class="far fa-user text-[1.2rem] m-0"></i>
+                <a href="login.html" rel="nofollow" onclick="goProfile(event)" title="프로필" aria-label="마이페이지" style="padding: 0.5rem 0.6rem; border-radius: 50%;">
+                    <i class="far fa-user text-[1.2rem] m-0" aria-hidden="true"></i>
                 </a>
             </li>
         </ul>
     </div>
 </nav>
 
-<header style="display: none; background: #f8f9fa; padding: 1.5rem 0; border-bottom: 1px solid #e9ecef;">
-    <div style="max-width: 1200px; margin: 0 auto; text-align: center; padding: 0 2rem;">
-        <h1 style="font-size: 2rem; font-weight: 700; color: #191f28; margin: 0; line-height: 1.3;">핑거런 문의하기 - 핑거런 타자연습 사이트 고객지원 및 문의 전용 페이지로 빠르고 정확한 답변을 제공하며 사용자 만족도를 최우선으로 하는 타자연습 사이트 내 문의페이지입니다</h1>
-    </div>
-</header>
-
 <div class="container">
-    <div class="content"> 
-        <div class="section"> 
-            <h2 class="page-title">문의 유형</h2> 
+    <main class="content"> 
+        <section class="section"> 
+            <h1 class="page-title">문의 유형</h1> 
             <div class="inquiry-types"> 
                 <div class="inquiry-type" data-type="bug"> 
                     <div class="inquiry-type-title">버그 및 신고</div> 
@@ -651,15 +729,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <div class="radio-indicator"></div> 
                 </div> 
             </div> 
-        </div> 
+        </section> 
 
-        <div class="section"> 
+        <section class="section"> 
             <div class="form-group"> 
                 <label for="email" class="form-label"> 
                     이메일 주소 
                     <span id="emailError" class="error-message" style="display: none;">이메일 주소 형식이 아닙니다.</span> 
                 </label> 
-                <input type="email" id="email" class="form-input" placeholder="답변받을 이메일 주소를 입력하세요" required> 
+                <input type="email" id="email" class="form-input" placeholder="답변받을 이메일 주소를 입력하세요" autocomplete="email" required> 
             </div> 
 
             <div class="form-group"> 
@@ -671,7 +749,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <label for="content" class="form-label">문의 내용</label> 
                 <textarea id="content" class="form-input form-textarea" placeholder="문의하실 내용을 자세히 작성해 주세요" required></textarea> 
             </div> 
-        </div> 
+        </section> 
 
         <div class="agreement-section"> 
             <div class="agreement-header"> 
@@ -710,7 +788,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
 
         <div class="footer-space"></div> 
-    </div> 
+    </main> 
 </div> 
 
 <!-- Success Modal --> 

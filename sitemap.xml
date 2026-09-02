@@ -2,80 +2,86 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://fingerrun.com/</loc>
-    <lastmod>2025-08-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://fingerrun.com/Korean/practice.html</loc>
-    <lastmod>2025-08-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://fingerrun.com/English/practice.html</loc>
-    <lastmod>2025-08-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://fingerrun.com/Korean/game-mole.html</loc>
-    <lastmod>2025-08-01</lastmod>
+    <loc>https://fingerrun.com/Korean/infinite_practice.html</loc>
+    <lastmod>2026-09-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://fingerrun.com/English/infinite_practice.html</loc>
+    <lastmod>2026-09-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://fingerrun.com/Game/mole.html</loc>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://fingerrun.com/English/game-mole.html</loc>
-    <lastmod>2025-08-01</lastmod>
+    <loc>https://fingerrun.com/Game/plane.html</loc>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://fingerrun.com/Korean/game-plane.html</loc>
-    <lastmod>2025-08-01</lastmod>
+    <loc>https://fingerrun.com/Game/delivery.html</loc>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://fingerrun.com/English/game-plane.html</loc>
-    <lastmod>2025-08-01</lastmod>
+    <loc>https://fingerrun.com/Game/tank.html</loc>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://fingerrun.com/Korean/game-delivery.html</loc>
-    <lastmod>2025-08-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://fingerrun.com/English/game-delivery.html</loc>
-    <lastmod>2025-08-01</lastmod>
+    <loc>https://fingerrun.com/battle.html</loc>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://fingerrun.com/writing.html</loc>
-    <lastmod>2025-08-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <lastmod>2026-09-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://fingerrun.com/Certificate/word-processor.html</loc>
-    <lastmod>2025-08-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://fingerrun.com/notices.html</loc>
-    <lastmod>2025-08-01</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2026-09-02</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://fingerrun.com/contact.html</loc>
-    <lastmod>2025-08-01</lastmod>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.6</priority>
   </url>
 </urlset>

@@ -17,8 +17,44 @@
       gtag('config', 'G-7QSEYCFK83');
     </script>
 
-    <title>핑거런 - 마이페이지</title>
-    
+    <!-- 개인 기록 페이지이므로 검색 색인 제외 (로그인 필요 + 사용자별 데이터) -->
+    <meta name="robots" content="noindex, follow">
+
+    <title>마이페이지 | 핑거런 타자연습</title>
+    <meta name="description" content="핑거런 마이페이지에서 나의 평균 타수, 최고 타수, 정확도 변화를 그래프로 확인하고 회원 정보를 관리하세요.">
+    <meta name="author" content="FingerRun">
+    <meta name="theme-color" content="#667eea">
+    <!-- ?invite=true&host=&speed=&acc= 조합으로 URL이 무한 생성되므로 canonical 필수 -->
+    <link rel="canonical" href="https://fingerrun.com/mypage.html">
+
+    <!-- 렌더링에 필요한 리소스만 preconnect, 나머지는 dns-prefetch (화면 변화 없음) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+    <link rel="dns-prefetch" href="https://www.gstatic.com">
+
+    <!-- battle.html이 만드는 초대 링크(mypage.html?invite=true...)가 카카오톡으로 공유되므로 OG 카드 필요 -->
+    <meta property="og:site_name" content="핑거런 FingerRun">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:title" content="타자 배틀 도전장 | 핑거런">
+    <meta property="og:description" content="핑거런에서 도착한 타자 배틀 도전장입니다. 상대의 기록을 깨고 살아남을 자신이 있나요?">
+    <meta property="og:url" content="https://fingerrun.com/mypage.html">
+    <meta property="og:type" content="website">
+    <!-- ※ images/og-image.png (1200x630 PNG) 파일을 올려야 썸네일이 표시됩니다. -->
+    <meta property="og:image" content="https://fingerrun.com/images/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="핑거런 - 무료 온라인 타자연습 사이트">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="타자 배틀 도전장 | 핑거런">
+    <meta name="twitter:description" content="핑거런에서 도착한 타자 배틀 도전장입니다. 상대의 기록을 깨고 살아남을 자신이 있나요?">
+    <meta name="twitter:image" content="https://fingerrun.com/images/og-image.png">
+
     <link rel="icon" type="image/svg+xml" href="images/finger-run-logo.svg">
     <link rel="shortcut icon" type="image/svg+xml" href="images/finger-run-logo.svg">
     <link rel="apple-touch-icon" href="images/finger-run-logo.svg">
@@ -175,7 +211,7 @@
     <nav>
         <div class="nav-container">
             <a href="index.html" class="logo" aria-label="핑거런 홈페이지 메인으로 이동">
-                <img src="images/finger-run-logo.svg" alt="" class="h-8 w-auto"> 
+                <img src="images/finger-run-logo.svg" alt="" width="32" height="32" class="h-8 w-auto"> 
                 FingerRun
             </a>
             <ul class="nav-menu">
@@ -230,25 +266,25 @@
                 <li><a href="battle.html">타자 배틀</a></li>
                 <li><a href="contact.html">문의하기</a></li>
                 <li class="ml-2">
-                    <a href="#" onclick="goProfile(event)" title="프로필" style="padding: 0.5rem 0.6rem; border-radius: 50%;">
-                        <i class="far fa-user text-[1.2rem] m-0"></i>
+                    <a href="mypage.html" rel="nofollow" onclick="goProfile(event)" title="프로필" aria-label="마이페이지" style="padding: 0.5rem 0.6rem; border-radius: 50%;">
+                        <i class="far fa-user text-[1.2rem] m-0" aria-hidden="true"></i>
                     </a>
                 </li>
             </ul>
         </div>
     </nav>
 
-    <div id="inviteModal" class="modal-overlay">
+    <div id="inviteModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="inviteModalTitle">
         <div class="modal-box relative">
-            <button onclick="closeInviteModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition">
-                <i class="fas fa-times text-xl"></i>
+            <button type="button" onclick="closeInviteModal()" aria-label="도전장 닫기" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition">
+                <i class="fas fa-times text-xl" aria-hidden="true"></i>
             </button>
 
             <div class="w-20 h-20 bg-orange-100 text-orange-500 rounded-full flex items-center justify-center text-4xl mx-auto mb-4 animate-bounce">
-                <i class="fas fa-envelope-open-text"></i>
+                <i class="fas fa-envelope-open-text" aria-hidden="true"></i>
             </div>
             
-            <h2 class="text-2xl font-black text-gray-900 mb-2">도전장이 도착했습니다!</h2>
+            <h2 id="inviteModalTitle" class="text-2xl font-black text-gray-900 mb-2">도전장이 도착했습니다!</h2>
             <p id="inviteModalDesc" class="text-gray-600 text-sm leading-relaxed mb-6 bg-gray-50 p-4 rounded-xl border border-gray-100">
                 <strong class="text-orange-500 text-lg" id="inviteHostName">누군가</strong>님이 엄청난 기록을 세웠습니다.<br>
                 <span class="font-mono text-gray-800 font-bold mt-2 inline-block">평균 속도 <span id="inviteSpeed">0</span>타 / 정확도 <span id="inviteAcc">0</span>%</span><br>
@@ -256,17 +292,17 @@
             </p>
             
             <div class="flex flex-col gap-2">
-                <button id="acceptBattleBtn" class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-3.5 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1">
+                <button type="button" id="acceptBattleBtn" class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-3.5 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1">
                     🔥 배틀 수락하기
                 </button>
-                <button onclick="closeInviteModal()" class="w-full bg-gray-100 text-gray-600 font-medium py-3 rounded-xl hover:bg-gray-200 transition">
+                <button type="button" onclick="closeInviteModal()" class="w-full bg-gray-100 text-gray-600 font-medium py-3 rounded-xl hover:bg-gray-200 transition">
                     다음에 하기
                 </button>
             </div>
         </div>
     </div>
 
-    <div class="max-w-4xl mx-auto mt-12 px-6">
+    <main class="max-w-4xl mx-auto mt-12 px-6">
         <div class="flex items-end gap-3 mb-8">
             <h1 class="text-3xl font-bold">마이페이지</h1>
             <span id="welcome-message" class="text-gray-500 mb-1">사용자 정보를 불러오는 중...</span>
@@ -284,7 +320,7 @@
             </div>
 
             <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col items-center justify-center relative">
-                <i class="fas fa-history text-blue-100 absolute top-4 right-4 text-2xl"></i>
+                <i class="fas fa-history text-blue-100 absolute top-4 right-4 text-2xl" aria-hidden="true"></i>
                 <span class="text-gray-500 text-sm font-medium mb-2">전체 문장 연습 횟수</span>
                 <div class="text-3xl font-bold text-gray-900"><span id="total-sessions">-</span> <span class="text-base font-normal text-gray-500">회</span></div>
             </div>
@@ -295,22 +331,22 @@
                 <h2 class="text-lg font-bold text-gray-900">나의 타자 성장 기록</h2>
                 
                 <div class="flex gap-1 bg-gray-100 p-1 rounded-lg">
-                    <button class="filter-btn px-4 py-1.5 text-sm rounded-md bg-white shadow-sm text-blue-600 font-bold transition active" data-unit="day">1일</button>
-                    <button class="filter-btn px-4 py-1.5 text-sm rounded-md text-gray-500 hover:text-gray-700 font-medium transition" data-unit="month">1달</button>
-                    <button class="filter-btn px-4 py-1.5 text-sm rounded-md text-gray-500 hover:text-gray-700 font-medium transition" data-unit="year">1년</button>
+                    <button type="button" class="filter-btn px-4 py-1.5 text-sm rounded-md bg-white shadow-sm text-blue-600 font-bold transition active" data-unit="day">1일</button>
+                    <button type="button" class="filter-btn px-4 py-1.5 text-sm rounded-md text-gray-500 hover:text-gray-700 font-medium transition" data-unit="month">1달</button>
+                    <button type="button" class="filter-btn px-4 py-1.5 text-sm rounded-md text-gray-500 hover:text-gray-700 font-medium transition" data-unit="year">1년</button>
                 </div>
             </div>
 
             <div class="relative w-full" style="height: 400px;">
                 <h3 class="text-sm font-medium text-gray-500 mb-2">평균 타수 변화 (타/분)</h3>
-                <canvas id="speedChart"></canvas>
+                <canvas id="speedChart" role="img" aria-label="날짜별 평균 타수 변화 그래프"></canvas>
             </div>
 
             <hr class="border-t-2 border-dashed border-gray-200 mt-14 mb-10">
 
             <div class="relative w-full" style="height: 300px;">
                 <h3 class="text-sm font-medium text-gray-500 mb-2">정확도 변화 (%)</h3>
-                <canvas id="accuracyChart"></canvas>
+                <canvas id="accuracyChart" role="img" aria-label="날짜별 정확도 변화 그래프"></canvas>
             </div>
         </div>
 
@@ -330,8 +366,8 @@
                     <div class="w-32 text-gray-500 font-medium text-sm">닉네임</div>
                     <div class="flex-1 text-gray-900 font-medium flex items-center gap-2">
                         <span id="user-nickname">정보 없음</span>
-                        <button onclick="editProfile('nickname')" class="text-gray-400 hover:text-blue-600 transition">
-                            <i class="fas fa-pencil-alt text-sm"></i>
+                        <button type="button" onclick="editProfile('nickname')" aria-label="닉네임 수정" class="text-gray-400 hover:text-blue-600 transition">
+                            <i class="fas fa-pencil-alt text-sm" aria-hidden="true"></i>
                         </button>
                     </div>
                 </div>
@@ -340,8 +376,8 @@
                     <div class="w-32 text-gray-500 font-medium text-sm">생년월일</div>
                     <div class="flex-1 text-gray-900 font-medium flex items-center gap-2">
                         <span id="user-birthdate">미등록</span>
-                        <button onclick="editProfile('birthdate')" class="text-gray-400 hover:text-blue-600 transition">
-                            <i class="fas fa-pencil-alt text-sm"></i>
+                        <button type="button" onclick="editProfile('birthdate')" aria-label="생년월일 수정" class="text-gray-400 hover:text-blue-600 transition">
+                            <i class="fas fa-pencil-alt text-sm" aria-hidden="true"></i>
                         </button>
                     </div>
                 </div>
@@ -354,11 +390,11 @@
         </div>
 
         <div class="flex justify-end">
-            <button onclick="handleLogout()" class="px-6 py-2.5 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition text-sm">
+            <button type="button" onclick="handleLogout()" class="px-6 py-2.5 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition text-sm">
                 로그아웃
             </button>
         </div>
-    </div>
+    </main>
 
     <script>
         function goProfile(e) {
@@ -603,7 +639,7 @@
                     const { getFirestore, doc, updateDoc } = await import("https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js");
                     
                     const firebaseConfig = {
-                        apiKey: "AIzaSyDKOS6QVMn6fhsIu1Sj2JSrEfOpq1lR1vU",
+                        apiKey: "AIzaSyDK•••••••••••••••••••••••••••••••",
                         authDomain: "fingerrun-fe27d.firebaseapp.com",
                         projectId: "fingerrun-fe27d",
                         storageBucket: "fingerrun-fe27d.firebasestorage.app",
