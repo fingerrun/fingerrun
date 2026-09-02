@@ -2,8 +2,14 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+    <!-- 외부 리소스 조기 연결 (LCP 개선, 화면 변화 없음) -->
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -17,23 +23,114 @@
       gtag('config', 'G-7QSEYCFK83');
     </script>
 
-    <title>핑거런 | 영어 타자연습 - 무한 연습</title>
-    
+    <title>영어 타자연습 무한 연습 - 끝없는 영타 문장 연습 | 핑거런</title>
+
     <link rel="icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
     <link rel="shortcut icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
     <link rel="apple-touch-icon" href="../images/finger-run-logo.svg">
-    
-    <meta name="description" content="핑거런 영어타자 무한 연습으로 타이핑 한계에 도전하세요. 끊기지 않는 무한 연습 시스템과 실시간 정확도 측정을 제공합니다.">
-    <meta name="keywords" content="영어타자연습, 무한타자, English typing, 영어타자 무한, 영타연습, 핑거런">
-    <meta name="author" content="FingerRun">
-    <meta name="robots" content="index, follow">
 
-    <meta property="og:title" content="핑거런 | 영어 타자연습 - 무한 연습">
-    <meta property="og:description" content="AI 피드백 기능 없이 끊임 없는 문제들을 도전해보세요!">
+    <!-- 기본 SEO 메타 -->
+    <meta name="description" content="영어 타자연습 무한 모드. 알파벳·단어·문장 문제가 끝없이 이어지며 정확도와 타자 속도를 실시간으로 확인할 수 있는 무료 영타 연습입니다.">
+    <meta name="keywords" content="영어타자연습, 무한타자, English typing, 영어타자 무한, 영타연습, 영어 문장 타자연습, 핑거런">
+    <meta name="author" content="FingerRun">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="theme-color" content="#667eea">
+
+    <!-- Open Graph (네이버 / 카카오 / 페이스북 공유 카드) -->
+    <meta property="og:site_name" content="핑거런 FingerRun">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:title" content="영어 타자연습 무한 연습 - 끝없는 영타 문장 연습 | 핑거런">
+    <meta property="og:description" content="알파벳·단어·문장 문제가 끝없이 이어지는 영어 타자연습 무한 모드. 정확도와 타자 속도를 실시간으로 확인하세요.">
     <meta property="og:url" content="https://fingerrun.com/English/infinite_practice.html">
     <meta property="og:type" content="website">
+    <!-- ※ images/og-image.png (1200x630 PNG) 파일을 올려야 썸네일이 표시됩니다. -->
+    <meta property="og:image" content="https://fingerrun.com/images/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="핑거런 영어 타자연습 무한 연습">
+
+    <!-- Twitter / X 카드 (빙 크롤러도 참조) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="영어 타자연습 무한 연습 - 끝없는 영타 문장 연습 | 핑거런">
+    <meta name="twitter:description" content="알파벳·단어·문장 문제가 끝없이 이어지는 영어 타자연습 무한 모드. 정확도와 타자 속도를 실시간으로 확인하세요.">
+    <meta name="twitter:image" content="https://fingerrun.com/images/og-image.png">
 
     <link rel="canonical" href="https://fingerrun.com/English/infinite_practice.html">
+    <link rel="sitemap" type="application/xml" href="https://fingerrun.com/sitemap.xml">
+
+    <!-- 구조화 데이터 (구글 리치 결과 / 빙 지원) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebPage",
+          "@id": "https://fingerrun.com/English/infinite_practice.html#webpage",
+          "url": "https://fingerrun.com/English/infinite_practice.html",
+          "name": "영어 타자연습 무한 연습 - 끝없는 영타 문장 연습 | 핑거런",
+          "description": "알파벳·단어·문장 문제가 끝없이 이어지는 영어 타자연습 무한 모드. 정확도와 타자 속도를 실시간으로 확인할 수 있습니다.",
+          "inLanguage": "ko-KR",
+          "isPartOf": { "@id": "https://fingerrun.com/#website" },
+          "breadcrumb": { "@id": "https://fingerrun.com/English/infinite_practice.html#breadcrumb" }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://fingerrun.com/#website",
+          "url": "https://fingerrun.com/",
+          "name": "핑거런",
+          "alternateName": "FingerRun",
+          "inLanguage": "ko-KR",
+          "publisher": { "@id": "https://fingerrun.com/#organization" }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://fingerrun.com/#organization",
+          "name": "핑거런",
+          "alternateName": "FingerRun",
+          "url": "https://fingerrun.com/",
+          "logo": "https://fingerrun.com/images/finger-run-logo.svg"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://fingerrun.com/English/infinite_practice.html#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "핑거런 홈",
+              "item": "https://fingerrun.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "영어 타자연습",
+              "item": "https://fingerrun.com/English/practice.html"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "영어 타자 무한 연습"
+            }
+          ]
+        },
+        {
+          "@type": "LearningResource",
+          "@id": "https://fingerrun.com/English/infinite_practice.html#resource",
+          "name": "영어 타자 무한 연습",
+          "description": "알파벳, 영어 단어, 영어 문장 문제가 끝없이 제공되는 무한 반복 영어 타자연습입니다. 손가락별 알파벳 연습과 실시간 정확도·타자 속도 측정을 지원합니다.",
+          "url": "https://fingerrun.com/English/infinite_practice.html",
+          "inLanguage": "ko-KR",
+          "learningResourceType": "타자연습",
+          "educationalLevel": "Beginner to Advanced",
+          "teaches": "영문 타자 속도, 영타 정확도, 손가락별 자판 위치",
+          "isAccessibleForFree": true,
+          "provider": { "@id": "https://fingerrun.com/#organization" },
+          "isPartOf": { "@id": "https://fingerrun.com/#website" }
+        }
+      ]
+    }
+    </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     
@@ -218,7 +315,7 @@
     <nav>
         <div class="nav-container">
             <a href="../index.html" class="logo" aria-label="핑거런 홈페이지 메인으로 이동">
-                <img src="../images/finger-run-logo.svg" alt="" class="h-8 w-auto"> FingerRun
+                <img src="../images/finger-run-logo.svg" alt="핑거런 로고" width="32" height="32" class="h-8 w-auto"> FingerRun
             </a>
             <ul class="nav-menu">
                 <li><a href="../notices.html">공지사항</a></li>
@@ -260,21 +357,21 @@
                 <li><a href="../battle.html">타자 배틀</a></li>
                 <li><a href="../contact.html">문의하기</a></li>
                 <li class="ml-2">
-                    <a href="#" onclick="goProfile(event)" title="프로필" style="padding: 0.5rem 0.6rem; border-radius: 50%;">
-                        <i class="far fa-user text-[1.2rem] m-0"></i>
+                    <a href="../login.html" rel="nofollow" onclick="goProfile(event)" title="프로필" aria-label="마이페이지" style="padding: 0.5rem 0.6rem; border-radius: 50%;">
+                        <i class="far fa-user text-[1.2rem] m-0" aria-hidden="true"></i>
                     </a>
                 </li>
             </ul>
         </div>
     </nav>
 
-    <div class="main-container">
-        <div class="page-header">
+    <main class="main-container">
+        <header class="page-header">
             <h1 class="page-title">영어 타자 무한 연습</h1>
             <p class="page-description">AI 피드백 기능 없이 끊임 없는 문제들을 도전해보세요!</p>
-        </div>
+        </header>
         
-        <div class="practice-container">
+        <section class="practice-container" aria-label="영어 타자 무한 연습">
             <div class="practice-menu">
                 <button class="menu-btn" data-mode="alphabet">알파벳연습</button>
                 <button class="menu-btn" data-mode="word">단어연습</button>
@@ -287,7 +384,7 @@
                 <div class="text-display sentence-mode" id="textDisplay"></div>
                 
                 <div class="input-area">
-                    <input type="text" class="typing-input" id="typingInput" placeholder="여기에 타이핑하세요..." autocomplete="off">
+                    <input type="text" class="typing-input" id="typingInput" placeholder="여기에 타이핑하세요..." aria-label="영어 타자 입력창" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
                 </div>
 
                 <div class="keyboard-controls">
@@ -296,7 +393,7 @@
                     </button>
                 </div>
 
-                <div class="keyboard-area">
+                <div class="keyboard-area" aria-hidden="true">
                     <div class="keyboard" id="keyboard">
                         <div class="keyboard-row">
                             <div class="key" data-key="`"><div class="key-dual"><span class="key-en">`</span><span class="key-ko">~</span></div></div>
@@ -328,7 +425,7 @@
                             <div class="key" data-key="p"><div class="key-dual"><span class="key-en">P</span><span class="key-ko">p</span></div></div>
                             <div class="key" data-key="["><div class="key-dual"><span class="key-en">[</span><span class="key-ko">{</span></div></div>
                             <div class="key" data-key="]"><div class="key-dual"><span class="key-en">]</span><span class="key-ko">}</span></div></div>
-                            <div class="key" data-key="\\"><div class="key-dual"><span class="key-en">\\</span><span class="key-ko">|</span></div></div>
+                            <div class="key" data-key="\"><div class="key-dual"><span class="key-en">\</span><span class="key-ko">|</span></div></div>
                         </div>
                         <div class="keyboard-row">
                             <div class="key caps" data-key="CapsLock">Caps</div>
@@ -378,8 +475,8 @@
                 <div class="stat-item"><div class="stat-value" id="speed">0</div><div class="stat-label">타자/분</div></div>
                 <div class="stat-item"><div class="stat-value" id="progress">1번째</div><div class="stat-label">진행 모드</div></div>
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
 
     <script>
         class InfiniteEnglishTypingPractice {

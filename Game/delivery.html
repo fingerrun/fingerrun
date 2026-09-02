@@ -2,6 +2,15 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+
+    <!-- 외부 리소스 조기 연결 (LCP 개선, 화면 변화 없음) -->
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7QSEYCFK83"></script>
     <script>
@@ -12,23 +21,126 @@
     </script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>핑거런 | 택배 분류 타자게임 (Package Typing Game)</title>
-    
+    <title>택배 분류 타자게임 - 한글·영어 무료 타자 게임 | 핑거런</title>
+
     <!-- 파비콘 설정 -->
     <link rel="icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
     <link rel="shortcut icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
     <link rel="apple-touch-icon" href="../images/finger-run-logo.svg">
-    
-    <!-- SEO 메타태그 -->
-    <meta name="description" content="핑거런 택배 분류 게임. 한글 및 영어 모드를 지원하며, 택배 이름을 정확하게 타이핑하여 분류하는 물류 시뮬레이션 타자 게임입니다.">
-    <meta name="keywords" content="한글 타자게임, 영어 타자게임, 택배 분류 게임, Package Typing Game, FingerRun, 물류 시뮬레이션">
-    <meta name="author" content="FingerRun">
-    <meta name="robots" content="index, follow">
 
-    <!-- Open Graph -->
-    <meta property="og:title" content="택배 분류 게임 (한글/영어) | 핑거런">
-    <meta property="og:description" content="택배 이름을 정확하게 타이핑해서 택배를 올바르게 분류하는 타자게임! 한글/영어 모드 지원.">
+    <!-- SEO 메타태그 -->
+    <meta name="description" content="컨베이어 벨트 위 택배 이름을 타이핑해 분류하는 무료 타자게임. 한글·영어 모드와 10단계 난이도로 타자 속도를 재미있게 올려보세요.">
+    <meta name="keywords" content="타자게임, 한글 타자게임, 영어 타자게임, 택배 분류 게임, 무료 타자게임, Package Typing Game, FingerRun, 핑거런">
+    <meta name="author" content="FingerRun">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="theme-color" content="#667eea">
+
+    <!-- Open Graph (네이버 / 카카오 / 페이스북 공유 카드) -->
+    <meta property="og:site_name" content="핑거런 FingerRun">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:title" content="택배 분류 타자게임 - 한글·영어 무료 타자 게임 | 핑거런">
+    <meta property="og:description" content="컨베이어 벨트 위 택배 이름을 타이핑해 분류하는 무료 타자게임! 한글·영어 모드와 10단계 난이도를 지원합니다.">
+    <meta property="og:url" content="https://fingerrun.com/Game/delivery.html">
     <meta property="og:type" content="website">
+    <!-- ※ images/og-image.png (1200x630 PNG) 파일을 올려야 썸네일이 표시됩니다. -->
+    <meta property="og:image" content="https://fingerrun.com/images/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="핑거런 택배 분류 타자게임">
+
+    <!-- Twitter / X 카드 (빙 크롤러도 참조) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="택배 분류 타자게임 - 한글·영어 무료 타자 게임 | 핑거런">
+    <meta name="twitter:description" content="컨베이어 벨트 위 택배 이름을 타이핑해 분류하는 무료 타자게임! 한글·영어 모드와 10단계 난이도를 지원합니다.">
+    <meta name="twitter:image" content="https://fingerrun.com/images/og-image.png">
+
+    <link rel="canonical" href="https://fingerrun.com/Game/delivery.html">
+    <link rel="sitemap" type="application/xml" href="https://fingerrun.com/sitemap.xml">
+
+    <!-- 구조화 데이터 (구글 리치 결과 / 빙 지원) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebPage",
+          "@id": "https://fingerrun.com/Game/delivery.html#webpage",
+          "url": "https://fingerrun.com/Game/delivery.html",
+          "name": "택배 분류 타자게임 - 한글·영어 무료 타자 게임 | 핑거런",
+          "description": "컨베이어 벨트 위의 택배 이름을 타이핑해 분류하는 무료 타자게임입니다. 한글과 영어 모드, 10단계 난이도를 지원합니다.",
+          "inLanguage": "ko-KR",
+          "isPartOf": { "@id": "https://fingerrun.com/#website" },
+          "breadcrumb": { "@id": "https://fingerrun.com/Game/delivery.html#breadcrumb" },
+          "mainEntity": { "@id": "https://fingerrun.com/Game/delivery.html#game" }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://fingerrun.com/#website",
+          "url": "https://fingerrun.com/",
+          "name": "핑거런",
+          "alternateName": "FingerRun",
+          "inLanguage": "ko-KR",
+          "publisher": { "@id": "https://fingerrun.com/#organization" }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://fingerrun.com/#organization",
+          "name": "핑거런",
+          "alternateName": "FingerRun",
+          "url": "https://fingerrun.com/",
+          "logo": "https://fingerrun.com/images/finger-run-logo.svg"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://fingerrun.com/Game/delivery.html#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "핑거런 홈",
+              "item": "https://fingerrun.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "타자게임",
+              "item": "https://fingerrun.com/Game/delivery.html"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "택배 분류 타자게임"
+            }
+          ]
+        },
+        {
+          "@type": "VideoGame",
+          "@id": "https://fingerrun.com/Game/delivery.html#game",
+          "name": "택배 분류 타자게임",
+          "alternateName": "Package Typing Game",
+          "description": "컨베이어 벨트 위로 지나가는 택배의 이름을 정확하게 입력해 분류하는 타자게임입니다. 한글 모드와 English 모드를 지원하며, 60초마다 레벨이 올라가는 10단계 구성입니다.",
+          "url": "https://fingerrun.com/Game/delivery.html",
+          "inLanguage": ["ko-KR", "en"],
+          "genre": ["타자 게임", "교육용 게임"],
+          "gamePlatform": "Web browser",
+          "playMode": "SinglePlayer",
+          "applicationCategory": "GameApplication",
+          "operatingSystem": "Any",
+          "browserRequirements": "Requires JavaScript",
+          "isAccessibleForFree": true,
+          "author": { "@id": "https://fingerrun.com/#organization" },
+          "publisher": { "@id": "https://fingerrun.com/#organization" },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "KRW",
+            "category": "Free",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      ]
+    }
+    </script>
 
     <!-- Tailwind & FontAwesome (통일성 유지) -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -468,7 +580,7 @@
 
     <!-- 시작 모달 -->
     <div id="startModal" class="modal-screen">
-        <h1 class="modal-title-main">PACKAGE SORT</h1>
+        <p class="modal-title-main" role="heading" aria-level="2">PACKAGE SORT</p>
         <p class="modal-subtitle-main">
             컨베이어 벨트 위의 택배를 분류하십시오.<br>
             <span style="font-size: 1rem; color: #94a3b8;">60초마다 레벨업 | 단어 입력 후 스페이스바</span>
@@ -480,7 +592,7 @@
     <nav>
         <div class="nav-container">
             <a href="../index.html" class="logo" aria-label="핑거런 홈페이지 메인으로 이동">
-                <img src="../images/finger-run-logo.svg" alt="" class="h-8 w-auto"> 
+                <img src="../images/finger-run-logo.svg" alt="핑거런 로고" width="32" height="32" class="h-8 w-auto"> 
                 FingerRun
             </a>
             <ul class="nav-menu">
@@ -535,8 +647,8 @@
                 <li><a href="../battle.html">타자 배틀</a></li>
                 <li><a href="../contact.html">문의하기</a></li>
                 <li class="ml-2">
-                    <a href="#" onclick="goProfile(event)" title="프로필" style="padding: 0.5rem 0.6rem; border-radius: 50%;">
-                        <i class="far fa-user text-[1.2rem] m-0"></i>
+                    <a href="../login.html" rel="nofollow" onclick="goProfile(event)" title="프로필" aria-label="마이페이지" style="padding: 0.5rem 0.6rem; border-radius: 50%;">
+                        <i class="far fa-user text-[1.2rem] m-0" aria-hidden="true"></i>
                     </a>
                 </li>
             </ul>
@@ -544,9 +656,9 @@
     </nav>
 
     <!-- Main Content -->
-    <div class="main-content">
-        <div class="game-container">
-            <div class="game-header">
+    <main class="main-content">
+        <section class="game-container" aria-label="택배 분류 타자게임">
+            <header class="game-header">
                 <h1 class="game-title" id="ui-title">📦 택배 타자게임</h1>
                 <p id="ui-desc">60초를 버티며 컨베이어 벨트 위의 택배를 처리하세요!</p>
                 
@@ -554,7 +666,7 @@
                     <button class="mode-btn active" id="btn-korean" onclick="setGameMode('Korean')">한글 모드</button>
                     <button class="mode-btn" id="btn-english" onclick="setGameMode('English')">English Mode</button>
                 </div>
-            </div>
+            </header>
 
             <div class="game-stats">
                 <div class="stat-item" id="timer-container">
@@ -574,15 +686,15 @@
             <div class="conveyor-belt" id="conveyor"></div>
 
             <div class="input-container">
-                <input type="text" class="word-input" id="wordInput" placeholder="택배의 단어를 입력하세요... (스페이스바로 처리)" disabled>
+                <input type="text" class="word-input" id="wordInput" placeholder="택배의 단어를 입력하세요... (스페이스바로 처리)" aria-label="택배 단어 입력창" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" disabled>
                 <button class="submit-btn" id="submitBtn" onclick="checkWord()">처리</button>
             </div>
 
             <div class="game-controls" style="text-align: center;">
                 <button class="control-btn reset-btn" id="btn-reset" onclick="resetGame()" style="padding: 10px 20px; border-radius: 10px; border: none; background: #e2e8f0; color: #475569; font-weight: bold; cursor: pointer;">초기화</button>
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
 
     <!-- 게임 오버 모달 -->
     <div class="game-over-modal" id="gameOverModal">

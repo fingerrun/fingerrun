@@ -2,8 +2,16 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.67, maximum-scale=1.0, user-scalable=yes">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=0.67, user-scalable=yes">
+
+    <!-- 외부 리소스 조기 연결 (LCP 개선, 화면 변화 없음) -->
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -21,12 +29,126 @@
       gtag('config', 'G-7QSEYCFK83');
     </script>
 
-    <title>핑거런 | 비행기 조종 타자게임</title>
-    
+    <title>비행기 조종 타자게임 - 한글·영어 무료 타자 게임 | 핑거런</title>
+
     <!-- 파비콘 설정 -->
     <link rel="icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
     <link rel="shortcut icon" type="image/svg+xml" href="../images/finger-run-logo.svg">
     <link rel="apple-touch-icon" href="../images/finger-run-logo.svg">
+
+    <!-- 기본 SEO 메타 -->
+    <meta name="description" content="단어를 타이핑해 비행기 고도를 조절하고 장애물을 피하는 무료 타자게임. 한글·영어 모드와 10레벨 난이도로 타자 속도를 재미있게 올려보세요.">
+    <meta name="keywords" content="타자게임, 비행기 게임, 비행기 조종 타자게임, 한글 타자게임, 영어 타자게임, 무료 타자게임, 핑거런, FingerRun">
+    <meta name="author" content="FingerRun">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="theme-color" content="#0f172a">
+
+    <!-- Open Graph (네이버 / 카카오 / 페이스북 공유 카드) -->
+    <meta property="og:site_name" content="핑거런 FingerRun">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:title" content="비행기 조종 타자게임 - 한글·영어 무료 타자 게임 | 핑거런">
+    <meta property="og:description" content="단어를 타이핑해 비행기 고도를 조절하고 장애물을 피하는 무료 타자게임! 한글·영어 모드와 10레벨 난이도를 지원합니다.">
+    <meta property="og:url" content="https://fingerrun.com/Game/plane.html">
+    <meta property="og:type" content="website">
+    <!-- ※ images/og-image.png (1200x630 PNG) 파일을 올려야 썸네일이 표시됩니다. -->
+    <meta property="og:image" content="https://fingerrun.com/images/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="핑거런 비행기 조종 타자게임">
+
+    <!-- Twitter / X 카드 (빙 크롤러도 참조) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="비행기 조종 타자게임 - 한글·영어 무료 타자 게임 | 핑거런">
+    <meta name="twitter:description" content="단어를 타이핑해 비행기 고도를 조절하고 장애물을 피하는 무료 타자게임! 한글·영어 모드와 10레벨 난이도를 지원합니다.">
+    <meta name="twitter:image" content="https://fingerrun.com/images/og-image.png">
+
+    <link rel="canonical" href="https://fingerrun.com/Game/plane.html">
+    <link rel="sitemap" type="application/xml" href="https://fingerrun.com/sitemap.xml">
+
+    <!-- 구조화 데이터 (구글 리치 결과 / 빙 지원) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebPage",
+          "@id": "https://fingerrun.com/Game/plane.html#webpage",
+          "url": "https://fingerrun.com/Game/plane.html",
+          "name": "비행기 조종 타자게임 - 한글·영어 무료 타자 게임 | 핑거런",
+          "description": "단어를 타이핑해 비행기의 고도를 조절하고 장애물을 피하는 무료 타자게임입니다. 한글과 영어 모드, 10레벨 난이도를 지원합니다.",
+          "inLanguage": "ko-KR",
+          "isPartOf": { "@id": "https://fingerrun.com/#website" },
+          "breadcrumb": { "@id": "https://fingerrun.com/Game/plane.html#breadcrumb" },
+          "mainEntity": { "@id": "https://fingerrun.com/Game/plane.html#game" }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://fingerrun.com/#website",
+          "url": "https://fingerrun.com/",
+          "name": "핑거런",
+          "alternateName": "FingerRun",
+          "inLanguage": "ko-KR",
+          "publisher": { "@id": "https://fingerrun.com/#organization" }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://fingerrun.com/#organization",
+          "name": "핑거런",
+          "alternateName": "FingerRun",
+          "url": "https://fingerrun.com/",
+          "logo": "https://fingerrun.com/images/finger-run-logo.svg"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://fingerrun.com/Game/plane.html#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "핑거런 홈",
+              "item": "https://fingerrun.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "타자게임",
+              "item": "https://fingerrun.com/Game/delivery.html"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "비행기 조종 타자게임"
+            }
+          ]
+        },
+        {
+          "@type": "VideoGame",
+          "@id": "https://fingerrun.com/Game/plane.html#game",
+          "name": "비행기 조종 타자게임",
+          "alternateName": "Sky Pilot",
+          "description": "위로 이동, 아래로 이동에 배정된 단어를 입력해 비행기의 고도를 조절하고 장애물을 피하는 타자게임입니다. 한글과 영어 단어를 지원하며 60초마다 레벨이 오르는 10레벨 구성입니다.",
+          "url": "https://fingerrun.com/Game/plane.html",
+          "inLanguage": ["ko-KR", "en"],
+          "genre": ["타자 게임", "교육용 게임"],
+          "gamePlatform": "Web browser",
+          "playMode": "SinglePlayer",
+          "applicationCategory": "GameApplication",
+          "operatingSystem": "Any",
+          "browserRequirements": "Requires JavaScript",
+          "isAccessibleForFree": true,
+          "author": { "@id": "https://fingerrun.com/#organization" },
+          "publisher": { "@id": "https://fingerrun.com/#organization" },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "KRW",
+            "category": "Free",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      ]
+    }
+    </script>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -228,7 +350,7 @@
     <nav>
         <div class="nav-container">
             <a href="../index.html" class="logo" aria-label="핑거런 홈페이지 메인으로 이동">
-                <img src="../images/finger-run-logo.svg" alt="" class="h-8 w-auto"> 
+                <img src="../images/finger-run-logo.svg" alt="핑거런 로고" width="32" height="32" class="h-8 w-auto"> 
                 FingerRun
             </a>
             <ul class="nav-menu">
@@ -283,8 +405,8 @@
                 <li><a href="../battle.html">타자 배틀</a></li>
                 <li><a href="../contact.html">문의하기</a></li>
                 <li class="ml-2">
-                    <a href="#" onclick="goProfile(event)" title="프로필" style="padding: 0.5rem 0.6rem; border-radius: 50%;">
-                        <i class="far fa-user text-[1.2rem] m-0"></i>
+                    <a href="../login.html" rel="nofollow" onclick="goProfile(event)" title="프로필" aria-label="마이페이지" style="padding: 0.5rem 0.6rem; border-radius: 50%;">
+                        <i class="far fa-user text-[1.2rem] m-0" aria-hidden="true"></i>
                     </a>
                 </li>
             </ul>
@@ -292,8 +414,8 @@
     </nav>
 
     <!-- Game Container Wrap -->
-    <div class="game-container-wrap">
-        <canvas id="gameCanvas"></canvas>
+    <main class="game-container-wrap">
+        <canvas id="gameCanvas" aria-label="비행기 조종 타자게임 화면"></canvas>
         <button id="langSwitchBtn">Language: Korean</button>
         
         <div id="plane">
@@ -318,7 +440,7 @@
 
         <!-- Game Over Screen -->
         <div id="gameOverModal" class="modal-screen game-over hidden">
-            <h1 class="modal-title">MISSION FAILED</h1>
+            <p class="modal-title" role="heading" aria-level="2">MISSION FAILED</p>
             <p id="gameOverText" class="modal-subtitle"></p>
             
             <!-- Checkpoint Options (Visible only if Level >= 4) -->
@@ -342,9 +464,9 @@
             <div style="font-size: 18px; margin-bottom: 15px; color: #94a3b8;">타이핑으로 고도를 조절하세요!</div>
             <div id="currentWordUp">↑ 위로 이동</div>
             <div id="currentWordDown">↓ 아래로 이동</div>
-            <input type="text" id="userInput" placeholder="단어를 입력하세요" autocomplete="off">
+            <input type="text" id="userInput" placeholder="단어를 입력하세요" aria-label="비행기 조종 단어 입력창" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
         </div>
-    </div>
+    </main>
 
     <script>
         // 프로필 클릭 시 이동하는 함수 추가
