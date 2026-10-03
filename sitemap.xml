@@ -73,6 +73,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://fingerrun.com/periodic</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://fingerrun.com/notices.html</loc>
     <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
