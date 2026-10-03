@@ -56,18 +56,17 @@
         --cell-text: #1f2937;
         --empty-cell: #eef0f5;
 
-        /* 2-3 카테고리 색 (라이트) */
-        --c-alkali-metal: #E8736C;
-        --c-alkaline-earth-metal: #F9D9A8;
-        --c-lanthanide: #F4C2F4;
-        --c-actinide: #E9A0D3;
-        --c-transition-metal: #F4B8B0;
-        --c-post-transition-metal: #CCCCCC;
-        --c-metalloid: #CCCC99;
-        --c-diatomic-nonmetal: #F0F58C;
-        --c-polyatomic-nonmetal: #A6F5C6;
-        --c-noble-gas: #C3F7F7;
-        --c-unknown: #E6E6E6;
+        /* 카테고리 색 (참고 이미지 Chemical Group Block 기준, 라이트) */
+        --c-alkali-metal: #F3C4BE;
+        --c-alkaline-earth-metal: #D5CBF9;
+        --c-transition-metal: #CCDAF8;
+        --c-post-transition-metal: #D4F3C1;
+        --c-metalloid: #E1EAC2;
+        --c-nonmetal: #FBF5B2;
+        --c-halogen: #FAEEC2;
+        --c-noble-gas: #F6E1C3;
+        --c-lanthanide: #CBF4F8;
+        --c-actinide: #C8F3E3;
         color-scheme: light;
     }
     @media (prefers-color-scheme: dark) {
@@ -83,17 +82,16 @@
             --empty-cell: #1a2133;
 
             /* 같은 색 계열을 어둡게 (흰 글자 대비 확보) */
-            --c-alkali-metal: #a84a44;
-            --c-alkaline-earth-metal: #93703c;
-            --c-lanthanide: #8d5a8d;
-            --c-actinide: #8a4777;
-            --c-transition-metal: #925a52;
-            --c-post-transition-metal: #646a74;
-            --c-metalloid: #6f6f42;
-            --c-diatomic-nonmetal: #7c8030;
-            --c-polyatomic-nonmetal: #2f8256;
-            --c-noble-gas: #2f7f84;
-            --c-unknown: #4b5262;
+            --c-alkali-metal: #7d4a45;
+            --c-alkaline-earth-metal: #54497e;
+            --c-transition-metal: #3f547c;
+            --c-post-transition-metal: #3f6b3a;
+            --c-metalloid: #5d6639;
+            --c-nonmetal: #6f6a2b;
+            --c-halogen: #77622f;
+            --c-noble-gas: #785a3b;
+            --c-lanthanide: #2f6b74;
+            --c-actinide: #2d6b59;
             color-scheme: dark;
         }
     }
@@ -137,7 +135,7 @@
     }
     .logo {
         font-size: 1.5rem; font-weight: bold; color: #667eea; text-decoration: none;
-        display: flex; align-items: center; gap: 0.5rem;
+        display: flex; align-items: center; gap: 0.5rem; white-space: nowrap; flex: none;
     }
     .logo svg { width: 32px; height: 32px; }
     .nav-menu { display: flex; list-style: none; gap: 1.5rem; align-items: center; margin: 0; padding: 0; }
@@ -147,7 +145,7 @@
         padding: 0.5rem 0.8rem; border-radius: 25px; transition: all 0.3s ease;
         font-size: 0.9rem; display: flex; align-items: center; gap: 0.3rem; white-space: nowrap;
     }
-    @media (max-width: 1200px) { .nav-menu { gap: 0.4rem; } .nav-menu a { padding: 0.5rem 0.6rem; } }
+    @media (max-width: 1440px) { .nav-menu { gap: 0.4rem; } .nav-menu a { padding: 0.5rem 0.6rem; } }
     .nav-menu a:hover { background: #667eea; color: white !important; transform: translateY(-2px); }
     .nav-menu a.active { color: #667eea; font-weight: 700; }
     .dropdown-arrow { font-size: 0.7rem; transition: transform 0.3s ease; }
@@ -207,10 +205,10 @@
        ========================================================= */
     .ptable-wrap { position: relative; width: 100%; }
     .ptable {
-        --c: 40px; --gap: 3px; --hh: 18px; --hc: 20px;
+        --c: 40px; --ch: 40px; --gap: 2px; --hh: 18px; --hc: 20px;
         display: grid;
         grid-template-columns: var(--hc) repeat(18, var(--c));
-        grid-template-rows: var(--hh) repeat(7, var(--c)) calc(var(--c) * .35) var(--c) var(--c) auto;
+        grid-template-rows: var(--hh) repeat(7, var(--ch)) calc(var(--ch) * .3) var(--ch) var(--ch) auto;
         gap: var(--gap);
         justify-content: center;
         position: relative;
@@ -219,11 +217,11 @@
     }
     .ptable .hd {
         display: flex; align-items: center; justify-content: center;
-        font-size: max(9px, calc(var(--c) * .24)); font-weight: 700; color: var(--muted);
+        font-size: max(9px, calc(var(--c) * .22)); font-weight: 700; color: var(--muted);
         border-radius: 4px; transition: background .2s, color .2s;
     }
     .ptable .hd.on { background: var(--brand); color: #fff; }
-    .ptable .corner { position: relative; overflow: visible; font-size: max(7px, calc(var(--c) * .17)); font-weight: 600; line-height: 1; white-space: nowrap; }
+    .ptable .corner { position: relative; overflow: visible; font-size: max(7px, calc(var(--c) * .16)); font-weight: 600; line-height: 1; white-space: nowrap; }
     .ptable .corner span { position: absolute; }
     .ptable .corner span:first-child { right: 0; top: 0; }
     .ptable .corner span:last-child { right: 0; bottom: -2px; }
@@ -232,35 +230,41 @@
         font-size: max(9px, calc(var(--c) * .3)); font-weight: 800; color: var(--muted);
     }
 
+    /* 칸: 참고 이미지처럼 번호 · 기호 · 이름 · 분류를 가운데 정렬 */
     .cell {
-        position: relative; border-radius: max(3px, calc(var(--c) * .1));
+        position: relative; border-radius: 2px;
         background: var(--cat); color: var(--cell-text);
-        display: flex; flex-direction: column; align-items: center; justify-content: center;
-        overflow: hidden; line-height: 1;
+        box-shadow: inset 0 0 0 1px rgba(0,0,0,.07);
+        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: max(0px, calc(var(--ch) * .015));
+        overflow: hidden; line-height: 1.08; text-align: center;
         transition: opacity .25s ease, transform .2s ease, box-shadow .25s ease;
     }
-    .cell .num { position: absolute; top: max(2px, calc(var(--c) * .07)); left: max(2px, calc(var(--c) * .09)); font-size: max(8px, calc(var(--c) * .21)); font-weight: 600; opacity: .85; }
-    .cell .sym { font-size: max(8px, calc(var(--c) * .42)); font-weight: 800; letter-spacing: -.02em; margin-top: calc(var(--c) * .1); }
-    .cell .mark { position: absolute; right: 1px; top: 0; font-size: max(7px, calc(var(--c) * .2)); font-weight: 800; color: var(--muted); }
+    .cell .num { font-size: max(8px, calc(var(--c) * .18)); font-weight: 500; opacity: .9; }
+    .cell .sym { font-size: max(8px, calc(var(--c) * .36)); font-weight: 600; letter-spacing: -.01em; }
+    .cell .nm, .cell .ct { display: none; max-width: 100%; padding: 0 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -.04em; }
+    .cell .nm { font-size: max(8px, calc(var(--c) * .165)); font-weight: 500; }
+    .cell .ct { font-size: max(7px, calc(var(--c) * .135)); opacity: .8; }
+    .ptable.lv2 .cell .nm { display: block; }
+    .ptable.lv3 .cell .ct { display: block; }
     .ptable.compact .cell .num { display: none; }
-    .ptable.compact .cell .sym { margin-top: 0; font-size: max(7.5px, calc(var(--c) * .5)); }
+    .ptable.compact .cell .sym { font-size: max(7.5px, calc(var(--c) * .5)); font-weight: 700; }
 
-    /* 칸 상태: 안 맞힘 (30%, 번호·기호 숨김) */
-    .cell.idle { opacity: .3; }
-    .cell.idle .num, .cell.idle .sym { visibility: hidden; }
-    /* 범위 밖 (12%) */
-    .cell.out { opacity: .12; }
-    .cell.out .num, .cell.out .sym { visibility: hidden; }
+    /* 칸 상태: 안 맞힘 (흐리게, 내용 숨김) */
+    .cell.idle { opacity: .42; }
+    .cell.idle > span { visibility: hidden; }
+    /* 범위 밖 (더 흐리게) */
+    .cell.out { opacity: .15; }
+    .cell.out > span { visibility: hidden; }
     /* 맞힘: 불 켜짐 */
-    .cell.lit { opacity: 1; box-shadow: 0 0 0 1px rgba(0,0,0,.06), 0 2px 8px rgba(0,0,0,.12); }
+    .cell.lit { opacity: 1; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.14); }
     .cell.lit.flash { animation: lightUp .7s ease-out; z-index: 3; }
     @keyframes lightUp {
-        0% { transform: scale(.7); filter: brightness(2.2) saturate(1.6); box-shadow: 0 0 0 0 rgba(255,236,120,.95); }
-        40% { transform: scale(1.18); box-shadow: 0 0 22px 8px rgba(255,236,120,.85); }
+        0% { transform: scale(.7); filter: brightness(1.3) saturate(1.8); box-shadow: 0 0 0 0 rgba(255,220,90,.95); }
+        40% { transform: scale(1.18); box-shadow: 0 0 22px 8px rgba(255,220,90,.85); }
         100% { transform: scale(1); filter: none; }
     }
     /* 틀림·패스로 공개된 칸 */
-    .cell.missed { opacity: .85; outline: 2px solid var(--bad); outline-offset: -2px; }
+    .cell.missed { opacity: .9; box-shadow: inset 0 0 0 2px var(--bad); }
     /* 현재 문제 칸: 깜빡이는 테두리 */
     .cell.current { opacity: .95; z-index: 4; animation: blink 1s steps(1) infinite; }
     .cell.current::after {
@@ -268,7 +272,7 @@
         border: max(2px, calc(var(--c) * .07)) solid var(--brand);
     }
     @keyframes blink { 0%, 100% { box-shadow: 0 0 0 3px rgba(102,126,234,.55); } 50% { box-shadow: 0 0 0 0 rgba(102,126,234,0); } }
-    .cell.current.qmark .num, .cell.current.qmark .sym { visibility: hidden; }
+    .cell.current.qmark > span { visibility: hidden; }
     .cell.current.qmark::before {
         content: '?'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
         font-weight: 900; font-size: max(9px, calc(var(--c) * .5)); color: var(--brand);
@@ -277,13 +281,24 @@
     .ptable.compact .cell.current, .ptable.compact .cell.flash { transform: scale(1.3); z-index: 5; }
     /* 전체 보기 / 미리보기 / 결과 */
     .ptable.reveal .cell { opacity: 1; }
-    .ptable.reveal .cell .num, .ptable.reveal .cell .sym { visibility: visible; }
-    .ptable.reveal .cell.out { opacity: .32; }
-    .ptable .cell.pick { opacity: .9; }
-    .ptable.mini .cell { opacity: .38; }
-    .ptable.mini .cell .num, .ptable.mini .cell .sym { visibility: visible; }
+    .ptable.reveal .cell > span { visibility: visible; }
+    .ptable.reveal .cell.out { opacity: .35; }
+    .ptable .cell.pick { opacity: .95; }
+    .ptable.mini .cell { opacity: .4; }
+    .ptable.mini .cell > span { visibility: visible; }
     .ptable.mini .cell.lit { opacity: 1; }
-    .ptable.mini .cell.missed { opacity: 1; outline: 2px solid var(--bad); outline-offset: -2px; }
+    .ptable.mini .cell.missed { opacity: 1; }
+
+    /* 범례 키 (빈 공간 3~12족 위쪽, 참고 이미지의 "Atomic Number / Symbol / Name" 상자) */
+    .pkey { grid-column: 4 / 14; grid-row: 2 / 4; display: flex; align-items: center; justify-content: center; gap: max(6px, calc(var(--c) * .3)); pointer-events: none; }
+    .pkey .kcell { width: calc(var(--ch) * 1.7); height: calc(var(--ch) * 1.95 + var(--gap)); flex: none; background: var(--c-nonmetal); color: var(--cell-text); border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.08); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; line-height: 1.05; }
+    .pkey .kcell b { font-size: calc(var(--c) * .6); font-weight: 600; }
+    .pkey .kcell span { font-size: max(8px, calc(var(--c) * .24)); }
+    .pkey .kcell small { font-size: max(7px, calc(var(--c) * .2)); opacity: .85; }
+    .pkey ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; color: var(--muted); line-height: 1.1; }
+    .pkey li { font-size: max(8px, calc(var(--c) * .24)); }
+    .pkey li.big { font-size: max(11px, calc(var(--c) * .5)); color: var(--text); font-weight: 500; }
+    .ptable.compact .pkey, .ptable.overlay .pkey { display: none; }
 
     /* 범례 */
     .legend { display: flex; flex-wrap: wrap; gap: 6px 12px; justify-content: center; margin: 10px 0 0; padding: 0; list-style: none; font-size: .78rem; color: var(--muted); }
@@ -1046,6 +1061,8 @@
         WRONG_NOTE_MAX: 200,
         OVERLAY_MIN_CELL: 44,             // 칸이 이 크기(px) 이상이면 문제 카드를 표 안에 겹쳐 배치
         COMPACT_CELL: 30,                 // 이보다 작으면 원자번호 숨김(기호만)
+        NAME_CELL: 44,                    // 이 크기 이상이면 칸에 이름 표시
+        GROUP_LABEL_CELL: 56,             // 이 크기 이상이면 칸에 분류(알칼리 금속 등)까지 표시
         SITE_URL: 'https://fingerrun.com/periodic',
         STORE: { settings: 'fr_periodic_settings', best: 'fr_periodic_best', wrong: 'fr_periodic_wrong' },
     };
@@ -1061,26 +1078,27 @@
     /* -------------------------------------------------------------------------
        2. 원소 데이터 (118개) + 카테고리 + 족 이름 + 문제 유형
           형식: { n, s, name, aliases, period, group, cat, fact, [ion, valence, en, metal] }
+          group: 57~71(란타넘족), 89~103(악티늄족)은 null — 참고 이미지처럼 표 아래 f-블록 행에 배치
           ※ fact 항목은 사람이 검수해야 함
        ------------------------------------------------------------------------- */
     const ELEMENTS = [
-  { n:1, s:"H", name:"수소", aliases:[], period:1, group:1, cat:"diatomic-nonmetal", fact:"우주에서 가장 많은 원소", valence:1, en:2.2, metal:"nonmetal" },
+  { n:1, s:"H", name:"수소", aliases:[], period:1, group:1, cat:"nonmetal", fact:"우주에서 가장 많은 원소", valence:1, en:2.2, metal:"nonmetal" },
   { n:2, s:"He", name:"헬륨", aliases:[], period:1, group:18, cat:"noble-gas", fact:"우주에서 두 번째로 많은 원소", valence:0, metal:"nonmetal" },
   { n:3, s:"Li", name:"리튬", aliases:[], period:2, group:1, cat:"alkali-metal", fact:"가장 가벼운 금속, 2차 전지 재료", ion:"Li+", valence:1, en:0.98, metal:"metal" },
   { n:4, s:"Be", name:"베릴륨", aliases:[], period:2, group:2, cat:"alkaline-earth-metal", fact:"제임스 웹 망원경 거울의 재료", ion:"Be2+", valence:2, en:1.57, metal:"metal" },
   { n:5, s:"B", name:"붕소", aliases:[], period:2, group:13, cat:"metalloid", fact:"내열 유리(붕규산 유리)의 재료", valence:3, en:2.04, metal:"metalloid" },
-  { n:6, s:"C", name:"탄소", aliases:[], period:2, group:14, cat:"polyatomic-nonmetal", fact:"다이아몬드와 흑연을 이루는 원소", valence:4, en:2.55, metal:"nonmetal" },
-  { n:7, s:"N", name:"질소", aliases:[], period:2, group:15, cat:"diatomic-nonmetal", fact:"공기의 약 78%를 차지하는 기체", ion:"N3-", valence:5, en:3.04, metal:"nonmetal" },
-  { n:8, s:"O", name:"산소", aliases:[], period:2, group:16, cat:"diatomic-nonmetal", fact:"지각에서 가장 많은 원소", ion:"O2-", valence:6, en:3.44, metal:"nonmetal" },
-  { n:9, s:"F", name:"플루오린", aliases:["불소", "플루오르"], period:2, group:17, cat:"diatomic-nonmetal", fact:"전기 음성도가 가장 큰 원소", ion:"F-", valence:7, en:3.98, metal:"nonmetal" },
+  { n:6, s:"C", name:"탄소", aliases:[], period:2, group:14, cat:"nonmetal", fact:"다이아몬드와 흑연을 이루는 원소", valence:4, en:2.55, metal:"nonmetal" },
+  { n:7, s:"N", name:"질소", aliases:[], period:2, group:15, cat:"nonmetal", fact:"공기의 약 78%를 차지하는 기체", ion:"N3-", valence:5, en:3.04, metal:"nonmetal" },
+  { n:8, s:"O", name:"산소", aliases:[], period:2, group:16, cat:"nonmetal", fact:"지각에서 가장 많은 원소", ion:"O2-", valence:6, en:3.44, metal:"nonmetal" },
+  { n:9, s:"F", name:"플루오린", aliases:["불소", "플루오르"], period:2, group:17, cat:"halogen", fact:"전기 음성도가 가장 큰 원소", ion:"F-", valence:7, en:3.98, metal:"nonmetal" },
   { n:10, s:"Ne", name:"네온", aliases:[], period:2, group:18, cat:"noble-gas", fact:"붉은빛을 내는 네온사인 기체", valence:0, metal:"nonmetal" },
   { n:11, s:"Na", name:"나트륨", aliases:["소듐"], period:3, group:1, cat:"alkali-metal", fact:"소금(염화 나트륨)의 성분", ion:"Na+", valence:1, en:0.93, metal:"metal" },
   { n:12, s:"Mg", name:"마그네슘", aliases:[], period:3, group:2, cat:"alkaline-earth-metal", fact:"엽록소 중심에 있는 금속", ion:"Mg2+", valence:2, en:1.31, metal:"metal" },
   { n:13, s:"Al", name:"알루미늄", aliases:[], period:3, group:13, cat:"post-transition-metal", fact:"지각에 가장 많은 금속", ion:"Al3+", valence:3, en:1.61, metal:"metal" },
   { n:14, s:"Si", name:"규소", aliases:["실리콘"], period:3, group:14, cat:"metalloid", fact:"반도체 칩의 주재료", valence:4, en:1.9, metal:"metalloid" },
-  { n:15, s:"P", name:"인", aliases:[], period:3, group:15, cat:"polyatomic-nonmetal", fact:"DNA 뼈대를 이루는 원소", valence:5, en:2.19, metal:"nonmetal" },
-  { n:16, s:"S", name:"황", aliases:[], period:3, group:16, cat:"polyatomic-nonmetal", fact:"화산 지대에서 노란 결정으로 발견", ion:"S2-", valence:6, en:2.58, metal:"nonmetal" },
-  { n:17, s:"Cl", name:"염소", aliases:[], period:3, group:17, cat:"diatomic-nonmetal", fact:"수돗물 소독에 쓰이는 원소", ion:"Cl-", valence:7, en:3.16, metal:"nonmetal" },
+  { n:15, s:"P", name:"인", aliases:[], period:3, group:15, cat:"nonmetal", fact:"DNA 뼈대를 이루는 원소", valence:5, en:2.19, metal:"nonmetal" },
+  { n:16, s:"S", name:"황", aliases:[], period:3, group:16, cat:"nonmetal", fact:"화산 지대에서 노란 결정으로 발견", ion:"S2-", valence:6, en:2.58, metal:"nonmetal" },
+  { n:17, s:"Cl", name:"염소", aliases:[], period:3, group:17, cat:"halogen", fact:"수돗물 소독에 쓰이는 원소", ion:"Cl-", valence:7, en:3.16, metal:"nonmetal" },
   { n:18, s:"Ar", name:"아르곤", aliases:[], period:3, group:18, cat:"noble-gas", fact:"공기의 약 1%를 차지하는 기체", valence:0, metal:"nonmetal" },
   { n:19, s:"K", name:"칼륨", aliases:["포타슘"], period:4, group:1, cat:"alkali-metal", fact:"바나나에 많이 들어 있는 원소", ion:"K+", valence:1, en:0.82, metal:"metal" },
   { n:20, s:"Ca", name:"칼슘", aliases:[], period:4, group:2, cat:"alkaline-earth-metal", fact:"뼈와 치아를 이루는 주요 원소", ion:"Ca2+", valence:2, en:1.0, metal:"metal" },
@@ -1093,12 +1111,12 @@
   { n:27, s:"Co", name:"코발트", aliases:[], period:4, group:9, cat:"transition-metal", fact:"유리·도자기에 푸른색을 냄" },
   { n:28, s:"Ni", name:"니켈", aliases:[], period:4, group:10, cat:"transition-metal", fact:"동전과 스테인리스강에 쓰이는 금속" },
   { n:29, s:"Cu", name:"구리", aliases:[], period:4, group:11, cat:"transition-metal", fact:"전선에 쓰이는 붉은 금속" },
-  { n:30, s:"Zn", name:"아연", aliases:[], period:4, group:12, cat:"post-transition-metal", fact:"철의 부식을 막는 도금(함석)에 사용" },
+  { n:30, s:"Zn", name:"아연", aliases:[], period:4, group:12, cat:"transition-metal", fact:"철의 부식을 막는 도금(함석)에 사용" },
   { n:31, s:"Ga", name:"갈륨", aliases:[], period:4, group:13, cat:"post-transition-metal", fact:"손바닥 위에서 녹는 금속" },
   { n:32, s:"Ge", name:"저마늄", aliases:["게르마늄"], period:4, group:14, cat:"metalloid", fact:"초기 트랜지스터의 재료" },
   { n:33, s:"As", name:"비소", aliases:[], period:4, group:15, cat:"metalloid", fact:"독약으로 악명 높은 원소" },
-  { n:34, s:"Se", name:"셀레늄", aliases:["셀렌"], period:4, group:16, cat:"polyatomic-nonmetal", fact:"복사기 감광 드럼에 쓰인 원소" },
-  { n:35, s:"Br", name:"브로민", aliases:["브롬"], period:4, group:17, cat:"diatomic-nonmetal", fact:"상온에서 액체인 유일한 비금속" },
+  { n:34, s:"Se", name:"셀레늄", aliases:["셀렌"], period:4, group:16, cat:"nonmetal", fact:"복사기 감광 드럼에 쓰인 원소" },
+  { n:35, s:"Br", name:"브로민", aliases:["브롬"], period:4, group:17, cat:"halogen", fact:"상온에서 액체인 유일한 비금속" },
   { n:36, s:"Kr", name:"크립톤", aliases:[], period:4, group:18, cat:"noble-gas", fact:"그리스어 '숨겨진'에서 온 이름" },
   { n:37, s:"Rb", name:"루비듐", aliases:[], period:5, group:1, cat:"alkali-metal", fact:"원자시계에 쓰이는 원소" },
   { n:38, s:"Sr", name:"스트론튬", aliases:[], period:5, group:2, cat:"alkaline-earth-metal", fact:"불꽃놀이의 붉은색을 내는 원소" },
@@ -1111,16 +1129,16 @@
   { n:45, s:"Rh", name:"로듐", aliases:[], period:5, group:9, cat:"transition-metal", fact:"자동차 배기가스 정화 촉매에 사용" },
   { n:46, s:"Pd", name:"팔라듐", aliases:[], period:5, group:10, cat:"transition-metal", fact:"자기 부피의 수백 배 수소를 흡수" },
   { n:47, s:"Ag", name:"은", aliases:[], period:5, group:11, cat:"transition-metal", fact:"전기가 가장 잘 통하는 금속" },
-  { n:48, s:"Cd", name:"카드뮴", aliases:[], period:5, group:12, cat:"post-transition-metal", fact:"이타이이타이병의 원인 물질" },
+  { n:48, s:"Cd", name:"카드뮴", aliases:[], period:5, group:12, cat:"transition-metal", fact:"이타이이타이병의 원인 물질" },
   { n:49, s:"In", name:"인듐", aliases:[], period:5, group:13, cat:"post-transition-metal", fact:"터치스크린 투명 전극(ITO)의 재료" },
   { n:50, s:"Sn", name:"주석", aliases:[], period:5, group:14, cat:"post-transition-metal", fact:"통조림 깡통 도금에 쓰이는 금속" },
   { n:51, s:"Sb", name:"안티모니", aliases:["안티몬"], period:5, group:15, cat:"metalloid", fact:"고대 이집트 눈화장에 쓰인 원소" },
   { n:52, s:"Te", name:"텔루륨", aliases:["텔루르"], period:5, group:16, cat:"metalloid", fact:"태양 전지(CdTe)에 쓰이는 원소" },
-  { n:53, s:"I", name:"아이오딘", aliases:["요오드"], period:5, group:17, cat:"diatomic-nonmetal", fact:"갑상샘 호르몬에 필요한 원소" },
+  { n:53, s:"I", name:"아이오딘", aliases:["요오드"], period:5, group:17, cat:"halogen", fact:"갑상샘 호르몬에 필요한 원소" },
   { n:54, s:"Xe", name:"제논", aliases:["크세논"], period:5, group:18, cat:"noble-gas", fact:"자동차 제논 헤드라이트에 사용" },
   { n:55, s:"Cs", name:"세슘", aliases:[], period:6, group:1, cat:"alkali-metal", fact:"1초의 정의에 쓰이는 원소" },
   { n:56, s:"Ba", name:"바륨", aliases:[], period:6, group:2, cat:"alkaline-earth-metal", fact:"위장 X선 촬영 조영제(황산 바륨)" },
-  { n:57, s:"La", name:"란타넘", aliases:["란탄"], period:6, group:3, cat:"lanthanide", fact:"하이브리드차 니켈수소 전지에 사용" },
+  { n:57, s:"La", name:"란타넘", aliases:["란탄"], period:6, group:null, cat:"lanthanide", fact:"하이브리드차 니켈수소 전지에 사용" },
   { n:58, s:"Ce", name:"세륨", aliases:[], period:6, group:null, cat:"lanthanide", fact:"라이터 부싯돌의 주성분" },
   { n:59, s:"Pr", name:"프라세오디뮴", aliases:[], period:6, group:null, cat:"lanthanide", fact:"용접 보안경 유리에 쓰이는 원소" },
   { n:60, s:"Nd", name:"네오디뮴", aliases:[], period:6, group:null, cat:"lanthanide", fact:"가장 강한 영구 자석의 재료" },
@@ -1143,16 +1161,16 @@
   { n:77, s:"Ir", name:"이리듐", aliases:[], period:6, group:9, cat:"transition-metal", fact:"부식에 가장 강한 금속" },
   { n:78, s:"Pt", name:"백금", aliases:[], period:6, group:10, cat:"transition-metal", fact:"자동차 촉매·장신구에 쓰이는 귀금속" },
   { n:79, s:"Au", name:"금", aliases:[], period:6, group:11, cat:"transition-metal", fact:"녹슬지 않는 노란 귀금속" },
-  { n:80, s:"Hg", name:"수은", aliases:[], period:6, group:12, cat:"post-transition-metal", fact:"상온에서 액체인 유일한 금속" },
+  { n:80, s:"Hg", name:"수은", aliases:[], period:6, group:12, cat:"transition-metal", fact:"상온에서 액체인 유일한 금속" },
   { n:81, s:"Tl", name:"탈륨", aliases:[], period:6, group:13, cat:"post-transition-metal", fact:"독성이 매우 강한 금속" },
   { n:82, s:"Pb", name:"납", aliases:[], period:6, group:14, cat:"post-transition-metal", fact:"방사선 차폐에 쓰이는 무거운 금속" },
   { n:83, s:"Bi", name:"비스무트", aliases:[], period:6, group:15, cat:"post-transition-metal", fact:"무지갯빛 계단 모양 결정을 만듦" },
-  { n:84, s:"Po", name:"폴로늄", aliases:[], period:6, group:16, cat:"post-transition-metal", fact:"퀴리가 조국 폴란드 이름을 붙임" },
-  { n:85, s:"At", name:"아스타틴", aliases:[], period:6, group:17, cat:"metalloid", fact:"자연에 가장 적게 존재하는 원소 중 하나" },
+  { n:84, s:"Po", name:"폴로늄", aliases:[], period:6, group:16, cat:"metalloid", fact:"퀴리가 조국 폴란드 이름을 붙임" },
+  { n:85, s:"At", name:"아스타틴", aliases:[], period:6, group:17, cat:"halogen", fact:"자연에 가장 적게 존재하는 원소 중 하나" },
   { n:86, s:"Rn", name:"라돈", aliases:[], period:6, group:18, cat:"noble-gas", fact:"지하실에 쌓일 수 있는 방사성 기체" },
   { n:87, s:"Fr", name:"프랑슘", aliases:[], period:7, group:1, cat:"alkali-metal", fact:"자연에서 매우 희귀한 방사성 금속" },
   { n:88, s:"Ra", name:"라듐", aliases:[], period:7, group:2, cat:"alkaline-earth-metal", fact:"퀴리 부부가 발견한 방사성 원소" },
-  { n:89, s:"Ac", name:"악티늄", aliases:[], period:7, group:3, cat:"actinide", fact:"악티늄족의 이름이 된 원소" },
+  { n:89, s:"Ac", name:"악티늄", aliases:[], period:7, group:null, cat:"actinide", fact:"악티늄족의 이름이 된 원소" },
   { n:90, s:"Th", name:"토륨", aliases:[], period:7, group:null, cat:"actinide", fact:"차세대 원자력 연료 후보" },
   { n:91, s:"Pa", name:"프로트악티늄", aliases:[], period:7, group:null, cat:"actinide", fact:"우라늄 광석에 극미량 존재" },
   { n:92, s:"U", name:"우라늄", aliases:[], period:7, group:null, cat:"actinide", fact:"원자력 발전의 연료" },
@@ -1172,30 +1190,30 @@
   { n:106, s:"Sg", name:"시보귬", aliases:[], period:7, group:6, cat:"transition-metal", fact:"살아 있는 사람 이름을 처음 붙인 원소" },
   { n:107, s:"Bh", name:"보륨", aliases:[], period:7, group:7, cat:"transition-metal", fact:"원자 모형의 닐스 보어 기림" },
   { n:108, s:"Hs", name:"하슘", aliases:[], period:7, group:8, cat:"transition-metal", fact:"독일 헤센주에서 이름 유래" },
-  { n:109, s:"Mt", name:"마이트너륨", aliases:[], period:7, group:9, cat:"unknown", fact:"핵분열을 설명한 마이트너 기림" },
-  { n:110, s:"Ds", name:"다름슈타튬", aliases:[], period:7, group:10, cat:"unknown", fact:"독일 다름슈타트에서 이름 유래" },
-  { n:111, s:"Rg", name:"뢴트게늄", aliases:[], period:7, group:11, cat:"unknown", fact:"X선을 발견한 뢴트겐 기림" },
-  { n:112, s:"Cn", name:"코페르니슘", aliases:[], period:7, group:12, cat:"post-transition-metal", fact:"지동설의 코페르니쿠스 기림" },
-  { n:113, s:"Nh", name:"니호늄", aliases:[], period:7, group:13, cat:"unknown", fact:"일본에서 발견, 일본(니혼) 이름" },
-  { n:114, s:"Fl", name:"플레로븀", aliases:[], period:7, group:14, cat:"unknown", fact:"러시아 플료로프 연구소에서 이름 유래" },
-  { n:115, s:"Mc", name:"모스코븀", aliases:[], period:7, group:15, cat:"unknown", fact:"모스크바에서 이름 유래" },
-  { n:116, s:"Lv", name:"리버모륨", aliases:[], period:7, group:16, cat:"unknown", fact:"미국 리버모어 연구소에서 이름 유래" },
-  { n:117, s:"Ts", name:"테네신", aliases:[], period:7, group:17, cat:"unknown", fact:"미국 테네시주에서 이름 유래" },
-  { n:118, s:"Og", name:"오가네손", aliases:[], period:7, group:18, cat:"unknown", fact:"현재 가장 무거운 원소" },
+  { n:109, s:"Mt", name:"마이트너륨", aliases:[], period:7, group:9, cat:"transition-metal", fact:"핵분열을 설명한 마이트너 기림" },
+  { n:110, s:"Ds", name:"다름슈타튬", aliases:[], period:7, group:10, cat:"transition-metal", fact:"독일 다름슈타트에서 이름 유래" },
+  { n:111, s:"Rg", name:"뢴트게늄", aliases:[], period:7, group:11, cat:"transition-metal", fact:"X선을 발견한 뢴트겐 기림" },
+  { n:112, s:"Cn", name:"코페르니슘", aliases:[], period:7, group:12, cat:"transition-metal", fact:"지동설의 코페르니쿠스 기림" },
+  { n:113, s:"Nh", name:"니호늄", aliases:[], period:7, group:13, cat:"post-transition-metal", fact:"일본에서 발견, 일본(니혼) 이름" },
+  { n:114, s:"Fl", name:"플레로븀", aliases:[], period:7, group:14, cat:"post-transition-metal", fact:"러시아 플료로프 연구소에서 이름 유래" },
+  { n:115, s:"Mc", name:"모스코븀", aliases:[], period:7, group:15, cat:"post-transition-metal", fact:"모스크바에서 이름 유래" },
+  { n:116, s:"Lv", name:"리버모륨", aliases:[], period:7, group:16, cat:"post-transition-metal", fact:"미국 리버모어 연구소에서 이름 유래" },
+  { n:117, s:"Ts", name:"테네신", aliases:[], period:7, group:17, cat:"halogen", fact:"미국 테네시주에서 이름 유래" },
+  { n:118, s:"Og", name:"오가네손", aliases:[], period:7, group:18, cat:"noble-gas", fact:"현재 가장 무거운 원소" },
 ];
 
+    // 분류·색: 참고 이미지(Chemical Group Block) 기준
     const CATEGORIES = [
-        { id: 'alkali-metal',          ko: '알칼리 금속',   color: '#E8736C' },
-        { id: 'alkaline-earth-metal',  ko: '알칼리 토금속', color: '#F9D9A8' },
-        { id: 'lanthanide',            ko: '란타넘족',      color: '#F4C2F4' },
-        { id: 'actinide',              ko: '악티늄족',      color: '#E9A0D3' },
-        { id: 'transition-metal',      ko: '전이 금속',     color: '#F4B8B0' },
-        { id: 'post-transition-metal', ko: '전이후 금속',   color: '#CCCCCC' },
-        { id: 'metalloid',             ko: '준금속',        color: '#CCCC99' },
-        { id: 'diatomic-nonmetal',     ko: '이원자 비금속', color: '#F0F58C' },
-        { id: 'polyatomic-nonmetal',   ko: '다원자 비금속', color: '#A6F5C6' },
-        { id: 'noble-gas',             ko: '비활성 기체',   color: '#C3F7F7' },
-        { id: 'unknown',               ko: '성질 미확인',   color: '#E6E6E6' },
+        { id: 'alkali-metal',          ko: '알칼리 금속',   color: '#F3C4BE' },
+        { id: 'alkaline-earth-metal',  ko: '알칼리 토금속', color: '#D5CBF9' },
+        { id: 'transition-metal',      ko: '전이 금속',     color: '#CCDAF8' },
+        { id: 'post-transition-metal', ko: '전이후 금속',   color: '#D4F3C1' },
+        { id: 'metalloid',             ko: '준금속',        color: '#E1EAC2' },
+        { id: 'nonmetal',              ko: '비금속',        color: '#FBF5B2' },
+        { id: 'halogen',               ko: '할로젠',        color: '#FAEEC2' },
+        { id: 'noble-gas',             ko: '비활성 기체',   color: '#F6E1C3' },
+        { id: 'lanthanide',            ko: '란타넘족',      color: '#CBF4F8' },
+        { id: 'actinide',              ko: '악티늄족',      color: '#C8F3E3' },
     ];
     const CAT_BY_ID = Object.fromEntries(CATEGORIES.map(c => [c.id, c]));
 
@@ -1502,7 +1520,7 @@
             case 'symbol-to-name': case 'name-to-symbol': case 'number-to-name':
                 return pool.map(e => mk(e));
             case 'position-to-element': case 'element-to-position':
-                return pool.filter(e => e.group != null).map(e => mk(e));        // f-블록 제외 (La·Ac는 3족)
+                return pool.filter(e => e.group != null).map(e => mk(e));        // 란타넘족·악티늄족(f-블록 행) 제외
             case 'group-name':
                 return pool.filter(e => GROUP_NAMES[e.group] && e.n !== 1).map(e => mk(e)); // 수소 제외
             case 'ion': return prop ? small.filter(e => e.ion).map(e => mk(e)) : [];
@@ -1592,8 +1610,8 @@
        ------------------------------------------------------------------------- */
     function cellPos(el) {
         if (el.group != null) return { row: el.period + 1, col: el.group + 1 };
-        if (el.n >= 58 && el.n <= 71) return { row: 10, col: el.n - 53 };   // * 행: 4~17족 열
-        return { row: 11, col: el.n - 85 };                                // ** 행
+        if (el.n >= 57 && el.n <= 71) return { row: 10, col: el.n - 52 };   // * 행: 란타넘족 15개 (4~18족 열)
+        return { row: 11, col: el.n - 84 };                                // ** 행: 악티늄족 15개
     }
     function createTable(wrap, opts) {
         const root = document.createElement('div');
@@ -1608,10 +1626,13 @@
         add('hd corner', 1, 1, '<span>족→</span><span>↓주기</span>');
         for (let g = 1; g <= 18; g++) t.gHead.set(g, add('hd', 1, g + 1, g));
         for (let p = 1; p <= 7; p++) t.pHead.set(p, add('hd', p + 1, 1, p));
+        add('star', 7, 4, '*'); add('star', 8, 4, '**');      // 6·7주기 3족 자리 → 아래 f-블록 행
         add('star', 10, 4, '*'); add('star', 11, 4, '**');
+        if (opts.key) add('pkey', '2 / 4', '4 / 14', `<div class="kcell"><span>1</span><b>H</b><span class="k-nm">수소</span><small>비금속</small></div>
+            <ul><li>원자번호</li><li class="big">원소 기호</li><li>이름</li><li>분류</li></ul>`);
         for (const el of ELEMENTS) {
             const { row, col } = cellPos(el);
-            const d = add('cell idle', row, col, `<span class="num">${el.n}</span><span class="sym">${el.s}</span>` + (el.n === 57 ? '<span class="mark">*</span>' : el.n === 89 ? '<span class="mark">**</span>' : ''));
+            const d = add('cell idle', row, col, `<span class="num">${el.n}</span><span class="sym">${el.s}</span><span class="nm">${displayName(el)}</span><span class="ct">${CAT_BY_ID[el.cat].ko}</span>`);
             d.style.setProperty('--cat', `var(--c-${el.cat})`);
             d.dataset.n = el.n;
             d.title = opts.titles ? `${el.n} ${el.s} ${displayName(el)}` : '';
@@ -1626,26 +1647,34 @@
     function sizeTable(t) {
         const W = t.wrap.clientWidth;
         if (!W) return;
-        const gap = W < 520 ? 1 : W < 900 ? 2 : 3;
+        const gap = W < 520 ? 1 : 2;
         let c = (W - gap * 18) / 18.55;                         // 주기 머리글 칸 ≈ 0.55c
         if (c * 0.55 < 12) c = (W - gap * 18 - 12) / 18;
         c = Math.min(c, t.opts.maxCell || 64);
+        const ratio = c => (c >= CONFIG.OVERLAY_MIN_CELL ? 1.12 : 1);   // 큰 칸은 참고 이미지처럼 살짝 세로로 긴 직사각형
         if (t.opts.fitHeight && c >= CONFIG.OVERLAY_MIN_CELL) {
             const tb = document.querySelector('.topbar');
             const avail = window.innerHeight - 72 - (tb ? tb.offsetHeight + 10 : 56) - 34;
-            const hb = (avail - gap * 11) / 9.85;
+            const hb = (avail - gap * 11) / (0.5 + 9.3 * 1.12);
             c = Math.max(CONFIG.OVERLAY_MIN_CELL, Math.min(c, hb));
         }
         c = Math.floor(c * 10) / 10;
         t.c = c;
         const st = t.root.style;
         st.setProperty('--c', c + 'px');
+        st.setProperty('--ch', Math.floor(c * ratio(c) * 10) / 10 + 'px');
+        t.root.classList.toggle('lv2', c >= CONFIG.NAME_CELL);
+        t.root.classList.toggle('lv3', c >= CONFIG.GROUP_LABEL_CELL);
         st.setProperty('--gap', gap + 'px');
         st.setProperty('--hc', Math.max(12, c * 0.55) + 'px');
         st.setProperty('--hh', Math.max(13, c * 0.5) + 'px');
         t.root.classList.toggle('compact', c < CONFIG.COMPACT_CELL);
         const ov = !!t.opts.allowOverlay && c >= CONFIG.OVERLAY_MIN_CELL;
         if (ov !== t.overlay) { t.overlay = ov; t.root.classList.toggle('overlay', ov); }
+    }
+    function refreshCellNames(t) {          // 표기 옵션(나트륨·소듐) 반영
+        if (!t) return;
+        for (const [n, cell] of t.cells) { const nm = cell.querySelector('.nm'); if (nm) nm.textContent = displayName(EL_BY_N.get(n)); }
     }
     function renderLegend(ul) {
         ul.innerHTML = CATEGORIES.map(c => `<li><i style="background:var(--c-${c.id})"></i>${c.ko}</li>`).join('');
@@ -1818,6 +1847,7 @@
         $('#noteBtn').textContent = `📒 오답 노트로 퀴즈 (${note.length})`;
         $('#noteBtn').disabled = !note.length;
 
+        refreshCellNames(previewT); refreshCellNames(playT);
         paintPreview();
     }
 
@@ -2371,7 +2401,8 @@
         $('#rNote').textContent = nn ? `📒 오답 노트에 ${nn}개 저장됨 — 시작 화면의 "오답 노트로 퀴즈"로 복습하세요.` : '📒 오답 노트가 비어 있어요.';
 
         // 미니맵
-        if (!miniT) miniT = createTable($('#miniWrap'), { mini: true, maxCell: 30, titles: true });
+        if (!miniT) miniT = createTable($('#miniWrap'), { mini: true, maxCell: 52, titles: true });
+        refreshCellNames(miniT);
         for (const [n, cell] of miniT.cells) cell.className = 'cell' + (G.lit.has(n) ? ' lit' : G.missed.has(n) ? ' missed' : '');
         $('#shareMsg').textContent = '';
     }
@@ -2520,15 +2551,20 @@
         T('원소 118개', () => ELEMENTS.length === 118);
         T('번호 중복 없음 (1~118)', () => ELEMENTS.every((e, i) => e.n === i + 1));
         T('기호 중복 없음', () => new Set(ELEMENTS.map(e => e.s)).size === 118);
+        T('카테고리 10종 (참고 이미지 기준) 수: 알칼리6·토금속6·전이38·전이후11·준금속7·비금속7·할로젠6·비활성7·란타넘15·악티늄15', () => {
+            const want = { 'alkali-metal': 6, 'alkaline-earth-metal': 6, 'transition-metal': 38, 'post-transition-metal': 11, metalloid: 7, nonmetal: 7, halogen: 6, 'noble-gas': 7, lanthanide: 15, actinide: 15 };
+            return Object.entries(want).every(([k, v]) => ELEMENTS.filter(e => e.cat === k).length === v);
+        });
         T('카테고리별 원소 수 합계 118', () => {
             const cnt = {}; ELEMENTS.forEach(e => { cnt[e.cat] = (cnt[e.cat] || 0) + 1; });
             const sum = Object.values(cnt).reduce((a, b) => a + b, 0);
             return { ok: sum === 118 && Object.keys(cnt).every(k => CAT_BY_ID[k]), info: JSON.stringify(cnt) };
         });
         T('주기 경계 (1:1~2 … 7:87~118)', () => [[1, 1, 2], [2, 3, 10], [3, 11, 18], [4, 19, 36], [5, 37, 54], [6, 55, 86], [7, 87, 118]].every(([p, a, b]) => ELEMENTS.filter(e => e.period === p).map(e => e.n).join() === Array.from({ length: b - a + 1 }, (_, i) => a + i).join()));
-        const pg = [['Fe', 4, 8], ['Br', 4, 17], ['Xe', 5, 18], ['Cs', 6, 1], ['La', 6, 3], ['Ce', 6, null], ['Og', 7, 18], ['Ac', 7, 3], ['Lr', 7, null]];
-        T('주기·족 예시 (Fe 4·8, Br 4·17, Xe 5·18, Cs 6·1, La 6·3, Ce null, Og 7·18)', () => pg.every(([s, p, g]) => el(s).period === p && el(s).group === g));
-        T('f-블록(58~71, 90~103)만 족 null', () => ELEMENTS.filter(e => e.group == null).map(e => e.n).join() === [...Array.from({ length: 14 }, (_, i) => 58 + i), ...Array.from({ length: 14 }, (_, i) => 90 + i)].join());
+        const pg = [['Fe', 4, 8], ['Br', 4, 17], ['Xe', 5, 18], ['Cs', 6, 1], ['La', 6, null], ['Ce', 6, null], ['Hf', 6, 4], ['Og', 7, 18], ['Ac', 7, null], ['Lr', 7, null]];
+        T('주기·족 예시 (Fe 4·8, Br 4·17, Xe 5·18, Cs 6·1, La·Ce 족 null(f-블록 행), Hf 6·4, Og 7·18)', () => pg.every(([s, p, g]) => el(s).period === p && el(s).group === g));
+        T('란타넘족(57~71)·악티늄족(89~103)만 족 null', () => ELEMENTS.filter(e => e.group == null).map(e => e.n).join() === [...Array.from({ length: 15 }, (_, i) => 57 + i), ...Array.from({ length: 15 }, (_, i) => 89 + i)].join());
+        T('표 칸 위치 겹침 없음', () => new Set(ELEMENTS.map(e => { const p = cellPos(e); return p.row + '-' + p.col; })).size === 118);
         T('별칭: 브롬→브로민, 요오드→아이오딘, 소듐→나트륨, 포타슘→칼륨', () => matchName(el('Br'), '브롬', 'kr').ok && matchName(el('I'), '요오드', 'kr').ok && matchName(el('Na'), '소듐', 'kr').ok && matchName(el('K'), '포타슘', 'kr').ok && matchName(el('Br'), '브롬', 'kr').alias === '브롬');
         T('표기 소듐·포타슘: 표시 이름 교체, 나트륨도 정답', () => displayName(el('Na'), 'iupac') === '소듐' && displayName(el('K'), 'iupac') === '포타슘' && matchName(el('Na'), '나트륨', 'iupac').ok && matchName(el('Na'), '소듐', 'iupac').alias === null);
         T('정규화: 공백 포함 입력', () => matchName(el('Br'), ' 브 로민 ', 'kr').ok && matchGroupName(1, '알칼리금속').ok && matchGroupName(17, '할로겐 족').ok);
@@ -2583,7 +2619,7 @@
     function init() {
         buildStartOptions();
         bindStartOptions();
-        previewT = createTable($('#previewWrap'), { maxCell: 40, titles: false });
+        previewT = createTable($('#previewWrap'), { maxCell: 44, titles: false, key: true });
         playT = createTable($('#playWrap'), { maxCell: 64, allowOverlay: true, fitHeight: true });
         playT.root.appendChild($('#qcardTpl').content.cloneNode(true));
         renderLegend($('#legendStart')); renderLegend($('#legendPlay'));
