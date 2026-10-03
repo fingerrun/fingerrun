@@ -259,11 +259,12 @@
     .ptable.compact .cell .num { display: none; }
     .ptable.compact .cell .sym { margin-top: 0; font-size: max(7.5px, calc(var(--c) * .5)); }
 
-    /* 칸 상태: 안 맞힘 (30%, 번호·기호 숨김) */
-    .cell.idle { opacity: .3; }
+    /* 칸 상태: 입력해야 할 범위(안 맞힘) — 빨간 점선이 깜빡임, 번호·기호 숨김 */
+    .cell.idle { opacity: 1; border-color: var(--bad); animation: rangeBlink 1s ease-in-out infinite; }
     .cell.idle .num, .cell.idle .sym { visibility: hidden; }
-    /* 범위 밖 (12%) */
-    .cell.out { opacity: .12; }
+    @keyframes rangeBlink { 0%, 100% { border-color: var(--bad); } 50% { border-color: rgba(239, 68, 68, .15); } }
+    /* 범위 밖: 회색 점선만 */
+    .cell.out { opacity: .4; }
     .cell.out .num, .cell.out .sym { visibility: hidden; }
     /* 맞힘: 불 켜짐 */
     .cell.lit { opacity: 1; }
@@ -276,7 +277,7 @@
     /* 틀림·패스로 공개된 칸 */
     .cell.missed { opacity: .85; outline: 2px solid var(--bad); outline-offset: -2px; }
     /* 현재 문제 칸: 깜빡이는 테두리 */
-    .cell.current { opacity: .95; z-index: 4; animation: blink 1s steps(1) infinite; }
+    .cell.current { opacity: .95; z-index: 4; border-color: transparent; animation: blink 1s steps(1) infinite; }
     .cell.current::after {
         content: ''; position: absolute; inset: 0; border-radius: inherit;
         border: max(2px, calc(var(--c) * .07)) solid var(--brand);
@@ -292,8 +293,7 @@
     /* 전체 보기 / 미리보기 / 결과 */
     .ptable.reveal .cell { opacity: 1; }
     .ptable.reveal .cell .num, .ptable.reveal .cell .sym { visibility: visible; }
-    .ptable.reveal .cell.out { opacity: .32; }
-    .ptable .cell.pick { opacity: .9; }
+    .ptable.reveal .cell.out { opacity: .55; }
     .ptable.mini .cell { opacity: .38; }
     .ptable.mini .cell .num, .ptable.mini .cell .sym { visibility: visible; }
     .ptable.mini .cell.lit { opacity: 1; }
@@ -535,7 +535,7 @@
     footer a { color: inherit; }
 
     @media (prefers-reduced-motion: reduce) {
-        .cell.lit.flash, .cell.current, .el-toast, .q-input.shake { animation: none !important; }
+        .cell.lit.flash, .cell.current, .cell.idle, .el-toast, .q-input.shake { animation: none !important; }
     }
     </style>
 </head>
@@ -1837,7 +1837,7 @@
     function paintPreview() {
         if (!previewT) return;
         const inRange = new Set((S.play === 'basic' ? basicSequence(S) : scopeElements(S)).map(e => e.n));
-        for (const [n, cell] of previewT.cells) cell.className = 'cell ' + (inRange.has(n) ? 'idle pick' : 'out');
+        for (const [n, cell] of previewT.cells) cell.className = 'cell ' + (inRange.has(n) ? 'idle' : 'out');
         for (const [g, h] of previewT.gHead) h.classList.toggle('on', S.scope === 'group' && S.groups.includes(g));
         for (const [p, h] of previewT.pHead) h.classList.toggle('on', S.scope === 'period' && S.periods.includes(p));
         $('#pvCount').textContent = `· ${inRange.size}개 원소`;
