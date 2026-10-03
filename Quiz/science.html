@@ -530,7 +530,6 @@
     .best-line b { color: var(--brand); }
     .r-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 16px; }
     .r-actions .btn { flex: 1 1 160px; max-width: 260px; }
-    .share-msg { text-align: center; font-size: .82rem; color: var(--good); min-height: 1.2em; margin: 8px 0 0; font-weight: 700; }
 
     /* =========================================================
        7. 학습 콘텐츠 (SEO, 정적 HTML)
@@ -807,10 +806,7 @@
             <div class="r-actions">
                 <button type="button" class="btn btn-primary" id="againBtn">🔁 다시 하기</button>
                 <button type="button" class="btn" id="settingsBtn">⚙️ 설정 바꾸기</button>
-                <button type="button" class="btn" id="shareBtn">📤 공유하기</button>
-                <button type="button" class="btn" id="imageBtn">🖼️ 이미지 저장</button>
             </div>
-            <p class="share-msg" id="shareMsg" aria-live="polite"></p>
             <!-- 광고 영역 (결과 화면이 처음 보일 때 로드) -->
             <div class="ad-slot">
                 <ins class="adsbygoogle"
@@ -1029,7 +1025,6 @@
         EN_MIN_DIFF: 0.3,
         OVERLAY_MIN_CELL: 44,             // 칸이 이 크기(px) 이상이면 문제 카드를 표 안에 겹쳐 배치
         COMPACT_CELL: 30,                 // 이보다 작으면 원자번호 숨김(기호만)
-        SITE_URL: 'https://fingerrun.com/Quiz/science.html',
         STORE: { settings: 'fr_periodic_settings', best: 'fr_periodic_best' },
     };
 
@@ -1824,8 +1819,7 @@
         G = g;
         showScreen('playScreen');
         $('#tbLeft').textContent = summaryLabel(cfg);
-        $('#hintBtn').disabled = g.play === 'quiz' && cfg.time > 0;
-        $('#hintBtn').title = $('#hintBtn').disabled ? '힌트는 제한 없음일 때만 쓸 수 있어요' : '힌트 (Alt+H)';
+        $('#hintBtn').classList.toggle('hidden', g.play === 'quiz');   // 힌트는 기본 모드에서만
         sizeTable(playT);
         g.startAt = performance.now();
         advance();
@@ -1900,8 +1894,7 @@
     function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 
     function updateTools() {
-        const quizTimed = G.play === 'quiz' && G.cfg.time > 0;
-        $('#hintBtn').disabled = !!G.lock || G.q.hintUsed || quizTimed;
+        $('#hintBtn').disabled = !!G.lock || G.q.hintUsed;
         $('#passBtn').disabled = !!G.lock || G.passesLeft <= 0;
         $('#passBtn').querySelector('.pass-txt').textContent = ' ' + G.passesLeft;
     }
@@ -2029,11 +2022,9 @@
     }
 
     function useHint() {
-        if (!G || G.ended || G.lock || G.q.hintUsed) return;
-        if (G.play === 'quiz' && G.cfg.time > 0) return;   // 퀴즈는 제한 없음일 때만
+        if (!G || G.ended || G.lock || G.q.hintUsed || G.play !== 'basic') return;   // 힌트는 기본 모드에서만
         G.q.hintUsed = true; G.hints++;
-        if (G.play === 'basic') { G.penaltyMs += CONFIG.HINT_PENALTY_MS; renderBasicMain(); }
-        else $('#qGuide').textContent = `💡 힌트: ${hintMask(G.q.answer, G.q)}  (+3초)`;
+        G.penaltyMs += CONFIG.HINT_PENALTY_MS; renderBasicMain();
         updateTools();
         input.focus({ preventScroll: true });
     }
@@ -2251,7 +2242,6 @@
         // 미니맵
         if (!miniT) miniT = createTable($('#miniWrap'), { mini: true, maxCell: 30, titles: true });
         for (const [n, cell] of miniT.cells) cell.className = 'cell' + (G.lit.has(n) ? ' lit' : G.missed.has(n) ? ' missed' : '');
-        $('#shareMsg').textContent = '';
     }
 
     function graphSVG(R) {
@@ -2282,93 +2272,7 @@
     }
 
     /* -------------------------------------------------------------------------
-       12. 공유 (텍스트 · canvas 이미지 · Web Share)
-       ------------------------------------------------------------------------- */
-    function shareLink(cfg) {
-        const base = CONFIG.SITE_URL.replace(/^https:\/\//, '');
-        return cfg.scope === 'custom' ? base : `${base}?${settingsToQuery(cfg)}`;
-    }
-    function shareText(R) {
-        const cfg = R.cfg, link = shareLink(cfg);
-        if (cfg.play === 'quiz') return `핑거런 주기율표 퀴즈 · ${rangeLabel(cfg)} · ${cfg.time ? cfg.time + '초' : '제한 없음'} · ${R.correct}/${R.total} 정답 ⚗️ ${link}`;
-        return `핑거런 주기율표 기본 모드 · ${rangeLabel(cfg)} · ${cfg.input === 'name' ? '이름' : '기호'} · ${fmtTime(R.totalMs)} ${R.kind === 'clear' ? '완주' : ''} ⚗️ ${link}`.replace(/\s+⚗️/, ' ⚗️');
-    }
-    async function copyText(text) {
-        try { await navigator.clipboard.writeText(text); return true; } catch (e) { /* 아래 대체 */ }
-        try {
-            const ta = document.createElement('textarea');
-            ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-            document.body.appendChild(ta); ta.select();
-            const ok = document.execCommand('copy'); ta.remove(); return ok;
-        } catch (e) { return false; }
-    }
-    async function onShare() {
-        const text = shareText(G.result);
-        if (navigator.share) {
-            try { await navigator.share({ title: '핑거런 주기율표', text }); $('#shareMsg').textContent = '공유했어요!'; return; }
-            catch (e) { if (e && e.name === 'AbortError') return; }
-        }
-        $('#shareMsg').textContent = (await copyText(text)) ? '📋 공유 문구를 복사했어요!' : text;
-    }
-    function drawShareImage(R) {
-        const cv = document.createElement('canvas');
-        cv.width = 1200; cv.height = 630;
-        const x = cv.getContext('2d');
-        const font = "'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif";
-        const grd = x.createLinearGradient(0, 0, 1200, 630);
-        grd.addColorStop(0, '#667eea'); grd.addColorStop(1, '#764ba2');
-        x.fillStyle = grd; x.fillRect(0, 0, 1200, 630);
-        roundRect(x, 36, 36, 1128, 558, 28); x.fillStyle = '#ffffff'; x.fill();
-        const fit = (txt, size, weight, maxW) => { let s = size; do { x.font = `${weight} ${s}px ${font}`; s -= 2; } while (x.measureText(txt).width > maxW && s > 12); };
-        x.fillStyle = '#1f2937'; fit('⚗️ 핑거런 주기율표', 44, 900, 480); x.fillText('⚗️ 핑거런 주기율표', 76, 118);
-        x.fillStyle = '#6b7280'; fit(summaryLabel(R.cfg), 26, 600, 480); x.fillText(summaryLabel(R.cfg), 76, 166);
-        let big, sub;
-        if (R.cfg.play === 'quiz') { big = `${R.correct} / ${R.total} 정답`; sub = `정답률 ${Math.round(R.accuracy * 100)}% · 평균 ${(R.avgMs / 1000).toFixed(1)}초`; }
-        else { big = fmtTime(R.totalMs); sub = `${R.kind === 'clear' ? '완주' : '진행'} · 정답률 ${Math.round(R.accuracy * 100)}% · ${R.cpm}타/분`; }
-        x.fillStyle = '#667eea'; fit(big, 76, 900, 480); x.fillText(big, 76, 290);
-        x.fillStyle = '#374151'; fit(sub, 28, 700, 480); x.fillText(sub, 76, 345);
-        x.fillStyle = '#9ca3af'; x.font = `600 22px ${font}`; x.fillText('원소를 맞히면 주기율표 칸에 불이 들어온다', 76, 520);
-        x.fillStyle = '#667eea'; x.font = `800 24px ${font}`; x.fillText('fingerrun.com/Quiz/science.html', 76, 556);
-        // 미니 주기율표
-        const ox = 590, oy = 120, c = 29, gap = 2;
-        for (const el of ELEMENTS) {
-            const { row, col } = cellPos(el);
-            const cx = ox + (col - 2) * (c + gap), cy = oy + (row - 2) * (c + gap) + (row >= 10 ? -c * 0.55 : 0);
-            const lit = G.lit.has(el.n), miss = G.missed.has(el.n);
-            roundRect(x, cx, cy, c, c, 5);
-            x.fillStyle = lit ? CAT_BY_ID[el.cat].color : '#eceef3'; x.fill();
-            if (miss) { x.lineWidth = 2.5; x.strokeStyle = '#ef4444'; x.stroke(); }
-            if (lit || miss) { x.fillStyle = '#1f2937'; x.font = `800 ${el.s.length > 1 ? 11 : 13}px ${font}`; x.textAlign = 'center'; x.fillText(el.s, cx + c / 2, cy + c / 2 + 4); x.textAlign = 'left'; }
-        }
-        return cv;
-    }
-    function roundRect(x, l, t, w, h, r) {
-        x.beginPath(); x.moveTo(l + r, t); x.arcTo(l + w, t, l + w, t + h, r); x.arcTo(l + w, t + h, l, t + h, r);
-        x.arcTo(l, t + h, l, t, r); x.arcTo(l, t, l + w, t, r); x.closePath();
-    }
-    async function onImage() {
-        if (document.fonts && document.fonts.load) {
-            try { await Promise.all(['600 22px', '700 22px', '800 22px', '900 22px'].map(f => document.fonts.load(f + " 'Noto Sans KR'"))); } catch (e) { /* 대체 글꼴 사용 */ }
-        }
-        const cv = drawShareImage(G.result);
-        cv.toBlob(async blob => {
-            if (!blob) return;
-            const file = new File([blob], 'fingerrun-periodic.png', { type: 'image/png' });
-            if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                try { await navigator.share({ files: [file], title: '핑거런 주기율표', text: shareText(G.result) }); return; }
-                catch (e) { if (e && e.name === 'AbortError') return; }
-            }
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url; a.download = 'fingerrun-periodic.png';
-            document.body.appendChild(a); a.click(); a.remove();
-            setTimeout(() => URL.revokeObjectURL(url), 4000);
-            $('#shareMsg').textContent = '🖼️ 이미지를 저장했어요!';
-        }, 'image/png');
-    }
-
-    /* -------------------------------------------------------------------------
-       13. 모바일 키보드 대응 (visualViewport)
+       12. 모바일 키보드 대응 (visualViewport)
        ------------------------------------------------------------------------- */
     function ensureCardVisible() {
         if (!G || G.ended || !playT || playT.overlay) return;
@@ -2502,8 +2406,6 @@
             }
             startGame(base);
         });
-        $('#shareBtn').addEventListener('click', onShare);
-        $('#imageBtn').addEventListener('click', onImage);
         if (window.visualViewport) window.visualViewport.addEventListener('resize', () => { if (document.activeElement === input) ensureCardVisible(); });
         window.addEventListener('resize', () => { if (playT) sizeTable(playT); });
 
