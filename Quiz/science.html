@@ -281,6 +281,8 @@
     .cell .mark { position: absolute; right: 1px; top: 0; font-size: max(7px, calc(var(--c) * .2)); font-weight: 800; color: var(--muted); }
     .ptable.compact .cell .num { display: none; }
     .ptable.compact .cell .sym { margin-top: 0; font-size: max(7.5px, calc(var(--c) * .5)); }
+    .cell .nm { display: none; font-size: max(7px, calc(var(--c) * .17)); font-weight: 600; letter-spacing: -.06em; white-space: nowrap; max-width: 96%; overflow: hidden; margin-top: 1px; }
+    .ptable.names.roomy .cell .nm { display: block; }
 
     /* 칸 상태: 안 맞힘 (30%, 번호·기호 숨김) */
     .cell.idle { opacity: .3; }
@@ -315,6 +317,11 @@
     /* 전체 보기 / 미리보기 / 결과 */
     .ptable.reveal .cell { opacity: 1; }
     .ptable.reveal .cell .num, .ptable.reveal .cell .sym { visibility: visible; }
+    /* 기본 모드(타자 연습): 모든 칸에 번호·기호(·이름)가 보이고, 맞힌 칸이 진해짐 */
+    .ptable.show-all .cell .num, .ptable.show-all .cell .sym, .ptable.show-all .cell .nm { visibility: visible; }
+    .ptable.show-all .cell.idle { opacity: .5; }
+    .ptable.show-all .cell.out { opacity: .22; }
+    .ptable.show-all .cell.current { opacity: 1; }
     .ptable.reveal .cell.out { opacity: .32; }
     .ptable .cell.pick { opacity: .9; }
     .ptable.mini .cell { opacity: .38; }
@@ -481,6 +488,7 @@
     .q-trail { font-size: .95rem; color: var(--muted); font-weight: 600; }
     .q-blank { display: inline-block; min-width: 64px; padding: 1px 12px; border-radius: 10px; border: 2px dashed var(--brand); color: var(--brand); font-weight: 900; font-size: 1.25rem; }
     .q-blank.reveal { border-style: solid; border-color: var(--bad); color: var(--bad); }
+    .q-blank.target { border-style: solid; background: rgba(102,126,234,.08); }
     .q-input-row { display: flex; gap: 6px; align-items: stretch; }
     .q-input {
         flex: 1; min-width: 0; font-size: 16px; /* iOS 확대 방지 */
@@ -779,7 +787,6 @@
                 <div class="q-main" id="qMain"></div>
                 <div class="q-input-row">
                     <input id="qInput" class="q-input" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" aria-label="정답 입력">
-                    <button type="button" class="q-tool" id="hintBtn" title="힌트 (Alt+H)">💡<span class="hint-txt"> 힌트</span></button>
                     <button type="button" class="q-tool" id="passBtn" title="패스 (Alt+P)">⏭<span class="pass-txt"> 3</span></button>
                 </div>
                 <div class="q-guide" id="qGuide"></div>
@@ -1016,7 +1023,6 @@
         GROUP_CHOICES: [1, 2, 13, 14, 15, 16, 17, 18],
         PERIOD_CHOICES: [1, 2, 3, 4],
         DEPTHS: [4, 7],
-        HINT_PENALTY_MS: 3000,
         PASS_PENALTY_MS: 10000,
         PASS_LIMIT: 3,
         CORRECT_CARD_MS: 500,
@@ -1580,7 +1586,7 @@
         add('star', 10, 4, '*'); add('star', 11, 4, '**');
         for (const el of ELEMENTS) {
             const { row, col } = cellPos(el);
-            const d = add('cell idle', row, col, `<span class="num">${el.n}</span><span class="sym">${el.s}</span>` + (el.n === 57 ? '<span class="mark">*</span>' : el.n === 89 ? '<span class="mark">**</span>' : ''));
+            const d = add('cell idle', row, col, `<span class="num">${el.n}</span><span class="sym">${el.s}</span><span class="nm">${displayName(el)}</span>` + (el.n === 57 ? '<span class="mark">*</span>' : el.n === 89 ? '<span class="mark">**</span>' : ''));
             d.style.setProperty('--cat', `var(--c-${el.cat})`);
             d.dataset.n = el.n;
             d.title = opts.titles ? `${el.n} ${el.s} ${displayName(el)}` : '';
@@ -1613,6 +1619,7 @@
         st.setProperty('--hc', Math.max(12, c * 0.55) + 'px');
         st.setProperty('--hh', Math.max(13, c * 0.5) + 'px');
         t.root.classList.toggle('compact', c < CONFIG.COMPACT_CELL);
+        t.root.classList.toggle('roomy', c >= CONFIG.OVERLAY_MIN_CELL);    // 칸이 크면 한글 이름도 표시
         const ov = !!t.opts.allowOverlay && c >= CONFIG.OVERLAY_MIN_CELL;
         if (ov !== t.overlay) { t.overlay = ov; t.root.classList.toggle('overlay', ov); }
     }
@@ -1801,7 +1808,7 @@
         const g = {
             cfg, play: cfg.play,
             items: [], idx: -1, q: null, records: [], lit: new Set(), missed: new Set(),
-            hints: 0, passesLeft: CONFIG.PASS_LIMIT, passes: 0, penaltyMs: 0, wrongSubmits: 0,
+            passesLeft: CONFIG.PASS_LIMIT, passes: 0, penaltyMs: 0, wrongSubmits: 0,
             lock: null, startAt: 0, endAt: 0, qStartAt: 0, deadline: 0, ended: false,
             flashN: 0, flashUntil: 0, trail: [], section: null, sectionCount: 0, timeoutCount: 0,
         };
@@ -1819,7 +1826,8 @@
         G = g;
         showScreen('playScreen');
         $('#tbLeft').textContent = summaryLabel(cfg);
-        $('#hintBtn').classList.toggle('hidden', g.play === 'quiz');   // 힌트는 기본 모드에서만
+        playT.root.classList.toggle('show-all', g.play === 'basic');                    // 기본: 글자 보고 치기 / 퀴즈: 빈칸 맞히기
+        playT.root.classList.toggle('names', g.play === 'basic' && cfg.input === 'name');
         sizeTable(playT);
         g.startAt = performance.now();
         advance();
@@ -1832,7 +1840,7 @@
         G.idx++;
         if (G.idx >= G.items.length) { finishGame('clear'); return; }
         G.q = G.items[G.idx];
-        G.q.hintUsed = false; G.q.wrongs = 0;
+        G.q.wrongs = 0;
         G.lock = null;
         // 기본 모드: 범위(족·주기) 전환 안내
         if (G.play === 'basic') {
@@ -1866,8 +1874,8 @@
             label.classList.toggle('notice', !!q.notice);
             renderBasicMain();
             $('#qGuide').textContent = G.cfg.input === 'name'
-                ? '다음 원소의 한글 이름 · 맞으면 엔터 없이 넘어가요'
-                : '다음 원소의 기호 · 한/영 전환!';
+                ? '보이는 원소 이름을 그대로 입력 · 맞으면 엔터 없이 넘어가요'
+                : '보이는 원소 기호를 그대로 입력 · 한/영 전환!';
         } else {
             label.textContent = q.label;
             label.classList.remove('notice');
@@ -1881,20 +1889,11 @@
         const q = G.q;
         const trail = G.trail.slice(-3).map(el => esc(G.cfg.input === 'name' ? displayName(el, G.cfg.naming) : el.s));
         const more = G.trail.length > 3 ? '… ' : '';
-        let blank = '?';
-        if (reveal) blank = esc(q.answer);
-        else if (q.hintUsed) blank = esc(hintMask(q.answer, q));
-        $('#qMain').innerHTML = `<span class="q-trail">${more}${trail.map(t => t + ' → ').join('')}</span><span class="q-blank${reveal ? ' reveal' : ''}">${blank}</span>`;
-    }
-    function hintMask(answer, q) {
-        if (q && q.kind === 'position') return `${q.el.period} __`;
-        const chars = [...answer.replace(/\s+/g, '')];
-        return chars[0] + chars.slice(1).map(() => (/[A-Za-z0-9]/.test(chars[0]) ? '_' : '_ ')).join('').trimEnd();
+        $('#qMain').innerHTML = `<span class="q-trail">${more}${trail.map(t => t + ' → ').join('')}</span><span class="q-blank ${reveal ? 'reveal' : 'target'}">${esc(q.answer)}</span>`;
     }
     function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 
     function updateTools() {
-        $('#hintBtn').disabled = !!G.lock || G.q.hintUsed;
         $('#passBtn').disabled = !!G.lock || G.passesLeft <= 0;
         $('#passBtn').querySelector('.pass-txt').textContent = ' ' + G.passesLeft;
     }
@@ -1973,12 +1972,12 @@
         onFail('timeout', input.value);
     }
 
-    function questionMs() { return performance.now() - G.qStartAt + (G.q.hintUsed ? CONFIG.HINT_PENALTY_MS : 0); }
+    function questionMs() { return performance.now() - G.qStartAt; }
 
     function onCorrect(r) {
         const q = G.q, el = q.el;
         const typed = input.value;
-        G.records.push({ q, type: q.type, n: el.n, cand: q.cand, status: 'correct', ms: questionMs(), hint: q.hintUsed, wrongs: q.wrongs || 0, input: typed, keys: keystrokes(normalize(typed)) });
+        G.records.push({ q, type: q.type, n: el.n, cand: q.cand, status: 'correct', ms: questionMs(), wrongs: q.wrongs || 0, input: typed, keys: keystrokes(normalize(typed)) });
         G.lit.add(el.n); G.missed.delete(el.n);
         G.flashN = el.n; G.flashUntil = performance.now() + 700;
         if (G.play === 'basic') G.trail.push(el);
@@ -2001,7 +2000,7 @@
     function onFail(status, typed) {
         const q = G.q, el = q.el;
         const frozen = G.deadline ? Math.max(0, G.deadline - performance.now()) : null;
-        G.records.push({ q, type: q.type, n: el.n, cand: q.cand, status, ms: questionMs(), hint: q.hintUsed, wrongs: q.wrongs || 0, input: typed });
+        G.records.push({ q, type: q.type, n: el.n, cand: q.cand, status, ms: questionMs(), wrongs: q.wrongs || 0, input: typed });
         G.lock = 'reveal'; G.frozenLeft = frozen;
         G.missed.add(el.n);
         if (G.play === 'basic') G.trail.push(el);
@@ -2021,13 +2020,6 @@
         }, CONFIG.REVEAL_MS);
     }
 
-    function useHint() {
-        if (!G || G.ended || G.lock || G.q.hintUsed || G.play !== 'basic') return;   // 힌트는 기본 모드에서만
-        G.q.hintUsed = true; G.hints++;
-        G.penaltyMs += CONFIG.HINT_PENALTY_MS; renderBasicMain();
-        updateTools();
-        input.focus({ preventScroll: true });
-    }
     function usePass() {
         if (!G || G.ended || G.lock || G.passesLeft <= 0) return;
         G.passesLeft--; G.passes++;
@@ -2118,9 +2110,9 @@
         R.avgMs = correct.length ? correct.reduce((a, r) => a + r.ms, 0) / correct.length : 0;
         if (G.play === 'basic') {
             R.total = G.items.length;
-            R.clean = correct.filter(r => !r.wrongs && !r.hint).length;
+            R.clean = correct.filter(r => !r.wrongs).length;
             R.accuracy = R.total ? R.clean / R.total : 0;
-            const activeMs = correct.reduce((a, r) => a + r.ms - (r.hint ? CONFIG.HINT_PENALTY_MS : 0), 0);
+            const activeMs = correct.reduce((a, r) => a + r.ms, 0);
             R.cpm = activeMs > 0 ? Math.round(correct.reduce((a, r) => a + r.keys, 0) / (activeMs / 60000)) : 0;
         } else {
             R.accuracy = R.total ? R.correct / R.total : 0;
@@ -2197,7 +2189,7 @@
         const stats = [];
         if (!quiz) {
             stats.push([fmtTime(R.totalMs), '완주 시간 (페널티 포함)'], [Math.round(R.accuracy * 100) + '%', '정답률 (한 번에 맞힘)'],
-                [`${G.hints} · ${G.passes}`, '힌트 · 패스'], [R.cpm + '타', '평균 타수 (자모/분)']);
+                [`${G.passes}회`, '패스'], [R.cpm + '타', '평균 타수 (자모/분)']);
         } else {
             stats.push([`${R.correct} / ${R.total}`, '점수'], [Math.round(R.accuracy * 100) + '%', '정답률'],
                 [R.timeouts + '회', '시간 초과'], [(R.avgMs / 1000).toFixed(1) + '초', '평균 반응 시간']);
@@ -2263,7 +2255,7 @@
         }
         s += `<polyline fill="none" stroke="#667eea" stroke-width="2" points="${recs.map((r, i) => `${xs(i)},${ys(r.ms)}`).join(' ')}"/>`;
         recs.forEach((r, i) => {
-            const color = r.status === 'correct' ? (r.hint || r.wrongs ? '#f59e0b' : '#10b981') : '#ef4444';
+            const color = r.status === 'correct' ? (r.wrongs ? '#f59e0b' : '#10b981') : '#ef4444';
             s += `<circle cx="${xs(i)}" cy="${ys(r.ms)}" r="${recs.length > 60 ? 2.2 : 3.5}" fill="${color}"><title>${i + 1}. ${esc(recName(r))} · ${(r.ms / 1000).toFixed(1)}초${r.status !== 'correct' ? ' · ' + ({ wrong: '오답', timeout: '시간 초과', pass: '패스' }[r.status]) : ''}</title></circle>`;
         });
         const lab = Math.ceil(recs.length / 10);
@@ -2380,12 +2372,10 @@
                 e.preventDefault();
                 if (e.isComposing || e.keyCode === 229 || composing) { pendingSubmit = G && G.q ? G.q.id : null; return; }
                 onSubmit();
-            } else if (e.altKey && e.code === 'KeyH') { e.preventDefault(); useHint(); }
-            else if (e.altKey && e.code === 'KeyP') { e.preventDefault(); usePass(); }
+            } else if (e.altKey && e.code === 'KeyP') { e.preventDefault(); usePass(); }
         });
         input.addEventListener('animationend', () => input.classList.remove('shake'));
         input.addEventListener('focus', () => setTimeout(ensureCardVisible, 250));
-        $('#hintBtn').addEventListener('click', useHint);
         $('#passBtn').addEventListener('click', usePass);
         $('#quitBtn').addEventListener('click', quitGame);
         $('#playWrap').addEventListener('mousedown', e => { if (e.target !== input && G && !G.ended) { e.preventDefault(); input.focus({ preventScroll: true }); } });
