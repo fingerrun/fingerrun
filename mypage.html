@@ -62,6 +62,246 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- 타자 여권 (완주 도장) -->
+    <script>
+    /*
+     * 핑거런 타자 여권 (도장 모음)
+     * - 여행 메뉴의 노선을 완주하면 도장을 찍어 보관합니다.
+     * - 로그인 사용자: fingerRunUser.passportStamps 에 저장 + Firebase(users/{uid}) 동기화
+     * - 비로그인 사용자: fingerRunGuestStamps 에 임시 보관 → 로그인 후 마이페이지에서 여권으로 옮김
+     * - 이 코드는 세계지도 타자(Quiz/worldmap.html)와 마이페이지(mypage.html)에 똑같이 들어 있습니다.
+     *   고칠 때는 두 파일을 함께 고쳐야 합니다.
+     */
+    (function (global) {
+        'use strict';
+
+        var USER_KEY = 'fingerRunUser';
+        var GUEST_KEY = 'fingerRunGuestStamps';
+
+        // 여행 종류 (나중에 과학여행·우주여행·역사여행을 여기에 추가)
+        var TRAVELS = {
+            world: {
+                name: '해외 여행',
+                lines: [
+                    { key: 'world',    name: '세계',       no: '1', color: '#0052A4' },
+                    { key: 'asia',     name: '아시아',     no: '2', color: '#00A84D' },
+                    { key: 'europe',   name: '유럽',       no: '3', color: '#EF7C1C' },
+                    { key: 'namerica', name: '북아메리카', no: '4', color: '#00A5DE' },
+                    { key: 'samerica', name: '남아메리카', no: '5', color: '#996CAC' },
+                    { key: 'africa',   name: '아프리카',   no: '6', color: '#CD7C2F' }
+                ]
+            }
+        };
+
+        var MODES = {
+            basic: { name: '기본 모드' },
+            quiz:  { name: '퀴즈 모드' }
+        };
+
+        // 받을 수 있는 모든 도장 목록 (여행 → 노선 → 모드 순서)
+        function catalog() {
+            var list = [];
+            Object.keys(TRAVELS).forEach(function (travel) {
+                TRAVELS[travel].lines.forEach(function (line) {
+                    Object.keys(MODES).forEach(function (mode) {
+                        list.push({ id: stampId(travel, line.key, mode), travel: travel, line: line.key, mode: mode });
+                    });
+                });
+            });
+            return list;
+        }
+
+        function stampId(travel, line, mode) { return travel + ':' + line + ':' + mode; }
+
+        function lineInfo(travel, line) {
+            var t = TRAVELS[travel];
+            if (!t) return null;
+            for (var i = 0; i < t.lines.length; i++) if (t.lines[i].key === line) return t.lines[i];
+            return null;
+        }
+
+        function today() {
+            var d = new Date();
+            return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+        }
+
+        function readJSON(key) {
+            try { return JSON.parse(localStorage.getItem(key)); } catch (e) { return null; }
+        }
+        function writeJSON(key, value) {
+            try { localStorage.setItem(key, JSON.stringify(value)); return true; } catch (e) { return false; }
+        }
+
+        function getUser() {
+            if (readStorage('isLoggedIn') !== 'true') return null;
+            var user = readJSON(USER_KEY);
+            return user && typeof user === 'object' ? user : null;
+        }
+        function readStorage(key) {
+            try { return localStorage.getItem(key); } catch (e) { return null; }
+        }
+
+        // 지금 보관 중인 도장들 (로그인 → 여권, 비로그인 → 임시 보관함)
+        function getStamps() {
+            var user = getUser();
+            if (user) return Array.isArray(user.passportStamps) ? user.passportStamps : [];
+            var guest = readJSON(GUEST_KEY);
+            return Array.isArray(guest) ? guest : [];
+        }
+
+        // 도장 목록에 한 번의 완주 기록을 반영
+        function applyCompletion(stamps, travel, line, mode, result) {
+            var id = stampId(travel, line, mode);
+            var stamp = null;
+            for (var i = 0; i < stamps.length; i++) if (stamps[i].id === id) stamp = stamps[i];
+            var isNew = !stamp;
+            if (isNew) {
+                stamp = { id: id, travel: travel, line: line, mode: mode, date: today(), count: 0, bestCpm: 0, bestAcc: 0 };
+                stamps.push(stamp);
+            }
+            stamp.count = (stamp.count || 0) + 1;
+            stamp.lastDate = today();
+            if ((result.cpm || 0) > (stamp.bestCpm || 0)) stamp.bestCpm = result.cpm || 0;
+            if ((result.acc || 0) > (stamp.bestAcc || 0)) stamp.bestAcc = result.acc || 0;
+            return { stamp: stamp, isNew: isNew };
+        }
+
+        // 노선 완주 → 도장 찍기
+        // result: { cpm, acc }  반환: { stamp, isNew, loggedIn }
+        function award(travel, line, mode, result) {
+            result = result || {};
+            var user = getUser();
+            if (user) {
+                if (!Array.isArray(user.passportStamps)) user.passportStamps = [];
+                var r = applyCompletion(user.passportStamps, travel, line, mode, result);
+                writeJSON(USER_KEY, user);
+                syncToServer(user);
+                return { stamp: r.stamp, isNew: r.isNew, loggedIn: true };
+            }
+            var guest = readJSON(GUEST_KEY);
+            if (!Array.isArray(guest)) guest = [];
+            var g = applyCompletion(guest, travel, line, mode, result);
+            writeJSON(GUEST_KEY, guest);
+            return { stamp: g.stamp, isNew: g.isNew, loggedIn: false };
+        }
+
+        // 로그인 전에 받은 도장을 여권으로 옮김 (마이페이지에서 호출). 옮긴 개수 반환
+        function mergeGuestStamps(user) {
+            var guest = readJSON(GUEST_KEY);
+            if (!user || !Array.isArray(guest) || !guest.length) return 0;
+            if (!Array.isArray(user.passportStamps)) user.passportStamps = [];
+            guest.forEach(function (gs) {
+                var mine = null;
+                for (var i = 0; i < user.passportStamps.length; i++) if (user.passportStamps[i].id === gs.id) mine = user.passportStamps[i];
+                if (!mine) {
+                    user.passportStamps.push(gs);
+                } else {
+                    mine.count = (mine.count || 0) + (gs.count || 0);
+                    if (gs.date && (!mine.date || gs.date < mine.date)) mine.date = gs.date;
+                    if (gs.lastDate && (!mine.lastDate || gs.lastDate > mine.lastDate)) mine.lastDate = gs.lastDate;
+                    mine.bestCpm = Math.max(mine.bestCpm || 0, gs.bestCpm || 0);
+                    mine.bestAcc = Math.max(mine.bestAcc || 0, gs.bestAcc || 0);
+                }
+            });
+            writeJSON(USER_KEY, user);
+            try { localStorage.removeItem(GUEST_KEY); } catch (e) { /* 무시 */ }
+            syncToServer(user);
+            return guest.length;
+        }
+
+        // 서버(Firebase) 동기화 — 다른 페이지의 기록 저장 방식과 동일
+        function syncToServer(user) {
+            if (!user || !user.uid) return Promise.resolve(false);
+            return Promise.all([
+                import('https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js'),
+                import('https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js')
+            ]).then(function (mods) {
+                var appMod = mods[0], fs = mods[1];
+                var firebaseConfig = {
+                    apiKey: "AIzaSyDK•••••••••••••••••••••••••••••••",
+                    projectId: "fingerrun-fe27d"
+                };
+                var app = !appMod.getApps().length ? appMod.initializeApp(firebaseConfig) : appMod.getApp();
+                var db = fs.getFirestore(app);
+                return fs.updateDoc(fs.doc(db, 'users', user.uid), { passportStamps: user.passportStamps || [] });
+            }).then(function () {
+                return true;
+            }).catch(function (error) {
+                console.error('여권 도장 서버 저장 실패 (이 기기에는 저장됨):', error);
+                return false;
+            });
+        }
+
+        /* ---------- 도장 그림 (SVG) ---------- */
+        var svgSeq = 0;
+        function esc(s) {
+            return String(s).replace(/[&<>"']/g, function (c) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+            });
+        }
+
+        function badgeAndName(line, ink) {
+            var label = line.name + ' 노선';
+            var textW = Array.from(label).length * 13;
+            var start = 100 - (18 + 6 + textW) / 2;
+            return '<circle cx="' + (start + 9) + '" cy="106" r="9" fill="' + line.color + '"/>' +
+                '<text x="' + (start + 9) + '" y="110" text-anchor="middle" font-size="11" font-weight="900" fill="#fff">' + esc(line.no) + '</text>' +
+                '<text x="' + (start + 24) + '" y="111" font-size="13" font-weight="700" fill="' + ink + '">' + esc(label) + '</text>';
+        }
+
+        // stamp: { travel, line, mode, date }  →  SVG 문자열 (퀴즈 모드: 금색 테두리 / 기본 모드: 은색 테두리)
+        function stampSVG(stamp) {
+            var travel = TRAVELS[stamp.travel] || { name: '여행' };
+            var line = lineInfo(stamp.travel, stamp.line) || { name: stamp.line, no: '', color: '#64748b' };
+            var mode = MODES[stamp.mode] || { name: stamp.mode };
+            var gold = stamp.mode === 'quiz';
+            var n = ++svgSeq;
+            var ring = 'fpRing' + n, top = 'fpTop' + n, bottom = 'fpBottom' + n;
+            var ringStops = gold
+                ? '<stop offset="0" stop-color="#fff3b0"/><stop offset=".35" stop-color="#f5c542"/><stop offset=".65" stop-color="#c8961e"/><stop offset="1" stop-color="#8a6212"/>'
+                : '<stop offset="0" stop-color="#f8fafc"/><stop offset=".4" stop-color="#cbd5e1"/><stop offset=".7" stop-color="#94a3b8"/><stop offset="1" stop-color="#64748b"/>';
+            var ink = gold ? '#8a5a00' : '#475569';
+            var paper = gold ? '#fffbeb' : '#f8fafc';
+            var date = (stamp.date || today()).replace(/-/g, '.');
+            var label = travel.name + ' ' + line.name + ' 노선 ' + mode.name + ' 완주';
+
+            return '' +
+                '<svg class="fr-stamp-svg" viewBox="0 0 200 200" role="img" aria-label="' + esc(label) + '">' +
+                '<title>' + esc(label) + '</title>' +
+                '<defs>' +
+                    '<linearGradient id="' + ring + '" x1="0" y1="0" x2="1" y2="1">' + ringStops + '</linearGradient>' +
+                    '<path id="' + top + '" d="M 32 100 A 68 68 0 0 1 168 100"/>' +
+                    '<path id="' + bottom + '" d="M 36 104 A 64 64 0 0 0 164 104"/>' +
+                '</defs>' +
+                '<circle cx="100" cy="100" r="94" fill="' + paper + '"/>' +
+                '<circle cx="100" cy="100" r="90" fill="none" stroke="url(#' + ring + ')" stroke-width="9"/>' +
+                '<circle cx="100" cy="100" r="80" fill="none" stroke="' + ink + '" stroke-width="1.6" stroke-dasharray="3 3" opacity=".7"/>' +
+                '<text font-size="11" font-weight="700" fill="' + ink + '" letter-spacing="2"><textPath href="#' + top + '" startOffset="50%" text-anchor="middle">FINGERRUN PASSPORT</textPath></text>' +
+                '<text font-size="11" font-weight="700" fill="' + ink + '" letter-spacing="1"><textPath href="#' + bottom + '" startOffset="50%" text-anchor="middle">' + esc(date) + '</textPath></text>' +
+                // 비행기
+                '<path transform="translate(88 44) scale(1)" fill="' + ink + '" d="M12 0c1.1 0 2 .9 2 2v6l10 6v3l-10-3v5l3 2v2l-5-1.4L7 23v-2l3-2v-5L0 17v-3l10-6V2c0-1.1.9-2 2-2z"/>' +
+                '<text x="100" y="88" text-anchor="middle" font-size="15" font-weight="900" fill="' + ink + '">' + esc(travel.name) + '</text>' +
+                // 노선 배지 + 노선 이름 (가운데 정렬: 배지 18 + 간격 6 + 글자 폭 약 14×글자수)
+                badgeAndName(line, ink) +
+                '<line x1="56" y1="120" x2="144" y2="120" stroke="' + ink + '" stroke-width="1" opacity=".5"/>' +
+                '<text x="100" y="138" text-anchor="middle" font-size="14" font-weight="900" fill="' + ink + '">' + esc(mode.name) + ' 완주</text>' +
+                '</svg>';
+        }
+
+        global.FingerRunPassport = {
+            TRAVELS: TRAVELS,
+            MODES: MODES,
+            catalog: catalog,
+            lineInfo: lineInfo,
+            getUser: getUser,
+            getStamps: getStamps,
+            award: award,
+            mergeGuestStamps: mergeGuestStamps,
+            syncToServer: syncToServer,
+            stampSVG: stampSVG
+        };
+    })(window);
+    </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
         
@@ -204,6 +444,52 @@
             0% { transform: scale(0.8); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
+
+        /* --- 타자 여권 --- */
+        .passport-book {
+            background:
+                repeating-linear-gradient(0deg, transparent 0 27px, rgba(146, 120, 70, 0.07) 27px 28px),
+                linear-gradient(135deg, #fbf7ec 0%, #f4ecd8 100%);
+            border: 1px solid #e7dcc2;
+            border-radius: 18px;
+            padding: 20px;
+        }
+        .passport-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr)); /* 항상 3열 */
+            gap: 16px;
+        }
+        .passport-slot {
+            border: 2px dashed #d8ccb0;
+            border-radius: 16px;
+            padding: 12px 8px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 210px;
+            color: #a8997a;
+        }
+        .passport-slot.filled { border-style: solid; border-color: rgba(214, 200, 168, 0.6); background: rgba(255, 255, 255, 0.55); color: #334155; }
+        .passport-slot .stamp { width: 78%; max-width: 150px; aspect-ratio: 1 / 1; transform: rotate(var(--rot, -6deg)); filter: drop-shadow(0 4px 6px rgba(15, 23, 42, 0.15)); }
+        .passport-slot .stamp svg { width: 100%; height: 100%; display: block; }
+        .passport-slot .empty-mark {
+            width: 64%; aspect-ratio: 1 / 1; border-radius: 50%;
+            border: 2px dashed #d8ccb0;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.85rem;
+        }
+        .passport-slot .cap { margin-top: 8px; font-size: 0.8rem; font-weight: 700; line-height: 1.35; word-break: keep-all; }
+        .passport-slot .meta { margin-top: 2px; font-size: 0.72rem; color: #64748b; line-height: 1.35; }
+        .passport-slot .gold { color: #a16207; }
+        @media (max-width: 640px) {
+            .passport-book { padding: 12px; }
+            .passport-grid { gap: 8px; }
+            .passport-slot { min-height: 150px; padding: 8px 4px; }
+            .passport-slot .cap { font-size: 0.7rem; }
+            .passport-slot .meta { font-size: 0.62rem; }
+        }
     </style>
 </head>
 <body class="pb-20 pt-20">
@@ -326,6 +612,21 @@
             </div>
         </div>
 
+        <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8" aria-labelledby="passport-title">
+            <div class="flex flex-wrap justify-between items-end gap-2 mb-2">
+                <h2 id="passport-title" class="text-lg font-bold text-gray-900">타자 여권</h2>
+                <span class="text-sm text-gray-500">모은 도장 <b id="passport-count" class="text-gray-900">0</b> / <span id="passport-total">0</span></span>
+            </div>
+            <p class="text-sm text-gray-500 mb-5">여행 노선을 완주하면 도장이 찍혀요. 기본 모드는 은색, 퀴즈 모드는 <span style="color:#a16207;font-weight:700;">금색</span> 도장입니다.</p>
+            <p id="passport-merged" class="hidden text-sm font-medium text-blue-600 mb-4"></p>
+            <div class="passport-book">
+                <div id="passport-grid" class="passport-grid"></div>
+            </div>
+            <div class="mt-5 text-center">
+                <a href="Quiz/worldmap.html" class="inline-block px-5 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-bold hover:bg-blue-700 transition">해외 여행 떠나기 →</a>
+            </div>
+        </section>
+
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 pb-14 mb-12">
             <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
                 <h2 class="text-lg font-bold text-gray-900">나의 타자 성장 기록</h2>
@@ -445,6 +746,9 @@
             // --- 기존 마이페이지 데이터 렌더링 로직 ---
             const userData = JSON.parse(savedUser);
 
+            // 타자 여권: 로그인 전에 받은 도장을 여권으로 옮긴 뒤 그리기
+            renderPassport(userData);
+
             document.getElementById('avg-speed').innerText = userData.avgSpeed || 0;
             document.getElementById('max-speed').innerText = userData.maxSpeed || 0;
             document.getElementById('total-sessions').innerText = userData.totalSessions || 0;
@@ -486,6 +790,44 @@
                 });
             });
         });
+
+        // 타자 여권: 받은 도장을 받은 순서대로 3열 칸에 찍고, 남은 칸은 빈 칸으로 표시
+        function renderPassport(userData) {
+            const P = window.FingerRunPassport;
+            const grid = document.getElementById('passport-grid');
+            if (!P) { grid.innerHTML = '<p class="text-sm text-gray-500">여권을 불러오지 못했습니다.</p>'; return; }
+
+            const moved = P.mergeGuestStamps(userData);
+            if (moved > 0) {
+                const note = document.getElementById('passport-merged');
+                note.textContent = `로그인 전에 받은 도장 ${moved}개를 여권에 옮겼어요.`;
+                note.classList.remove('hidden');
+            }
+
+            const order = P.catalog().map((c) => c.id);
+            const stamps = (Array.isArray(userData.passportStamps) ? userData.passportStamps : []).slice()
+                .sort((a, b) => (a.date || '').localeCompare(b.date || '') || order.indexOf(a.id) - order.indexOf(b.id));
+            const total = Math.max(order.length, stamps.length);
+            const rotations = [-8, 6, -3, 8, -6, 3];
+            const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+            let html = '';
+            for (let i = 0; i < total; i++) {
+                const st = stamps[i];
+                if (!st) {
+                    html += `<div class="passport-slot" aria-label="빈 도장 칸 ${i + 1}"><div class="empty-mark">${i + 1}</div><div class="cap">빈 칸</div></div>`;
+                    continue;
+                }
+                const date = (st.date || '').replace(/-/g, '.');
+                html += `<div class="passport-slot filled" title="최고 ${st.bestCpm || 0}타 · 정확도 ${st.bestAcc || 0}%">
+                    <div class="stamp" style="--rot:${rotations[i % rotations.length]}deg">${P.stampSVG(st)}</div>
+                    <div class="meta">${esc(date)} · ${st.count || 1}회 완주<br>최고 ${st.bestCpm || 0}타</div>
+                </div>`;
+            }
+            grid.innerHTML = html;
+            document.getElementById('passport-count').textContent = stamps.length;
+            document.getElementById('passport-total').textContent = total;
+        }
 
         // 차트를 그려주는 핵심 함수
         function renderCharts(records, unit) {
