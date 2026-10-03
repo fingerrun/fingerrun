@@ -537,7 +537,6 @@
     .r-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 16px; }
     .r-actions .btn { flex: 1 1 160px; max-width: 260px; }
     .share-msg { text-align: center; font-size: .82rem; color: var(--good); min-height: 1.2em; margin: 8px 0 0; font-weight: 700; }
-    .survival-lines { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; font-size: .92rem; }
 
     /* =========================================================
        7. 학습 콘텐츠 (SEO, 정적 HTML)
@@ -687,7 +686,7 @@
                         <div class="tab-body" id="scopeGroup">
                             <div class="chips" id="optGroups"></div>
                             <div class="toggle-row" style="margin-top:10px">
-                                <div class="tl">깊이<small>7주기까지면 니호늄·오가네손 등도 나와요</small></div>
+                                <div class="tl">깊이</div>
                                 <div class="mini-seg" id="optDepth">
                                     <button type="button" data-depth="4">4주기까지</button>
                                     <button type="button" data-depth="7">7주기까지</button>
@@ -710,7 +709,6 @@
                                 <button type="button" data-input="symbol">원소 기호</button>
                             </div>
                         </div>
-                        <p class="opt-note">원소 기호 입력은 한/영 전환 연습도 돼요. (예: 다음 원소 → <b>Fe</b>)</p>
                         <div id="startWrap" style="margin-top:10px">
                             <div class="toggle-row">
                                 <div class="tl">시작 지점</div>
@@ -734,29 +732,6 @@
                                 <button type="button" data-count="0">전체</button>
                             </div>
                             <p class="opt-note" id="countNote"></p>
-                        </div>
-                    </div>
-
-                    <!-- ⑤ 추가 옵션 -->
-                    <div class="opt">
-                        <p class="opt-title"><span class="step" id="stepExtra">5</span>추가 옵션</p>
-                        <div class="toggle-row">
-                            <div class="tl">💀 서바이벌<small id="survivalDesc">Enter로 틀리면 바로 게임 오버</small></div>
-                            <label class="switch"><input type="checkbox" id="optSurvival"><span></span><b class="sr-only">서바이벌</b></label>
-                        </div>
-                        <div class="toggle-row">
-                            <div class="tl">대소문자<small>학교 시험처럼 Co ≠ CO</small></div>
-                            <div class="mini-seg" id="optCase">
-                                <button type="button" data-case="strict">엄격</button>
-                                <button type="button" data-case="ignore">무시</button>
-                            </div>
-                        </div>
-                        <div class="toggle-row">
-                            <div class="tl">표기<small>입력은 둘 다 정답</small></div>
-                            <div class="mini-seg" id="optNaming">
-                                <button type="button" data-naming="kr">나트륨·칼륨</button>
-                                <button type="button" data-naming="iupac">소듐·포타슘</button>
-                            </div>
                         </div>
                     </div>
 
@@ -835,7 +810,6 @@
             </div>
             <div class="stats" id="rStats"></div>
             <div class="r-grid">
-                <div class="r-box hidden" id="rSurvivalBox"><h3>💀 서바이벌 기록</h3><ul class="survival-lines" id="rSurvival"></ul></div>
                 <div class="r-box hidden" id="rTypeBox"><h3>유형별 정답률</h3><div id="rTypes"></div><div id="rPosSplit"></div></div>
                 <div class="r-box full graph"><h3>반응 시간 그래프</h3><div id="rGraph"></div></div>
                 <div class="r-box"><h3>가장 오래 걸린(또는 틀린) 원소 TOP 3</h3><ul class="top3" id="rTop3"></ul><button type="button" class="btn btn-small" id="retryTopBtn">🔁 이 원소들만 다시 연습하기</button></div>
@@ -1080,7 +1054,6 @@
         HINT_PENALTY_MS: 3000,
         PASS_PENALTY_MS: 10000,
         PASS_LIMIT: 3,
-        SURVIVAL_BASIC_SEC: 15,
         CORRECT_CARD_MS: 500,
         REVEAL_MS: 1000,
         SPEED_BADGE_MS: 2000,
@@ -1097,7 +1070,7 @@
         groups: [1], depth: 4, periods: [1, 2, 3],
         input: 'name', start: 1,
         types: ['symbol-to-name', 'name-to-symbol', 'number-to-name'], count: 20,
-        survival: false, caseMode: 'strict', naming: 'kr',
+        caseMode: 'ignore', naming: 'kr',   // 대소문자 무시 · 표시는 나트륨·칼륨 (입력은 소듐·포타슘도 정답)
     };
 
     /* -------------------------------------------------------------------------
@@ -1302,9 +1275,9 @@
         s.types = (Array.isArray(s.types) ? s.types : []).filter(t => QTYPE_BY_ID[t]);
         if (!s.types.length) s.types = DEFAULT_SETTINGS.types.slice();
         s.count = pick(Number(s.count), CONFIG.QUIZ_COUNTS, 20);
-        s.survival = !!s.survival;
-        s.caseMode = pick(s.caseMode, ['strict', 'ignore'], 'strict');
-        s.naming = pick(s.naming, ['kr', 'iupac'], 'kr');
+        s.caseMode = DEFAULT_SETTINGS.caseMode;
+        s.naming = DEFAULT_SETTINGS.naming;
+        delete s.survival;
         return s;
     }
     function uniqNums(v) {
@@ -1325,9 +1298,6 @@
         if (q.has('start')) o.start = Number(q.get('start'));
         if (q.has('types')) o.types = q.get('types').split(',');
         if (q.has('count')) o.count = q.get('count') === 'all' ? 0 : Number(q.get('count'));
-        if (q.has('survival')) o.survival = q.get('survival') === '1';
-        if (q.has('case')) o.caseMode = q.get('case');
-        if (q.has('naming')) o.naming = q.get('naming');
         return o;
     }
     function settingsToQuery(s) {
@@ -1340,14 +1310,11 @@
         if (s.scope === 'period') q.set('periods', s.periods.join(','));
         if (s.play === 'basic') {
             q.set('input', s.input);
-            if (s.scope === 'number' && !s.survival && validStart(s) !== 1) q.set('start', String(validStart(s)));
+            if (s.scope === 'number' && validStart(s) !== 1) q.set('start', String(validStart(s)));
         } else {
             q.set('types', s.types.join(','));
-            if (!s.survival) q.set('count', s.count ? String(s.count) : 'all');
+            q.set('count', s.count ? String(s.count) : 'all');
         }
-        if (s.survival) q.set('survival', '1');
-        if (s.caseMode !== 'strict') q.set('case', s.caseMode);
-        if (s.naming !== 'kr') q.set('naming', s.naming);
         return q.toString().replace(/%2C/g, ',');
     }
     function validStart(s) {
@@ -1482,7 +1449,7 @@
     function basicSequence(cfg) {
         let list = scopeElements(cfg);
         if (cfg.scope === 'number') {
-            const start = cfg.survival ? 1 : validStart(cfg);
+            const start = validStart(cfg);
             list = list.filter(e => e.n >= start);
         }
         if (cfg.scope === 'custom') list = [...list].sort((a, b) => a.n - b.n);
@@ -1498,7 +1465,7 @@
         if (cfg.scope === 'custom') return '다시 연습';
         if (cfg.scope === 'number') {
             const lv = CONFIG.LEVELS[cfg.level];
-            const st = cfg.play === 'basic' && !cfg.survival ? validStart(cfg) : 1;
+            const st = cfg.play === 'basic' ? validStart(cfg) : 1;
             return `${st}~${lv.max}번`;
         }
         if (cfg.scope === 'group') return cfg.groups.map(g => g + '족').join('·') + (cfg.depth === 7 ? ' (7주기까지)' : '');
@@ -1508,7 +1475,6 @@
         const parts = [cfg.play === 'basic' ? '기본' : '퀴즈', rangeLabel(cfg)];
         if (cfg.play === 'basic') parts.push(cfg.input === 'name' ? '이름' : '기호');
         else parts.push(cfg.time ? cfg.time + '초' : '제한 없음');
-        if (cfg.survival) parts.push('💀서바이벌');
         return parts.join(' · ');
     }
 
@@ -1741,8 +1707,6 @@
         onSeg('#optInput', 'input', v => { S.input = v; });
         onSeg('#optStart', 'start', v => { S.start = Number(v); });
         onSeg('#optCount', 'count', v => { S.count = Number(v); });
-        onSeg('#optCase', 'case', v => { S.caseMode = v; });
-        onSeg('#optNaming', 'naming', v => { S.naming = v; });
         const onChecks = (sel, key) => {
             $(sel).addEventListener('change', e => {
                 const vals = $$(`${sel} input:checked`).map(i => Number(i.value));
@@ -1761,7 +1725,6 @@
             S.types = QTYPES.map(t => t.id).filter(t => set.has(t));
             saveSettings(); renderStart();
         });
-        $('#optSurvival').addEventListener('change', e => { S.survival = e.target.checked; saveSettings(); renderStart(); });
         $('#revealBtn').addEventListener('click', () => {
             revealAll = !revealAll;
             $('#revealBtn').setAttribute('aria-pressed', revealAll);
@@ -1790,8 +1753,6 @@
         pressed('#optDepth', 'depth', S.depth);
         pressed('#optInput', 'input', S.input);
         pressed('#optCount', 'count', S.count);
-        pressed('#optCase', 'case', S.caseMode);
-        pressed('#optNaming', 'naming', S.naming);
         $('#optTimeWrap').classList.toggle('hidden', !quiz);
         $('#scopeNumber').classList.toggle('hidden', S.scope !== 'number');
         $('#scopeGroup').classList.toggle('hidden', S.scope !== 'group');
@@ -1803,17 +1764,16 @@
         // 단계 번호 (기본 모드는 ② 제한 시간이 없음)
         $('#stepScope').textContent = quiz ? 3 : 2;
         $('#stepDetailB').textContent = 3; $('#stepDetailQ').textContent = 4;
-        $('#stepExtra').textContent = quiz ? 5 : 4;
 
         // 시작 지점 (번호 모드 + 기본 모드만)
         $('#startWrap').classList.toggle('hidden', S.scope !== 'number');
         const st = validStart(S);
         $$('#optStart [data-start]').forEach(b => {
-            const ok = (CONFIG.START_POINTS[b.dataset.start] || []).includes(S.level) && !S.survival;
+            const ok = (CONFIG.START_POINTS[b.dataset.start] || []).includes(S.level);
             b.disabled = !ok;
-            b.setAttribute('aria-pressed', String(!S.survival ? Number(b.dataset.start) === st : b.dataset.start === '1'));
+            b.setAttribute('aria-pressed', String(Number(b.dataset.start) === st));
         });
-        $('#startNote').textContent = S.survival ? '서바이벌은 항상 1번 수소부터 시작해요.' : '21번부터는 🟠심화·🔴지옥, 37번부터는 🔴지옥에서 고를 수 있어요.';
+        $('#startNote').textContent = '21번부터는 🟠심화·🔴지옥, 37번부터는 🔴지옥에서 고를 수 있어요.';
 
         // 문제 유형
         const pool = scopeElements(S);
@@ -1831,23 +1791,15 @@
             g.querySelector('.why').textContent = whys.join(' · ');
         });
 
-        $('#optSurvival').checked = S.survival;
-        $('#survivalDesc').textContent = quiz
-            ? '제한 시간 그대로 · 틀리거나 시간 초과면 게임 오버 · 연속 정답 기록'
-            : `문항당 ${CONFIG.SURVIVAL_BASIC_SEC}초 · Enter로 틀리면 게임 오버 · 힌트·패스 없음`;
-        $$('#optCount button').forEach(b => { b.disabled = S.survival; });
-
         // 요약 · 시작 가능 여부
         let n = 0, err = '';
         if (quiz) {
             const qpool = buildQuizPool(S);
             n = qpool.length;
             if (!n) err = '선택한 범위·유형으로 만들 수 있는 문제가 없어요.';
-            const cnt = S.survival ? n : (S.count ? Math.min(S.count, n) : n);
-            $('#countNote').textContent = S.survival
-                ? `서바이벌은 문항 수 없이 계속 출제돼요. (문제 ${n}개를 돌아가며)`
-                : `만들 수 있는 문제 ${n}개` + (S.count && n < S.count ? ` → ${n}문항만 출제돼요` : '');
-            $('#summaryLine').textContent = summaryLabel(S) + (S.survival ? '' : ` · ${cnt}문항`);
+            const cnt = S.count ? Math.min(S.count, n) : n;
+            $('#countNote').textContent = `만들 수 있는 문제 ${n}개` + (S.count && n < S.count ? ` → ${n}문항만 출제돼요` : '');
+            $('#summaryLine').textContent = summaryLabel(S) + ` · ${cnt}문항`;
         } else {
             n = basicSequence(S).length;
             if (!n) err = '범위에 원소가 없어요.';
@@ -1873,7 +1825,7 @@
     }
 
     /* -------------------------------------------------------------------------
-       10. 게임 진행 (기본 / 퀴즈 / 서바이벌)
+       10. 게임 진행 (기본 / 퀴즈)
        ------------------------------------------------------------------------- */
     let G = null;              // 현재 판 상태
     let input, sink;           // 입력창, 조합 강제 종료용 보조 입력창
@@ -1897,10 +1849,10 @@
     function startGame(cfg) {
         cfg = Object.assign({}, cfg);
         const g = {
-            cfg, play: cfg.play, survival: !!cfg.survival,
+            cfg, play: cfg.play,
             items: [], idx: -1, q: null, records: [], lit: new Set(), missed: new Set(),
             hints: 0, passesLeft: CONFIG.PASS_LIMIT, passes: 0, penaltyMs: 0, wrongSubmits: 0,
-            lock: null, startAt: 0, endAt: 0, qStartAt: 0, deadline: 0, streak: 0, ended: false,
+            lock: null, startAt: 0, endAt: 0, qStartAt: 0, deadline: 0, ended: false,
             flashN: 0, flashUntil: 0, trail: [], section: null, sectionCount: 0, timeoutCount: 0,
         };
         if (g.play === 'basic') {
@@ -1911,15 +1863,12 @@
             const pool = cfg.note ? cfg.noteItems : buildQuizPool(cfg);
             g.pool = pool;
             g.rangeSet = new Set((cfg.note ? pool.map(c => c.n) : scopeElements(cfg).map(e => e.n)));
-            if (g.survival) { g.queue = shuffle(pool); g.items = []; }
-            else g.items = (cfg.count && !cfg.note ? pool.slice(0, cfg.count) : pool).map(c => makeQuestion(c, cfg));
+            g.items = (cfg.count && !cfg.note ? pool.slice(0, cfg.count) : pool).map(c => makeQuestion(c, cfg));
         }
-        if (!(g.items.length || (g.queue && g.queue.length))) return;
+        if (!g.items.length) return;
         G = g;
         showScreen('playScreen');
         $('#tbLeft').textContent = summaryLabel(cfg);
-        $('#hintBtn').classList.toggle('hidden', g.survival);
-        $('#passBtn').classList.toggle('hidden', g.survival);
         $('#hintBtn').disabled = g.play === 'quiz' && cfg.time > 0;
         $('#hintBtn').title = $('#hintBtn').disabled ? '힌트는 제한 없음일 때만 쓸 수 있어요' : '힌트 (Alt+H)';
         sizeTable(playT);
@@ -1930,18 +1879,8 @@
         setTimeout(() => { input.focus({ preventScroll: true }); ensureCardVisible(); }, 30);
     }
 
-    function nextQuizSurvivalItem() {
-        if (!G.queue.length) {                       // 한 바퀴 돌면 다시 섞기 (직전 문제 바로 반복 방지)
-            let q = shuffle(G.pool);
-            if (q.length > 1 && G.q && candKey(q[0]) === candKey(G.q.cand)) q.push(q.shift());
-            G.queue = q;
-        }
-        return makeQuestion(G.queue.shift(), G.cfg);
-    }
-
     function advance() {
         G.idx++;
-        if (G.play === 'quiz' && G.survival) G.items[G.idx] = nextQuizSurvivalItem();
         if (G.idx >= G.items.length) { finishGame('clear'); return; }
         G.q = G.items[G.idx];
         G.q.hintUsed = false; G.q.wrongs = 0;
@@ -1955,7 +1894,7 @@
         renderQuestion();
         setInputMode(G.q.kind);
         G.qStartAt = performance.now();
-        const limit = G.play === 'quiz' ? G.cfg.time : (G.survival ? CONFIG.SURVIVAL_BASIC_SEC : 0);
+        const limit = G.play === 'quiz' ? G.cfg.time : 0;
         G.deadline = limit ? G.qStartAt + limit * 1000 : 0;
         paintPlay();
     }
@@ -1979,7 +1918,7 @@
             renderBasicMain();
             $('#qGuide').textContent = G.cfg.input === 'name'
                 ? '다음 원소의 한글 이름 · 맞으면 엔터 없이 넘어가요'
-                : `다음 원소의 기호${G.cfg.caseMode === 'strict' ? ' (대소문자 구분)' : ''} · 한/영 전환!`;
+                : '다음 원소의 기호 · 한/영 전환!';
         } else {
             label.textContent = (G.cfg.note ? '📒 ' : '') + q.label;
             label.classList.remove('notice');
@@ -2013,10 +1952,7 @@
     }
 
     function updateTopbar() {
-        let mid;
-        if (G.play === 'quiz' && G.survival) mid = `연속 ${G.streak}개`;
-        else mid = `${Math.min(G.idx + 1, G.items.length)} / ${G.items.length}`;
-        $('#tbMid').textContent = mid;
+        $('#tbMid').textContent = `${Math.min(G.idx + 1, G.items.length)} / ${G.items.length}`;
     }
 
     function tick() {
@@ -2024,7 +1960,7 @@
         const now = performance.now();
         const bar = $('#tbBar');
         if (G.deadline) {
-            const total = (G.play === 'quiz' ? G.cfg.time : CONFIG.SURVIVAL_BASIC_SEC) * 1000;
+            const total = G.cfg.time * 1000;
             const left = G.lock ? (G.frozenLeft != null ? G.frozenLeft : 0) : Math.max(0, G.deadline - now);
             bar.classList.remove('hidden');
             const r = left / total;
@@ -2077,17 +2013,16 @@
         if (!normalize(v)) return;
         const r = G.q.check(v);
         if (r.ok) { onCorrect(r); return; }
-        if (G.survival) { onFail('wrong', v, true); return; }
         if (G.play === 'basic') {                    // 기본: 흔들고 계속 입력
             G.q.wrongs++; G.wrongSubmits++;
             input.classList.remove('shake'); void input.offsetWidth; input.classList.add('shake');
             return;
         }
-        onFail('wrong', v, false);                    // 퀴즈: 한 번의 기회
+        onFail('wrong', v);                    // 퀴즈: 한 번의 기회
     }
     function onTimeout() {
-        if (G.play === 'quiz' && !G.survival) G.timeoutCount++;
-        onFail('timeout', input.value, G.survival);
+        if (G.play === 'quiz') G.timeoutCount++;
+        onFail('timeout', input.value);
     }
 
     function questionMs() { return performance.now() - G.qStartAt + (G.q.hintUsed ? CONFIG.HINT_PENALTY_MS : 0); }
@@ -2098,7 +2033,6 @@
         G.records.push({ q, type: q.type, n: el.n, cand: q.cand, status: 'correct', ms: questionMs(), hint: q.hintUsed, wrongs: q.wrongs || 0, input: typed, keys: keystrokes(normalize(typed)) });
         G.lit.add(el.n); G.missed.delete(el.n);
         G.flashN = el.n; G.flashUntil = performance.now() + 700;
-        G.streak++;
         if (G.play === 'basic') { G.trail.push(el); if (q.wrongs) addWrongNote(basicNoteCand(el)); }
         if (G.cfg.note) removeWrongNote(q.cand);
         const notes = [];
@@ -2108,7 +2042,7 @@
         if (el.n === 1 && G.cfg.scope === 'group') notes.push('수소는 1족이지만 알칼리 금속이 아니에요');
         showToast(el, notes, false, CONFIG.CORRECT_CARD_MS);
         resetInput();
-        if (G.play === 'basic' ? G.idx + 1 >= G.items.length : (!G.survival && G.idx + 1 >= G.items.length)) {
+        if (G.idx + 1 >= G.items.length) {
             G.lock = 'done'; paintPlay();
             setTimeout(() => finishGame('clear'), 450);
             return;
@@ -2116,21 +2050,20 @@
         advance();
     }
 
-    // 오답·시간 초과·패스: 정답을 1초 보여 주고 다음 (서바이벌이면 게임 오버)
-    function onFail(status, typed, fatal) {
+    // 오답·시간 초과·패스: 정답을 1초 보여 주고 다음
+    function onFail(status, typed) {
         const q = G.q, el = q.el;
         const frozen = G.deadline ? Math.max(0, G.deadline - performance.now()) : null;
         G.records.push({ q, type: q.type, n: el.n, cand: q.cand, status, ms: questionMs(), hint: q.hintUsed, wrongs: q.wrongs || 0, input: typed });
         G.lock = 'reveal'; G.frozenLeft = frozen;
         G.missed.add(el.n);
-        G.streak = fatal ? G.streak : (G.play === 'quiz' ? 0 : G.streak);
         if (G.play === 'basic') G.trail.push(el);
         if (G.play === 'quiz' && !G.cfg.note) addWrongNote(q.cand);
         else if (G.play === 'quiz' && G.cfg.note) { /* 노트 문제는 맞힐 때만 제거 */ }
         else addWrongNote(basicNoteCand(el));
         const fb = $('#qFeedback');
         fb.className = 'q-feedback bad';
-        fb.textContent = { wrong: '❌ 오답', timeout: '⏰ 시간 초과', pass: '⏭ 패스' }[status] + (fatal ? ' · 게임 오버' : '');
+        fb.textContent = { wrong: '❌ 오답', timeout: '⏰ 시간 초과', pass: '⏭ 패스' }[status];
         if (G.play === 'basic') renderBasicMain(true);
         else $('#qMain').innerHTML = `<span class="q-big">${esc(q.big)}</span><span class="q-ask">정답: <b style="color:var(--bad)">${esc(q.answerFull || q.answer)}</b></span>`;
         showToast(el, q.notes, true, CONFIG.REVEAL_MS);
@@ -2138,15 +2071,14 @@
         resetInput();
         setTimeout(() => {
             if (!G || G.ended) return;
-            if (fatal) { finishGame('over'); return; }
-            if (G.play === 'basic' ? G.idx + 1 >= G.items.length : (!G.survival && G.idx + 1 >= G.items.length)) { finishGame('clear'); return; }
+            if (G.idx + 1 >= G.items.length) { finishGame('clear'); return; }
             resetInput();
             advance();
         }, CONFIG.REVEAL_MS);
     }
 
     function useHint() {
-        if (!G || G.ended || G.lock || G.survival || G.q.hintUsed) return;
+        if (!G || G.ended || G.lock || G.q.hintUsed) return;
         if (G.play === 'quiz' && G.cfg.time > 0) return;   // 퀴즈는 제한 없음일 때만
         G.q.hintUsed = true; G.hints++;
         if (G.play === 'basic') { G.penaltyMs += CONFIG.HINT_PENALTY_MS; renderBasicMain(); }
@@ -2155,10 +2087,10 @@
         input.focus({ preventScroll: true });
     }
     function usePass() {
-        if (!G || G.ended || G.lock || G.survival || G.passesLeft <= 0) return;
+        if (!G || G.ended || G.lock || G.passesLeft <= 0) return;
         G.passesLeft--; G.passes++;
         if (G.play === 'basic') G.penaltyMs += CONFIG.PASS_PENALTY_MS;
-        onFail('pass', input.value, false);
+        onFail('pass', input.value);
     }
     function basicNoteCand(el) { return { type: G.cfg.input === 'name' ? 'number-to-name' : 'name-to-symbol', n: el.n }; }
 
@@ -2226,18 +2158,17 @@
     function startNoteQuiz() {
         const note = store.get(CONFIG.STORE.wrong, []).filter(c => QTYPE_BY_ID[c.type] && EL_BY_N.has(c.n));
         if (!note.length) return;
-        startGame(Object.assign({}, S, { play: 'quiz', note: true, noteItems: shuffle(note), survival: false, count: 0 }));
+        startGame(Object.assign({}, S, { play: 'quiz', note: true, noteItems: shuffle(note), count: 0 }));
     }
 
     function bestKey(cfg) {
         if (cfg.note || cfg.scope === 'custom') return null;
-        const p = [cfg.play, cfg.survival ? 'sv' : 'n', cfg.scope];
+        const p = [cfg.play, cfg.scope];
         if (cfg.scope === 'number') p.push(cfg.level);
         if (cfg.scope === 'group') p.push(cfg.groups.join('.') + 'd' + cfg.depth);
         if (cfg.scope === 'period') p.push(cfg.periods.join('.'));
-        if (cfg.play === 'basic') p.push(cfg.input, cfg.scope === 'number' && !cfg.survival ? 's' + validStart(cfg) : '');
-        else p.push('t' + cfg.time, [...cfg.types].sort().join('.'), cfg.survival ? '' : 'c' + cfg.count);
-        p.push(cfg.caseMode);
+        if (cfg.play === 'basic') p.push(cfg.input, cfg.scope === 'number' ? 's' + validStart(cfg) : '');
+        else p.push('t' + cfg.time, [...cfg.types].sort().join('.'), 'c' + cfg.count);
         return p.join('|');
     }
 
@@ -2291,15 +2222,6 @@
                 R.posSplit = { n: e2p.length, period: pOk / e2p.length, group: gOk / e2p.length };
             }
         }
-        // 서바이벌
-        if (G.survival) {
-            const lastOk = [...recs].reverse().find(r => r.status === 'correct');
-            R.lastOk = lastOk ? EL_BY_N.get(lastOk.n) : null;
-            const dead = recs.length && recs[recs.length - 1].status !== 'correct' ? recs[recs.length - 1] : null;
-            R.stuck = dead && G.kind === 'over' ? dead : null;
-            R.streak = correct.length;          // 서바이벌은 한 번 틀리면 끝이므로 맞힌 수 = 연속 정답
-            R.reached = correct.length;
-        }
         // 멘붕 구간 (가장 느린 연속 3문항)
         R.slowWin = slowestWindow(recs.map(r => r.ms), Math.min(3, recs.length));
         // TOP 3
@@ -2307,15 +2229,12 @@
         const seen = new Set(); R.top3 = [];
         for (const r of rank) { if (seen.has(r.n)) continue; seen.add(r.n); R.top3.push(r); if (R.top3.length === 3) break; }
         // 최고 기록
-        R.bestKey = G.kind === 'quit' && !G.survival ? null : bestKey(G.cfg);
+        R.bestKey = G.kind === 'quit' ? null : bestKey(G.cfg);
         if (R.bestKey) {
             const all = store.get(CONFIG.STORE.best, {});
             const prev = all[R.bestKey] || null;
             let cur = null, better = false;
-            if (G.survival) {
-                cur = { v: G.play === 'quiz' ? R.streak : R.reached };
-                better = !prev || cur.v > prev.v;
-            } else if (G.play === 'basic') {
+            if (G.play === 'basic') {
                 if (G.kind === 'clear') { cur = { v: R.totalMs }; better = !prev || cur.v < prev.v; }
             } else {
                 cur = { v: R.correct, avg: R.avgMs, total: R.total };
@@ -2338,7 +2257,6 @@
     }
     function bestText(v, R) {
         if (!v) return '-';
-        if (R.cfg.survival) return R.cfg.play === 'quiz' ? `연속 ${v.v}개` : `${v.v}개 원소`;
         if (R.cfg.play === 'basic') return fmtTime(v.v);
         return `${v.v} / ${v.total} (평균 ${(v.avg / 1000).toFixed(1)}초)`;
     }
@@ -2349,19 +2267,13 @@
 
     function renderResult(R) {
         const cfg = R.cfg, quiz = cfg.play === 'quiz';
-        const title = R.kind === 'over' ? '💀 게임 오버' : R.kind === 'quit' ? '⏸ 중단한 판' : quiz ? (cfg.survival ? '🏆 모든 문제 통과!' : '🎉 퀴즈 완료!') : '🎉 완주!';
+        const title = R.kind === 'quit' ? '⏸ 중단한 판' : quiz ? '🎉 퀴즈 완료!' : '🎉 완주!';
         $('#rTitle').textContent = title;
         $('#rSub').textContent = summaryLabel(cfg);
         const stats = [];
-        if (!quiz && !cfg.survival) {
+        if (!quiz) {
             stats.push([fmtTime(R.totalMs), '완주 시간 (페널티 포함)'], [Math.round(R.accuracy * 100) + '%', '정답률 (한 번에 맞힘)'],
                 [`${G.hints} · ${G.passes}`, '힌트 · 패스'], [R.cpm + '타', '평균 타수 (자모/분)']);
-        } else if (!quiz) {
-            stats.push([`${R.reached} / ${R.total}`, '통과한 원소'], [fmtTime(R.elapsed), '걸린 시간'],
-                [(R.avgMs / 1000).toFixed(1) + '초', '평균 반응 시간'], [R.cpm + '타', '평균 타수 (자모/분)']);
-        } else if (cfg.survival) {
-            stats.push([`${R.streak}개`, '연속 정답'], [fmtTime(R.elapsed), '버틴 시간'],
-                [(R.avgMs / 1000).toFixed(1) + '초', '평균 반응 시간'], [cfg.time ? cfg.time + '초' : '제한 없음', '제한 시간']);
         } else {
             stats.push([`${R.correct} / ${R.total}`, '점수'], [Math.round(R.accuracy * 100) + '%', '정답률'],
                 [R.timeouts + '회', '시간 초과'], [(R.avgMs / 1000).toFixed(1) + '초', '평균 반응 시간']);
@@ -2372,22 +2284,6 @@
         if (R.correct >= 3 && R.avgMs && R.avgMs <= CONFIG.SPEED_BADGE_MS) badges.push('<span class="r-badge">⚡ 시험장 속도 (평균 2초 이내)</span>');
         if (R.isBest && R.prevBest) badges.push('<span class="r-badge blue">🏅 최고 기록 갱신!</span>');
         $('#rBadges').innerHTML = badges.join('');
-
-        // 서바이벌
-        const sv = $('#rSurvivalBox');
-        sv.classList.toggle('hidden', !cfg.survival);
-        if (cfg.survival) {
-            const lines = [];
-            if (!quiz) {
-                lines.push(`마지막으로 맞힌 원소: <b>${R.lastOk ? `${esc(displayName(R.lastOk, cfg.naming))}(${R.lastOk.n})` : '없음'}</b>`);
-                lines.push(R.stuck ? `막힌 원소 · 나의 멘붕 구간: <b style="color:var(--bad)">${esc(recName(R.stuck))}</b> (${R.stuck.status === 'timeout' ? '시간 초과' : '오답'})` : '🎉 끝까지 통과했어요!');
-                lines.push(`걸린 시간: <b>${fmtTime(R.elapsed)}</b>`);
-            } else {
-                lines.push(`연속 정답: <b>${R.streak}개</b>`);
-                if (R.stuck) lines.push(`막힌 문제: <b style="color:var(--bad)">${esc(R.stuck.q.big)}</b> → ${esc(R.stuck.q.answerFull || R.stuck.q.answer)}`);
-            }
-            $('#rSurvival').innerHTML = lines.map(l => `<li>${l}</li>`).join('');
-        }
 
         // 유형별 정답률 + 주기 vs 족
         const tb = $('#rTypeBox');
@@ -2463,14 +2359,6 @@
     }
     function shareText(R) {
         const cfg = R.cfg, link = shareLink(cfg);
-        if (cfg.survival && cfg.play === 'basic') {
-            const first = G.items[0] ? displayName(G.items[0].el, cfg.naming) : '';
-            const okIdx = R.lastOk ? G.items.findIndex(q => q.el.n === R.lastOk.n) : -1;
-            const head = okIdx < 0 ? `${first}에서 막힘` : okIdx === 0 ? `${first}(${R.lastOk.n})`
-                : `${first} → ${okIdx > 1 ? '… → ' : ''}${displayName(R.lastOk, cfg.naming)}(${R.lastOk.n})`;
-            return [`핑거런 주기율표 서바이벌 ⚗️`, `${head} ${R.stuck ? '💀' : R.kind === 'quit' ? '⏸' : '🏆'}`, R.stuck ? `나의 멘붕 구간: ${recName(R.stuck)}` : '끝까지 통과!', link].join('\n');
-        }
-        if (cfg.survival) return `핑거런 주기율표 퀴즈 서바이벌 ⚗️ ${rangeLabel(cfg)} · ${cfg.time ? cfg.time + '초' : '제한 없음'} · 연속 ${R.streak}개 ${R.stuck ? '💀' : R.kind === 'quit' ? '⏸' : '🏆'} ${link}`;
         if (cfg.play === 'quiz') return `핑거런 주기율표 퀴즈 · ${rangeLabel(cfg)} · ${cfg.time ? cfg.time + '초' : '제한 없음'} · ${R.correct}/${R.total} 정답 ⚗️ ${link}`;
         return `핑거런 주기율표 기본 모드 · ${rangeLabel(cfg)} · ${cfg.input === 'name' ? '이름' : '기호'} · ${fmtTime(R.totalMs)} ${R.kind === 'clear' ? '완주' : ''} ⚗️ ${link}`.replace(/\s+⚗️/, ' ⚗️');
     }
@@ -2504,8 +2392,7 @@
         x.fillStyle = '#1f2937'; fit('⚗️ 핑거런 주기율표', 44, 900, 480); x.fillText('⚗️ 핑거런 주기율표', 76, 118);
         x.fillStyle = '#6b7280'; fit(summaryLabel(R.cfg), 26, 600, 480); x.fillText(summaryLabel(R.cfg), 76, 166);
         let big, sub;
-        if (R.cfg.survival) { big = R.cfg.play === 'quiz' ? `연속 ${R.streak}개` : `${R.reached}개 통과`; sub = R.stuck ? `💀 멘붕 구간: ${recName(R.stuck)}` : '🏆 끝까지 통과!'; }
-        else if (R.cfg.play === 'quiz') { big = `${R.correct} / ${R.total} 정답`; sub = `정답률 ${Math.round(R.accuracy * 100)}% · 평균 ${(R.avgMs / 1000).toFixed(1)}초`; }
+        if (R.cfg.play === 'quiz') { big = `${R.correct} / ${R.total} 정답`; sub = `정답률 ${Math.round(R.accuracy * 100)}% · 평균 ${(R.avgMs / 1000).toFixed(1)}초`; }
         else { big = fmtTime(R.totalMs); sub = `${R.kind === 'clear' ? '완주' : '진행'} · 정답률 ${Math.round(R.accuracy * 100)}% · ${R.cpm}타/분`; }
         x.fillStyle = '#667eea'; fit(big, 76, 900, 480); x.fillText(big, 76, 290);
         x.fillStyle = '#374151'; fit(sub, 28, 700, 480); x.fillText(sub, 76, 345);
@@ -2674,7 +2561,7 @@
         $('#settingsBtn').addEventListener('click', () => { showScreen('startScreen'); renderStart(); });
         $('#retryTopBtn').addEventListener('click', () => {
             const ns = G.result.top3.map(r => r.n);
-            const base = Object.assign({}, G.cfg, { scope: 'custom', custom: ns, note: false, survival: false, count: 0 });
+            const base = Object.assign({}, G.cfg, { scope: 'custom', custom: ns, note: false, count: 0 });
             if (base.play === 'quiz') {
                 const pool = ns.map(n => EL_BY_N.get(n));
                 let types = (G.cfg.note ? DEFAULT_SETTINGS.types : G.cfg.types).filter(t => candidatesFor(t, pool, base).length);
