@@ -345,11 +345,6 @@
     /* =========================================================
        4. 시작 화면
        ========================================================= */
-    .hero { text-align: center; padding: 10px 0 14px; }
-    .hero h1 { margin: 4px 0 4px; font-size: clamp(1.45rem, 3.4vw, 2.2rem); font-weight: 900; letter-spacing: -.02em; }
-    .hero h1 .grad { background: linear-gradient(135deg, var(--brand), var(--brand2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-    .hero p { margin: 0; color: var(--muted); font-size: .98rem; }
-    .hero .badge { display: inline-block; font-size: .78rem; font-weight: 700; color: var(--brand); background: rgba(102,126,234,.12); padding: 3px 10px; border-radius: 999px; }
 
     .start-grid { display: grid; grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: 20px; align-items: start; }
     .start-preview { position: sticky; top: 84px; background: var(--panel); border-radius: 18px; padding: 14px; box-shadow: var(--shadow); }
@@ -643,11 +638,8 @@
              시작 화면
              ===================================================== -->
         <section id="startScreen" class="screen wrap" aria-labelledby="pageTitle">
-            <div class="hero">
-                <span class="badge">⚗️ 과학 여행</span>
-                <h1 id="pageTitle"><span class="grad">주기율표 외우기</span> 타이핑 게임</h1>
-                <p>이름·기호부터 족·주기·이온식까지 타이핑으로 외우기</p>
-            </div>
+            <!-- 화면에는 보이지 않는 제목 (스크린리더·검색엔진용) -->
+            <h1 id="pageTitle" class="sr-only">주기율표 외우기 타이핑 게임</h1>
 
             <div class="start-grid">
                 <div class="panel" id="optionsPanel">
