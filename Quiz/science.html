@@ -355,7 +355,6 @@
     .start-preview { position: sticky; top: 84px; background: var(--panel); border-radius: 18px; padding: 14px; box-shadow: var(--shadow); }
     .start-preview .pv-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 8px; font-size: .9rem; }
     .start-preview .pv-head b { font-size: .95rem; white-space: nowrap; }
-    .start-preview .pv-head .btn { white-space: nowrap; }
     @media (max-width: 1023px) {
         .start-grid { grid-template-columns: minmax(0, 1fr); }
         .start-preview { position: static; order: -1; }
@@ -744,7 +743,6 @@
                 <div class="start-preview" aria-label="선택한 범위 미리보기">
                     <div class="pv-head">
                         <b>이번 판 범위 <span class="muted" id="pvCount"></span></b>
-                        <button type="button" class="btn btn-small" id="revealBtn" aria-pressed="false">전체 주기율표 보기</button>
                     </div>
                     <div class="ptable-wrap" id="previewWrap"></div>
                     <ul class="legend" id="legendStart"></ul>
@@ -1641,7 +1639,6 @@
     const $ = sel => document.querySelector(sel);
     const $$ = sel => Array.from(document.querySelectorAll(sel));
     let previewT = null, playT = null, miniT = null;
-    let revealAll = false;
 
     function buildStartOptions() {
         $('#optLevel').innerHTML = Object.entries(CONFIG.LEVELS).map(([id, lv]) => `
@@ -1700,12 +1697,6 @@
             if (![...set].some(t => avail.includes(t))) { e.target.checked = true; return; }
             S.types = QTYPES.map(t => t.id).filter(t => set.has(t));
             saveSettings(); renderStart();
-        });
-        $('#revealBtn').addEventListener('click', () => {
-            revealAll = !revealAll;
-            $('#revealBtn').setAttribute('aria-pressed', revealAll);
-            $('#revealBtn').textContent = revealAll ? '숨기기' : '전체 주기율표 보기';
-            previewT.root.classList.toggle('reveal', revealAll);
         });
         $('#startBtn').addEventListener('click', () => startGame(Object.assign({}, S)));
     }
@@ -2473,6 +2464,7 @@
         buildStartOptions();
         bindStartOptions();
         previewT = createTable($('#previewWrap'), { maxCell: 40, titles: false });
+        previewT.root.classList.add('reveal');      // 시작 화면은 항상 전체 주기율표 표시
         playT = createTable($('#playWrap'), { maxCell: 64, allowOverlay: true, fitHeight: true });
         playT.root.appendChild($('#qcardTpl').content.cloneNode(true));
         renderLegend($('#legendStart')); renderLegend($('#legendPlay'));
