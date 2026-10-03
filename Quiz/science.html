@@ -91,7 +91,20 @@
         --warn: #f59e0b;
         --shadow: 0 10px 30px rgba(31, 41, 55, .08);
         --cell-text: #1f2937;
-        --cell-line: #8b93a3;
+        --empty-cell: #eef0f5;
+
+        /* 2-3 카테고리 색 (라이트) */
+        --c-alkali-metal: #E8736C;
+        --c-alkaline-earth-metal: #F9D9A8;
+        --c-lanthanide: #F4C2F4;
+        --c-actinide: #E9A0D3;
+        --c-transition-metal: #F4B8B0;
+        --c-post-transition-metal: #CCCCCC;
+        --c-metalloid: #CCCC99;
+        --c-diatomic-nonmetal: #F0F58C;
+        --c-polyatomic-nonmetal: #A6F5C6;
+        --c-noble-gas: #C3F7F7;
+        --c-unknown: #E6E6E6;
         color-scheme: light;
     }
     @media (prefers-color-scheme: dark) {
@@ -104,9 +117,20 @@
             --muted: #9aa4b8;
             --shadow: 0 10px 30px rgba(0, 0, 0, .35);
             --cell-text: #f3f5fa;
-            --cell-line: #7a849a;
+            --empty-cell: #1a2133;
 
             /* 같은 색 계열을 어둡게 (흰 글자 대비 확보) */
+            --c-alkali-metal: #a84a44;
+            --c-alkaline-earth-metal: #93703c;
+            --c-lanthanide: #8d5a8d;
+            --c-actinide: #8a4777;
+            --c-transition-metal: #925a52;
+            --c-post-transition-metal: #646a74;
+            --c-metalloid: #6f6f42;
+            --c-diatomic-nonmetal: #7c8030;
+            --c-polyatomic-nonmetal: #2f8256;
+            --c-noble-gas: #2f7f84;
+            --c-unknown: #4b5262;
             color-scheme: dark;
         }
     }
@@ -247,8 +271,7 @@
 
     .cell {
         position: relative; border-radius: max(3px, calc(var(--c) * .1));
-        background: transparent; color: var(--cell-text);
-        border: max(1px, calc(var(--c) * .035)) dashed var(--cell-line);
+        background: var(--cat); color: var(--cell-text);
         display: flex; flex-direction: column; align-items: center; justify-content: center;
         overflow: hidden; line-height: 1;
         transition: opacity .25s ease, transform .2s ease, box-shadow .25s ease;
@@ -259,15 +282,14 @@
     .ptable.compact .cell .num { display: none; }
     .ptable.compact .cell .sym { margin-top: 0; font-size: max(7.5px, calc(var(--c) * .5)); }
 
-    /* 칸 상태: 입력해야 할 범위(안 맞힘) — 빨간 점선이 깜빡임, 번호·기호 숨김 */
-    .cell.idle { opacity: 1; border-color: var(--bad); animation: rangeBlink 1s ease-in-out infinite; }
+    /* 칸 상태: 안 맞힘 (30%, 번호·기호 숨김) */
+    .cell.idle { opacity: .3; }
     .cell.idle .num, .cell.idle .sym { visibility: hidden; }
-    @keyframes rangeBlink { 0%, 100% { border-color: var(--bad); } 50% { border-color: rgba(239, 68, 68, .15); } }
-    /* 범위 밖: 회색 점선만 */
-    .cell.out { opacity: .4; }
+    /* 범위 밖 (12%) */
+    .cell.out { opacity: .12; }
     .cell.out .num, .cell.out .sym { visibility: hidden; }
     /* 맞힘: 불 켜짐 */
-    .cell.lit { opacity: 1; }
+    .cell.lit { opacity: 1; box-shadow: 0 0 0 1px rgba(0,0,0,.06), 0 2px 8px rgba(0,0,0,.12); }
     .cell.lit.flash { animation: lightUp .7s ease-out; z-index: 3; }
     @keyframes lightUp {
         0% { transform: scale(.7); filter: brightness(2.2) saturate(1.6); box-shadow: 0 0 0 0 rgba(255,236,120,.95); }
@@ -277,7 +299,7 @@
     /* 틀림·패스로 공개된 칸 */
     .cell.missed { opacity: .85; outline: 2px solid var(--bad); outline-offset: -2px; }
     /* 현재 문제 칸: 깜빡이는 테두리 */
-    .cell.current { opacity: .95; z-index: 4; border-color: transparent; animation: blink 1s steps(1) infinite; }
+    .cell.current { opacity: .95; z-index: 4; animation: blink 1s steps(1) infinite; }
     .cell.current::after {
         content: ''; position: absolute; inset: 0; border-radius: inherit;
         border: max(2px, calc(var(--c) * .07)) solid var(--brand);
@@ -293,13 +315,14 @@
     /* 전체 보기 / 미리보기 / 결과 */
     .ptable.reveal .cell { opacity: 1; }
     .ptable.reveal .cell .num, .ptable.reveal .cell .sym { visibility: visible; }
-    .ptable.reveal .cell.out { opacity: .55; }
+    .ptable.reveal .cell.out { opacity: .32; }
+    .ptable .cell.pick { opacity: .9; }
     .ptable.mini .cell { opacity: .38; }
     .ptable.mini .cell .num, .ptable.mini .cell .sym { visibility: visible; }
     .ptable.mini .cell.lit { opacity: 1; }
     .ptable.mini .cell.missed { opacity: 1; outline: 2px solid var(--bad); outline-offset: -2px; }
 
-    /* 결과 표 안내 */
+    /* 범례 */
     .legend { display: flex; flex-wrap: wrap; gap: 6px 12px; justify-content: center; margin: 10px 0 0; padding: 0; list-style: none; font-size: .78rem; color: var(--muted); }
     .legend li { display: flex; align-items: center; gap: 5px; }
     .legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
@@ -308,8 +331,8 @@
     .el-toast {
         position: absolute; z-index: 30; pointer-events: none;
         min-width: 170px; max-width: 260px; padding: 9px 12px 10px; border-radius: 14px;
-        background: var(--panel); color: var(--cell-text);
-        box-shadow: 0 12px 30px rgba(0,0,0,.25); border: 2px solid var(--line);
+        background: var(--cat); color: var(--cell-text);
+        box-shadow: 0 12px 30px rgba(0,0,0,.25); border: 2px solid rgba(255,255,255,.7);
         text-align: center; animation: toastIn .18s ease-out;
     }
     .el-toast.bad { border-color: var(--bad); }
@@ -507,7 +530,7 @@
     .graph text { fill: var(--muted); font-size: 10px; }
     .top3 { list-style: none; margin: 0 0 10px; padding: 0; display: grid; gap: 6px; }
     .top3 li { display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 10px; background: var(--panel2); font-size: .88rem; }
-    .top3 .sw { width: 34px; height: 34px; border-radius: 8px; border: 1.5px dashed var(--cell-line); color: var(--cell-text); display: flex; align-items: center; justify-content: center; font-weight: 900; flex: none; }
+    .top3 .sw { width: 34px; height: 34px; border-radius: 8px; background: var(--cat); color: var(--cell-text); display: flex; align-items: center; justify-content: center; font-weight: 900; flex: none; }
     .top3 .why { margin-left: auto; color: var(--muted); font-size: .78rem; text-align: right; }
     .best-line { font-size: .9rem; }
     .best-line b { color: var(--brand); }
@@ -535,7 +558,7 @@
     footer a { color: inherit; }
 
     @media (prefers-reduced-motion: reduce) {
-        .cell.lit.flash, .cell.current, .cell.idle, .el-toast, .q-input.shake { animation: none !important; }
+        .cell.lit.flash, .cell.current, .el-toast, .q-input.shake { animation: none !important; }
     }
     </style>
 </head>
@@ -751,6 +774,7 @@
                         <button type="button" class="btn btn-small" id="revealBtn" aria-pressed="false">전체 주기율표 보기</button>
                     </div>
                     <div class="ptable-wrap" id="previewWrap"></div>
+                    <ul class="legend" id="legendStart"></ul>
                 </div>
             </div>
 
@@ -779,6 +803,7 @@
                 </div>
             </div>
             <div class="ptable-wrap" id="playWrap"></div>
+            <ul class="legend" id="legendPlay"></ul>
             <input id="sinkInput" type="text" tabindex="-1" aria-hidden="true" autocomplete="off">
         </section>
 
@@ -815,7 +840,7 @@
                 <div class="r-box full graph"><h3>반응 시간 그래프</h3><div id="rGraph"></div></div>
                 <div class="r-box"><h3>가장 오래 걸린(또는 틀린) 원소 TOP 3</h3><ul class="top3" id="rTop3"></ul><button type="button" class="btn btn-small" id="retryTopBtn">🔁 이 원소들만 다시 연습하기</button></div>
                 <div class="r-box"><h3>기록</h3><p class="best-line" id="rBest"></p><p class="best-line muted" id="rNote"></p></div>
-                <div class="r-box full"><h3>이번 판 주기율표</h3><div class="ptable-wrap" id="miniWrap"></div><ul class="legend"><li><i style="border:1.5px dashed var(--cell-text)"></i>맞힌 칸 불 켜짐</li><li><i style="border:2px solid var(--bad)"></i>틀린 칸</li></ul></div>
+                <div class="r-box full"><h3>이번 판 주기율표</h3><div class="ptable-wrap" id="miniWrap"></div><ul class="legend"><li><i style="background:var(--brand)"></i>맞힌 칸 불 켜짐</li><li><i style="border:2px solid var(--bad)"></i>틀린 칸</li></ul></div>
             </div>
             <div class="r-actions">
                 <button type="button" class="btn btn-primary" id="againBtn">🔁 다시 하기</button>
@@ -1202,17 +1227,17 @@
 ];
 
     const CATEGORIES = [
-        { id: 'alkali-metal',          ko: '알칼리 금속' },
-        { id: 'alkaline-earth-metal',  ko: '알칼리 토금속' },
-        { id: 'lanthanide',            ko: '란타넘족' },
-        { id: 'actinide',              ko: '악티늄족' },
-        { id: 'transition-metal',      ko: '전이 금속' },
-        { id: 'post-transition-metal', ko: '전이후 금속' },
-        { id: 'metalloid',             ko: '준금속' },
-        { id: 'diatomic-nonmetal',     ko: '이원자 비금속' },
-        { id: 'polyatomic-nonmetal',   ko: '다원자 비금속' },
-        { id: 'noble-gas',             ko: '비활성 기체' },
-        { id: 'unknown',               ko: '성질 미확인' },
+        { id: 'alkali-metal',          ko: '알칼리 금속',   color: '#E8736C' },
+        { id: 'alkaline-earth-metal',  ko: '알칼리 토금속', color: '#F9D9A8' },
+        { id: 'lanthanide',            ko: '란타넘족',      color: '#F4C2F4' },
+        { id: 'actinide',              ko: '악티늄족',      color: '#E9A0D3' },
+        { id: 'transition-metal',      ko: '전이 금속',     color: '#F4B8B0' },
+        { id: 'post-transition-metal', ko: '전이후 금속',   color: '#CCCCCC' },
+        { id: 'metalloid',             ko: '준금속',        color: '#CCCC99' },
+        { id: 'diatomic-nonmetal',     ko: '이원자 비금속', color: '#F0F58C' },
+        { id: 'polyatomic-nonmetal',   ko: '다원자 비금속', color: '#A6F5C6' },
+        { id: 'noble-gas',             ko: '비활성 기체',   color: '#C3F7F7' },
+        { id: 'unknown',               ko: '성질 미확인',   color: '#E6E6E6' },
     ];
     const CAT_BY_ID = Object.fromEntries(CATEGORIES.map(c => [c.id, c]));
 
@@ -1629,6 +1654,7 @@
         for (const el of ELEMENTS) {
             const { row, col } = cellPos(el);
             const d = add('cell idle', row, col, `<span class="num">${el.n}</span><span class="sym">${el.s}</span>` + (el.n === 57 ? '<span class="mark">*</span>' : el.n === 89 ? '<span class="mark">**</span>' : ''));
+            d.style.setProperty('--cat', `var(--c-${el.cat})`);
             d.dataset.n = el.n;
             d.title = opts.titles ? `${el.n} ${el.s} ${displayName(el)}` : '';
             t.cells.set(el.n, d);
@@ -1662,6 +1688,9 @@
         t.root.classList.toggle('compact', c < CONFIG.COMPACT_CELL);
         const ov = !!t.opts.allowOverlay && c >= CONFIG.OVERLAY_MIN_CELL;
         if (ov !== t.overlay) { t.overlay = ov; t.root.classList.toggle('overlay', ov); }
+    }
+    function renderLegend(ul) {
+        ul.innerHTML = CATEGORIES.map(c => `<li><i style="background:var(--c-${c.id})"></i>${c.ko}</li>`).join('');
     }
 
     /* -------------------------------------------------------------------------
@@ -1837,7 +1866,7 @@
     function paintPreview() {
         if (!previewT) return;
         const inRange = new Set((S.play === 'basic' ? basicSequence(S) : scopeElements(S)).map(e => e.n));
-        for (const [n, cell] of previewT.cells) cell.className = 'cell ' + (inRange.has(n) ? 'idle' : 'out');
+        for (const [n, cell] of previewT.cells) cell.className = 'cell ' + (inRange.has(n) ? 'idle pick' : 'out');
         for (const [g, h] of previewT.gHead) h.classList.toggle('on', S.scope === 'group' && S.groups.includes(g));
         for (const [p, h] of previewT.pHead) h.classList.toggle('on', S.scope === 'period' && S.periods.includes(p));
         $('#pvCount').textContent = `· ${inRange.size}개 원소`;
@@ -2156,6 +2185,7 @@
         t.innerHTML = `<div class="t1"><span>${el.n}</span><span>${pos}</span><span>${el.s}</span></div>
             <div class="t2">${esc(displayName(el, G.cfg.naming))}</div>
             <div class="t3">${esc(el.fact)}</div>${(notes || []).map(n => `<div class="t4">${esc(n)}</div>`).join('')}`;
+        t.style.setProperty('--cat', `var(--c-${el.cat})`);
         t.classList.toggle('bad', !!bad);
         t.classList.remove('hidden');
         t.style.animation = 'none'; void t.offsetWidth; t.style.animation = '';
@@ -2378,7 +2408,7 @@
         $('#rTop3').innerHTML = R.top3.map(r => {
             const el = EL_BY_N.get(r.n);
             const why = { wrong: '오답', timeout: '시간 초과', pass: '패스' }[r.status] || (r.ms / 1000).toFixed(1) + '초';
-            return `<li><span class="sw">${el.s}</span><span>${el.n}. <b>${esc(displayName(el, cfg.naming))}</b></span><span class="why">${why}</span></li>`;
+            return `<li><span class="sw" style="--cat:var(--c-${el.cat})">${el.s}</span><span>${el.n}. <b>${esc(displayName(el, cfg.naming))}</b></span><span class="why">${why}</span></li>`;
         }).join('') || '<li>기록이 없어요</li>';
         $('#retryTopBtn').disabled = !R.top3.length;
 
@@ -2488,11 +2518,8 @@
             const cx = ox + (col - 2) * (c + gap), cy = oy + (row - 2) * (c + gap) + (row >= 10 ? -c * 0.55 : 0);
             const lit = G.lit.has(el.n), miss = G.missed.has(el.n);
             roundRect(x, cx, cy, c, c, 5);
-            x.setLineDash(miss ? [] : [3, 2]);
-            x.lineWidth = miss ? 2.5 : 1.2;
-            x.strokeStyle = miss ? '#ef4444' : lit ? '#1f2937' : '#c9ced8';
-            x.stroke();
-            x.setLineDash([]);
+            x.fillStyle = lit ? CAT_BY_ID[el.cat].color : '#eceef3'; x.fill();
+            if (miss) { x.lineWidth = 2.5; x.strokeStyle = '#ef4444'; x.stroke(); }
             if (lit || miss) { x.fillStyle = '#1f2937'; x.font = `800 ${el.s.length > 1 ? 11 : 13}px ${font}`; x.textAlign = 'center'; x.fillText(el.s, cx + c / 2, cy + c / 2 + 4); x.textAlign = 'left'; }
         }
         return cv;
@@ -2613,6 +2640,7 @@
         previewT = createTable($('#previewWrap'), { maxCell: 40, titles: false });
         playT = createTable($('#playWrap'), { maxCell: 64, allowOverlay: true, fitHeight: true });
         playT.root.appendChild($('#qcardTpl').content.cloneNode(true));
+        renderLegend($('#legendStart')); renderLegend($('#legendPlay'));
         input = $('#qInput'); sink = $('#sinkInput');
 
         input.addEventListener('compositionstart', () => { composing = true; });
