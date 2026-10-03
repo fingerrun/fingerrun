@@ -545,7 +545,6 @@
     .learn h2 { font-size: 1.3rem; margin: 34px 0 8px; padding-left: 10px; border-left: 5px solid var(--brand); }
     .learn h3 { font-size: 1.05rem; margin: 18px 0 6px; }
     .learn p, .learn li { font-size: .95rem; color: var(--text); }
-    .learn .mnemonic { background: var(--panel); padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); }
     .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 12px; box-shadow: var(--shadow); }
     .learn-table { width: 100%; border-collapse: collapse; background: var(--panel); font-size: .88rem; min-width: 560px; }
     .learn-table th, .learn-table td { padding: 7px 9px; border-bottom: 1px solid var(--line); text-align: left; white-space: nowrap; }
@@ -739,7 +738,6 @@
                         <p class="summary-line" id="summaryLine"></p>
                         <p class="start-err" id="startErr"></p>
                         <button type="button" class="btn btn-primary" id="startBtn">시작하기 ▶</button>
-                        <button type="button" class="btn" id="noteBtn">📒 오답 노트로 퀴즈</button>
                     </div>
                 </div>
 
@@ -813,7 +811,7 @@
                 <div class="r-box hidden" id="rTypeBox"><h3>유형별 정답률</h3><div id="rTypes"></div><div id="rPosSplit"></div></div>
                 <div class="r-box full graph"><h3>반응 시간 그래프</h3><div id="rGraph"></div></div>
                 <div class="r-box"><h3>가장 오래 걸린(또는 틀린) 원소 TOP 3</h3><ul class="top3" id="rTop3"></ul><button type="button" class="btn btn-small" id="retryTopBtn">🔁 이 원소들만 다시 연습하기</button></div>
-                <div class="r-box"><h3>기록</h3><p class="best-line" id="rBest"></p><p class="best-line muted" id="rNote"></p></div>
+                <div class="r-box"><h3>기록</h3><p class="best-line" id="rBest"></p></div>
                 <div class="r-box full"><h3>이번 판 주기율표</h3><div class="ptable-wrap" id="miniWrap"></div><ul class="legend"><li><i style="background:var(--brand)"></i>맞힌 칸 불 켜짐</li><li><i style="border:2px solid var(--bad)"></i>틀린 칸</li></ul></div>
             </div>
             <div class="r-actions">
@@ -996,25 +994,6 @@
 </tbody>
 </table></div>
 
-  <h2>주기율표 외우는 법</h2>
-  <h3>1. 가로(주기)와 세로(족)를 함께 외우기</h3>
-  <p>번호 순서로만 외우면 "3주기 17족 원소는?" 같은 문제에서 막힙니다. 번호 모드로 순서를 익힌 뒤, 족 모드(세로줄)와 주기 모드(가로줄)로 같은 원소를 다시 쳐 보세요. 정답 카드에 항상 주기와 족이 함께 나오니, 칠 때마다 위치를 같이 떠올리면 됩니다.</p>
-  <h3>2. 앞글자로 리듬 있게: 수헬리베붕탄질산</h3>
-  <p>1~20번은 이름의 첫 글자를 이어 붙여 외우는 방법이 가장 유명합니다.</p>
-  <p class="mnemonic"><b>수헬리베붕탄질산 플네나마알규인황염아칼칼</b><br>
-  <span class="muted">수소 · 헬륨 · 리튬 · 베릴륨 · 붕소 · 탄소 · 질소 · 산소 · 플루오린 · 네온 · 나트륨 · 마그네슘 · 알루미늄 · 규소 · 인 · 황 · 염소 · 아르곤 · 칼륨 · 칼슘</span></p>
-  <p>21~36번은 4주기 전이 금속(스칸듐·타이타늄·바나듐·크로뮴·망가니즈·철·코발트·니켈·구리·아연)을 앞글자 <b>스타바크망철코니구아</b>로 끊어 외우고, 갈륨부터 크립톤까지는 <b>갈저비셀브크</b>로 이어 갑니다.</p>
-  <h3>3. 이온 전하는 족 번호로 정해진다</h3>
-  <p>원자는 가장 가까운 비활성 기체처럼 전자 배치를 맞추려고 전자를 잃거나 얻습니다. 그래서 족만 알면 이온식을 바로 쓸 수 있습니다.</p>
-  <ul>
-    <li><b>1족</b>: 전자 1개를 잃어 <b>+1</b> (Li<sup>+</sup>, Na<sup>+</sup>, K<sup>+</sup>)</li>
-    <li><b>2족</b>: 전자 2개를 잃어 <b>+2</b> (Be<sup>2+</sup>, Mg<sup>2+</sup>, Ca<sup>2+</sup>)</li>
-    <li><b>13족</b>: 전자 3개를 잃어 <b>+3</b> (Al<sup>3+</sup>)</li>
-    <li><b>15족</b>: 전자 3개를 얻어 <b>−3</b> (N<sup>3−</sup>)</li>
-    <li><b>16족</b>: 전자 2개를 얻어 <b>−2</b> (O<sup>2−</sup>, S<sup>2−</sup>)</li>
-    <li><b>17족</b>: 전자 1개를 얻어 <b>−1</b> (F<sup>−</sup>, Cl<sup>−</sup>)</li>
-  </ul>
-  <p>원자가 전자 수도 족과 연결됩니다. 1·2족은 족 번호와 같고, 13~17족은 족 번호에서 10을 뺀 값입니다. 18족은 원자가 전자 수를 0으로 봅니다(한국 교육과정 기준).</p>
 </section>
     </main>
 
@@ -1058,11 +1037,10 @@
         REVEAL_MS: 1000,
         SPEED_BADGE_MS: 2000,
         EN_MIN_DIFF: 0.3,
-        WRONG_NOTE_MAX: 200,
         OVERLAY_MIN_CELL: 44,             // 칸이 이 크기(px) 이상이면 문제 카드를 표 안에 겹쳐 배치
         COMPACT_CELL: 30,                 // 이보다 작으면 원자번호 숨김(기호만)
         SITE_URL: 'https://fingerrun.com/Quiz/science.html',
-        STORE: { settings: 'fr_periodic_settings', best: 'fr_periodic_best', wrong: 'fr_periodic_wrong' },
+        STORE: { settings: 'fr_periodic_settings', best: 'fr_periodic_best' },
     };
 
     const DEFAULT_SETTINGS = {
@@ -1461,7 +1439,6 @@
         return null;
     }
     function rangeLabel(cfg) {
-        if (cfg.note) return '오답 노트';
         if (cfg.scope === 'custom') return '다시 연습';
         if (cfg.scope === 'number') {
             const lv = CONFIG.LEVELS[cfg.level];
@@ -1544,7 +1521,6 @@
         for (const t of cfg.types) all = all.concat(candidatesFor(t, pool, cfg));
         return spreadSameElement(shuffle(all));
     }
-    function candKey(c) { return `${c.type}:${c.n}:${c.p || ''}`; }
 
     function makeQuestion(c, cfg) {
         const el = EL_BY_N.get(c.n);
@@ -1732,7 +1708,6 @@
             previewT.root.classList.toggle('reveal', revealAll);
         });
         $('#startBtn').addEventListener('click', () => startGame(Object.assign({}, S)));
-        $('#noteBtn').addEventListener('click', startNoteQuiz);
     }
 
     function availableTypes(cfg) {
@@ -1808,9 +1783,6 @@
         $('#startErr').textContent = err;
         $('#startBtn').disabled = !!err;
 
-        const note = store.get(CONFIG.STORE.wrong, []);
-        $('#noteBtn').textContent = `📒 오답 노트로 퀴즈 (${note.length})`;
-        $('#noteBtn').disabled = !note.length;
 
         paintPreview();
     }
@@ -1860,10 +1832,10 @@
             g.items = g.seq.map(el => makeBasicQuestion(el, cfg));
             g.rangeSet = new Set(g.seq.map(e => e.n));
         } else {
-            const pool = cfg.note ? cfg.noteItems : buildQuizPool(cfg);
+            const pool = buildQuizPool(cfg);
             g.pool = pool;
-            g.rangeSet = new Set((cfg.note ? pool.map(c => c.n) : scopeElements(cfg).map(e => e.n)));
-            g.items = (cfg.count && !cfg.note ? pool.slice(0, cfg.count) : pool).map(c => makeQuestion(c, cfg));
+            g.rangeSet = new Set(scopeElements(cfg).map(e => e.n));
+            g.items = (cfg.count ? pool.slice(0, cfg.count) : pool).map(c => makeQuestion(c, cfg));
         }
         if (!g.items.length) return;
         G = g;
@@ -1920,7 +1892,7 @@
                 ? '다음 원소의 한글 이름 · 맞으면 엔터 없이 넘어가요'
                 : '다음 원소의 기호 · 한/영 전환!';
         } else {
-            label.textContent = (G.cfg.note ? '📒 ' : '') + q.label;
+            label.textContent = q.label;
             label.classList.remove('notice');
             $('#qMain').innerHTML = `<span class="q-big">${esc(q.big)}</span><span class="q-ask">${esc(q.ask)}</span>`;
             $('#qGuide').textContent = q.guide || '';
@@ -2033,8 +2005,7 @@
         G.records.push({ q, type: q.type, n: el.n, cand: q.cand, status: 'correct', ms: questionMs(), hint: q.hintUsed, wrongs: q.wrongs || 0, input: typed, keys: keystrokes(normalize(typed)) });
         G.lit.add(el.n); G.missed.delete(el.n);
         G.flashN = el.n; G.flashUntil = performance.now() + 700;
-        if (G.play === 'basic') { G.trail.push(el); if (q.wrongs) addWrongNote(basicNoteCand(el)); }
-        if (G.cfg.note) removeWrongNote(q.cand);
+        if (G.play === 'basic') G.trail.push(el);
         const notes = [];
         if (r.alias) notes.push(`💡 현재 표기는 ${displayName(el, G.cfg.naming)}${iyeyo(displayName(el, G.cfg.naming))}`);
         if (q.type === 'group-name' && r.alias) notes[0] = `💡 교과서 표기는 ${GROUP_NAMES[el.group]}${iyeyo(GROUP_NAMES[el.group])}`;
@@ -2058,9 +2029,6 @@
         G.lock = 'reveal'; G.frozenLeft = frozen;
         G.missed.add(el.n);
         if (G.play === 'basic') G.trail.push(el);
-        if (G.play === 'quiz' && !G.cfg.note) addWrongNote(q.cand);
-        else if (G.play === 'quiz' && G.cfg.note) { /* 노트 문제는 맞힐 때만 제거 */ }
-        else addWrongNote(basicNoteCand(el));
         const fb = $('#qFeedback');
         fb.className = 'q-feedback bad';
         fb.textContent = { wrong: '❌ 오답', timeout: '⏰ 시간 초과', pass: '⏭ 패스' }[status];
@@ -2092,7 +2060,6 @@
         if (G.play === 'basic') G.penaltyMs += CONFIG.PASS_PENALTY_MS;
         onFail('pass', input.value);
     }
-    function basicNoteCand(el) { return { type: G.cfg.input === 'name' ? 'number-to-name' : 'name-to-symbol', n: el.n }; }
 
     function paintPlay() {
         const now = performance.now();
@@ -2142,27 +2109,10 @@
     }
 
     /* -------------------------------------------------------------------------
-       11. 결과 화면 · 기록 · 오답 노트
+       11. 결과 화면 · 기록
        ------------------------------------------------------------------------- */
-    function addWrongNote(c) {
-        if (!c) return;
-        const note = store.get(CONFIG.STORE.wrong, []);
-        if (note.some(x => candKey(x) === candKey(c))) return;
-        note.push({ type: c.type, n: c.n, ...(c.p ? { p: c.p } : {}) });
-        store.set(CONFIG.STORE.wrong, note.slice(-CONFIG.WRONG_NOTE_MAX));
-    }
-    function removeWrongNote(c) {
-        if (!c) return;
-        store.set(CONFIG.STORE.wrong, store.get(CONFIG.STORE.wrong, []).filter(x => candKey(x) !== candKey(c)));
-    }
-    function startNoteQuiz() {
-        const note = store.get(CONFIG.STORE.wrong, []).filter(c => QTYPE_BY_ID[c.type] && EL_BY_N.has(c.n));
-        if (!note.length) return;
-        startGame(Object.assign({}, S, { play: 'quiz', note: true, noteItems: shuffle(note), count: 0 }));
-    }
-
     function bestKey(cfg) {
-        if (cfg.note || cfg.scope === 'custom') return null;
+        if (cfg.scope === 'custom') return null;
         const p = [cfg.play, cfg.scope];
         if (cfg.scope === 'number') p.push(cfg.level);
         if (cfg.scope === 'group') p.push(cfg.groups.join('.') + 'd' + cfg.depth);
@@ -2309,13 +2259,11 @@
         $('#retryTopBtn').disabled = !R.top3.length;
 
         // 최고 기록
-        if (!R.bestKey) $('#rBest').textContent = R.kind === 'quit' ? '중단한 판은 기록에 남지 않아요.' : '오답 노트·다시 연습 판은 최고 기록에 넣지 않아요.';
+        if (!R.bestKey) $('#rBest').textContent = R.kind === 'quit' ? '중단한 판은 기록에 남지 않아요.' : '다시 연습 판은 최고 기록에 넣지 않아요.';
         else if (!R.best) $('#rBest').textContent = '완주하면 최고 기록이 저장돼요.';
         else $('#rBest').innerHTML = R.isBest
             ? `🏅 이번 판이 최고 기록! <b>${bestText(R.best, R)}</b>` + (R.prevBest ? ` <span class="muted">(이전 ${bestText(R.prevBest, R)})</span>` : '')
             : `최고 기록 <b>${bestText(R.best, R)}</b>`;
-        const nn = store.get(CONFIG.STORE.wrong, []).length;
-        $('#rNote').textContent = nn ? `📒 오답 노트에 ${nn}개 저장됨 — 시작 화면의 "오답 노트로 퀴즈"로 복습하세요.` : '📒 오답 노트가 비어 있어요.';
 
         // 미니맵
         if (!miniT) miniT = createTable($('#miniWrap'), { mini: true, maxCell: 30, titles: true });
@@ -2355,7 +2303,7 @@
        ------------------------------------------------------------------------- */
     function shareLink(cfg) {
         const base = CONFIG.SITE_URL.replace(/^https:\/\//, '');
-        return cfg.note || cfg.scope === 'custom' ? base : `${base}?${settingsToQuery(cfg)}`;
+        return cfg.scope === 'custom' ? base : `${base}?${settingsToQuery(cfg)}`;
     }
     function shareText(R) {
         const cfg = R.cfg, link = shareLink(cfg);
@@ -2557,14 +2505,14 @@
             if (!G || G.ended || $('#playScreen').classList.contains('hidden')) return;
             if (document.activeElement !== input && !e.ctrlKey && !e.metaKey && (e.key.length === 1 || e.key === 'Process')) input.focus({ preventScroll: true });
         });
-        $('#againBtn').addEventListener('click', () => startGame(G.cfg.note ? Object.assign({}, G.cfg, { noteItems: shuffle(store.get(CONFIG.STORE.wrong, [])) }) : G.cfg));
+        $('#againBtn').addEventListener('click', () => startGame(G.cfg));
         $('#settingsBtn').addEventListener('click', () => { showScreen('startScreen'); renderStart(); });
         $('#retryTopBtn').addEventListener('click', () => {
             const ns = G.result.top3.map(r => r.n);
-            const base = Object.assign({}, G.cfg, { scope: 'custom', custom: ns, note: false, count: 0 });
+            const base = Object.assign({}, G.cfg, { scope: 'custom', custom: ns, count: 0 });
             if (base.play === 'quiz') {
                 const pool = ns.map(n => EL_BY_N.get(n));
-                let types = (G.cfg.note ? DEFAULT_SETTINGS.types : G.cfg.types).filter(t => candidatesFor(t, pool, base).length);
+                let types = G.cfg.types.filter(t => candidatesFor(t, pool, base).length);
                 if (!types.length) types = DEFAULT_SETTINGS.types.slice();
                 base.types = types;
             }
