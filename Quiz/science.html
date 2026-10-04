@@ -353,14 +353,11 @@
        4. 시작 화면
        ========================================================= */
 
-    .start-grid { display: grid; grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: 20px; align-items: start; }
-    .start-preview { position: sticky; top: 84px; background: var(--panel); border-radius: 18px; padding: 14px; box-shadow: var(--shadow); }
+    /* 주기율표 미리보기를 위에 전체 폭으로, 옵션 패널은 그 아래 */
+    .start-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; align-items: start; }
+    .start-preview { order: -1; background: var(--panel); border-radius: 18px; padding: 14px; box-shadow: var(--shadow); }
     .start-preview .pv-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 8px; font-size: .9rem; }
     .start-preview .pv-head b { font-size: .95rem; white-space: nowrap; }
-    @media (max-width: 1023px) {
-        .start-grid { grid-template-columns: minmax(0, 1fr); }
-        .start-preview { position: static; order: -1; }
-    }
 
     .panel { background: var(--panel); border-radius: 18px; padding: 18px; box-shadow: var(--shadow); }
     .opt { padding: 12px 0; border-bottom: 1px dashed var(--line); }
@@ -478,7 +475,6 @@
         padding: 16px 18px; display: flex; flex-direction: column; justify-content: center; gap: 7px; min-width: 0;
     }
     .qcard, .qcard * { -webkit-user-select: text; user-select: text; }
-    .ptable.overlay .qcard { grid-column: 4 / 14; grid-row: 2 / 5; margin-top: 0; padding: 14px 20px; gap: 6px; }
     .q-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 18px; }
     .qcard.basic .q-top { display: none; }  /* 기본 모드: "원자번호 N번" 줄 숨김 */
     .q-label { font-size: .78rem; font-weight: 800; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -547,18 +543,6 @@
     .qcard.basic .q-enter { display: block; }
     .q-guide { font-size: .74rem; color: var(--muted); text-align: center; min-height: 1em; }
     .qcard.basic .q-guide:empty { display: none; }
-
-    /* 표 위에 겹칠 때(넓은 화면): 2~4주기 빈 공간 높이(칸 3개)에 맞춰 칸 크기 기준으로 축소 */
-    .ptable.overlay .qcard.basic { padding: calc(var(--c) * .1) calc(var(--c) * .2); }
-    .ptable.overlay .qcard.basic .q-panel { padding: calc(var(--c) * .12) calc(var(--c) * .3); gap: calc(var(--c) * .1); border-radius: calc(var(--c) * .4); }
-    .ptable.overlay .qcard.basic .q-line-custom { gap: calc(var(--c) * .4); }
-    .ptable.overlay .key-cap { padding: calc(var(--c) * .09) calc(var(--c) * .5); min-width: calc(var(--c) * 2.2); border-radius: calc(var(--c) * .25); }
-    .ptable.overlay .key-cap .kr-name { font-size: calc(var(--c) * .42); }
-    .ptable.overlay .key-cap .en-name { font-size: max(10px, calc(var(--c) * .18)); }
-    .ptable.overlay .q-side-custom .kr-name { font-size: calc(var(--c) * .4); }
-    .ptable.overlay .q-side-custom .en-name { font-size: max(10px, calc(var(--c) * .18)); }
-    .ptable.overlay .qcard.basic .q-input { font-size: max(16px, calc(var(--c) * .4)); padding: calc(var(--c) * .17) 18px; }
-    .ptable.overlay .q-enter { width: calc(var(--c) * 1.4); height: calc(var(--c) * .9); font-size: calc(var(--c) * .4); }
 
     /* 좁은 화면 */
     @media (max-width: 560px) {
@@ -1105,7 +1089,8 @@
         REVEAL_MS: 1000,
         SPEED_BADGE_MS: 2000,
         EN_MIN_DIFF: 0.3,
-        OVERLAY_MIN_CELL: 44,             // 칸이 이 크기(px) 이상이면 문제 카드를 표 안에 겹쳐 배치
+        NAMES_MIN_CELL: 44,               // 칸이 이 크기(px) 이상이면 칸 안에 한글 이름도 표시
+        FIT_MIN_CELL: 32,                 // 플레이 화면: 표 + 아래 문제 카드를 한 화면에 맞출 때 최소 칸 크기
         COMPACT_CELL: 30,                 // 이보다 작으면 원자번호 숨김(기호만)
         STORE: { settings: 'fr_periodic_settings', best: 'fr_periodic_best' },
     };
@@ -1658,7 +1643,7 @@
     function createTable(wrap, opts) {
         const root = document.createElement('div');
         root.className = 'ptable' + (opts.mini ? ' mini' : '');
-        const t = { wrap, root, opts, cells: new Map(), gHead: new Map(), pHead: new Map(), c: 0, overlay: false };
+        const t = { wrap, root, opts, cells: new Map(), gHead: new Map(), pHead: new Map(), c: 0 };
         const add = (cls, row, col, html) => {
             const d = document.createElement('div');
             d.className = cls; d.style.gridRow = row; d.style.gridColumn = col;
@@ -1690,11 +1675,13 @@
         let c = (W - gap * 18) / 18.55;
         if (c * 0.55 < 12) c = (W - gap * 18 - 12) / 18;
         c = Math.min(c, t.opts.maxCell || 64);
-        if (t.opts.fitHeight && c >= CONFIG.OVERLAY_MIN_CELL) {
+        if (t.opts.fitHeight && c > CONFIG.FIT_MIN_CELL) {
+            // 표(9.85칸 높이)와 그 아래 문제 카드가 한 화면에 들어오도록
             const tb = document.querySelector('.topbar');
-            const avail = window.innerHeight - 72 - (tb ? tb.offsetHeight + 10 : 56) - 34;
+            const card = t.root.querySelector('.qcard');
+            const avail = window.innerHeight - 72 - (tb ? tb.offsetHeight + 10 : 56) - (card ? card.offsetHeight : 0) - 16;
             const hb = (avail - gap * 11) / 9.85;
-            c = Math.max(CONFIG.OVERLAY_MIN_CELL, Math.min(c, hb));
+            c = Math.max(CONFIG.FIT_MIN_CELL, Math.min(c, hb));
         }
         c = Math.floor(c * 10) / 10;
         t.c = c;
@@ -1704,9 +1691,7 @@
         st.setProperty('--hc', Math.max(12, c * 0.55) + 'px');
         st.setProperty('--hh', Math.max(13, c * 0.5) + 'px');
         t.root.classList.toggle('compact', c < CONFIG.COMPACT_CELL);
-        t.root.classList.toggle('roomy', c >= CONFIG.OVERLAY_MIN_CELL);
-        const ov = !!t.opts.allowOverlay && c >= CONFIG.OVERLAY_MIN_CELL;
-        if (ov !== t.overlay) { t.overlay = ov; t.root.classList.toggle('overlay', ov); }
+        t.root.classList.toggle('roomy', c >= CONFIG.NAMES_MIN_CELL);
     }
     function renderLegend(ul) {
         ul.innerHTML = CATEGORIES.map(c => `<li><i style="background:var(--c-${c.id})"></i>${c.ko}</li>`).join('');
@@ -1907,9 +1892,9 @@
         playT.root.classList.toggle('show-all', g.play === 'basic');
         playT.root.classList.toggle('names', g.play === 'basic' && cfg.input === 'name');
         $('#qcard').classList.toggle('basic', g.play === 'basic');
-        sizeTable(playT);
         g.startAt = performance.now();
         advance();
+        sizeTable(playT);   // 문제 카드 내용이 들어간 뒤 높이를 재서 맞춤
         cancelAnimationFrame(rafId);
         rafId = requestAnimationFrame(tick);
         setTimeout(() => { input.focus({ preventScroll: true }); ensureCardVisible(); }, 30);
@@ -2337,7 +2322,7 @@
        12. 모바일 키보드 대응 (visualViewport)
        ------------------------------------------------------------------------- */
     function ensureCardVisible() {
-        if (!G || G.ended || !playT || playT.overlay) return;
+        if (!G || G.ended || !playT) return;
         const card = $('#qcard');
         if (!card) return;
         const vv = window.visualViewport;
@@ -2421,9 +2406,9 @@
     function init() {
         buildStartOptions();
         bindStartOptions();
-        previewT = createTable($('#previewWrap'), { maxCell: 40, titles: false });
+        previewT = createTable($('#previewWrap'), { maxCell: 64, titles: false });
         previewT.root.classList.add('reveal');
-        playT = createTable($('#playWrap'), { maxCell: 64, allowOverlay: true, fitHeight: true });
+        playT = createTable($('#playWrap'), { maxCell: 64, fitHeight: true });
         playT.root.appendChild($('#qcardTpl').content.cloneNode(true));
         renderLegend($('#legendStart')); renderLegend($('#legendPlay'));
         input = $('#qInput'); sink = $('#sinkInput');
