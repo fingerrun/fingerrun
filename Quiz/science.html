@@ -783,7 +783,6 @@
                                 <button type="button" data-count="40">40문항</button>
                                 <button type="button" data-count="0">전체</button>
                             </div>
-                            <p class="opt-note" id="countNote"></p>
                         </div>
                     </div>
 
@@ -1822,7 +1821,6 @@
             n = qpool.length;
             if (!n) err = '선택한 범위·유형으로 만들 수 있는 문제가 없어요.';
             const cnt = S.count ? Math.min(S.count, n) : n;
-            $('#countNote').textContent = `만들 수 있는 문제 ${n}개` + (S.count && n < S.count ? ` → ${n}문항만 출제돼요` : '');
             $('#summaryLine').textContent = summaryLabel(S) + ` · ${cnt}문항`;
         } else {
             n = basicSequence(S).length;
