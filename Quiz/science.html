@@ -467,64 +467,112 @@
         .tbar { width: 70px; }
     }
 
-    /* 문제 카드 (하얀색 바탕과 키보드 UI) */
+    /* 문제 카드 (흰 바탕 · 은색 패널 · 키캡 UI)
+       카드 안은 다크 모드에서도 밝은 색을 유지하도록 색 토큰을 고정 */
     .qcard {
+        --text: #1f2937; --muted: #6b7280; --line: #e5e7eb; --panel2: #f8f9fc;
         grid-column: 1 / -1; grid-row: 12;
-        margin-top: 10px; z-index: 20;
-        background: #ffffff; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08), inset 0 2px 4px rgba(255,255,255,1); border: 1px solid #e5e7eb;
-        padding: 20px; display: flex; flex-direction: column; justify-content: center; gap: 7px; min-width: 0;
+        margin-top: 10px; z-index: 20; color: var(--text);
+        background: linear-gradient(180deg, #ffffff 0%, #f1f1f1 100%); border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08), inset 0 2px 4px rgba(255,255,255,1); border: 1px solid #e5e7eb;
+        padding: 16px 18px; display: flex; flex-direction: column; justify-content: center; gap: 7px; min-width: 0;
     }
     .qcard, .qcard * { -webkit-user-select: text; user-select: text; }
     .ptable.overlay .qcard { grid-column: 4 / 14; grid-row: 2 / 5; margin-top: 0; padding: 14px 20px; gap: 6px; }
     .q-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 18px; }
+    .qcard.basic .q-top { display: none; }  /* 기본 모드: "원자번호 N번" 줄 숨김 */
     .q-label { font-size: .78rem; font-weight: 800; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .q-label.notice { color: var(--brand); }
     .q-feedback { font-size: .8rem; font-weight: 800; white-space: nowrap; }
     .q-feedback.bad { color: var(--bad); }
     .q-feedback.good { color: var(--good); }
+    .q-body { display: flex; align-items: center; gap: 14px; min-width: 0; }
+    .q-panel { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 7px; }
     .q-main { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 4px 10px; min-height: 34px; text-align: center; }
     .q-big { font-size: clamp(1.25rem, 2.6vw, 1.8rem); font-weight: 900; letter-spacing: -.01em; }
     .q-ask { font-size: .98rem; font-weight: 700; color: var(--muted); }
 
-    /* 기본 모드: 단어 표시 디자인 커스텀 (키캡 스타일) */
-    .q-line-custom {
-        display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 20px; width: 100%;
-        background: #ffffff; padding: 15px 0; border-radius: 20px;
+    /* 기본 모드: 은색 패널 안에 [직전 단어 · 키캡 · 다음 단어] + 입력칸 */
+    .qcard.basic .q-panel {
+        padding: 14px 18px 16px; gap: 12px; border-radius: 24px;
+        background: linear-gradient(180deg, #f6f6f6 0%, #dedede 100%);
+        border: 1px solid #c4c4c4;
+        box-shadow: inset 0 2px 2px rgba(255,255,255,.95), inset 0 -3px 6px rgba(0,0,0,.07), 0 6px 16px rgba(0,0,0,.12);
     }
-    .q-side-custom { display: flex; flex-direction: column; justify-content: center; opacity: 0.6; }
+    .q-line-custom { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 22px; width: 100%; }
+    .q-side-custom { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
     .q-side-custom.prev { align-items: flex-end; text-align: right; }
     .q-side-custom.next { align-items: flex-start; text-align: left; }
-    .q-side-custom .kr-name { font-size: 1.25rem; color: var(--muted); font-weight: 700; white-space: nowrap; }
-    .q-side-custom .en-name { font-size: 0.85rem; color: #9ca3af; font-weight: 500; margin-top: 2px; white-space: nowrap; }
+    .q-side-custom .kr-name, .q-side-custom .en-name { max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .q-side-custom .kr-name { font-size: 1.7rem; color: #2f2f2f; font-weight: 500; line-height: 1.15; }
+    .q-side-custom .en-name { font-size: .85rem; color: #555; font-weight: 400; margin-top: 2px; }
 
-    /* 타겟 키캡 UI */
+    /* 지금 칠 단어: 튀어나온 키캡 */
     .key-cap {
         display: flex; flex-direction: column; align-items: center; justify-content: center;
-        min-width: 100px; padding: 14px 28px; border-radius: 12px;
-        background: linear-gradient(180deg, #ffffff 0%, #e8e8e8 100%);
-        border: 1px solid #d1d5db; border-bottom: 4px solid #b0b4ba;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1), inset 0 2px 2px rgba(255,255,255,0.9);
+        min-width: 120px; padding: 14px 30px; border-radius: 16px;
+        background: linear-gradient(180deg, #ffffff 0%, #ebebeb 70%, #dcdcdc 100%);
+        border: 2px solid #8f8f8f;
+        box-shadow: 0 0 0 2px #e9e9e9, 0 6px 10px rgba(0,0,0,.28), inset 0 2px 2px #fff, inset 0 -4px 6px rgba(0,0,0,.08);
     }
-    .key-cap.reveal { border-color: var(--bad); border-bottom-color: #c53030; color: var(--bad); }
-    .key-cap .kr-name { font-size: 1.8rem; font-weight: 900; color: var(--text); }
+    .key-cap .kr-name { font-size: 1.9rem; font-weight: 600; color: #2b2b2b; line-height: 1.15; white-space: nowrap; }
+    .key-cap .en-name { font-size: .8rem; font-weight: 500; color: #666; margin-top: 2px; white-space: nowrap; }
+    .key-cap.reveal { border-color: var(--bad); }
     .key-cap.reveal .kr-name { color: var(--bad); }
-    .key-cap .en-name { font-size: 0.95rem; font-weight: 600; color: #6b7280; margin-top: 2px; }
 
-    /* 타이핑 인풋 크기 1.5배 확대 */
-    .q-input-row { display: flex; gap: 6px; align-items: stretch; margin-top: 5px; }
+    /* 타이핑 입력칸 (기존 대비 가로·세로 1.5배) */
+    .q-input-row { display: flex; gap: 6px; align-items: stretch; }
     .q-input {
-        flex: 1; min-width: 0; font-size: 24px; /* 1.5x font */
-        padding: 14px 18px; /* 1.5x padding */
-        border-radius: 16px; border: 2px solid var(--line); background: #ffffff; color: var(--text);
+        flex: 1; min-width: 0; font-size: 24px; padding: 14px 18px;
+        border-radius: 16px; border: 2px solid #bdbdbd; background: #fbfbfb; color: var(--text);
         font-weight: 700; outline: none; transition: border-color .15s; text-align: center;
-        box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        box-shadow: inset 0 2px 5px rgba(0,0,0,.12);
     }
+    .q-input::placeholder { color: #8a8a8a; font-weight: 500; }
     .q-input:focus { border-color: var(--brand); }
     .q-input.shake { animation: shake .35s; border-color: var(--bad); }
     @keyframes shake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-7px); } 40% { transform: translateX(7px); } 60% { transform: translateX(-5px); } 80% { transform: translateX(5px); } }
     .q-tool { flex: none; padding: 0 11px; border-radius: 16px; border: 1px solid var(--line); background: var(--panel2); color: var(--text); font-weight: 700; font-size: .85rem; white-space: nowrap; }
     .q-tool:disabled { opacity: .35; cursor: not-allowed; }
+    .qcard.basic #passBtn { display: none; }  /* 기본 모드: 스킵(패스) 버튼 없음 */
+
+    /* 패널 오른쪽 입력(Enter) 버튼 — 기본 모드에서만 */
+    .q-enter {
+        display: none; flex: none; width: 76px; height: 50px; border-radius: 999px;
+        border: 1px solid #a9a9a9; color: #2b2b2b; font-size: 1.5rem; font-weight: 900; line-height: 1;
+        background: linear-gradient(180deg, #ffffff 0%, #e2e2e2 100%);
+        box-shadow: 0 0 0 3px #ececec, 0 4px 10px rgba(0,0,0,.18), inset 0 2px 2px #fff;
+    }
+    .q-enter:active { transform: translateY(1px); box-shadow: 0 0 0 3px #ececec, 0 2px 5px rgba(0,0,0,.18), inset 0 2px 3px rgba(0,0,0,.08); }
+    .qcard.basic .q-enter { display: block; }
     .q-guide { font-size: .74rem; color: var(--muted); text-align: center; min-height: 1em; }
+    .qcard.basic .q-guide:empty { display: none; }
+
+    /* 표 위에 겹칠 때(넓은 화면): 2~4주기 빈 공간 높이(칸 3개)에 맞춰 칸 크기 기준으로 축소 */
+    .ptable.overlay .qcard.basic { padding: calc(var(--c) * .1) calc(var(--c) * .2); }
+    .ptable.overlay .qcard.basic .q-panel { padding: calc(var(--c) * .12) calc(var(--c) * .3); gap: calc(var(--c) * .1); border-radius: calc(var(--c) * .4); }
+    .ptable.overlay .qcard.basic .q-line-custom { gap: calc(var(--c) * .4); }
+    .ptable.overlay .key-cap { padding: calc(var(--c) * .09) calc(var(--c) * .5); min-width: calc(var(--c) * 2.2); border-radius: calc(var(--c) * .25); }
+    .ptable.overlay .key-cap .kr-name { font-size: calc(var(--c) * .42); }
+    .ptable.overlay .key-cap .en-name { font-size: max(10px, calc(var(--c) * .18)); }
+    .ptable.overlay .q-side-custom .kr-name { font-size: calc(var(--c) * .4); }
+    .ptable.overlay .q-side-custom .en-name { font-size: max(10px, calc(var(--c) * .18)); }
+    .ptable.overlay .qcard.basic .q-input { font-size: max(16px, calc(var(--c) * .4)); padding: calc(var(--c) * .17) 18px; }
+    .ptable.overlay .q-enter { width: calc(var(--c) * 1.4); height: calc(var(--c) * .9); font-size: calc(var(--c) * .4); }
+
+    /* 좁은 화면 */
+    @media (max-width: 560px) {
+        .qcard { padding: 12px; }
+        .q-body { gap: 8px; }
+        .qcard.basic .q-panel { padding: 10px 10px 12px; gap: 10px; border-radius: 18px; }
+        .q-line-custom { gap: 10px; }
+        .q-side-custom .kr-name { font-size: 1.1rem; }
+        .q-side-custom .en-name { font-size: .7rem; }
+        .key-cap { min-width: 0; padding: 10px 16px; }
+        .key-cap .kr-name { font-size: 1.4rem; }
+        .q-enter { width: 52px; height: 44px; font-size: 1.2rem; }
+        .q-input { font-size: 19px; padding: 13px 10px; }
+    }
     #sinkInput { position: fixed; left: 0; top: 40%; width: 1px; height: 1px; opacity: 0; border: 0; padding: 0; font-size: 16px; pointer-events: none; }
 
     /* =========================================================
@@ -807,10 +855,15 @@
                     <span class="q-label" id="qLabel"></span>
                     <span class="q-feedback" id="qFeedback" aria-live="polite"></span>
                 </div>
-                <div class="q-main" id="qMain"></div>
-                <div class="q-input-row">
-                    <input id="qInput" class="q-input" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" aria-label="정답 입력">
-                    <button type="button" class="q-tool" id="passBtn" title="패스 (Alt+P)">⏭<span class="pass-txt"> 3</span></button>
+                <div class="q-body">
+                    <div class="q-panel">
+                        <div class="q-main" id="qMain"></div>
+                        <div class="q-input-row">
+                            <input id="qInput" class="q-input" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" aria-label="정답 입력">
+                            <button type="button" class="q-tool" id="passBtn" title="패스 (Alt+P)">⏭<span class="pass-txt"> 3</span></button>
+                        </div>
+                    </div>
+                    <button type="button" class="q-enter" id="enterBtn" title="입력 (Enter)" aria-label="입력">»</button>
                 </div>
                 <div class="q-guide" id="qGuide"></div>
             </div>
@@ -1201,7 +1254,7 @@
         "Francium", "Radium", "Actinium", "Thorium", "Protactinium", "Uranium", "Neptunium", "Plutonium", "Americium", "Curium", "Berkelium", "Californium", "Einsteinium", "Fermium", "Mendelevium", "Nobelium", "Lawrencium",
         "Rutherfordium", "Dubnium", "Seaborgium", "Bohrium", "Hassium", "Meitnerium", "Darmstadtium", "Roentgenium", "Copernicium", "Nihonium", "Flerovium", "Moscovium", "Livermorium", "Tennessine", "Oganesson"
     ];
-    ELEMENTS.forEach((el, i) => { el.en = EN_NAMES[i]; });
+    ELEMENTS.forEach((el, i) => { el.enName = EN_NAMES[i]; });   // en(전기 음성도)과 겹치지 않게 enName
 
     const CATEGORIES = [
         { id: 'alkali-metal',          ko: '알칼리 금속',   color: '#E8736C' },
@@ -1853,6 +1906,7 @@
         $('#tbLeft').textContent = summaryLabel(cfg);
         playT.root.classList.toggle('show-all', g.play === 'basic');
         playT.root.classList.toggle('names', g.play === 'basic' && cfg.input === 'name');
+        $('#qcard').classList.toggle('basic', g.play === 'basic');
         sizeTable(playT);
         g.startAt = performance.now();
         advance();
@@ -1884,21 +1938,18 @@
         const en = kind !== 'name';
         input.setAttribute('lang', en ? 'en' : 'ko');
         input.setAttribute('inputmode', kind === 'number' ? 'numeric' : 'text');
-        input.placeholder = { name: '한글 이름', symbol: kind === 'symbol' && G.q && G.q.type === 'ion' ? '이온식 (예: Na+)' : '원소 기호', position: '주기 족 (예: 3 17)', number: '숫자' }[kind] || '';
+        input.placeholder = { name: '한글 이름을 입력하세요', symbol: kind === 'symbol' && G.q && G.q.type === 'ion' ? '이온식 (예: Na+)' : '원소 기호를 입력하세요', position: '주기 족 (예: 3 17)', number: '숫자' }[kind] || '';
     }
 
     function renderQuestion() {
         const q = G.q;
-        const top = $('#qTop');
         const label = $('#qLabel');
         $('#qFeedback').textContent = ''; $('#qFeedback').className = 'q-feedback';
 
         if (G.play === 'basic') {
-            top.style.display = 'none'; // 기본 모드에서 "원자번호 N번" 글씨 삭제
             renderBasicMain();
             $('#qGuide').textContent = '';
         } else {
-            top.style.display = 'flex';
             label.textContent = q.label;
             label.classList.remove('notice');
             $('#qMain').innerHTML = `<span class="q-big">${esc(q.big)}</span><span class="q-ask">${esc(q.ask)}</span>`;
@@ -1908,32 +1959,28 @@
         updateTools();
     }
 
-    // 기본 모드의 디자인 변경 (키보드 키캡 UI 및 하얀색 배경 적용, 영어 이름 렌더링)
+    // 기본 모드: 은색 패널 안에 직전 단어 · 키캡(지금 칠 단어) · 다음 단어, 한글 이름 밑에 영어 이름
     function renderBasicMain(reveal) {
         const prev = G.items[G.idx - 1], next = G.items[G.idx + 1];
         $('#qMain').innerHTML = `<div class="q-line-custom">`
             + `<div class="q-side-custom prev">`
-            + (prev ? `<div class="kr-name">${esc(prev.answer)}</div><div class="en-name">${esc(prev.el.en)}</div>` : '')
+            + (prev ? `<div class="kr-name">${esc(prev.answer)}</div><div class="en-name">${esc(prev.el.enName)}</div>` : '')
             + `</div>`
             + `<div class="q-side-custom target">`
-            + `<div class="key-cap ${reveal ? 'reveal' : ''}"><div class="kr-name">${esc(G.q.answer)}</div><div class="en-name">${esc(G.q.el.en)}</div></div>`
+            + `<div class="key-cap ${reveal ? 'reveal' : ''}"><div class="kr-name">${esc(G.q.answer)}</div><div class="en-name">${esc(G.q.el.enName)}</div></div>`
             + `</div>`
             + `<div class="q-side-custom next">`
-            + (next ? `<div class="kr-name">${esc(next.answer)}</div><div class="en-name">${esc(next.el.en)}</div>` : '')
+            + (next ? `<div class="kr-name">${esc(next.answer)}</div><div class="en-name">${esc(next.el.enName)}</div>` : '')
             + `</div></div>`;
     }
 
     function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 
     function updateTools() {
+        if (G.play === 'basic') return;   // 기본 모드는 패스 버튼 없음 (CSS로 숨김)
         const passBtn = $('#passBtn');
-        if (G.play === 'basic') {
-            passBtn.style.display = 'none'; // 기본 모드에서 패스 버튼 삭제
-        } else {
-            passBtn.style.display = 'block';
-            passBtn.disabled = !!G.lock || G.passesLeft <= 0;
-            passBtn.querySelector('.pass-txt').textContent = ' ' + G.passesLeft;
-        }
+        passBtn.disabled = !!G.lock || G.passesLeft <= 0;
+        passBtn.querySelector('.pass-txt').textContent = ' ' + G.passesLeft;
     }
 
     function updateTopbar() {
@@ -2052,7 +2099,7 @@
     }
 
     function usePass() {
-        if (!G || G.ended || G.lock || G.passesLeft <= 0) return;
+        if (!G || G.ended || G.lock || G.passesLeft <= 0 || G.play === 'basic') return;
         G.passesLeft--; G.passes++;
         if (G.play === 'basic') G.penaltyMs += CONFIG.PASS_PENALTY_MS;
         onFail('pass', input.value);
@@ -2399,6 +2446,7 @@
         input.addEventListener('animationend', () => input.classList.remove('shake'));
         input.addEventListener('focus', () => setTimeout(ensureCardVisible, 250));
         $('#passBtn').addEventListener('click', usePass);
+        $('#enterBtn').addEventListener('click', onSubmit);   // » 버튼 = Enter (조합 중인 글자도 input.value에 들어 있음)
         $('#quitBtn').addEventListener('click', quitGame);
         $('#playWrap').addEventListener('mousedown', e => { if (e.target !== input && G && !G.ended) { e.preventDefault(); input.focus({ preventScroll: true }); } });
         document.addEventListener('keydown', e => {
