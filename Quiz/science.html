@@ -783,7 +783,6 @@
                                 <button type="button" data-count="40">40문항</button>
                                 <button type="button" data-count="0">전체</button>
                             </div>
-                            <p class="opt-note" id="countNote"></p>
                         </div>
                     </div>
 
@@ -1529,15 +1528,14 @@
         for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
         return a;
     }
+    // 전기 음성도: 원소 a마다 a보다 0.3 이상 작은 짝 b 하나 → 정답은 항상 a
+    // (정답 원소 = 문제의 원소여야 '원소당 한 문제'로 묶을 수 있음)
     function electronegativityPairs(pool) {
         const list = pool.filter(e => e.en != null && e.n <= CONFIG.PROPERTY_MAX_N);
-        const seen = new Set(), out = [];
+        const out = [];
         for (const a of shuffle(list)) {
-            const partners = shuffle(list.filter(b => b !== a && Math.abs(a.en - b.en) >= CONFIG.EN_MIN_DIFF - 1e-9));
-            const b = partners.find(x => !seen.has([a.n, x.n].sort((p, q) => p - q).join('-')));
-            if (!b) continue;
-            seen.add([a.n, b.n].sort((p, q) => p - q).join('-'));
-            out.push([a, b]);
+            const b = shuffle(list.filter(x => a.en - x.en >= CONFIG.EN_MIN_DIFF - 1e-9))[0];
+            if (b) out.push([a, b]);
         }
         return out;
     }
@@ -1551,6 +1549,7 @@
             case 'position-to-element': case 'element-to-position':
                 return pool.filter(e => e.group != null).map(e => mk(e));
             case 'group-name':
+                if (cfg.scope === 'group' && cfg.groups.length < 2) return [];   // 족 하나면 답이 전부 같음
                 return pool.filter(e => GROUP_NAMES[e.group] && e.n !== 1).map(e => mk(e));
             case 'ion': return prop ? small.filter(e => e.ion).map(e => mk(e)) : [];
             case 'valence': return prop ? small.filter(e => e.valence != null).map(e => mk(e)) : [];
@@ -1562,25 +1561,23 @@
     function typeUnavailableReason(type, pool, cfg) {
         const t = QTYPE_BY_ID[type];
         if (t.cat === 'property' && !propertyAllowed(cfg)) return '성질 문제는 🟢 기본(1~20번)에서만 출제돼요';
+        if (type === 'group-name' && cfg.scope === 'group' && cfg.groups.length < 2) return '족 이름은 족을 2개 이상 고르면 출제돼요';
         if (candidatesFor(type, pool, cfg).length) return '';
         if (t.cat === 'property') return '이 범위의 1~20번 원소로는 만들 수 없어요';
         return '이 범위에서는 만들 수 없어요';
     }
-    function spreadSameElement(list) {
-        const a = list.slice();
-        for (let i = 1; i < a.length; i++) {
-            if (a[i].n === a[i - 1].n) {
-                const j = a.findIndex((x, k) => k > i && x.n !== a[i - 1].n);
-                if (j > 0) [a[i], a[j]] = [a[j], a[i]];
-            }
-        }
-        return a;
-    }
+    // 원소당 한 문제: 고른 유형 중 그 원소로 만들 수 있는 것 하나를 무작위로.
+    // 같은 원소가 다른 유형으로 다시 나오면 앞 문제·불 켜진 칸·정답 카드가 답을 알려 주기 때문
     function buildQuizPool(cfg) {
         const pool = scopeElements(cfg);
-        let all = [];
-        for (const t of cfg.types) all = all.concat(candidatesFor(t, pool, cfg));
-        return spreadSameElement(shuffle(all));
+        const byEl = new Map();
+        for (const t of cfg.types) {
+            for (const c of candidatesFor(t, pool, cfg)) {
+                if (!byEl.has(c.n)) byEl.set(c.n, []);
+                byEl.get(c.n).push(c);
+            }
+        }
+        return shuffle([...byEl.values()].map(list => list[Math.floor(Math.random() * list.length)]));
     }
 
     function makeQuestion(c, cfg) {
@@ -1768,7 +1765,7 @@
     function availableTypes(cfg) {
         cfg = cfg || S;
         const pool = scopeElements(cfg);
-        return QTYPES.map(t => t.id).filter(t => !typeUnavailableReason(t.id, pool, cfg));
+        return QTYPES.map(t => t.id).filter(id => !typeUnavailableReason(id, pool, cfg));
     }
     function pressed(sel, attr, value) {
         $$(`${sel} [data-${attr}]`).forEach(b => b.setAttribute(b.getAttribute('role') === 'tab' ? 'aria-selected' : 'aria-pressed', String(b.dataset[attr] === String(value))));
@@ -1824,7 +1821,6 @@
             n = qpool.length;
             if (!n) err = '선택한 범위·유형으로 만들 수 있는 문제가 없어요.';
             const cnt = S.count ? Math.min(S.count, n) : n;
-            $('#countNote').textContent = `만들 수 있는 문제 ${n}개` + (S.count && n < S.count ? ` → ${n}문항만 출제돼요` : '');
             $('#summaryLine').textContent = summaryLabel(S) + ` · ${cnt}문항`;
         } else {
             n = basicSequence(S).length;
@@ -2147,7 +2143,7 @@
         if (cfg.scope === 'group') p.push(cfg.groups.join('.') + 'd' + cfg.depth);
         if (cfg.scope === 'period') p.push(cfg.periods.join('.'));
         if (cfg.play === 'basic') p.push(cfg.input, cfg.scope === 'number' ? 's' + validStart(cfg) : '');
-        else p.push('t' + cfg.time, [...cfg.types].sort().join('.'), 'c' + cfg.count);
+        else p.push('t' + cfg.time, [...cfg.types].sort().join('.'), 'c' + cfg.count, 'one');   // 'one': 원소당 한 문제 규칙 이후 기록
         return p.join('|');
     }
 
@@ -2386,6 +2382,16 @@
             const back = sanitizeSettings(settingsFromQuery('?' + settingsToQuery(s)));
             return s.play === 'quiz' && s.time === 5 && s.groups.join() === '1,17,18' && s.types.join() === 'symbol-to-name,position-to-element' && JSON.stringify(back) === JSON.stringify(s);
         });
+        T('퀴즈: 한 판에 같은 원소는 한 번만 (기초 3종·전체 유형, 100회)', () => {
+            const all = QTYPES.map(t => t.id);
+            for (let i = 0; i < 100; i++) for (const types of [['symbol-to-name', 'name-to-symbol', 'number-to-name'], all]) {
+                const q = buildQuizPool({ scope: 'number', level: 'basic', types });
+                if (q.length !== 20 || new Set(q.map(c => c.n)).size !== q.length) return false;
+            }
+            return true;
+        });
+        T('전기 음성도: 정답 원소가 문제 원소와 같음', () => electronegativityPairs(ELEMENTS.filter(e => e.n <= 20)).every(([a, b]) => a.en > b.en));
+        T('족 하나만 고르면 족 이름 유형 없음', () => !buildQuizPool({ scope: 'group', groups: [17], depth: 7, types: ['group-name'] }).length && buildQuizPool({ scope: 'group', groups: [1, 17], depth: 4, types: ['group-name'] }).length === 6);
         T('모든 원소에 fact 존재', () => ELEMENTS.every(e => typeof e.fact === 'string'));
 
         const pass = results.filter(r => r.ok).length;
